@@ -66,4 +66,4 @@ This project is a web application built for **Johannes Fog**, allowing customers
 
 ---
 
-📦 Happy building! Let’s make this a carport configurator Fog will be proud of.
+📦 Happy building! Let’s make the best carport configurator Fog have ever seen.
