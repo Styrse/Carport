@@ -58,7 +58,7 @@ This project is a web application built for **Johannes Fog**, allowing customers
 
 ## 📝 Contributor Tips
 
-- Refer to [Definition of Done](docs/definition-of-done.md) before closing issues
+- Refer to [Definition of Done](docs/process/definition-of-done.md) before closing issues
 - Follow [Naming Conventions](docs/naming-conventions.md) for consistency
 - Always use pull requests — no direct pushes to `main`
 - Include screenshots, logs, or test notes in issue comments if applicable
