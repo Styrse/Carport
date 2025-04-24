@@ -6,23 +6,24 @@ This project is a web application built for **Johannes Fog**, allowing customers
 
 ## 🚀 Tech Stack
 
-| Area            | Technology                      |
-|-----------------|----------------------------------|
-| Language        | Java 17                          |
-| Backend         | Javalin, Jetty                   |
-| Frontend        | Thymeleaf, HTML/CSS              |
-| Database        | PostgreSQL + HikariCP            |
-| DevOps          | Digital Ocean, GitHub Projects   |
-| Testing         | JUnit, Mockito, JaCoCo           |
-| Email           | SendGrid                         |
-| Diagrams/Mockup | Figma, Mermaid, Draw.io          |
+| Area            | Technology                | Version        |
+|-----------------|----------------------------|----------------|
+| Language        | Java                       | 17             |
+| Backend         | Javalin, Jetty             | Javalin 5.x, Jetty 11.x |
+| Frontend        | Thymeleaf, HTML, CSS       | Thymeleaf 3.1, HTML5, CSS3 |
+| Database        | PostgreSQL, HikariCP       | PostgreSQL 15, HikariCP 5.0 |
+| DevOps          | DigitalOcean, GitHub Projects | N/A            |
+| Testing         | JUnit         | JUnit 5|
+| Email           | SendGrid                   | SDK 4.10.1     |
+| Diagrams/Mockup | Figma, Draw.io      | Latest (Web)   |
+
 
 ---
 
 ## 📚 Project Standards
 
-- 📄 [Definition of Done](docs/definition-of-done.md)
-- 🔤 [Naming Conventions](docs/naming-conventions.md)
+- 📄 [Definition of Done](docs/process/definition-of-done.md)
+- 🔤 [Naming Conventions](docs/process/naming-conventions.md)
 
 ---
 
@@ -59,7 +60,7 @@ This project is a web application built for **Johannes Fog**, allowing customers
 ## 📝 Contributor Tips
 
 - Refer to [Definition of Done](docs/process/definition-of-done.md) before closing issues
-- Follow [Naming Conventions](docs/naming-conventions.md) for consistency
+- Follow [Naming Conventions](docs/process/naming-conventions.md) for consistency
 - Always use pull requests — no direct pushes to `main`
 - Include screenshots, logs, or test notes in issue comments if applicable
 
