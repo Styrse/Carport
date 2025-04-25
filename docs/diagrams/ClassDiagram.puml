@@ -1,0 +1,53 @@
+@startuml
+
+abstract class User {
+  String firstName
+  String lastName
+  int phoneNumber
+  String email
+  List<Order> orders
+}
+
+class Customer extends User
+
+class Staff extends User {
+  String password
+}
+
+class SalesStaff extends Staff
+class SalesManager extends Staff
+
+class Material {
+  String description
+  double costPrice
+  double salesPrice
+}
+
+class Beam extends Material
+class NailOrScrew extends Material
+class Bracket extends Material
+
+class Carport {
+  List<Material> materials
+  Guide guide
+}
+
+class Order {
+  Carport carport
+  Customer customer
+  Staff staff
+  LocalDate orderDate
+  String orderStatus
+}
+
+class Guide {
+  Svg svg
+}
+
+Customer "1" -- "0..*" Order : places >
+Staff "1" -- "0..*" Order : handles >
+Order "1" *-- "1" Carport
+Carport "1" *-- "0..*" Material
+Carport "1" *-- "1" Guide
+
+@enduml
