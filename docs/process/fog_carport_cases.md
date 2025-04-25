@@ -32,10 +32,10 @@
 ## 📂 User Story 2 – Clear Configuration Process
 **As a user, I want a clear step-by-step configuration process so I can customize my carport easily.**
 
-### 🔹 Issue 2.1 – Build 3-step configuration flow
-📌 *What this is:* Creates the basic structure of the configuration process with three clear steps.  
-🎯 *Why it matters:* Provides clarity, structure, and validation for user inputs across the process.
-- [ ] Implement step navigation: 1) Size, 2) Material, 3) Summary
+### 🔹 Issue 2.1 – Build 4-step configuration flow
+📌 *What this is:* Updates the process to include user information input before the final summary.  
+🎯 *Why it matters:* Ensures customers can be contacted and quoted correctly before order review.
+- [ ] Update step navigation: 1) Size, 2) Material, 3) Customer Info, 4) Summary
 - [ ] Prevent users from skipping steps
 - [ ] Allow navigation back to previous steps
 - **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
@@ -59,6 +59,14 @@
 - [ ] Support configuration for both unauthenticated and logged-in users
 - [ ] Plan for sales role having access to additional internal fields (separate task)
 - **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
+
+### 🔹 Issue 2.5 – Customer information step
+📌 *What this is:* Adds a form for users to enter name, phone, email, and address before reviewing.  
+🎯 *Why it matters:* Captures required contact information so the order can be followed up.
+- [ ] Add input fields for name, email, phone, address
+- [ ] Validate required fields
+- [ ] Make it work for both guest and logged-in users
+- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`
 
 ---
 
