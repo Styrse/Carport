@@ -66,7 +66,7 @@
 - [ ] Add input fields for name, email, phone, address
 - [ ] Validate required fields
 - [ ] Make it work for both guest and logged-in users
-- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`
+- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
 
 ---
 
@@ -356,21 +356,21 @@
 🎯 *Why it matters:* Starts the process of validating zoning rules based on location.
 - [ ] Add address input to configuration step
 - [ ] Trigger automatic zoning check after typing complete
-- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: extra-feature`, `sprint: 2`
+- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: extra-feature`, `extra-feature`
 
 ### 🔹 Issue 13.2 – Simulate zoning plan API response (mock service)
 📌 *What this is:* Backend logic that pretends to check the address against a zoning API.  
 🎯 *Why it matters:* Lets us build and test the feature without needing a real external service.
 - [ ] Create mock service that returns zoning status for test addresses
 - [ ] Include fallback case with "N/A"
-- **Labels:** `t-shirt-size: M`, `priority: low`, `type: backend`, `area: extra-feature`, `sprint: 2`
+- **Labels:** `t-shirt-size: M`, `priority: low`, `type: backend`, `area: extra-feature`, `extra-feature`
 
 ### 🔹 Issue 13.3 – Display zoning info to user AND sales staff
 📌 *What this is:* Shows the zoning result in the UI for both users and internal staff.  
 🎯 *Why it matters:* Informs the customer and helps sales guide the order process.
 - [ ] Show result: allowed, restricted, or N/A
 - [ ] Message if N/A: "Please check your local development plan"
-- **Labels:** `t-shirt-size: S`, `priority: low`, `type: frontend`, `area: extra-feature`, `sprint: 2`
+- **Labels:** `t-shirt-size: S`, `priority: low`, `type: frontend`, `area: extra-feature`, `extra-feature`
 
 ---
 

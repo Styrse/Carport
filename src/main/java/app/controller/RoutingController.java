@@ -4,5 +4,6 @@ import io.javalin.Javalin;
 
 public class RoutingController {
     public static void routes(Javalin app) {
+        app.get("/", ctx -> ctx.render("index.html"));
     }
 }
