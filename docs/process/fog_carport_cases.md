@@ -6,25 +6,28 @@
 ## 📂 User Story 1 – Easy Navigation on the Website
 **As a user, I want to navigate the site easily so I can find information and order a carport without confusion.**
 
-### 🔹 Issue 1.1 – Implement sticky homepage navigation
-📌 *What this is:* Adds a navigation bar that stays at the top of the screen while scrolling.  
-🎯 *Why it matters:* Helps users quickly jump to configurator, info, or contact without losing track.
-- [ ] Add sticky header with links to configurator, info, and contact
-- [ ] Ensure it adjusts based on screen size (mobile-friendly)
+### 🔹 Issue 1.1 – Add main page
+📌 *What this is:* Creates the starting point for all users visiting `fog.dk/carport`.  
+🎯 *Why it matters:* Serves as the central entry point to the carport system.
+- [ ] Create landing page at `/carport`
+- [ ] Include basic layout and welcome message
+- [ ] Add links to configurator
 - **Labels:** `t-shirt-size: S`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
 
-### 🔹 Issue 1.2 – Add breadcrumb navigation to configurator
-📌 *What this is:* Adds a step indicator for the configuration flow.  
-🎯 *Why it matters:* Makes it clear which step the user is on, and provides a path to go back if needed.
-- [ ] Show current step and allow going back
-- [ ] Highlight active step
-- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: UX`, `sprint: 1`
+### 🔹 Issue 1.2 – Implement sticky homepage navigation
+📌 *What this is:* Adds a navigation bar that stays at the top of the screen while scrolling.  
+🎯 *Why it matters:* Helps users quickly jump to configurator, info, or contact without losing track.
+- [ ] Add sticky header to all customer-facing pages
+- [ ] Include navigation items: Home, Build, Track, Info, Contact
+- [ ] Ensure navigation bar is mobile-friendly and collapses appropriately
+- **Labels:** `t-shirt-size: S`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
 
 ### 🔹 Issue 1.3 – Add footer with key information
 📌 *What this is:* A permanent footer shown at the bottom of all pages.  
 🎯 *Why it matters:* Gives users a consistent place to find contact details and opening hours.
 - [ ] Include address, phone, email
-- [ ] Add opening hours and a link to support or live chat
+- [ ] Add opening hours and link to contact form
+- [ ] Ensure styling fits overall design and is mobile-compatible
 - **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: UX`, `sprint: 1`
 
 ---
@@ -32,71 +35,72 @@
 ## 📂 User Story 2 – Clear Configuration Process
 **As a user, I want a clear step-by-step configuration process so I can customize my carport easily.**
 
-### 🔹 Issue 2.1 – Build 4-step configuration flow
-📌 *What this is:* Updates the process to include user information input before the final summary.  
-🎯 *Why it matters:* Ensures customers can be contacted and quoted correctly before order review.
-- [ ] Update step navigation: 1) Size, 2) Material, 3) Customer Info, 4) Summary
+### 🔹 Issue 2.1 – Build Step 1: Size Selection Page
+📌 *What this is:* First step of the configuration where users select carport dimensions.  
+🎯 *Why it matters:* Sets the foundation for carport design.
+- [ ] Create form inputs for Width, Length, Height
+- [ ] Add roof type selection (Flat only, for now)
+- [ ] Validate input ranges (e.g., width must be > 2m, height < 5m)
 - [ ] Prevent users from skipping steps
-- [ ] Allow navigation back to previous steps
+- [ ] Add back and continue buttons
+- [ ] Save progress locally
 - **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
 
-### 🔹 Issue 2.2 – Visual indicators for step completion
+### 🔹 Issue 2.2 – Build Step 2: Material Selection Page
+📌 *What this is:* Second step where users choose carport materials.  
+🎯 *Why it matters:* Allows users to personalize the build.
+- [ ] Create selection options for materials (wood type, roof material)
+- [ ] Prevent users from skipping steps
+- [ ] Add back and continue buttons
+- [ ] Save selections locally
+- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
+
+### 🔹 Issue 2.3 – Build Step 3: Customer Information Page
+📌 *What this is:* Step to collect customer contact details.  
+🎯 *Why it matters:* Needed for creating quotes and follow-ups.
+- [ ] Add form fields: Name, Email, Phone Number, Address
+- [ ] Validate required fields
+- [ ] Prevent users from skipping steps
+- [ ] Add back and continue buttons
+- [ ] Save inputs locally
+- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
+
+### 🔹 Issue 2.4 – Build Step 4: Summary Review Page
+📌 *What this is:* Final step where users review and confirm their carport order details.  
+🎯 *Why it matters:* Prevents mistakes and builds customer confidence.
+- [ ] Display a summary of Size, Material, Customer Info
+- [ ] Add "Back" and "Confirm" buttons
+- [ ] Save all finalized data to backend/database when submitted
+- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
+
+### 🔹 Issue 2.5 – Visual indicators for step completion
 📌 *What this is:* Adds small UI cues like checkmarks to indicate a step is complete.  
 🎯 *Why it matters:* Gives users feedback that they've completed a section successfully.
 - [ ] Add checkmark or color change for completed steps
-- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: UX`, `sprint: 1`
-
-### 🔹 Issue 2.3 – Save progress using local storage
-📌 *What this is:* Stores the user’s configuration locally in the browser.  
-🎯 *Why it matters:* Prevents loss of data if the page is accidentally closed or refreshed.
-- [ ] Store configuration input locally in the browser
-- [ ] Restore progress if page is refreshed or reopened
-- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
-
-### 🔹 Issue 2.4 – Ensure flow works for guests and sales users
-📌 *What this is:* Makes the configurator accessible to both logged-in sales users and guests.  
-🎯 *Why it matters:* Supports flexibility for both end users and internal staff during phone orders.
-- [ ] Support configuration for both unauthenticated and logged-in users
-- [ ] Plan for sales role having access to additional internal fields (separate task)
-- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
-
-### 🔹 Issue 2.5 – Customer information step
-📌 *What this is:* Adds a form for users to enter name, phone, email, and address before reviewing.  
-🎯 *Why it matters:* Captures required contact information so the order can be followed up.
-- [ ] Add input fields for name, email, phone, address
-- [ ] Validate required fields
-- [ ] Make it work for both guest and logged-in users
-- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 1`
+- **Labels:** `t-shirt-size: S`, `priority: low`, `type: frontend`, `area: UX`, `sprint: 1`
 
 ---
 
 ## 📂 User Story 3 – Order Review
 **As a user, I want to review my order before submitting so I can make sure everything is correct.**
 
-### 🔹 Issue 3.1 – Build order confirmation page (not a popup)
-📌 *What this is:* Adds a full page where users see their order before confirming.  
-🎯 *Why it matters:* Builds trust and reduces errors by letting users double-check.
-- [ ] Display order summary with all selections and customer input
-- [ ] Provide "Back" and "Confirm Order" buttons
-- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 2`
-
-### 🔹 Issue 3.2 – Add PDF download/print button for summary
+### 🔹 Issue 3.1 – Add PDF download/print button for summary
 📌 *What this is:* Lets users export a copy of their order as a PDF.  
 🎯 *Why it matters:* Useful for physical record keeping or emailing later.
 - [ ] Generate downloadable version of the order summary
-- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: UX`, `sprint: 2`
+- **Labels:** `t-shirt-size: M`, `priority: low`, `type: frontend`, `area: UX`, `extra-feature`
 
-### 🔹 Issue 3.3 – Send confirmation email to customer
+### 🔹 Issue 3.2 – Send confirmation email to customer
 📌 *What this is:* Automatically sends a confirmation email after the user submits their order.  
 🎯 *Why it matters:* Confirms that the order was received and builds trust.
 - [ ] Email includes order summary and contact details
-- **Labels:** `t-shirt-size: M`, `priority: high`, `type: backend`, `area: email`, `sprint: 2`
+- **Labels:** `t-shirt-size: M`, `priority: medium`, `type: backend`, `area: email`, `sprint: 2`
 
-### 🔹 Issue 3.4 – Add free-text comment field to order confirmation
+### 🔹 Issue 3.3 – Add free-text comment field to order confirmation
 📌 *What this is:* Lets users add delivery notes or custom requests with their order.  
 🎯 *Why it matters:* Increases flexibility for customers with special instructions.
 - [ ] Field for user to add delivery instructions or notes
-- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: UX`, `sprint: 2`
+- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: UX`, `extra-feature`
 
 ---
 
@@ -629,7 +633,7 @@
 - [ ] Use Google reCAPTCHA or a simple math challenge
 - **Labels:** `t-shirt-size: S`, `priority: high`, `type: frontend`, `area: contact`, `extra-feature`
 
-### 🔹 Extra Feature – Add internal help desk / support inbox
+### 🔹 Issue 21.4 – Add internal help desk / support inbox
 📌 *What this is:* A backend tool for managing customer service interactions (future idea).  
 🎯 *Why it matters:* Could improve internal handling of support requests and long-term tracking.
 - [ ] Create a customer service dashboard (future feature)
@@ -646,13 +650,13 @@
 - [ ] Hardcoded HTML with initial content
 - **Labels:** `t-shirt-size: S`, `priority: low`, `type: frontend`, `area: content`, `extra-feature`
 
-### 🔹 Info Needed – FAQ Content
+### 🔹 Issue 22.2 - Info Needed – FAQ Content
 📌 *What this is:* We need to get the actual questions and answers from Fog.  
 🎯 *Why it matters:* Ensures the FAQ reflects real customer concerns.
 - [ ] Request FAQ content from Fog (add to Questions for Customer)
 - **Labels:** `t-shirt-size: S`, `priority: medium`, `type: planning`, `area: content`, `extra-feature`
 
-### 🔹 Extra Feature – Make FAQ editable by Fog
+### 🔹 Issue 22.3 - Extra Feature – Make FAQ editable by Fog
 📌 *What this is:* Admin panel for Fog to update the FAQ themselves.  
 🎯 *Why it matters:* Allows non-technical staff to keep the content up to date.
 - [ ] Build admin edit panel + DB connection (future feature)
@@ -923,3 +927,42 @@
 - [ ] Use tel: links or integrate with phone client (depending on system)
 - [ ] Ensure it works on both desktop and mobile
 - **Labels:** `t-shirt-size: M`, `priority: medium`, `type: frontend`, `area: integration`, `extra-feature`
+
+---
+
+## 📂 User Story 35 – Track Your Order
+**As a customer, I want to track the status of my order so I know when it will be completed or delivered.**
+
+### 🔹 Issue 35.1 – Create Track Order Page
+📌 *What this is:* A page where customers can input their order ID to see status updates.  
+🎯 *Why it matters:* Gives transparency and builds customer trust.
+- [ ] Input field for Order ID
+- [ ] Show order status and history (e.g., Received → Quote Sent → Payment Received)
+- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: tracking`, `sprint: 2`
+
+---
+
+## 📂 User Story 36 – Info Page (General Carport Information)
+**As a customer, I want to read general information about carports so I can make better decisions.**
+
+### 🔹 Issue 36.1 – Create Info Page
+📌 *What this is:* A simple page explaining carport types, materials, and sizing.  
+🎯 *Why it matters:* Helps customers understand their choices before building a carport.
+- [ ] Section for Carport Types (Flat vs. Pitched Roofs)
+- [ ] Section for Materials (Wood, Steel)
+- [ ] Section for Sizing and Common Recommendations
+- [ ] FAQ teaser ("See FAQ page for more")
+- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: info`, `extra-feature`
+
+---
+
+## 📂 User Story 37 – Contact Page
+**As a customer, I want to contact Fog easily if I have questions or need help.**
+
+### 🔹 Issue 37.1 – Create Contact Page
+📌 *What this is:* A page with a contact form and Fog’s contact information.  
+🎯 *Why it matters:* Supports customer service and lead generation.
+- [ ] Fields: Name, Email, Phone, Message
+- [ ] Add map location or address
+- [ ] Display opening hours and phone number
+- **Labels:** `t-shirt-size: S`, `priority: low`, `type: frontend`, `area: contact`, `extra-feature`
