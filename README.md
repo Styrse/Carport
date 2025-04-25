@@ -15,7 +15,8 @@ This project is a web application built for **Johannes Fog**, allowing customers
 | DevOps          | DigitalOcean, GitHub Projects | N/A            |
 | Testing         | JUnit         | JUnit 5.12.0|
 | Email           | SendGrid                   | SDK 4.10.1     |
-| Diagrams/Mockup | Figma, Draw.io      | Latest (Web)   |
+| Diagrams/Mockup | Figma, Draw.io, Canva      | Latest (Web)   |
+| Communication   | Discord      | [Join](https://discord.gg/e6DqDnDZ) |
 
 
 ---
@@ -63,6 +64,19 @@ This project is a web application built for **Johannes Fog**, allowing customers
 - Follow [Naming Conventions](docs/process/naming-conventions.md) for consistency
 - Always use pull requests — no direct pushes to `main`
 - Include screenshots, logs, or test notes in issue comments if applicable
+
+---
+
+## 🧾 Reporting & Documentation
+
+- 📂 [Shared Google Drive](https://drive.google.com/drive/folders/1NGC3qZlsdJjrdBPflc2UA0Z-5NiV14sZ)  
+  Project documents, screenshots, and sprint materials
+
+- 📊 [Diagrams Folder](docs/diagrams)  
+  Domain models, ERD, navigation diagrams, and class structure
+
+- 📝 [Report As You Code Guide](docs/process/report-as-you-code.md)  
+  Tips to document decisions and architecture along the way
 
 ---
 
