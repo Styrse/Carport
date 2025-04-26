@@ -30,12 +30,13 @@ class Carport {
 }
 
 class Material {
+  - String name
   - String description
   - double costPrice
   - double salesPrice
 }
 
-class Beam extends Material
+class Plank extends Material
 
 class Guide {
   - Svg guide
