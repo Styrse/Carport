@@ -80,9 +80,7 @@ This project is a web application built for **Johannes Fog**, allowing customers
 
 ---
 
-## 🚀 Project Progress
-
-- 📦 [Sprint 1: Easy Navigation](https://github.com/Styrse/Carport/milestones)
+## 🚀 [Project Progress](https://github.com/Styrse/Carport/milestones)
 
 ---
 
