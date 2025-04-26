@@ -104,10 +104,10 @@
 
 ---
 
-## ✅ User Story 4 – Customer Database
+## 📂 User Story 4 – Customer Database
 **As a developer, I want to store customer data in a structured way.**
 
-### 🔹 Issue 4.1 – Create customer table in PostgreSQL (no company field)
+### 🔹 Issue 4.1 – Create customer table in PostgreSQL
 📌 *What this is:* Adds a table to store individual customer details like name and contact info.  
 🎯 *Why it matters:* Enables linking orders to customers and contacting them post-purchase.
 - [ ] Fields: name, email, phone, address
@@ -254,7 +254,7 @@
 ### 🔹 Issue 10.4 – Measure and monitor code coverage
 📌 *What this is:* Tracks which parts of the codebase are tested.  
 🎯 *Why it matters:* Helps ensure quality and avoid gaps in critical logic.
-- [ ] Use a coverage tool (e.g., JaCoCo)
+- [ ] Use a coverage tool
 - [ ] Add coverage report to build process
 - [ ] Aim for at least 85% code coverage
 - **Labels:** `t-shirt-size: M`, `priority: high`, `type: test`, `area: backend`, `sprint: 2`
@@ -302,49 +302,55 @@
 - [ ] Options for wood type, roof type, etc.
 - **Labels:** `t-shirt-size: S`, `priority: high`, `type: design`, `area: frontend`, `sprint: 1`
 
-### 🔹 Issue 12.4 – Mockup: Step 3 – Review configuration
+### 🔹 Issue 12.4 – Mockup: Step 3 – Enter customer info
+📌 *What this is:* Page where customer enter their contact details.  
+🎯 *Why it matters:* Important for future contact.
+- [ ] Fields for firstname, lastname, phone number, email
+- **Labels:** `t-shirt-size: S`, `priority: high`, `type: design`, `area: frontend`, `sprint: 1`
+
+### 🔹 Issue 12.5 – Mockup: Step 3 – Review configuration
 📌 *What this is:* Summary step showing all selected options.  
 🎯 *Why it matters:* Gives user a chance to verify and go back if needed.
 - [ ] Summary of selections, edit links
 - **Labels:** `t-shirt-size: S`, `priority: high`, `type: design`, `area: frontend`, `sprint: 1`
 
-### 🔹 Issue 12.5 – Mockup: Confirmation page
+### 🔹 Issue 12.6 – Mockup: Confirmation page
 📌 *What this is:* Final confirmation screen after placing an order.  
 🎯 *Why it matters:* Confirms to the user that the order has been received.
 - [ ] Final confirmation message + order ID
-- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: design`, `area: frontend`, `sprint: 1`
+- **Labels:** `t-shirt-size: S`, `priority: high`, `type: design`, `area: frontend`, `sprint: 1`
 
-### 🔹 Issue 12.6 – Mockup: Contact page
+### 🔹 Issue 12.7 – Mockup: Contact page
 📌 *What this is:* Simple form for users to reach out to Fog.  
 🎯 *Why it matters:* Gives users a way to ask questions or report issues.
 - [ ] Fields for name, email, message
-- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: design`, `area: frontend`, `sprint: 1`
+- **Labels:** `t-shirt-size: S`, `priority: low`, `type: design`, `area: frontend`, `sprint: 1`
 
-### 🔹 Issue 12.7 – Mockup: Sales dashboard + details page
+### 🔹 Issue 12.8 – Mockup: Sales dashboard + details page
 📌 *What this is:* Internal tool for staff to view orders and see details.  
 🎯 *Why it matters:* Enables staff to assist customers and process orders efficiently.
 - [ ] Overview of orders, filters, and links to order detail page
 - **Labels:** `t-shirt-size: M`, `priority: high`, `type: design`, `area: admin`, `sprint: 1`
 
-### 🔹 Issue 12.8 – Mockup: Payment page (quote received)
+### 🔹 Issue 12.9 – Mockup: Payment page (quote received)
 📌 *What this is:* Where customers pay after receiving a quote.  
 🎯 *Why it matters:* Final step before the order goes into production.
 - [ ] Show price, payment method, order info
 - **Labels:** `t-shirt-size: S`, `priority: medium`, `type: design`, `area: frontend`, `sprint: 1`
 
-### 🔹 Issue 12.9 – Mockup: Payment confirmation page
+### 🔹 Issue 12.10 – Mockup: Payment confirmation page
 📌 *What this is:* Thank-you screen after a successful payment.  
 🎯 *Why it matters:* Provides reassurance and receipt after checkout.
 - [ ] Success message and receipt
 - **Labels:** `t-shirt-size: S`, `priority: medium`, `type: design`, `area: frontend`, `sprint: 1`
 
-### 🔹 Issue 12.10 – Mockup: Track order page
+### 🔹 Issue 12.11 – Mockup: Track order page
 📌 *What this is:* Allows user to check their order status by ID.  
 🎯 *Why it matters:* Reduces support workload and keeps users informed.
 - [ ] Input order ID → show current status
 - **Labels:** `t-shirt-size: S`, `priority: medium`, `type: design`, `area: frontend`, `sprint: 1`
 
-### 🔹 Issue 12.11 – Mobile versions for all pages
+### 🔹 Issue 12.12 – Mobile versions for all pages
 📌 *What this is:* Responsive versions of all mockups for mobile screens.  
 🎯 *Why it matters:* Ensures a smooth user experience on phones and tablets.
 - [ ] Responsive mobile versions for each mockup
@@ -466,7 +472,7 @@
 📌 *What this is:* Logic to decide which status changes should trigger customer emails.  
 🎯 *Why it matters:* Keeps customers informed without spamming them on minor updates.
 - [ ] Only trigger email for relevant statuses (e.g., Payment received, Order shipped)
-- **Labels:** `t-shirt-size: M`, `priority: medium`, `type: backend`, `area: comms`, `sprint: 3`
+- **Labels:** `t-shirt-size: M`, `priority: medium`, `type: backend`, `area: email`, `sprint: 3`
 
 ### 🔹 Issue 16.5 – Add optional comment field when changing status
 📌 *What this is:* Optional field to include a reason for the status change.  
@@ -492,7 +498,7 @@
 - [ ] Allow choosing paint type/color
 - **Labels:** `t-shirt-size: S`, `priority: low`, `type: frontend`, `extra-feature`
 
-### 🔹 Issue 17.3 – Add EV charger option
+  ### 🔹 Issue 17.3 – Add EV charger option
 📌 *What this is:* Adds an option to include an electric vehicle charger.  
 🎯 *Why it matters:* Adds a modern feature aligned with sustainability trends.
 - [ ] Checkbox and field in backend logic
@@ -526,7 +532,7 @@
 📌 *What this is:* Verifies login data against database using secure hashing.  
 🎯 *Why it matters:* Protects the platform from unauthorized access.
 - [ ] Validate credentials against database
-- [ ] Use hashed passwords (e.g., BCrypt)
+- [ ] Use hashed passwords
 - **Labels:** `t-shirt-size: M`, `priority: high`, `type: backend`, `area: auth`, `sprint: 3`
 
 ### 🔹 Issue 18.3 – Handle session or token management
@@ -590,7 +596,7 @@
 🎯 *Why it matters:* Allows onboarding of new team members without external help.
 - [ ] Create page where manager can add new sales accounts
 - [ ] Assign roles on creation
-- **Labels:** `t-shirt-size: M`, `priority: medium`, `type: frontend`, `area: admin`, `sprint: 3`
+- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: admin`, `sprint: 3`
 
 ---
 
@@ -619,25 +625,19 @@
 🎯 *Why it matters:* Provides a simple way for customers to reach out for help or information.
 - [ ] Fields: Name, Email, Phone, Message, Subject, Order ID, Preferred Contact Method
 - [ ] Show confirmation message after submission
-- **Labels:** `t-shirt-size: M`, `priority: high`, `type: frontend`, `area: contact`, `extra-feature`
+- **Labels:** `t-shirt-size: S`, `priority: high`, `type: frontend`, `extra-feature`
 
 ### 🔹 Issue 21.2 – Send contact messages to sales via email
 📌 *What this is:* Backend process to email submitted contact form data to the team.  
 🎯 *Why it matters:* Gets customer requests in front of the right people fast.
 - [ ] Format message and send via SMTP
-- **Labels:** `t-shirt-size: M`, `priority: high`, `type: backend`, `area: contact`, `extra-feature`
+- **Labels:** `t-shirt-size: M`, `priority: high`, `type: backend`, `extra-feature`
 
 ### 🔹 Issue 21.3 – Add CAPTCHA to prevent spam
 📌 *What this is:* Simple bot protection on the contact form.  
 🎯 *Why it matters:* Keeps the form useful by stopping junk messages.
 - [ ] Use Google reCAPTCHA or a simple math challenge
-- **Labels:** `t-shirt-size: S`, `priority: high`, `type: frontend`, `area: contact`, `extra-feature`
-
-### 🔹 Issue 21.4 – Add internal help desk / support inbox
-📌 *What this is:* A backend tool for managing customer service interactions (future idea).  
-🎯 *Why it matters:* Could improve internal handling of support requests and long-term tracking.
-- [ ] Create a customer service dashboard (future feature)
-- **Labels:** `t-shirt-size: L`, `priority: low`, `type: backend`, `area: contact`, `extra-feature`
+- **Labels:** `t-shirt-size: S`, `priority: high`, `type: frontend`, `extra-feature`
 
 ---
 
@@ -653,8 +653,8 @@
 ### 🔹 Issue 22.2 - Info Needed – FAQ Content
 📌 *What this is:* We need to get the actual questions and answers from Fog.  
 🎯 *Why it matters:* Ensures the FAQ reflects real customer concerns.
-- [ ] Request FAQ content from Fog (add to Questions for Customer)
-- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: planning`, `area: content`, `extra-feature`
+- [ ] Request FAQ content from Fog
+- **Labels:** `t-shirt-size: S`, `priority: medium`, `area: content`, `extra-feature`
 
 ### 🔹 Issue 22.3 - Extra Feature – Make FAQ editable by Fog
 📌 *What this is:* Admin panel for Fog to update the FAQ themselves.  
@@ -672,7 +672,7 @@
 🎯 *Why it matters:* Protects both the business and the customer with clear expectations.
 - [ ] Create a static HTML page with legal content
 - [ ] Link it from the footer and the order confirmation step
-- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: legal`, `extra-feature`
+- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `extra-feature`
 
 ---
 
@@ -745,13 +745,13 @@
 📌 *What this is:* Identifies whether the order is from someone who has ordered before.  
 🎯 *Why it matters:* Improves customer service and sales efficiency.
 - [ ] Match by email or phone
-- **Labels:** `t-shirt-size: M`, `priority: medium`, `type: backend`, `area: logic`, `extra-feature`
+- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: backend`, `area: logic`, `extra-feature`
 
 ### 🔹 Issue 28.2 – Assign order to previous rep if found
 📌 *What this is:* Logic to assign returning customers to the same salesperson.  
 🎯 *Why it matters:* Maintains continuity and builds customer relationships.
 - [ ] Check customer’s most recent salesperson and apply assignment
-- **Labels:** `t-shirt-size: M`, `priority: medium`, `type: backend`, `area: logic`, `extra-feature`
+- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: backend`, `area: logic`, `extra-feature`
 
 ---
 
@@ -790,30 +790,30 @@
 - [ ] Verify sender email and set up sender authentication
 - [ ] Create a dynamic template in SendGrid Email API
 - [ ] Create and save API key as environment variable `SENDGRID_API_KEY`
-- **Labels:** `t-shirt-size: M`, `priority: high`, `type: setup`, `area: email`, `sprint: 2`
+- **Labels:** `t-shirt-size: M`, `priority: high`, `type: devops`, `area: email`, `sprint: 2`
 
 ### 🔹 Issue 30.2 – Integrate SendGrid into Java project
 📌 *What this is:* Add and use SendGrid Java library with reusable utility method.  
 🎯 *Why it matters:* Core part of backend communication flow.
 - [ ] Add SendGrid dependency to `pom.xml`
-- [ ] Create utility class with `sendMail(String to, String name, String email, String zip)`
+- [ ] Create utility class with `sendMail(String to, String name, String email, String postcode)`
 - [ ] Use dynamic template ID for message content
 - [ ] Log or handle status code from response
-- **Labels:** `t-shirt-size: L`, `priority: high`, `type: backend`, `area: email`, `area: email`, `sprint: 2`
+- **Labels:** `t-shirt-size: L`, `priority: high`, `type: backend`, `area: email`, `sprint: 2`
 
 ### 🔹 Issue 30.3 – Test SendGrid integration
 📌 *What this is:* Validate email logic with logs and try/catch.  
 🎯 *Why it matters:* Ensures email communication is reliable.
 - [ ] Print response status to confirm success
 - [ ] Handle error cases with try-catch and logging
-- **Labels:** `t-shirt-size: S`, `priority: high`, `type: backend`, `area: email`, `area: email`, `sprint: 2`
+- **Labels:** `t-shirt-size: S`, `priority: high`, `type: backend`, `area: email`, `sprint: 2`
 
 ### 🔹 Issue 30.4 – Extend method to support flexible templates
 📌 *What this is:* Add support for reusable templates with dynamic content.  
 🎯 *Why it matters:* Allows reuse of same function for different types of emails.
 - [ ] Allow sending a HashMap of parameters
 - [ ] Accept template ID as a method parameter
-- **Labels:** `t-shirt-size: M`, `priority: medium`, `type: backend`, `area: email`, `area: email`, `sprint: 2`
+- **Labels:** `t-shirt-size: M`, `priority: medium`, `type: backend`, `area: email`, `sprint: 2`
 
 ---
 
@@ -842,7 +842,7 @@
 - [ ] Accept width, length, and roof type from configurator
 - [ ] Generate dynamic SVG string with corresponding dimensions
 - [ ] Embed into Thymeleaf template
-- **Labels:** `t-shirt-size: L`, `priority: high`, `type: backend`, `area: drawing`, `sprint: 2`
+- **Labels:** `t-shirt-size: L`, `priority: high`, `type: learning`, `type: backend`, `sprint: 2`
 
 ### 🔹 Issue 31.4 – Improve precision and styling of drawing
 📌 *What this is:* Enhance SVG quality for better display and interpretation.  
@@ -850,7 +850,7 @@
 - [ ] Align elements like poles, text labels, roof slope
 - [ ] Use groups and IDs for styling via CSS
 - [ ] Add tooltips or labels to describe parts
-- **Labels:** `t-shirt-size: M`, `priority: medium`, `type: frontend`, `area: drawing`, `sprint: 4`
+- **Labels:** `t-shirt-size: M`, `priority: medium`, `type: learning`, `type: frontend`, `sprint: 4`
 
 ---
 
@@ -878,7 +878,7 @@
 - [ ] Ask marketing to review wording on front page
 - [ ] Get suggested keywords or calls to action
 - [ ] Review FAQ and About page content from a user experience/branding perspective
-- **Labels:** `t-shirt-size: M`, `priority: medium`, `type: planning`, `area: marketing`, `extra-feature`
+- **Labels:** `t-shirt-size: M`, `priority: medium`, `content`, `frontend`, `extra-feature`
 
 ---
 
@@ -952,7 +952,7 @@
 - [ ] Section for Materials (Wood, Steel)
 - [ ] Section for Sizing and Common Recommendations
 - [ ] FAQ teaser ("See FAQ page for more")
-- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: info`, `extra-feature`
+- **Labels:** `t-shirt-size: S`, `priority: medium`, `type: frontend`, `area: content`, `extra-feature`
 
 ---
 
@@ -965,4 +965,4 @@
 - [ ] Fields: Name, Email, Phone, Message
 - [ ] Add map location or address
 - [ ] Display opening hours and phone number
-- **Labels:** `t-shirt-size: S`, `priority: low`, `type: frontend`, `area: contact`, `extra-feature`
+- **Labels:** `t-shirt-size: S`, `priority: low`, `type: frontend`, `extra-feature`
