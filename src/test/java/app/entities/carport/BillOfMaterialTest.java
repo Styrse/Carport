@@ -1,5 +1,9 @@
 package app.entities.carport;
 
+import app.entities.materials.planksAndRoofCovers.planks.Beam;
+import app.entities.materials.planksAndRoofCovers.planks.Fascia;
+import app.entities.materials.planksAndRoofCovers.planks.Post;
+import app.entities.materials.planksAndRoofCovers.planks.Rafter;
 import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
 import app.testutils.TestCarportFactory;
 import app.testutils.TestRoofCoverFactory;
@@ -11,27 +15,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * BillOfMaterial RoofCover Calculation Tests
- *
+ * <p>
  * Full white-box testing using controlled RoofCover test data.
- *
+ * <p>
  * Strategy:
  * - Vary Carport dimensions independently
  * - Vary RoofCover material properties independently
  * - Edge case and stress case testing
  * - Cross-tests combining dimension and material changes
- *
+ * <p>
  * Based on clean Arrange - Act - Assert structure for clarity.
  */
 class BillOfMaterialTest {
 
     @Nested
-    @DisplayName("Roof Cover Calculation Tests")
+    @DisplayName("Structure Tests")
     class Structure {
 
     }
 
     @Nested
-    @DisplayName("Roof Cover Calculation Tests")
+    @DisplayName("Roof Tests")
     class RoofTests {
 
         @Nested
@@ -1219,5 +1223,6 @@ class BillOfMaterialTest {
                 }
             }
         }
+
     }
 }

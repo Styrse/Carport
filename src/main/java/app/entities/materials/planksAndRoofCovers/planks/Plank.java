@@ -29,7 +29,6 @@ import app.entities.materials.planksAndRoofCovers.PlankAndRoof;
  * Overall, using targeted subclasses improves maintainability, and scalability.
  */
 
-
 public abstract class Plank extends PlankAndRoof {
     private final int height;
 

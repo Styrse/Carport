@@ -21,7 +21,7 @@ public class BillOfMaterial {
         lines.addAll(calculateBeams());
         lines.addAll(calculateRafters());
         lines.addAll(calculateFascia());
-        lines.addAll(calculateRoofing());
+        lines.addAll(getRoofCoverMaterials());
     }
 
     private List<BillOfMaterialsLine> calculatePosts() {
@@ -132,7 +132,7 @@ public class BillOfMaterial {
     }
 
     // --- Roof ---
-    List<BillOfMaterialsLine> calculateRoofing() {
+    private List<BillOfMaterialsLine> getRoofCoverMaterials() {
         int roofCovers = calcRoofCoverCountLength() * calcRoofCoverCountWidth();
         List<BillOfMaterialsLine> result = new ArrayList<>();
         result.add(new BillOfMaterialsLine(
