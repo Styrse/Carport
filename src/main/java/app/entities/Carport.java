@@ -53,7 +53,7 @@ public class Carport {
     private List<BillOfMaterialsLine> getStructure() {
         List<BillOfMaterialsLine> structureBOM = new ArrayList<>();
         int posts = calcTotalPosts();
-//        int beams = getBeam();
+        int beams = calcTotalBeams();
 //        int rafters = getRafter();
         return structureBOM;
     }
@@ -89,9 +89,22 @@ public class Carport {
 
 
     //Method for getting beams
-//    private int getBeam() {
-//    }
-//
+    private int calcTotalBeams() {
+        int beamsAmountLength = calcBeamAmountLength();
+        return beamsAmountLength * calcPostAmountWidth();
+    }
+
+    int calcBeamAmountLength() {
+        int beam = 1;
+        if (getLength() > maxPlankLength) {
+            for (int i = maxPlankLength; i < getLength(); i += maxPlankLength) {
+                beam++;
+            }
+            return beam;
+        }
+        return beam;
+    }
+
 //    //Method for getting rafters
 //    private int getRafter() {
 //    }

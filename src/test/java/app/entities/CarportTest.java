@@ -119,11 +119,11 @@ class CarportTest {
     }
 
     @Nested
-    @DisplayName("Length Calculation Tests")
-    class LengthTests {
+    @DisplayName("Post Amount Length Calculation Tests")
+    class PostAmountLengthTests {
 
         @Test
-        @DisplayName("Length test 1: just below maxLengthBetweenPost")
+        @DisplayName("Posts test 1: just below maxLengthBetweenPost")
         void calcPostAmountLength_test1() {
             // Arrange
             Carport carport = new Carport(600, 300, "flat");
@@ -136,10 +136,10 @@ class CarportTest {
         }
 
         @Test
-        @DisplayName("Length test 2: exactly at limit")
+        @DisplayName("Posts test 2: exactly at limit")
         void calcPostAmountLength_test2() {
             // Arrange
-            Carport carport = new Carport(600, 370, "flat"); // 340 + 30 = 370
+            Carport carport = new Carport(600, 370, "flat");
             // Expected
             int expected = 2;
             // Act
@@ -149,7 +149,7 @@ class CarportTest {
         }
 
         @Test
-        @DisplayName("Length test 3: just over limit")
+        @DisplayName("Posts test 3: just over limit")
         void calcPostAmountLength_test3() {
             // Arrange
             Carport carport = new Carport(600, 371, "flat");
@@ -162,7 +162,7 @@ class CarportTest {
         }
 
         @Test
-        @DisplayName("Length test 4: bigger length but still 3 posts")
+        @DisplayName("Posts test 4: bigger length but still 3 posts")
         void calcPostAmountLength_test4() {
             // Arrange
             Carport carport = new Carport(600, 710, "flat");
@@ -175,7 +175,7 @@ class CarportTest {
         }
 
         @Test
-        @DisplayName("Length test 5: even bigger length needs 4 posts")
+        @DisplayName("Posts test 5: even bigger length needs 4 posts")
         void calcPostAmountLength_test5() {
             // Arrange
             Carport carport = new Carport(600, 711, "flat");
@@ -187,13 +187,12 @@ class CarportTest {
             assertEquals(expected, actual);
         }
 
-
         @Nested
-        @DisplayName("Length Calculation Stress Tests")
-        class LengthStressTests {
+        @DisplayName("Post Amount Length Stress Tests")
+        class PostAmountLengthStressTests {
 
             @Test
-            @DisplayName("Length stress test 1: test very small number")
+            @DisplayName("Posts stress test 1: very small carport")
             void calcPostAmountLength_stress_test1() {
                 // Arrange
                 Carport carport = new Carport(600, 50, "flat");
@@ -206,7 +205,7 @@ class CarportTest {
             }
 
             @Test
-            @DisplayName("Length stress test 2: test very big number")
+            @DisplayName("Posts stress test 2: very large carport")
             void calcPostAmountLength_stress_test2() {
                 // Arrange
                 Carport carport = new Carport(600, 5000, "flat");
@@ -219,4 +218,93 @@ class CarportTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("Beam Amount Length Calculation Tests")
+    class BeamAmountLengthTests {
+
+        @Test
+        @DisplayName("Beams test 1: small carport, no extra beams")
+        void calcBeamAmountLength_test1() {
+            // Arrange
+            Carport carport = new Carport(300, 500, "flat");
+            // Expected
+            int expected = 1;
+            // Act
+            int actual = carport.calcBeamAmountLength();
+            // Assert
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        @DisplayName("Beams test 2: exactly at beam limit (600 cm)")
+        void calcBeamAmountLength_test2() {
+            // Arrange
+            Carport carport = new Carport(300, 600, "flat");
+            // Expected
+            int expected = 1;
+            // Act
+            int actual = carport.calcBeamAmountLength();
+            // Assert
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        @DisplayName("Beams test 3: just over beam limit (601 cm)")
+        void calcBeamAmountLength_test3() {
+            // Arrange
+            Carport carport = new Carport(300, 601, "flat");
+            // Expected
+            int expected = 2;
+            // Act
+            int actual = carport.calcBeamAmountLength();
+            // Assert
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        @DisplayName("Beams test 4: bigger length, multiple extra beams")
+        void calcBeamAmountLength_test4() {
+            // Arrange
+            Carport carport = new Carport(300, 1250, "flat");
+            // Expected
+            int expected = 3;
+            // Act
+            int actual = carport.calcBeamAmountLength();
+            // Assert
+            assertEquals(expected, actual);
+        }
+
+        @Nested
+        @DisplayName("Beam Amount Length Stress Tests")
+        class BeamAmountLengthStressTests {
+
+            @Test
+            @DisplayName("Beams stress test 1: very small carport")
+            void calcBeamAmountLength_stress_test1() {
+                // Arrange
+                Carport carport = new Carport(300, 50, "flat");
+                // Expected
+                int expected = 1;
+                // Act
+                int actual = carport.calcBeamAmountLength();
+                // Assert
+                assertEquals(expected, actual);
+            }
+
+            @Test
+            @DisplayName("Beams stress test 2: very large carport")
+            void calcBeamAmountLength_stress_test2() {
+                // Arrange
+                Carport carport = new Carport(300, 5000, "flat");
+                // Expected
+                int expected = 9;
+                // Act
+                int actual = carport.calcBeamAmountLength();
+                // Assert
+                assertEquals(expected, actual);
+            }
+        }
+    }
+
 }
