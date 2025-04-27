@@ -57,15 +57,4 @@ public class TestRoofCoverFactory {
                 55
         );
     }
-
-    public static RoofCover createLongRafterDistanceRoofCover() {
-        return new RoofCover(
-                "Long Rafter Roof",
-                "Flexible material allowing large rafter distances",
-                180, 280, "m2",
-                600, 100, 600,
-                20, 20,
-                90
-        );
-    }
 }

@@ -26,6 +26,12 @@ class BillOfMaterialTest {
 
     @Nested
     @DisplayName("Roof Cover Calculation Tests")
+    class Structure {
+
+    }
+
+    @Nested
+    @DisplayName("Roof Cover Calculation Tests")
     class RoofTests {
 
         @Nested

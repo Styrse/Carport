@@ -25,14 +25,9 @@ public class TestCarportFactory {
     private static final Plank standardRafter = new Plank("Rafter", "45x195mm rafters", 110.0, 160.0, "pcs", 600, 45, 600, 195, 55);
     private static final Plank standardFascia = new Plank("Fascia", "22x145mm fascia board", 80.0, 130.0, "pcs", 600, 22, 600, 145, 0);
 
-    /**
-     * Creates a Carport with standard posts, beams, rafters, fascias,
-     * but allows injecting any RoofCover and custom dimensions.
-     *
-     * @param roofCover RoofCover to use
-     * @param width Carport width in cm
-     * @param length Carport length in cm
-     * @return Configured Carport
+    /*
+      Creates a Carport with standard posts, beams, rafters, fascias,
+      but allows injecting any RoofCover and custom dimensions.
      */
     public static Carport createCarportWithRoofCover(RoofCover roofCover, int width, int length) {
         return new Carport(width, length, 250, "flat", standardPost, standardBeam, standardRafter, standardFascia, roofCover);

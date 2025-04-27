@@ -28,7 +28,7 @@ public class BillOfMaterial {
         int posts = calcPostCountLength() * calcPostCountWidth();
         List<BillOfMaterialsLine> result = new ArrayList<>();
         result.add(new BillOfMaterialsLine(
-                "Posts",
+                carport.getPostMaterial().getName(),
                 carport.getPostMaterial().getLength(),
                 posts,
                 carport.getPostMaterial().getUnit(),
@@ -41,7 +41,7 @@ public class BillOfMaterial {
         int beams = calcBeamCountLength() * calcPostCountWidth();
         List<BillOfMaterialsLine> result = new ArrayList<>();
         result.add(new BillOfMaterialsLine(
-                "Beams",
+                carport.getBeamMaterial().getName(),
                 carport.getBeamMaterial().getLength(),
                 beams,
                 carport.getBeamMaterial().getUnit(),
@@ -54,7 +54,7 @@ public class BillOfMaterial {
         int rafters = calcRafterCountLength() * calcRafterCountWidth();
         List<BillOfMaterialsLine> result = new ArrayList<>();
         result.add(new BillOfMaterialsLine(
-                "Rafters",
+                carport.getRafterMaterial().getName(),
                 carport.getRafterMaterial().getLength(),
                 rafters,
                 carport.getRafterMaterial().getUnit(),
@@ -67,7 +67,7 @@ public class BillOfMaterial {
         int fascias = (calcBeamCountLength() + calcRafterCountWidth()) * 2;
         List<BillOfMaterialsLine> result = new ArrayList<>();
         result.add(new BillOfMaterialsLine(
-                "Fascia Boards",
+                carport.getFasciaMaterial().getName(),
                 carport.getFasciaMaterial().getLength(),
                 fascias,
                 carport.getFasciaMaterial().getUnit(),
@@ -136,7 +136,7 @@ public class BillOfMaterial {
         int roofCovers = calcRoofCoverCountLength() * calcRoofCoverCountWidth();
         List<BillOfMaterialsLine> result = new ArrayList<>();
         result.add(new BillOfMaterialsLine(
-                "Roof Covers",
+                carport.getRoofingMaterial().getName(),
                 carport.getRoofingMaterial().getLength(),
                 roofCovers,
                 carport.getRoofingMaterial().getUnit(),
