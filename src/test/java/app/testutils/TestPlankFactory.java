@@ -9,7 +9,7 @@ public class TestPlankFactory {
                 "Standard Test Post",
                 "Basic post for structural testing",
                 100.0, 150.0, "pcs",
-                600, 97, 97,
+                600, 10, 10,
                 true
         );
     }
@@ -19,19 +19,21 @@ public class TestPlankFactory {
                 "Standard Beam",
                 "Basic beam for testing",
                 120.0, 180.0, "pcs",
-                600, 45, 195,
+                600, 20, 45,
                 340
         );
     }
 
     public static Beam createShorterBeam() {
-        return new Beam(
+        Beam beam = new Beam(
                 "Shorter Beam",
                 "Shorter max distance beam",
                 120.0, 180.0, "pcs",
-                600, 45, 195,
+                400, 20, 45,
                 250
         );
+        beam.setMaxLength(400);
+        return beam;
     }
 
     public static Beam createLongerBeam() {
@@ -39,7 +41,7 @@ public class TestPlankFactory {
                 "Longer Beam",
                 "Longer max distance beam",
                 120.0, 180.0, "pcs",
-                600, 45, 195,
+                600, 20, 45,
                 400
         );
     }
@@ -49,7 +51,7 @@ public class TestPlankFactory {
                 "Standard Rafter",
                 "Basic rafter for testing",
                 110.0, 160.0, "pcs",
-                600, 45, 55
+                600, 30, 55
         );
     }
 
@@ -58,7 +60,7 @@ public class TestPlankFactory {
                 "Shorter Rafter",
                 "Shorter max length rafter",
                 110.0, 160.0, "pcs",
-                400, 45, 55
+                400, 30, 55
         );
         rafter.setMaxLength(400);
         return rafter;
@@ -69,7 +71,7 @@ public class TestPlankFactory {
                 "Longer Rafter",
                 "Longer max length rafter",
                 110.0, 160.0, "pcs",
-                700, 45, 55
+                700, 30, 55
         );
         rafter.setMaxLength(700);
         return rafter;
@@ -80,7 +82,7 @@ public class TestPlankFactory {
                 "Standard Fascia",
                 "Basic fascia board for testing",
                 80.0, 130.0, "pcs",
-                600, 22, 145
+                600, 22, 50
         );
     }
 }

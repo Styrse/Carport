@@ -42,4 +42,14 @@ public class TestCarportFactory {
                 TestRoofCoverFactory.createStandardTestRoofCover()
         );
     }
+
+    public static Carport createCarportWithBeam(Beam beam, int width, int length) {
+        return new Carport(width, length, 250, "flat",
+                TestPlankFactory.createStandardPost(),
+                beam,
+                TestPlankFactory.createStandardRafter(),
+                TestPlankFactory.createStandardFascia(),
+                TestRoofCoverFactory.createStandardTestRoofCover()
+        );
+    }
 }

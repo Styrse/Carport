@@ -214,7 +214,656 @@ class BillOfMaterialTest {
                     }
                 }
             }
+
+            @Nested
+            @DisplayName("Post Count Length Calculation (calcPostCountLength)")
+            class PostCountLengthTests {
+
+                @Nested
+                @DisplayName("Standard Cases")
+                class Standard {
+
+                    @Test
+                    @DisplayName("Length smaller than standard beam max distance")
+                    void lengthSmallerThanStandard() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createStandardBeam(),
+                                300, 300
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountLength();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Length smaller than shorter beam max distance")
+                    void lengthSmallerThanShorter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createShorterBeam(),
+                                300, 200
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountLength();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Length smaller than longer beam max distance")
+                    void lengthSmallerThanLonger() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createLongerBeam(),
+                                300, 350
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountLength();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+                }
+
+                @Nested
+                @DisplayName("Edge Cases with Different Beams")
+                class EdgeCases {
+
+                    @Test
+                    @DisplayName("Length just over shorter beam max distance (needs extra post)")
+                    void lengthOverShorterBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createShorterBeam(),
+                                300, 260
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountLength();
+
+                        // Assert
+                        int expected = 3;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Length just over standard beam max distance (needs extra post)")
+                    void lengthOverStandardBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createStandardBeam(),
+                                300, 350
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountLength();
+
+                        // Assert
+                        int expected = 3;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Length just over longer beam max distance (needs extra post)")
+                    void lengthOverLongerBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createLongerBeam(),
+                                300, 410
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountLength();
+
+                        // Assert
+                        int expected = 3;
+                        assertEquals(expected, actual);
+                    }
+                }
+
+                @Nested
+                @DisplayName("Stress Tests with Different Beams")
+                class Stress {
+
+                    @Test
+                    @DisplayName("Huge carport length with standard beam")
+                    void hugeCarportStandardBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createStandardBeam(),
+                                300, 5000
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountLength();
+
+                        // Assert
+                        int expected = 16;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Huge carport length with shorter beam")
+                    void hugeCarportShorterBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createShorterBeam(),
+                                300, 5000
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountLength();
+
+                        // Assert
+                        int expected = 21;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Huge carport length with longer beam")
+                    void hugeCarportLongerBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createLongerBeam(),
+                                300, 5000
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountLength();
+
+                        // Assert
+                        int expected = 14;
+                        assertEquals(expected, actual);
+                    }
+                }
+            }
         }
+
+        @Nested
+        @DisplayName("Beams Tests")
+        class Beams {
+
+            @Nested
+            @DisplayName("Beam Count Length Calculation (calcBeamCountLength)")
+            class BeamCountLengthTests {
+
+                @Nested
+                @DisplayName("Standard Cases")
+                class Standard {
+
+                    @Test
+                    @DisplayName("Length smaller than standard beam max length")
+                    void lengthSmallerThanStandard() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createStandardBeam(),
+                                300, 300
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcBeamCountLength();
+
+                        // Assert
+                        int expected = 1;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Length smaller than shorter beam max length")
+                    void lengthSmallerThanShorter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createShorterBeam(),
+                                300, 300
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcBeamCountLength();
+
+                        // Assert
+                        int expected = 1;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Length smaller than longer beam max length")
+                    void lengthSmallerThanLonger() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createLongerBeam(),
+                                300, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcBeamCountLength();
+
+                        // Assert
+                        int expected = 1;
+                        assertEquals(expected, actual);
+                    }
+                }
+
+                @Nested
+                @DisplayName("Edge Cases with Different Beams")
+                class EdgeCases {
+
+                    @Test
+                    @DisplayName("Length just over shorter beam max length (needs extra beam)")
+                    void lengthOverShorterBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createShorterBeam(),
+                                300, 401
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcBeamCountLength();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Length just over standard beam max length (needs extra beam)")
+                    void lengthOverStandardBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createStandardBeam(),
+                                300, 601
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcBeamCountLength();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Length just over longer beam max length (needs extra beam)")
+                    void lengthOverLongerBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createLongerBeam(),
+                                300, 701
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcBeamCountLength();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+                }
+
+                @Nested
+                @DisplayName("Stress Tests with Different Beams")
+                class Stress {
+
+                    @Test
+                    @DisplayName("Huge carport length with standard beam")
+                    void hugeCarportStandardBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createStandardBeam(),
+                                300, 5000
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcBeamCountLength();
+
+                        // Assert
+                        int expected = 9;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Huge carport length with shorter beam")
+                    void hugeCarportShorterBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createShorterBeam(),
+                                300, 5000
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcBeamCountLength();
+
+                        // Assert
+                        int expected = 13;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Huge carport length with longer beam")
+                    void hugeCarportLongerBeam() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithBeam(
+                                TestPlankFactory.createLongerBeam(),
+                                300, 5000
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcBeamCountLength();
+
+                        // Assert
+                        int expected = 9;
+                        assertEquals(expected, actual);
+                    }
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("Rafters")
+        class Rafters {
+
+            @Nested
+            @DisplayName("Rafter Count Width Calculation (calcRafterCountWidth)")
+            class RafterCountWidthTests {
+
+                @Nested
+                @DisplayName("Standard Cases")
+                class Standard {
+
+                    @Test
+                    @DisplayName("Width smaller than standard rafter max length")
+                    void widthSmallerThanStandard() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createStandardRafter(),
+                                500, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountWidth();
+
+                        // Assert
+                        int expected = 1;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Width smaller than shorter rafter max length")
+                    void widthSmallerThanShorter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createShorterRafter(),
+                                350, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountWidth();
+
+                        // Assert
+                        int expected = 1;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Width smaller than longer rafter max length")
+                    void widthSmallerThanLonger() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createLongerRafter(),
+                                650, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountWidth();
+
+                        // Assert
+                        int expected = 1;
+                        assertEquals(expected, actual);
+                    }
+                }
+
+                @Nested
+                @DisplayName("Edge Cases with Different Rafters")
+                class EdgeCases {
+
+                    @Test
+                    @DisplayName("Width just over shorter rafter max length (needs extra rafter)")
+                    void widthOverShorterRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createShorterRafter(),
+                                410, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountWidth();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Width just over standard rafter max length (needs extra rafter)")
+                    void widthOverStandardRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createStandardRafter(),
+                                610, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountWidth();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Width just over longer rafter max length (needs extra rafter)")
+                    void widthOverLongerRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createLongerRafter(),
+                                710, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountWidth();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+                }
+
+                @Nested
+                @DisplayName("Stress Tests with Different Rafters")
+                class Stress {
+
+                    @Test
+                    @DisplayName("Huge carport width with standard rafter")
+                    void hugeCarportStandardRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createStandardRafter(),
+                                5000, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountWidth();
+
+                        // Assert
+                        int expected = 9;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Huge carport width with shorter rafter")
+                    void hugeCarportShorterRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createShorterRafter(),
+                                5000, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountWidth();
+
+                        // Assert
+                        int expected = 13;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Huge carport width with longer rafter")
+                    void hugeCarportLongerRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createLongerRafter(),
+                                5000, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountWidth();
+
+                        // Assert
+                        int expected = 8;
+                        assertEquals(expected, actual);
+                    }
+                }
+            }
+
+            @Nested
+            @DisplayName("Rafter Count Length Calculation (calcRafterCountLength)")
+            class RafterCountLengthTests {
+
+                @Nested
+                @DisplayName("Standard Cases")
+                class Standard {
+
+                    @Test
+                    @DisplayName("Length smaller than standard roof cover max distance")
+                    void lengthSmallerThanStandardRoofCover() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(
+                                TestRoofCoverFactory.createStandardTestRoofCover(),
+                                600, 550
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountLength();
+
+                        // Assert
+                        int expected = 11;
+                        assertEquals(expected, actual);
+                    }
+                }
+
+                @Nested
+                @DisplayName("Edge Cases")
+                class EdgeCases {
+
+                    @Test
+                    @DisplayName("Length exactly at standard roof cover max distance")
+                    void lengthExactlyAtMax() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(
+                                TestRoofCoverFactory.createStandardTestRoofCover(),
+                                600, 551
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountLength();
+
+                        // Assert
+                        int expected = 12;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Length just over standard roof cover max distance (needs extra rafter)")
+                    void lengthJustOverStandardRoofCover() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(
+                                TestRoofCoverFactory.createStandardTestRoofCover(),
+                                600, 601
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountLength();
+
+                        // Assert
+                        int expected = 12;
+                        assertEquals(expected, actual);
+                    }
+                }
+
+                @Nested
+                @DisplayName("Stress Tests")
+                class Stress {
+
+                    @Test
+                    @DisplayName("Huge carport length with standard roof cover")
+                    void hugeCarportStandardRoofCover() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(
+                                TestRoofCoverFactory.createStandardTestRoofCover(),
+                                600, 5000
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcRafterCountLength();
+
+                        // Assert
+                        int expected = 92;
+                        assertEquals(expected, actual);
+                    }
+                }
+            }
+        }
+
     }
 
     @Nested

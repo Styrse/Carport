@@ -87,7 +87,7 @@ public class BillOfMaterial {
         return posts;
     }
 
-    private int calcPostCountLength() {
+    int calcPostCountLength() {
         int posts = 2;
         int maxDistanceBetweenPosts = carport.getBeam().getMaxLengthBetweenPosts();
         if (carport.getLength() > maxDistanceBetweenPosts) {
@@ -98,7 +98,7 @@ public class BillOfMaterial {
         return posts;
     }
 
-    private int calcBeamCountLength() {
+    int calcBeamCountLength() {
         int beams = 1;
         int maxLength = carport.getBeam().getMaxLength();
         if (carport.getLength() > maxLength) {
@@ -109,7 +109,7 @@ public class BillOfMaterial {
         return beams;
     }
 
-    private int calcRafterCountWidth() {
+    int calcRafterCountWidth() {
         int rafters = 1;
         int maxLength = carport.getRafter().getMaxLength();
         if (carport.getWidth() > maxLength) {
@@ -120,7 +120,7 @@ public class BillOfMaterial {
         return rafters;
     }
 
-    private int calcRafterCountLength() {
+    int calcRafterCountLength() {
         int rafters = 2;
         int maxDistance = carport.getRoofCover().getMaxLengthBetweenRafters();
         if (carport.getLength() > maxDistance) {
@@ -131,7 +131,6 @@ public class BillOfMaterial {
         return rafters;
     }
 
-    // --- Roof ---
     private List<BillOfMaterialsLine> getRoofCoverMaterials() {
         int roofCovers = calcRoofCoverCountLength() * calcRoofCoverCountWidth();
         List<BillOfMaterialsLine> result = new ArrayList<>();

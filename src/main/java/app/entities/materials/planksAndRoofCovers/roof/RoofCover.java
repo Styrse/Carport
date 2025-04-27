@@ -25,6 +25,4 @@ public class RoofCover extends PlankAndRoof {
     public int getMaxLengthBetweenRafters() {
         return maxLengthBetweenRafters;
     }
-
-
 }
