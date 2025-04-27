@@ -19,6 +19,7 @@ public class Carport {
     public static final int maxLengthBetweenPost = 340;
     public static final int maxPlankLength = 600;
     public static final int carportHeight = 210;
+    public static final int maxLengthBetweenRafters = 55;
 
     //Angle flat roof 1.28% or 10 cm?
 
@@ -54,15 +55,14 @@ public class Carport {
         List<BillOfMaterialsLine> structureBOM = new ArrayList<>();
         int posts = calcTotalPosts();
         int beams = calcTotalBeams();
-//        int rafters = getRafter();
+        int rafters = calcRafters();
+//        int fascia = calcFascia();
         return structureBOM;
     }
 
     //Method for getting posts
     int calcTotalPosts() {
-        int postsAmountLength = calcPostAmountLength();
-        int postsAmountWidth = calcPostAmountWidth();
-        return postsAmountLength * postsAmountWidth;
+        return calcPostAmountLength() * calcPostAmountWidth();
     }
 
     int calcPostAmountWidth() {
@@ -71,7 +71,6 @@ public class Carport {
             for (int i = maxPlankLength; i < getWidth(); i += maxPlankLength) {
                 posts++;
             }
-            return posts;
         }
         return posts;
     }
@@ -82,31 +81,50 @@ public class Carport {
             for (int i = maxLengthBetweenPost + backOverhang + frontOverhang; i < getLength(); i += maxLengthBetweenPost) {
                 posts++;
             }
-            return posts;
         }
         return posts;
     }
 
     //Method for getting beams
     int calcTotalBeams() {
-        int beamsAmountLength = calcBeamAmountLength();
-        return beamsAmountLength * calcPostAmountWidth();
+        return calcBeamAmountLength() * calcPostAmountWidth();
     }
 
     int calcBeamAmountLength() {
-        int beam = 1;
+        int beams = 1;
         if (getLength() > maxPlankLength) {
             for (int i = maxPlankLength; i < getLength(); i += maxPlankLength) {
-                beam++;
+                beams++;
             }
-            return beam;
         }
-        return beam;
+        return beams;
     }
 
-//    //Method for getting rafters
-//    private int getRafter() {
-//    }
+    //Method for getting rafters
+    int calcRafters() {
+        return calcRaftersLength() * calcRaftersWidth();
+    }
+
+    int calcRaftersWidth() {
+        int rafters = 1;
+        if (getWidth() > maxPlankLength) {
+            for (int i = maxPlankLength; i < getWidth(); i += maxPlankLength) {
+                rafters++;
+            }
+        }
+        return rafters;
+    }
+
+    int calcRaftersLength() {
+        int rafter = 2;
+        if (getLength() > maxLengthBetweenRafters) {
+            for (int i = maxLengthBetweenRafters; i < getLength(); i += maxLengthBetweenRafters) {
+                rafter++;
+            }
+        }
+        return rafter;
+    }
+
 
     private List<BillOfMaterialsLine> getRoof() {
         List<BillOfMaterialsLine> roofBOM = new ArrayList<>();
