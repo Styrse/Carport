@@ -29,6 +29,7 @@ public class BillOfMaterial {
         List<BillOfMaterialsLine> result = new ArrayList<>();
         result.add(new BillOfMaterialsLine(
                 "Posts",
+                carport.getPostMaterial().getLength(),
                 posts,
                 carport.getPostMaterial().getUnit(),
                 carport.getPostMaterial().getDescription()
@@ -41,6 +42,7 @@ public class BillOfMaterial {
         List<BillOfMaterialsLine> result = new ArrayList<>();
         result.add(new BillOfMaterialsLine(
                 "Beams",
+                carport.getBeamMaterial().getLength(),
                 beams,
                 carport.getBeamMaterial().getUnit(),
                 carport.getBeamMaterial().getDescription()
@@ -53,6 +55,7 @@ public class BillOfMaterial {
         List<BillOfMaterialsLine> result = new ArrayList<>();
         result.add(new BillOfMaterialsLine(
                 "Rafters",
+                carport.getRafterMaterial().getLength(),
                 rafters,
                 carport.getRafterMaterial().getUnit(),
                 carport.getRafterMaterial().getDescription()
@@ -65,6 +68,7 @@ public class BillOfMaterial {
         List<BillOfMaterialsLine> result = new ArrayList<>();
         result.add(new BillOfMaterialsLine(
                 "Fascia Boards",
+                carport.getFasciaMaterial().getLength(),
                 fascias,
                 carport.getFasciaMaterial().getUnit(),
                 carport.getFasciaMaterial().getDescription()
@@ -72,19 +76,6 @@ public class BillOfMaterial {
         return result;
     }
 
-    private List<BillOfMaterialsLine> calculateRoofing() {
-        int roofCovers = calcRoofCoverCountLength() * calcRoofCoverCountWidth();
-        List<BillOfMaterialsLine> result = new ArrayList<>();
-        result.add(new BillOfMaterialsLine(
-                "Roof Covers",
-                roofCovers,
-                carport.getRoofingMaterial().getUnit(),
-                carport.getRoofingMaterial().getDescription()
-        ));
-        return result;
-    }
-
-    //Calculation helper methods
     private int calcPostCountWidth() {
         int posts = 2;
         int maxLength = carport.getPostMaterial().getMaxLength();
@@ -140,23 +131,38 @@ public class BillOfMaterial {
         return rafters;
     }
 
-    private int calcRoofCoverCountLength() {
+    // --- Roof ---
+    List<BillOfMaterialsLine> calculateRoofing() {
+        int roofCovers = calcRoofCoverCountLength() * calcRoofCoverCountWidth();
+        List<BillOfMaterialsLine> result = new ArrayList<>();
+        result.add(new BillOfMaterialsLine(
+                "Roof Covers",
+                carport.getRoofingMaterial().getLength(),
+                roofCovers,
+                carport.getRoofingMaterial().getUnit(),
+                carport.getRoofingMaterial().getDescription()
+        ));
+        return result;
+    }
+
+    int calcRoofCoverCountLength() {
         int covers = 1;
         int maxLength = carport.getRoofingMaterial().getMaxLength();
-        int overlap = carport.getRoofingMaterial().getSideOverlap();
+        int lengthOverlap = carport.getRoofingMaterial().getLengthOverlap();
         if (carport.getLength() > maxLength) {
-            for (int i = maxLength; i < carport.getLength(); i += (maxLength - overlap)) {
+            for (int i = maxLength; i < carport.getLength(); i += (maxLength - lengthOverlap)) {
                 covers++;
             }
         }
         return covers;
     }
 
-    private int calcRoofCoverCountWidth() {
+    int calcRoofCoverCountWidth() {
         int covers = 1;
         int maxWidth = carport.getRoofingMaterial().getWidth();
+        float sideOverlap = carport.getRoofingMaterial().getSideOverlap();
         if (carport.getWidth() > maxWidth) {
-            for (int i = maxWidth; i < carport.getWidth(); i += maxWidth) {
+            for (float i = maxWidth; i < carport.getWidth(); i += (maxWidth - sideOverlap)) {
                 covers++;
             }
         }
