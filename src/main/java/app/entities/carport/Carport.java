@@ -10,30 +10,30 @@ public class Carport {
     private final String roofType;
     private int roofAngle;
 
-    private final Post postMaterial;
-    private final Beam beamMaterial;
-    private final Rafter rafterMaterial;
-    private final Fascia fasciaMaterial;
-    private final RoofCover roofingMaterial;
+    private final Post post;
+    private final Beam beam;
+    private final Rafter rafter;
+    private final Fascia fascia;
+    private final RoofCover roofCover;
 
     public Carport(int width, int length, int height, String roofType,
-                   Post postMaterial, Beam beamMaterial, Rafter rafterMaterial,
-                   Fascia fasciaMaterial, RoofCover roofingMaterial) {
+                   Post post, Beam beam, Rafter rafter,
+                   Fascia fascia, RoofCover roofCover) {
         this.width = width;
         this.length = length;
         this.height = height;
         this.roofType = roofType;
-        this.postMaterial = postMaterial;
-        this.beamMaterial = beamMaterial;
-        this.rafterMaterial = rafterMaterial;
-        this.fasciaMaterial = fasciaMaterial;
-        this.roofingMaterial = roofingMaterial;
+        this.post = post;
+        this.beam = beam;
+        this.rafter = rafter;
+        this.fascia = fascia;
+        this.roofCover = roofCover;
     }
 
     public Carport(int width, int length, int height, String roofType,
-                   Post postMaterial, Beam beamMaterial, Rafter rafterMaterial,
-                   Fascia fasciaMaterial, RoofCover roofingMaterial, int roofAngle) {
-        this(width, length, height, roofType, postMaterial, beamMaterial, rafterMaterial, fasciaMaterial, roofingMaterial);
+                   Post post, Beam beam, Rafter rafter,
+                   Fascia fascia, RoofCover roofCover, int roofAngle) {
+        this(width, length, height, roofType, post, beam, rafter, fascia, roofCover);
         this.roofAngle = roofAngle;
     }
 
@@ -62,23 +62,38 @@ public class Carport {
         return roofAngle;
     }
 
-    public Post getPostMaterial() {
-        return postMaterial;
+    public Post getPost() {
+        return post;
     }
 
-    public Beam getBeamMaterial() {
-        return beamMaterial;
+    public Beam getBeam() {
+        return beam;
     }
 
-    public Rafter getRafterMaterial() {
-        return rafterMaterial;
+    public Rafter getRafter() {
+        return rafter;
     }
 
-    public Fascia getFasciaMaterial() {
-        return fasciaMaterial;
+    public Fascia getFascia() {
+        return fascia;
     }
 
-    public RoofCover getRoofingMaterial() {
-        return roofingMaterial;
+    public RoofCover getRoofCover() {
+        return roofCover;
+    }
+
+    @Override
+    public String toString() {
+        return "Carport{" +
+                "width=" + width +
+                ", length=" + length +
+                ", height=" + height +
+                ", roofType='" + roofType + '\'' +
+                ", post=" + (post != null ? post.getName() : "None") +
+                ", beam=" + (beam != null ? beam.getName() : "None") +
+                ", rafter=" + (rafter != null ? rafter.getName() : "None") +
+                ", fascia=" + (fascia != null ? fascia.getName() : "None") +
+                ", roofCover=" + (roofCover != null ? roofCover.getName() : "None") +
+                '}';
     }
 }

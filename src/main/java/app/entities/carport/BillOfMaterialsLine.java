@@ -41,4 +41,15 @@ public class BillOfMaterialsLine {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public String toString() {
+        return "BillOfMaterialsLine{" +
+                "name='" + name + '\'' +
+                ", length=" + length +
+                ", amount=" + amount +
+                ", unit='" + unit + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
