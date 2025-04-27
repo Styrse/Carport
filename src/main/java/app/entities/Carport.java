@@ -87,9 +87,8 @@ public class Carport {
         return posts;
     }
 
-
     //Method for getting beams
-    private int calcTotalBeams() {
+    int calcTotalBeams() {
         int beamsAmountLength = calcBeamAmountLength();
         return beamsAmountLength * calcPostAmountWidth();
     }

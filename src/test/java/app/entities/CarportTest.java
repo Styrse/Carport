@@ -307,4 +307,60 @@ class CarportTest {
         }
     }
 
+    @Nested
+    @DisplayName("Total Beams Calculation Tests")
+    class TotalBeamsTests {
+
+        @Test
+        @DisplayName("Total beams test 1: small carport")
+        void calcTotalBeams_smallCarport() {
+            // Arrange
+            Carport carport = new Carport(300, 500, "flat");
+            // Expected
+            int expected = 2;
+            // Act
+            int actual = carport.calcTotalBeams();
+            // Assert
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        @DisplayName("Total beams test 2: wider carport")
+        void calcTotalBeams_wideCarport() {
+            // Arrange
+            Carport carport = new Carport(1300, 500, "flat");
+            // Expected
+            int expected = 4;
+            // Act
+            int actual = carport.calcTotalBeams();
+            // Assert
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        @DisplayName("Total beams test 3: longer carport")
+        void calcTotalBeams_longCarport() {
+            // Arrange
+            Carport carport = new Carport(300, 1250, "flat");
+            // Expected
+            int expected = 6;
+            // Act
+            int actual = carport.calcTotalBeams();
+            // Assert
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        @DisplayName("Total beams test 4: wide and long carport")
+        void calcTotalBeams_wideLongCarport() {
+            // Arrange
+            Carport carport = new Carport(1300, 1250, "flat");
+            // Expected
+            int expected = 12;
+            // Act
+            int actual = carport.calcTotalBeams();
+            // Assert
+            assertEquals(expected, actual);
+        }
+    }
 }
