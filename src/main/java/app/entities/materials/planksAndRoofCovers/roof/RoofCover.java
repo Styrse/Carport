@@ -1,6 +1,8 @@
-package app.entities.materials;
+package app.entities.materials.planksAndRoofCovers.roof;
 
-public class RoofCover extends PlankAndRoof{
+import app.entities.materials.planksAndRoofCovers.PlankAndRoof;
+
+public class RoofCover extends PlankAndRoof {
     private final int lengthOverlap;
     private final float sideOverlap;
     private final int maxLengthBetweenRafters;

@@ -1,7 +1,7 @@
 package app.entities.carport;
 
-import app.entities.materials.Plank;
-import app.entities.materials.RoofCover;
+import app.entities.materials.planksAndRoofCovers.planks.*;
+import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
 
 public class Carport {
     private final int width;
@@ -10,15 +10,15 @@ public class Carport {
     private final String roofType;
     private int roofAngle;
 
-    private final Plank postMaterial;
-    private final Plank beamMaterial;
-    private final Plank rafterMaterial;
-    private final Plank fasciaMaterial;
+    private final Post postMaterial;
+    private final Beam beamMaterial;
+    private final Rafter rafterMaterial;
+    private final Fascia fasciaMaterial;
     private final RoofCover roofingMaterial;
 
     public Carport(int width, int length, int height, String roofType,
-                   Plank postMaterial, Plank beamMaterial, Plank rafterMaterial,
-                   Plank fasciaMaterial, RoofCover roofingMaterial) {
+                   Post postMaterial, Beam beamMaterial, Rafter rafterMaterial,
+                   Fascia fasciaMaterial, RoofCover roofingMaterial) {
         this.width = width;
         this.length = length;
         this.height = height;
@@ -31,8 +31,8 @@ public class Carport {
     }
 
     public Carport(int width, int length, int height, String roofType,
-                   Plank postMaterial, Plank beamMaterial, Plank rafterMaterial,
-                   Plank fasciaMaterial, RoofCover roofingMaterial, int roofAngle) {
+                   Post postMaterial, Beam beamMaterial, Rafter rafterMaterial,
+                   Fascia fasciaMaterial, RoofCover roofingMaterial, int roofAngle) {
         this(width, length, height, roofType, postMaterial, beamMaterial, rafterMaterial, fasciaMaterial, roofingMaterial);
         this.roofAngle = roofAngle;
     }
@@ -62,19 +62,19 @@ public class Carport {
         return roofAngle;
     }
 
-    public Plank getPostMaterial() {
+    public Post getPostMaterial() {
         return postMaterial;
     }
 
-    public Plank getBeamMaterial() {
+    public Beam getBeamMaterial() {
         return beamMaterial;
     }
 
-    public Plank getRafterMaterial() {
+    public Rafter getRafterMaterial() {
         return rafterMaterial;
     }
 
-    public Plank getFasciaMaterial() {
+    public Fascia getFasciaMaterial() {
         return fasciaMaterial;
     }
 

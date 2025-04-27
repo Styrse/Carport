@@ -1,8 +1,8 @@
 package app.testutils;
 
 import app.entities.carport.Carport;
-import app.entities.materials.Plank;
-import app.entities.materials.RoofCover;
+import app.entities.materials.planksAndRoofCovers.planks.*;
+import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
 
 /**
  * TestCarportFactory
@@ -20,10 +20,10 @@ import app.entities.materials.RoofCover;
  */
 public class TestCarportFactory {
 
-    private static final Plank standardPost = new Plank("Post", "97x97mm pressure treated", 100.0, 150.0, "pcs", 600, 97, 600, 97, 340);
-    private static final Plank standardBeam = new Plank("Beam", "45x195mm pressure treated", 120.0, 180.0, "pcs", 600, 45, 600, 195, 0);
-    private static final Plank standardRafter = new Plank("Rafter", "45x195mm rafters", 110.0, 160.0, "pcs", 600, 45, 600, 195, 55);
-    private static final Plank standardFascia = new Plank("Fascia", "22x145mm fascia board", 80.0, 130.0, "pcs", 600, 22, 600, 145, 0);
+    private static final Post standardPost = new Post("Post", "97x97mm pressure treated", 100.0, 150.0, "pcs", 600, 97, 600, 97, false);
+    private static final Beam standardBeam = new Beam("Beam", "45x195mm pressure treated", 120.0, 180.0, "pcs", 600, 45, 600, 195, 340);
+    private static final Rafter standardRafter = new Rafter("Rafter", "45x195mm rafters", 110.0, 160.0, "pcs", 600, 45, 600,  55);
+    private static final Fascia standardFascia = new Fascia("Fascia", "22x145mm fascia board", 80.0, 130.0, "pcs", 600, 22, 600, 145);
 
     /*
       Creates a Carport with standard posts, beams, rafters, fascias,

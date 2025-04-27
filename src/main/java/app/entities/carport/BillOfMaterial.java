@@ -89,7 +89,7 @@ public class BillOfMaterial {
 
     private int calcPostCountLength() {
         int posts = 2;
-        int maxDistance = carport.getPostMaterial().getMaxLengthBetweenPosts();
+        int maxDistance = carport.getBeamMaterial().getMaxLengthBetweenPosts();
         if (carport.getLength() > maxDistance) {
             for (int i = maxDistance; i < carport.getLength(); i += maxDistance) {
                 posts++;

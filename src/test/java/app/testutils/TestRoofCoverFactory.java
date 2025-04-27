@@ -1,6 +1,6 @@
 package app.testutils;
 
-import app.entities.materials.RoofCover;
+import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
 
 /**
  * TestRoofCoverFactory

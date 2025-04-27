@@ -1,6 +1,6 @@
 package app.entities.carport;
 
-import app.entities.materials.RoofCover;
+import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
 import app.testutils.TestCarportFactory;
 import app.testutils.TestRoofCoverFactory;
 import org.junit.jupiter.api.DisplayName;

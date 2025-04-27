@@ -1,4 +1,6 @@
-package app.entities.materials;
+package app.entities.materials.planksAndRoofCovers;
+
+import app.entities.materials.Material;
 
 public abstract class PlankAndRoof extends Material {
     private final int length;
