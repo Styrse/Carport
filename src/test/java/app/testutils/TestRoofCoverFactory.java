@@ -19,21 +19,23 @@ public class TestRoofCoverFactory {
                 "Standard Test Roof",
                 "Baseline for comparisons",
                 150, 250, "m2",
-                600, 100, 600,
+                600, 100,
                 20, 20,
                 55
         );
     }
 
     public static RoofCover createShortPlankRoofCover() {
-        return new RoofCover(
+        RoofCover roofCover = new RoofCover(
                 "Short Plank Roof",
                 "Shorter planks for stress length tests",
                 160, 260, "m2",
-                400, 100, 400,
+                400, 100,
                 20, 20,
                 55
         );
+        roofCover.setMaxLength(400);
+        return roofCover;
     }
 
     public static RoofCover createTinyOverlapRoofCover() {
@@ -41,7 +43,7 @@ public class TestRoofCoverFactory {
                 "Tiny Overlap Roof",
                 "Minimal overlaps to maximize coverage",
                 140, 240, "m2",
-                600, 100, 600,
+                600, 100,
                 5, 5,
                 55
         );
@@ -52,7 +54,7 @@ public class TestRoofCoverFactory {
                 "Wide Roof Cover",
                 "Extra wide sheet for width tests",
                 170, 270, "m2",
-                600, 400, 600,
+                600, 400,
                 20, 20,
                 55
         );

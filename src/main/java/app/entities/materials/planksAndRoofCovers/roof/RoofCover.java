@@ -7,8 +7,8 @@ public class RoofCover extends PlankAndRoof {
     private final float sideOverlap;
     private final int maxLengthBetweenRafters;
 
-    public RoofCover(String name, String description, double costPrice, double salesPrice, String unit, int length, int width, int maxLength, int lengthOverlap, float sideOverlap, int maxLengthBetweenRafters) {
-        super(name, description, costPrice, salesPrice, unit, length, width, maxLength);
+    public RoofCover(String name, String description, double costPrice, double salesPrice, String unit, int length, int width, int lengthOverlap, float sideOverlap, int maxLengthBetweenRafters) {
+        super(name, description, costPrice, salesPrice, unit, length, width);
         this.lengthOverlap = lengthOverlap;
         this.sideOverlap = sideOverlap;
         this.maxLengthBetweenRafters = maxLengthBetweenRafters;
@@ -25,4 +25,6 @@ public class RoofCover extends PlankAndRoof {
     public int getMaxLengthBetweenRafters() {
         return maxLengthBetweenRafters;
     }
+
+
 }

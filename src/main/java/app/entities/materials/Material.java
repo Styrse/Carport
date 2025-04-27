@@ -34,4 +34,12 @@ public abstract class Material {
     public String getUnit() {
         return unit;
     }
+
+    public void setCostPrice(double costPrice) {
+        this.costPrice = costPrice;
+    }
+
+    public void setSalesPrice(double salesPrice) {
+        this.salesPrice = salesPrice;
+    }
 }

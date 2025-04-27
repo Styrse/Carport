@@ -5,8 +5,8 @@ public class Fascia extends Plank {
 
     public static final int MIN_THICKNESS_FOR_GUTTERS = 22;
 
-    public Fascia(String name, String description, double costPrice, double salesPrice, String unit, int length, int width, int maxLength, int height) {
-        super(name, description, costPrice, salesPrice, unit, length, width, maxLength, height);
+    public Fascia(String name, String description, double costPrice, double salesPrice, String unit, int length, int width, int height) {
+        super(name, description, costPrice, salesPrice, unit, length, width, height);
         this.supportsGutters = determineSupportsGutters();
     }
 

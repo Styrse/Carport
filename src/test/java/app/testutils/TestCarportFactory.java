@@ -20,16 +20,26 @@ import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
  */
 public class TestCarportFactory {
 
-    private static final Post standardPost = new Post("Post", "97x97mm pressure treated", 100.0, 150.0, "pcs", 600, 97, 600, 97, false);
-    private static final Beam standardBeam = new Beam("Beam", "45x195mm pressure treated", 120.0, 180.0, "pcs", 600, 45, 600, 195, 340);
-    private static final Rafter standardRafter = new Rafter("Rafter", "45x195mm rafters", 110.0, 160.0, "pcs", 600, 45, 600,  55);
-    private static final Fascia standardFascia = new Fascia("Fascia", "22x145mm fascia board", 80.0, 130.0, "pcs", 600, 22, 600, 145);
-
     /*
       Creates a Carport with standard posts, beams, rafters, fascias,
       but allows injecting any RoofCover and custom dimensions.
      */
     public static Carport createCarportWithRoofCover(RoofCover roofCover, int width, int length) {
-        return new Carport(width, length, 250, "flat", standardPost, standardBeam, standardRafter, standardFascia, roofCover);
+        return new Carport(width, length, 250, "flat",
+                TestPlankFactory.createStandardPost(),
+                TestPlankFactory.createStandardBeam(),
+                TestPlankFactory.createStandardRafter(),
+                TestPlankFactory.createStandardFascia(),
+                roofCover);
+    }
+
+    public static Carport createCarportWithRafter(Rafter rafter, int width, int length) {
+        return new Carport(width, length, 250, "flat",
+                TestPlankFactory.createStandardPost(),
+                TestPlankFactory.createStandardBeam(),
+                rafter,
+                TestPlankFactory.createStandardFascia(),
+                TestRoofCoverFactory.createStandardTestRoofCover()
+        );
     }
 }

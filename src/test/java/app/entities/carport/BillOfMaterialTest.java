@@ -1,11 +1,8 @@
 package app.entities.carport;
 
-import app.entities.materials.planksAndRoofCovers.planks.Beam;
-import app.entities.materials.planksAndRoofCovers.planks.Fascia;
-import app.entities.materials.planksAndRoofCovers.planks.Post;
-import app.entities.materials.planksAndRoofCovers.planks.Rafter;
 import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
 import app.testutils.TestCarportFactory;
+import app.testutils.TestPlankFactory;
 import app.testutils.TestRoofCoverFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -32,6 +29,192 @@ class BillOfMaterialTest {
     @DisplayName("Structure Tests")
     class Structure {
 
+        @Nested
+        @DisplayName("Posts Tests")
+        class Posts {
+
+            @Nested
+            @DisplayName("Post Count Width Calculation (calcPostCountWidth)")
+            class PostCountWidthTests {
+
+                @Nested
+                @DisplayName("Standard Cases")
+                class Standard {
+
+                    @Test
+                    @DisplayName("Width smaller than standard rafter max length")
+                    void widthSmallerThanStandard() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createStandardRafter(),
+                                400, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountWidth();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Width smaller than shorter rafter max length")
+                    void widthSmallerThanShorter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createShorterRafter(),
+                                350, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountWidth();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Width smaller than longer rafter max length")
+                    void widthSmallerThanLonger() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createLongerRafter(),
+                                650, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountWidth();
+
+                        // Assert
+                        int expected = 2;
+                        assertEquals(expected, actual);
+                    }
+                }
+
+                @Nested
+                @DisplayName("Edge Cases with Different Rafters")
+                class EdgeCases {
+
+                    @Test
+                    @DisplayName("Width just over shorter rafter max length (needs extra post)")
+                    void widthOverShorterRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createShorterRafter(),
+                                410, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountWidth();
+
+                        // Assert
+                        int expected = 3;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Width just over standard rafter max length (needs extra post)")
+                    void widthOverStandardRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createStandardRafter(),
+                                610, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountWidth();
+
+                        // Assert
+                        int expected = 3;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Width just over longer rafter max length (needs extra post)")
+                    void widthOverLongerRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createLongerRafter(),
+                                710, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountWidth();
+
+                        // Assert
+                        int expected = 3;
+                        assertEquals(expected, actual);
+                    }
+                }
+
+                @Nested
+                @DisplayName("Stress Tests with Different Rafters")
+                class Stress {
+
+                    @Test
+                    @DisplayName("Huge carport width with standard rafter")
+                    void hugeCarportStandardRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createStandardRafter(),
+                                5000, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountWidth();
+
+                        // Assert
+                        int expected = 10;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Huge carport width with shorter rafter")
+                    void hugeCarportShorterRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createShorterRafter(),
+                                5000, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountWidth();
+
+                        // Assert
+                        int expected = 14;
+                        assertEquals(expected, actual);
+                    }
+
+                    @Test
+                    @DisplayName("Huge carport width with longer rafter")
+                    void hugeCarportLongerRafter() {
+                        // Arrange
+                        Carport carport = TestCarportFactory.createCarportWithRafter(
+                                TestPlankFactory.createLongerRafter(),
+                                5000, 600
+                        );
+                        BillOfMaterial bom = new BillOfMaterial(carport);
+
+                        // Act
+                        int actual = bom.calcPostCountWidth();
+
+                        // Assert
+                        int expected = 9;
+                        assertEquals(expected, actual);
+                    }
+                }
+            }
+        }
     }
 
     @Nested
