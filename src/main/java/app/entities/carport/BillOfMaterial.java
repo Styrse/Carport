@@ -3,7 +3,7 @@ package app.entities.carport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 import static app.entities.materials.planksAndRoofCovers.PlankAndRoof.PREDEFINED_LENGTHS;
 
@@ -25,7 +25,7 @@ public class BillOfMaterial {
     private void calculateMaterials() {
         lines.addAll(calculatePosts());
         lines.addAll(getBeams());
-        lines.addAll(calculateRafters());
+        lines.addAll(getRafters());
         lines.addAll(calculateFascia());
         lines.addAll(getRoofCoverMaterials());
     }
@@ -50,18 +50,8 @@ public class BillOfMaterial {
         int normalBeams = (calcPostCountLength() - 1) * calcPostCountWidth();
         int endBeam = calcPostCountWidth();
 
-        Optional<Integer> normalBestFitLength = PREDEFINED_LENGTHS.stream().filter(lenght -> lenght > distanceBetweenPosts).findFirst();
-        Optional<Integer> endBestFitLength = PREDEFINED_LENGTHS.stream().filter(lenght -> lenght > distanceBetweenPosts + OVERHANG).findFirst();
-        
-        int normalBestFit = Collections.max(PREDEFINED_LENGTHS);
-        if (normalBestFitLength.isPresent()) {
-            normalBestFit = normalBestFitLength.get();
-        }
-
-        int endBestFit = Collections.max(PREDEFINED_LENGTHS);
-        if (endBestFitLength.isPresent()) {
-            endBestFit = endBestFitLength.get();
-        }
+        int normalBestFit = bestFitLength(distanceBetweenPosts);
+        int endBestFit = bestFitLength(distanceBetweenPosts + OVERHANG);
 
         beamList.add(new BillOfMaterialsLine(
                 carport.getBeam().getName(),
@@ -78,42 +68,58 @@ public class BillOfMaterial {
                 carport.getBeam().getUnit(),
                 carport.getBeam().getDescription()
         ));
-
         return beamList;
     }
 
-    //    private List<BillOfMaterialsLine> getPosts() {
-//        List<BillOfMaterialsLine> postList = new ArrayList<>();
-//
-//        float distanceBetweenPosts = (float) (carport.getLength() - OVERHANG) / calcPostCountLength();
-//        int normalBeams = calcPostCountLength() - 1;
-//        int endBeam = 1;
-//    }
+    private List<BillOfMaterialsLine> getRafters() {
+        List<BillOfMaterialsLine> rafterList = new ArrayList<>();
 
-    private List<BillOfMaterialsLine> calculateRafters() {
-        int rafters = calcRafterCountLength() * calcRafterCountWidth();
-        List<BillOfMaterialsLine> result = new ArrayList<>();
-        result.add(new BillOfMaterialsLine(
+        int numberOfRafters = calcRafterCountLength() * calcRafterCountWidth();
+        int bestFitLength = bestFitLength(carport.getWidth());
+
+        rafterList.add(new BillOfMaterialsLine(
                 carport.getRafter().getName(),
-                carport.getRafter().getLength(),
-                rafters,
+                bestFitLength,
+                numberOfRafters,
                 carport.getRafter().getUnit(),
                 carport.getRafter().getDescription()
         ));
-        return result;
+        return rafterList;
     }
 
-    private List<BillOfMaterialsLine> calculateFascia() {
-        int fascias = (calcBeamCountLength() + calcRafterCountWidth()) * 2;
-        List<BillOfMaterialsLine> result = new ArrayList<>();
-        result.add(new BillOfMaterialsLine(
+    // Finds the first length in PREDEFINED_LENGTHS that is greater than the required value or returns the maximum length.
+    private int bestFitLength(float neededLength) {
+        return PREDEFINED_LENGTHS.stream()
+                .filter(length -> length > neededLength)
+                .findFirst()
+                .orElse(Collections.max(PREDEFINED_LENGTHS));
+    }
+
+    private List<BillOfMaterialsLine> getFascia() {
+        List<BillOfMaterialsLine> fasciaList = new ArrayList<>();
+
+        int fasciasCountLength = (int) Math.ceil((double) carport.getLength() / Collections.max(PREDEFINED_LENGTHS));
+        int fasciasCountWidth = (int) Math.ceil((double) carport.getWidth() / Collections.max(PREDEFINED_LENGTHS));
+
+        int bestFitLength = bestFitLength((float) carport.getLength() / fasciasCountLength);
+        int bestFitWidth = bestFitLength((float) carport.getWidth() / fasciasCountWidth);
+
+        fasciaList.add(new BillOfMaterialsLine(
                 carport.getFascia().getName(),
-                carport.getFascia().getLength(),
-                fascias,
+                bestFitLength,
+                fasciasCountLength * 2,
                 carport.getFascia().getUnit(),
                 carport.getFascia().getDescription()
         ));
-        return result;
+
+        fasciaList.add(new BillOfMaterialsLine(
+                carport.getFascia().getName(),
+                bestFitWidth,
+                fasciasCountWidth * 2,
+                carport.getFascia().getUnit(),
+                carport.getFascia().getDescription()
+        ));
+        return fasciaList;
     }
 
     private List<BillOfMaterialsLine> getRoofCoverMaterials() {
