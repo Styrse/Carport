@@ -966,3 +966,25 @@
 - [ ] Add map location or address
 - [ ] Display opening hours and phone number
 - **Labels:** `t-shirt-size: S`, `priority: low`, `type: frontend`, `extra-feature`
+
+---
+
+## 📂 User Story 38 – Update Carport Before Order Completion
+**As a salesperson, I want to update a customer's carport before the order is completed so that last-minute customer requests can be handled smoothly.**
+
+### 🔹 Issue 38.1 – Allow updates to Carport when order is not completed
+📌 *What this is:* Enable editing of a carport's dimensions and materials if the order is not finalized.  
+🎯 *Why it matters:* Customers may change their wishes during sales or production phases, and flexibility improves service quality.
+- [ ] Allow width, length, height updates on the Carport
+- [ ] Allow material updates (beams, rafters, roofing)
+- [ ] Regenerate a fresh BillOfMaterial automatically after updates
+- [ ] Prevent updates if order status is `Completed` or `Cancelled`
+- **Labels:** `t-shirt-size: M`, `priority: high`, `type: backend`, `area: order-management`, `sprint: 3`
+
+### 🔹 Issue 38.2 – Write unit tests for updating carport
+📌 *What this is:* Create tests to ensure carport updates behave correctly depending on order status.  
+🎯 *Why it matters:* Guarantees system stability and prevents regressions in future development.
+- [ ] Test updating carport succeeds when order status is not Completed
+- [ ] Test updating carport throws exception if status is Completed or Cancelled
+- [ ] Test BillOfMaterial is regenerated after update
+- **Labels:** `t-shirt-size: S`, `priority: high`, `type: test`, `area: order-management`, `sprint: 3`
