@@ -1,7 +1,7 @@
 package app.entities.users;
 
 public abstract class User {
-    private int userID;
+    private int userId;
     private String firstName;
     private String lastName;
     private int phoneNumber;    //Could set as String when using international numbers like +45
@@ -19,8 +19,8 @@ public abstract class User {
         this.password = password;
     }
 
-    public User(int userID, String firstName, String lastName, int phoneNumber, String email, String password) {
-        this.userID = userID;
+    public User(int userId, String firstName, String lastName, int phoneNumber, String email, String password) {
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -28,8 +28,8 @@ public abstract class User {
         this.password = password;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getUserId() {
+        return userId;
     }
 
     public String getLastName() {
@@ -52,8 +52,8 @@ public abstract class User {
         return password;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserId(int userID) {
+        this.userId = userID;
     }
 
     public void setFirstName(String firstName) {

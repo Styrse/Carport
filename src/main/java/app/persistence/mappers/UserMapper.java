@@ -125,7 +125,7 @@ public class UserMapper {
             ps.setString(5, user.getPassword());
             ps.setBoolean(6, user instanceof Staff);
             ps.setBoolean(7, user instanceof StaffManager);
-            ps.setInt(8, user.getUserID());
+            ps.setInt(8, user.getUserId());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -161,7 +161,7 @@ public class UserMapper {
             user = new Customer();
         }
 
-        user.setUserID(rs.getInt("user_id"));
+        user.setUserId(rs.getInt("user_id"));
         user.setFirstName(rs.getString("firstname"));
         user.setLastName(rs.getString("lastname"));
         user.setPhoneNumber(rs.getInt("phone_number"));
