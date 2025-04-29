@@ -1,8 +1,9 @@
 package app.testutils;
 
-import app.entities.carport.Carport;
-import app.entities.materials.planksAndRoofCovers.planks.*;
-import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
+import app.entities.products.carport.Carport;
+import app.entities.products.subProducts.materials.planks.Beam;
+import app.entities.products.subProducts.materials.planks.Rafter;
+import app.entities.products.subProducts.materials.roof.RoofCover;
 
 /**
  * TestCarportFactory
@@ -25,16 +26,35 @@ public class TestCarportFactory {
       but allows injecting any RoofCover and custom dimensions.
      */
     public static Carport createCarportWithRoofCover(RoofCover roofCover, int width, int length) {
-        return new Carport(width, length, 250, "flat",
+        return new Carport(
+                0,
+                "Test Carport",
+                "Generated carport for measurement tests",
+                0.0,
+                0.0,
+                width,
+                length,
+                250,
+                "flat",
                 TestPlankFactory.createStandardPost(),
                 TestPlankFactory.createStandardBeam(),
                 TestPlankFactory.createStandardRafter(),
                 TestPlankFactory.createStandardFascia(),
-                roofCover);
+                roofCover
+        );
     }
 
     public static Carport createCarportWithRafter(Rafter rafter, int width, int length) {
-        return new Carport(width, length, 250, "flat",
+        return new Carport(
+                0,
+                "Test Carport",
+                "Generated carport for measurement tests",
+                0.0,
+                0.0,
+                width,
+                length,
+                250,
+                "flat",
                 TestPlankFactory.createStandardPost(),
                 TestPlankFactory.createStandardBeam(),
                 rafter,
@@ -44,7 +64,16 @@ public class TestCarportFactory {
     }
 
     public static Carport createCarportWithBeam(Beam beam, int width, int length) {
-        return new Carport(width, length, 250, "flat",
+        return new Carport(
+                0,
+                "Test Carport",
+                "Generated carport for measurement tests",
+                0.0,
+                0.0,
+                width,
+                length,
+                250,
+                "flat",
                 TestPlankFactory.createStandardPost(),
                 beam,
                 TestPlankFactory.createStandardRafter(),

@@ -1,10 +1,10 @@
-package app.entities.carport;
+package app.entities.products.carport;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static app.entities.materials.planksAndRoofCovers.PlankAndRoof.PREDEFINED_LENGTHS;
+import static app.entities.products.subProducts.materials.Material.PREDEFINED_LENGTHS;
 
 public class BillOfMaterial {
     private final Carport carport;
@@ -143,7 +143,7 @@ public class BillOfMaterial {
     //================================
     //============= Posts ============
     //================================
-    int calcPostCountWidth() {
+    public int calcPostCountWidth() {
         int posts = 2;
         int maxLength = carport.getRafter().getMaxLength();
         if (carport.getWidth() > maxLength) {
@@ -154,7 +154,7 @@ public class BillOfMaterial {
         return posts;
     }
 
-    int calcPostCountLength() {
+    public int calcPostCountLength() {
         int posts = 2;
         int maxDistanceBetweenPosts = carport.getBeam().getMaxLengthBetweenPosts();
         if (carport.getLength() > maxDistanceBetweenPosts) {
@@ -168,7 +168,7 @@ public class BillOfMaterial {
     //================================
     //============= Beams ============
     //================================
-    int calcBeamCountLength() {
+    public int calcBeamCountLength() {
         int beams = 1;
         int maxLength = carport.getBeam().getMaxLength();
         if (carport.getLength() > maxLength) {
@@ -182,7 +182,7 @@ public class BillOfMaterial {
     //================================
     //============ Rafters ===========
     //================================
-    int calcRafterCountWidth() {
+    public int calcRafterCountWidth() {
         int rafters = 1;
         int maxLength = carport.getRafter().getMaxLength();
         if (carport.getWidth() > maxLength) {
@@ -193,7 +193,7 @@ public class BillOfMaterial {
         return rafters;
     }
 
-    int calcRafterCountLength() {
+    public int calcRafterCountLength() {
         int rafters = 2;
         int maxDistance = carport.getRoofCover().getMaxLengthBetweenRafters();
         if (carport.getLength() > maxDistance) {
@@ -207,7 +207,7 @@ public class BillOfMaterial {
     //================================
     //========== Roof Covers =========
     //================================
-    int calcRoofCoverCountLength() {
+    public int calcRoofCoverCountLength() {
         int covers = 1;
         int maxLength = carport.getRoofCover().getMaxLength();
         int lengthOverlap = carport.getRoofCover().getLengthOverlap();
@@ -219,7 +219,7 @@ public class BillOfMaterial {
         return covers;
     }
 
-    int calcRoofCoverCountWidth() {
+    public int calcRoofCoverCountWidth() {
         int covers = 1;
         int maxWidth = carport.getRoofCover().getWidth();
         float sideOverlap = carport.getRoofCover().getSideOverlap();

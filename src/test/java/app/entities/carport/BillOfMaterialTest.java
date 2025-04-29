@@ -1,6 +1,8 @@
 package app.entities.carport;
 
-import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
+import app.entities.products.subProducts.materials.roof.RoofCover;
+import app.entities.products.carport.BillOfMaterial;
+import app.entities.products.carport.Carport;
 import app.testutils.TestCarportFactory;
 import app.testutils.TestPlankFactory;
 import app.testutils.TestRoofCoverFactory;

@@ -1,6 +1,6 @@
 package app.entities.users;
 
-import app.entities.Order;
+import app.entities.orders.Order;
 
 import java.util.ArrayList;
 import java.util.List;

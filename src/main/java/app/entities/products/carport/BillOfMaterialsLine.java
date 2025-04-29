@@ -1,4 +1,4 @@
-package app.entities.carport;
+package app.entities.products.carport;
 
 public class BillOfMaterialsLine {
     private final String name;
