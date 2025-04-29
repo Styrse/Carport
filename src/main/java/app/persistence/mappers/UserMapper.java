@@ -111,7 +111,7 @@ public class UserMapper {
 
     // Update full user
     public static void updateUser(User user) throws DatabaseException {
-        String sql = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, email = ?, password = ?, is_staff = ?, is_staff_manager = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, email = ?, password = ?, is_staff = ?, is_staff_manager = ? WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -123,7 +123,7 @@ public class UserMapper {
             ps.setString(5, user.getPassword());
             ps.setBoolean(6, user instanceof Staff);
             ps.setBoolean(7, user instanceof StaffManager);
-            ps.setInt(8, user.getUserId());
+            ps.setString(8, user.getEmail());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -132,13 +132,13 @@ public class UserMapper {
     }
 
     // Delete user by userId (GDPR-compliant hard delete)
-    public static void deleteUser(int userId) throws DatabaseException {
-        String sql = "DELETE FROM users WHERE user_id = ?";
+    public static void deleteUser(String email) throws DatabaseException {
+        String sql = "DELETE FROM users WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setInt(1, userId);
+            ps.setString(1, email);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DatabaseException(e, "Error deleting user");

@@ -3,9 +3,9 @@ package app.persistence.mappers;
 import app.entities.users.Customer;
 import app.entities.users.User;
 import app.exceptions.DatabaseException;
-import app.persistence.ConnectionPool;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -17,16 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserMapperTest {
 
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "postgres";
-    private static final String URL = "jdbc:postgresql://localhost:5432/%s?currentSchema=test";
-    private static final String DB = "carport";
-
-    public static final ConnectionPool connectionPoolTest = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
-
     @BeforeAll
     static void setupClass() {
-        try (Connection connection = connectionPoolTest.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             try (Statement stmt = connection.createStatement()) {
                 //Drop tables and sequences if they exist
                 stmt.execute("DROP TABLE IF EXISTS test.users;");
@@ -47,16 +40,16 @@ class UserMapperTest {
 
     @BeforeEach
     void setup() {
-        try (Connection connection = connectionPoolTest.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             try (Statement stmt = connection.createStatement()) {
                 //Clean the test table
                 stmt.execute("TRUNCATE TABLE test.users RESTART IDENTITY CASCADE;");
 
                 //Insert 3 example users
-                stmt.execute("INSERT INTO test.users (user_id, firstname, password, is_staff, is_staff_manager) VALUES " +
-                        "(1, 'alice', 'pass123', false, false), " +
-                        "(2, 'bob', 'pass123', true, false), " +
-                        "(3, 'charlie', 'pass123', true, true);");
+                stmt.execute("INSERT INTO test.users (user_id, firstname, email, password, is_staff, is_staff_manager) VALUES " +
+                        "(1, 'alice', 'alice@gmail.com', 'Alice123', false, false), " +
+                        "(2, 'bob', 'bob@hotmail.com', '123Bob', true, false), " +
+                        "(3, 'charlie', 'charlie@me.com', 'Char123Lie', true, true);");
 
                 //Reset sequences
                 stmt.execute("SELECT setval('test.users_user_id_seq', COALESCE((SELECT MAX(user_id) + 1 FROM test.users), 1), false)");
@@ -68,38 +61,86 @@ class UserMapperTest {
     }
 
     @Test
+    @DisplayName("CreateUser Test")
     void createUser() throws DatabaseException {
-        // Arrange
+        //Arrange
         User user = new Customer("John", "Doe", 12345678, "john@doe.com", "Password123");
 
-        // Act
+        //Act
         UserMapper.createUser(user);
+        int actual = user.getUserId();
 
-        // Assert
-        assertTrue(user.getUserId() > 0);
+        //Assert
+        int expected = 4;
+        assertEquals(expected, actual);
     }
 
     @Test
-    void getAllUsers() {
+    @DisplayName("GetAllUsers Test")
+    void getAllUsers() throws DatabaseException {
+        //Arrange
+
+        //Act
+        int actual = UserMapper.getAllUsers().size();
+
+        //Assert
+        int expected = 3;
+        assertEquals(expected, actual);
     }
 
     @Test
-    void getUserByEmail() {
+    @DisplayName("GetUserByEmail Test")
+    void getUserByEmail() throws DatabaseException {
+        //Arrange
+
+        //Act
+        int actual = UserMapper.getUserByEmail("alice@gmail.com").getUserId();
+
+        //Assert
+        int expected = 1;
+        assertEquals(expected, actual);
     }
 
     @Test
-    void verifyUser() {
+    @DisplayName("VerifyUser Test")
+    void verifyUser() throws DatabaseException {
+        //Arrange
+
+        //Act
+        boolean actual = UserMapper.verifyUser("alice@gmail.com", "Alice123");
+
+        //Assert
+        boolean expected = true;
+        assertEquals(expected, actual);
     }
 
     @Test
-    void updateUser() {
+    @DisplayName("UpdateUser Test")
+    void updateUser() throws DatabaseException {
+        //Arrange
+        User user = new Customer("Alice", "Doe", 12345678, "alice@gmail.com", "Alice123");
+
+        //Act
+        UserMapper.updateUser(user);
+        user = UserMapper.getUserByEmail("alice@gmail.com");
+        String actual = user.getLastName();
+
+        //Assert
+        String expected = "Doe";
+        assertEquals(expected, actual);
     }
 
     @Test
-    void deleteUser() {
-    }
+    @DisplayName("DeleteUser Test")
+    void deleteUser() throws DatabaseException {
+        //Arrange
 
-    @Test
-    void mapUser() {
+        //Act
+        UserMapper.deleteUser("alice@gmail.com");
+        int actual = UserMapper.getAllUsers().size();
+
+        //Assert
+        int expected = 2;
+        assertEquals(expected, actual);
     }
 }
