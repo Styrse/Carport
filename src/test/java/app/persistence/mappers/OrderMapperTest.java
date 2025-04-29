@@ -1,7 +1,9 @@
 package app.persistence.mappers;
 
+import app.exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -57,26 +59,51 @@ class OrderMapperTest {
     }
 
     @Test
+    @DisplayName("CreateOrder Test")
     void createOrder() {
     }
 
     @Test
+    @DisplayName("GetAllOrders Test")
     void getAllOrders() {
     }
 
     @Test
-    void getOrderByOrderId() {
+    @DisplayName("GetOrderByOrderId Test")
+    void getOrderByOrderId() throws DatabaseException {
+        //Arrange
+
+        //Act
+        String actual = OrderMapper.getOrderByOrderId(1).getPaymentStatus();
+
+        //Assert
+        String expected = "paid";
+        assertEquals(expected, actual);
+
     }
 
     @Test
+    @DisplayName("GetOrdersByCustomerId Test")
     void getOrdersByCustomerId() {
     }
 
     @Test
+    @DisplayName("UpdateOrder Test")
     void updateOrder() {
     }
 
     @Test
-    void deleteOrder() {
+    @DisplayName("DeleteOrder Test")
+    void deleteOrder() throws DatabaseException {
+        //Arrange
+
+        //Act
+        OrderMapper.deleteOrder(1);
+        int actual = OrderMapper.getAllOrders().size();
+
+        //Assert
+        int expected = 2;
+        assertEquals(expected, actual);
+
     }
 }
