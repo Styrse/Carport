@@ -1,4 +1,4 @@
-package app.testutils;
+package app.entities.carport.carportTestFactory;
 
 import app.entities.products.materials.roof.RoofCover;
 

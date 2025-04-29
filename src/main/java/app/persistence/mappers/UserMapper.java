@@ -29,29 +29,27 @@ import static app.Main.connectionPool;
 
 public class UserMapper {
     // Create
-    public static int createUser(User user) throws DatabaseException {
+    public static void createUser(User user) throws DatabaseException {
         String sql = "INSERT INTO users (firstname, lastname, phone_number, email, password, is_staff, is_staff_manager) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING user_id";
 
-        try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setString(1, user.getFirstName());
-                ps.setString(2, user.getLastName());
-                ps.setInt(3, user.getPhoneNumber());
-                ps.setString(4, user.getEmail());
-                ps.setString(5, user.getPassword());
-                ps.setBoolean(6, user instanceof Staff);
-                ps.setBoolean(7, user instanceof StaffManager);
-                ps.executeUpdate();
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
 
-                try (ResultSet rs = ps.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        return rs.getInt(1);
-                    } else {
-                        throw new DatabaseException("Failed to retrieve generated user ID");
-                    }
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setInt(3, user.getPhoneNumber());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getPassword());
+            ps.setBoolean(6, user instanceof Staff || user instanceof StaffManager);
+            ps.setBoolean(7, user instanceof StaffManager);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    user.setUserId(rs.getInt("user_id"));
                 }
             }
+
         } catch (SQLException e) {
             throw new DatabaseException(e, "Error inserting user");
         }

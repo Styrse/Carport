@@ -1,4 +1,4 @@
-package app.testutils;
+package app.entities.carport.carportTestFactory;
 
 import app.entities.products.carport.Carport;
 import app.entities.products.materials.planks.Beam;
