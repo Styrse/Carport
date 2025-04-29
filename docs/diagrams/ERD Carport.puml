@@ -1,0 +1,134 @@
+@startuml
+title Database Design - Carport Project (with composite key in price_history)
+
+' --- Tables ---
+
+class Users {
+    +user_id : int <<PK>>
+    +firstname : string
+    +lastname : string
+    +phone_number : string
+    +email : string
+    +password : string
+    +is_staff : boolean
+    +is_staff_manager : boolean
+}
+
+class Products {
+    +product_id : int <<PK>>
+    +product_type : string
+}
+
+class Colors {
+    +color_id : int <<PK>>
+    +color_name : string
+    +hex_code : string
+}
+
+class BuildingMaterials {
+    +sub_product_id : int <<PK>>
+    +product_id : int <<FK>>
+    +name : string
+    +description : string
+    +width : int
+    +height : int
+    +cost_price : decimal
+    +sales_price : decimal
+    +material_type : string
+    +treated_for_ground_contact : boolean
+    +max_length_between_posts : int
+    +supports_gutters : boolean
+    +is_active : boolean
+}
+
+class RegularProducts {
+    +sub_product_id : int <<PK>>
+    +product_id : int <<FK>>
+    +name : string
+    +description : string
+    +cost_price : decimal
+    +sales_price : decimal
+    +is_active : boolean
+}
+
+class Carports {
+    +sub_product_id : int <<PK>>
+    +product_id : int <<FK>>
+    +width : int
+    +length : int
+    +height : int
+    +roof_type : string
+    +roof_angle : int
+    +post_sub_product_id : int <<FK>>
+    +post_color_id : int <<FK>>
+    +beam_sub_product_id : int <<FK>>
+    +beam_color_id : int <<FK>>
+    +rafter_sub_product_id : int <<FK>>
+    +rafter_color_id : int <<FK>>
+    +fascia_sub_product_id : int <<FK>>
+    +fascia_color_id : int <<FK>>
+    +roof_cover_sub_product_id : int <<FK>>
+    +roof_cover_color_id : int <<FK>>
+}
+
+class MaterialColors {
+    +id : int <<PK>>
+    +sub_product_id : int <<FK>>
+    +color_id : int <<FK>>
+}
+
+class PredefinedLengths {
+    +id : int <<PK>>
+    +sub_product_id : int <<FK>>
+    +length : int
+}
+
+class PriceHistory {
+    +price_history_id : int <<PK>>
+    +product_id : int <<FK>>
+    +sub_product_id : int
+    +price_type : string
+    +price : decimal
+    +valid_from : date
+    +valid_to : date
+}
+
+entity Orders {
+    * order_id : int <<PK>>
+    * user_id : int <<FK>>
+    * staff_id : int <<FK>>
+    * product_id : int <<FK>>
+    * sub_product_id : int
+    * order_date : timestamp
+    * payment_date : timestamp
+    * payment_status : varchar
+    * total_price : numeric
+}
+
+entity OrderStatusHistory {
+    * status_id : int <<PK>>
+    * order_id : int <<FK>>
+    * status : varchar
+    * update_date : timestamp
+}
+
+' --- Relationships ---
+
+Users ||--o{ Orders : places >
+Users ||--o{ Orders : assigned >
+
+Orders "0..*" -- "1" Users : belongs to >
+Orders "0..*" -- "1" Products : contains >
+Orders ||--o{ OrderStatusHistory : has >
+
+BuildingMaterials "0..*" -- "1" Products : defines >
+RegularProducts "0..*" -- "1" Products : defines >
+Carports "0..*" -- "1" Products : defines >
+
+BuildingMaterials "1" -- "0..*" PredefinedLengths : has cuts >
+BuildingMaterials "1" -- "0..*" MaterialColors : available colors >
+MaterialColors "0..*" -- "1" Colors : uses >
+
+PriceHistory "0..*" -- "1" Products : pricing >
+
+@enduml

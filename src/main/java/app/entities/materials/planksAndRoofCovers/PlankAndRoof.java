@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class PlankAndRoof extends Material {
-    private final int length;
-    private final int width;
+    private int length;
+    private int width;
     private int maxLength;
 
     //TODO: Make it specific to each material
@@ -35,5 +35,13 @@ public abstract class PlankAndRoof extends Material {
 
     public void setMaxLength(int maxLength) {
         this.maxLength = maxLength;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 }

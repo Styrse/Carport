@@ -4,17 +4,17 @@ import app.entities.materials.planksAndRoofCovers.planks.*;
 import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
 
 public class Carport {
-    private final int width;
-    private final int length;
-    private final int height;
-    private final String roofType;
+    private int width;
+    private int length;
+    private int height;
+    private String roofType;
     private int roofAngle;
 
-    private final Post post;
-    private final Beam beam;
-    private final Rafter rafter;
-    private final Fascia fascia;
-    private final RoofCover roofCover;
+    private Post post;
+    private Beam beam;
+    private Rafter rafter;
+    private Fascia fascia;
+    private RoofCover roofCover;
 
     public Carport(int width, int length, int height, String roofType,
                    Post post, Beam beam, Rafter rafter,
@@ -80,6 +80,46 @@ public class Carport {
 
     public RoofCover getRoofCover() {
         return roofCover;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setRoofType(String roofType) {
+        this.roofType = roofType;
+    }
+
+    public void setRoofAngle(int roofAngle) {
+        this.roofAngle = roofAngle;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public void setBeam(Beam beam) {
+        this.beam = beam;
+    }
+
+    public void setRafter(Rafter rafter) {
+        this.rafter = rafter;
+    }
+
+    public void setFascia(Fascia fascia) {
+        this.fascia = fascia;
+    }
+
+    public void setRoofCover(RoofCover roofCover) {
+        this.roofCover = roofCover;
     }
 
     @Override
