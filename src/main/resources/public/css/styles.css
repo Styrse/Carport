@@ -1,31 +1,29 @@
 /*style*/
 body    {
-    /*font-family: Arial, sans-serif;*/
+    font-family: Arial, sans-serif;
     background-color: #F5F5F3;
     margin: 0;
     padding: 0;
 }
 
-.logo   {
-    float: left;
-    width: 70px;
-    height: 70px;
-}
-
-
-/*navbar styling*/
-
 ul  {
-    display: grid;
     margin: 0;
 }
+
 
 li  {
     display: flex;
     flex-direction: row;
     text-align: center;
     border-bottom: 2px solid transparent;
-    font-family: sans-serif;
+}
+
+/*navbar styling*/
+
+.logo   {
+    float: left;
+    width: 70px;
+    height: 70px;
 }
 
 #navbar {
@@ -54,3 +52,66 @@ li  {
     border-bottom: 2px solid #101820;
 }
 
+/*Footer styling*/
+
+footer  {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #FFFFFF;
+}
+.footer-content {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    margin: 0 auto;
+    padding: 18px 18px;
+    max-width: 1680px;
+    width: 100%;
+
+
+
+}
+
+.footer-links  {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.footer-links a {
+    position: relative;
+    display: inline-block;
+    color: #101820;
+    text-align: left;
+    padding: 5px 5px;
+    text-decoration: none;
+    font-size: 12px;
+    transition: 0.4s;
+}
+
+.footer-links a::before{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 1px;
+    background-color: #101820;
+    bottom: 0;
+    left: 0;
+    transition: width 0.4s ease;
+}
+
+.footer-links a:hover::before   {
+    width: 100%;
+}
+
+.footer-title   {
+    margin-bottom: 12px;
+    display: inline-block;
+    padding: 5px 5px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #101820;
+}
