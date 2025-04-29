@@ -12,12 +12,13 @@ import java.util.List;
 public class Order {
     private int orderID;
     private LocalDate orderDate;
+    private LocalDate paymentDate;
     private String orderStatus;
     private String paymentStatus;
     private Carport carport;
     private Customer customer;
     private Staff staff;
-    private final List<OrderLine> orderLines = new ArrayList<>();
+    private final List<OrderItem> orderItems = new ArrayList<>();
 
     public Order(LocalDate orderDate, String orderStatus, String paymentStatus, Carport carport, Customer customer) {
         this.orderDate = orderDate;
@@ -98,7 +99,7 @@ public class Order {
         this.paymentStatus = paymentStatus;
     }
 
-    public List<OrderLine> getOrderLines() {
-        return orderLines;
+    public List<OrderItem> getOrderLines() {
+        return orderItems;
     }
 }

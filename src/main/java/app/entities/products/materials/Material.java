@@ -1,12 +1,12 @@
-package app.entities.products.subProducts.materials;
+package app.entities.products.materials;
 
-import app.entities.products.subProducts.SubProduct;
+import app.entities.products.Product;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Material extends SubProduct {
+public abstract class Material extends Product {
     private int length;
     private int width;
     private int maxLength;
@@ -15,11 +15,11 @@ public abstract class Material extends SubProduct {
     //TODO: Make it specific to each material - DB table(predefined_lengths)
     public static final List<Integer> PREDEFINED_LENGTHS = Arrays.asList(300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600);
 
-    public Material(int productID, String name, String description, double costPrice, double salesPrice, int subProductID, int length, int width, int maxLength, String unit) {
-        super(productID, name, description, costPrice, salesPrice, subProductID);
+    public Material(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int length, int width, int maxLength, String unit) {
+        super(productID, subProductID, name, description, costPrice, salesPrice);
         this.length = length;
         this.width = width;
-        this.maxLength = Collections.max(PREDEFINED_LENGTHS); //Using the Collections class and its built-in max() method
+        this.maxLength = maxLength;
         this.unit = unit;
     }
 

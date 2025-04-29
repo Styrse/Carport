@@ -1,6 +1,6 @@
 package app.testutils;
 
-import app.entities.products.subProducts.materials.roof.RoofCover;
+import app.entities.products.materials.roof.RoofCover;
 
 /**
  * TestRoofCoverFactory
@@ -17,11 +17,11 @@ public class TestRoofCoverFactory {
     public static RoofCover createStandardTestRoofCover() {
         return new RoofCover(
                 0,
+                0,
                 "Standard Test Roof",
                 "Baseline for comparisons",
                 150,
                 250,
-                0,
                 600,
                 100,
                 600,
@@ -35,11 +35,11 @@ public class TestRoofCoverFactory {
     public static RoofCover createShortPlankRoofCover() {
         RoofCover roofCover = new RoofCover(
                 0,
+                0,
                 "Short Plank Roof",
                 "Shorter planks for stress length tests",
                 160,
                 260,
-                0,
                 400,
                 100,
                 400,
@@ -55,11 +55,11 @@ public class TestRoofCoverFactory {
     public static RoofCover createTinyOverlapRoofCover() {
         return new RoofCover(
                 0,
+                0,
                 "Tiny Overlap Roof",
                 "Minimal overlaps to maximize coverage",
                 140,
                 240,
-                0,
                 600,
                 100,
                 600,
@@ -73,11 +73,11 @@ public class TestRoofCoverFactory {
     public static RoofCover createWideRoofCover() {
         return new RoofCover(
                 0,
+                0,
                 "Wide Roof Cover",
                 "Extra wide sheet for width tests",
                 170,
                 270,
-                0,
                 600,
                 400,
                 600,

@@ -1,14 +1,14 @@
-package app.entities.products.subProducts.materials.roof;
+package app.entities.products.materials.roof;
 
-import app.entities.products.subProducts.materials.Material;
+import app.entities.products.materials.Material;
 
 public class RoofCover extends Material {
     private int lengthOverlap;
     private float sideOverlap;
     private int maxLengthBetweenRafters;
 
-    public RoofCover(int productID, String name, String description, double costPrice, double salesPrice, int subProductID, int length, int width, int maxLength, String unit, int lengthOverlap, float sideOverlap, int maxLengthBetweenRafters) {
-        super(productID, name, description, costPrice, salesPrice, subProductID, length, width, maxLength, unit);
+    public RoofCover(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int length, int width, int maxLength, String unit, int lengthOverlap, float sideOverlap, int maxLengthBetweenRafters) {
+        super(productID, subProductID, name, description, costPrice, salesPrice, length, width, maxLength, unit);
         this.lengthOverlap = lengthOverlap;
         this.sideOverlap = sideOverlap;
         this.maxLengthBetweenRafters = maxLengthBetweenRafters;

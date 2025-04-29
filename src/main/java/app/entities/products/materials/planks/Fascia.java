@@ -1,12 +1,12 @@
-package app.entities.products.subProducts.materials.planks;
+package app.entities.products.materials.planks;
 
 public class Fascia extends Plank {
     private final boolean supportsGutters;
 
     public static int MIN_THICKNESS_FOR_GUTTERS = 22;
 
-    public Fascia(int productID, String name, String description, double costPrice, double salesPrice, int subProductID, int length, int width, int maxLength, String unit, int height, boolean supportsGutters) {
-        super(productID, name, description, costPrice, salesPrice, subProductID, length, width, maxLength, unit, height);
+    public Fascia(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int length, int width, int maxLength, String unit, int height, boolean supportsGutters) {
+        super(productID, subProductID, name, description, costPrice, salesPrice, length, width, maxLength, unit, height);
         this.supportsGutters = supportsGutters;
     }
 

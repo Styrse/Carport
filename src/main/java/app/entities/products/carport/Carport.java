@@ -1,10 +1,10 @@
 package app.entities.products.carport;
 
-import app.entities.products.subProducts.materials.planks.Beam;
-import app.entities.products.subProducts.materials.planks.Fascia;
-import app.entities.products.subProducts.materials.planks.Post;
-import app.entities.products.subProducts.materials.planks.Rafter;
-import app.entities.products.subProducts.materials.roof.RoofCover;
+import app.entities.products.materials.planks.Beam;
+import app.entities.products.materials.planks.Fascia;
+import app.entities.products.materials.planks.Post;
+import app.entities.products.materials.planks.Rafter;
+import app.entities.products.materials.roof.RoofCover;
 import app.entities.products.Product;
 
 public class Carport extends Product {
@@ -23,8 +23,8 @@ public class Carport extends Product {
     public Carport() {
     }
 
-    public Carport(int productID, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
-        super(productID, name, description, costPrice, salesPrice);
+    public Carport(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
+        super(productID, subProductID, name, description, costPrice, salesPrice);
         this.width = width;
         this.length = length;
         this.height = height;
@@ -36,8 +36,8 @@ public class Carport extends Product {
         this.roofCover = roofCover;
     }
 
-    public Carport(int productID, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, int roofAngle, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
-        super(productID, name, description, costPrice, salesPrice);
+    public Carport(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, int roofAngle, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
+        super(productID, subProductID, name, description, costPrice, salesPrice);
         this.width = width;
         this.length = length;
         this.height = height;

@@ -32,7 +32,8 @@ public class OrderMapper {
 
             ps.setInt(1, order.getCustomer().getUserID());
             ps.setInt(2, order.getCarport().getRoofCover().getSubProductID());
-            ps.setInt(3, order.getCarport().getSubProduct().getId());        // Replace with your actual method
+            ps.setInt(3, order.get);
+            //ps.setInt(3, order.getCarport().getSubProduct().getId());        // Replace with your actual method
             ps.setDate(4, Date.valueOf(order.getOrderDate()));
             ps.setDate(5, null); // You may want to support setting this
             ps.setString(6, order.getPaymentStatus());
