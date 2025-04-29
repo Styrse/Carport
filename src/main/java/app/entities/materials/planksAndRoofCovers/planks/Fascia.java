@@ -3,7 +3,7 @@ package app.entities.materials.planksAndRoofCovers.planks;
 public class Fascia extends Plank {
     private final boolean supportsGutters;
 
-    public static final int MIN_THICKNESS_FOR_GUTTERS = 22;
+    public static int MIN_THICKNESS_FOR_GUTTERS = 22;
 
     public Fascia(String name, String description, double costPrice, double salesPrice, String unit, int length, int width, int height) {
         super(name, description, costPrice, salesPrice, unit, length, width, height);
@@ -16,5 +16,10 @@ public class Fascia extends Plank {
 
     public boolean isSupportsGutters() {
         return supportsGutters;
+    }
+
+    public void setMinThicknessForGutters(int minThickness) {
+        MIN_THICKNESS_FOR_GUTTERS = minThickness;
+        this.determineSupportsGutters();
     }
 }

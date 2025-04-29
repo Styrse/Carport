@@ -6,17 +6,17 @@ This project is a web application built for **Johannes Fog**, allowing customers
 
 ## 🚀 Tech Stack
 
-| Area            | Technology                | Version        |
-|-----------------|----------------------------|----------------|
-| Language        | Java                       | 17             |
-| Backend         | Javalin, Jetty             | Javalin 6.5.0, Jetty 11.x |
-| Frontend        | Thymeleaf, HTML, CSS       | Thymeleaf 3.1.3, HTML5, CSS3 |
-| Database        | PostgreSQL, HikariCP       | PostgreSQL 15, HikariCP 6.2.1 |
-| DevOps          | DigitalOcean, GitHub Projects | N/A            |
-| Testing         | JUnit         | JUnit 5.12.0|
-| Email           | SendGrid                   | SDK 4.10.1     |
-| Diagrams/Mockup | Figma, Draw.io, Canva      | Latest (Web)   |
-| Communication   | Discord      | [Join](https://discord.gg/e6DqDnDZ) |
+| Area            | Technology                          | Version        |
+|-----------------|-------------------------------------|----------------|
+| Language        | Java                                | 17             |
+| Backend         | Javalin, Jetty                      | Javalin 6.5.0, Jetty 11.x |
+| Frontend        | Thymeleaf, HTML, CSS                | Thymeleaf 3.1.3, HTML5, CSS3 |
+| Database        | PostgreSQL, HikariCP                | PostgreSQL 15, HikariCP 6.2.1 |
+| DevOps          | DigitalOcean, GitHub Projects       | N/A            |
+| Testing         | JUnit                               | JUnit 5.12.0|
+| Email           | SendGrid                            | SDK 4.10.1     |
+| Diagrams/Mockup | Figma, Draw.io, Canva, dbdiagram.io | Latest (Web)   |
+| Communication   | Discord                             | [Join](https://discord.gg/e6DqDnDZ) |
 
 
 ---

@@ -1,0 +1,109 @@
+// Carport Database - dbdiagram.io
+
+Table users {
+  user_id SERIAL [pk]
+  firstname VARCHAR(100)
+  lastname VARCHAR(100)
+  phone_number VARCHAR(20)
+  email VARCHAR(255) [unique]
+  password VARCHAR(255)
+  is_staff BOOLEAN
+  is_staff_manager BOOLEAN
+}
+
+Table products {
+  product_id SERIAL [pk]
+  product_type VARCHAR(50)
+}
+
+Table colors {
+  color_id SERIAL [pk]
+  color_name VARCHAR(50) [unique]
+  hex_code VARCHAR(7)
+}
+
+Table building_materials {
+  sub_product_id SERIAL [pk]
+  product_id INT [ref: > products.product_id]
+  name VARCHAR(100)
+  description TEXT
+  width INT
+  height INT
+  cost_price NUMERIC(10,2)
+  sales_price NUMERIC(10,2)
+  material_type VARCHAR(50)
+  treated_for_ground_contact BOOLEAN
+  max_length_between_posts INT
+  supports_gutters BOOLEAN
+}
+
+Table regular_products {
+  sub_product_id SERIAL [pk]
+  product_id INT [ref: > products.product_id]
+  name VARCHAR(100)
+  description TEXT
+  cost_price NUMERIC(10,2)
+  sales_price NUMERIC(10,2)
+}
+
+Table carports {
+  sub_product_id SERIAL [pk]
+  product_id INT [ref: > products.product_id]
+  width INT
+  length INT
+  height INT
+  roof_type VARCHAR(100)
+  roof_angle INT
+
+  post_sub_product_id INT [ref: > building_materials.sub_product_id]
+  post_color_id INT [ref: > colors.color_id]
+
+  beam_sub_product_id INT [ref: > building_materials.sub_product_id]
+  beam_color_id INT [ref: > colors.color_id]
+
+  rafter_sub_product_id INT [ref: > building_materials.sub_product_id]
+  rafter_color_id INT [ref: > colors.color_id]
+
+  fascia_sub_product_id INT [ref: > building_materials.sub_product_id]
+  fascia_color_id INT [ref: > colors.color_id]
+
+  roof_cover_sub_product_id INT [ref: > building_materials.sub_product_id]
+  roof_cover_color_id INT [ref: > colors.color_id]
+}
+
+Table material_colors {
+  id SERIAL [pk]
+  sub_product_id INT [ref: > building_materials.sub_product_id]
+  color_id INT [ref: > colors.color_id]
+}
+
+Table predefined_lengths {
+  id SERIAL [pk]
+  sub_product_id INT [ref: > building_materials.sub_product_id]
+  length INT
+}
+
+Table price_history {
+  price_history_id SERIAL [pk]
+  product_id INT [ref: > products.product_id]
+  sub_product_id INT
+  price_type VARCHAR(10)
+  price NUMERIC(10,2)
+  valid_from DATE
+  valid_to DATE
+  indexes {
+    (product_id, sub_product_id, price_type, valid_from) [unique]
+  }
+}
+
+Table orders {
+  order_id SERIAL [pk]
+  user_id INT [ref: > users.user_id]
+  product_id INT [ref: > products.product_id]
+  sub_product_id INT
+  order_date DATE
+  payment_date DATE
+  order_status VARCHAR(50)
+  payment_status VARCHAR(50)
+  total_price NUMERIC(10,2)
+}

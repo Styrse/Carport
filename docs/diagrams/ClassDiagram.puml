@@ -5,13 +5,15 @@ abstract class User {
   - String lastName
   - int phoneNumber
   - String email
-  - List<Order> orders
 }
 
-class Customer extends User
+class Customer extends User {
+- List<Order> myOrders
+}
 
 class Staff extends User {
   - String password
+  - List<Order> myWorkOrders
 }
 
 class SalesManager extends Staff
@@ -19,12 +21,23 @@ class SalesManager extends Staff
 class Order {
   - LocalDate orderDate
   - String orderStatus
+  - String paymentStatus
   - Carport carport
   - Customer customer
   - Staff staff
 }
 
 class Carport {
+- int width
+- int length
+- int height
+- String roofType
+- int roofAngle
+- Post post
+- Beam beam
+- Rafter rafter
+- Fascia fascia
+- RoofCover roofCover
   - List<Material> materials
   - Guide guide
 }
@@ -34,9 +47,39 @@ class Material {
   - String description
   - double costPrice
   - double salesPrice
+  - String unit
 }
 
-class Plank extends Material
+class PlankAndRoof extends Material {
+- int length
+- int width
+- int maxLength
+}
+
+class Plank extends PlankAndRoof {
+- int height
+}
+
+class Post extends Plank {
+- boolean treatedForGroundContact
+}
+
+class Beam extends Plank {
+- int maxLengthBetweenPosts
+}
+
+class Rafter extends Plank {
+}
+
+class Fascia extends Plank {
+- boolean supportsGutters
+}
+
+class RoofCover extends PlankAndRoof {
+- int lengthOverlap
+- float sideOverlap
+- int maxLengthBetweenRafters
+}
 
 class Guide {
   - Svg guide

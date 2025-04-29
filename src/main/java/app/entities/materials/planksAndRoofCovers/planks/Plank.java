@@ -30,7 +30,7 @@ import app.entities.materials.planksAndRoofCovers.PlankAndRoof;
  */
 
 public abstract class Plank extends PlankAndRoof {
-    private final int height;
+    private int height;
 
     public Plank(String name, String description, double costPrice, double salesPrice, String unit, int length, int width, int height) {
         super(name, description, costPrice, salesPrice, unit, length, width);
@@ -39,5 +39,9 @@ public abstract class Plank extends PlankAndRoof {
 
     public int getHeight() {
         return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
