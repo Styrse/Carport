@@ -1,17 +1,17 @@
 /*style*/
-body    {
+body {
     font-family: Arial, sans-serif;
     background-color: #F5F5F3;
     margin: 0;
     padding: 0;
 }
 
-ul  {
+ul {
     margin: 0;
 }
 
 
-li  {
+li {
     display: flex;
     flex-direction: row;
     text-align: center;
@@ -20,16 +20,16 @@ li  {
 
 /*navbar styling*/
 
-.logo   {
+.logo {
     float: left;
     width: 70px;
     height: 70px;
 }
 
 #navbar {
-    position:sticky;
+    position: sticky;
     top: 0;
-    background-color:#FFFFFF;
+    background-color: #FFFFFF;
     height: 70px;
 }
 
@@ -54,27 +54,26 @@ li  {
 
 /*Footer styling*/
 
-footer  {
-    position: fixed;
+footer {
+    position: static;
     left: 0;
     bottom: 0;
     width: 100%;
     background-color: #FFFFFF;
 }
+
 .footer-content {
     display: flex;
     flex-direction: row;
     gap: 50px;
     margin: 0 auto;
-    padding: 18px 18px;
+    padding: 60px 18px;
     max-width: 1680px;
     width: 100%;
 
-
-
 }
 
-.footer-links  {
+.footer-links {
     display: flex;
     flex-direction: column;
     margin: 0;
@@ -91,7 +90,7 @@ footer  {
     transition: 0.4s;
 }
 
-.footer-links a::before{
+.footer-links a::before {
     content: "";
     position: absolute;
     width: 0;
@@ -102,11 +101,11 @@ footer  {
     transition: width 0.4s ease;
 }
 
-.footer-links a:hover::before   {
+.footer-links a:hover::before {
     width: 100%;
 }
 
-.footer-title   {
+.footer-title {
     margin-bottom: 12px;
     display: inline-block;
     padding: 5px 5px;
@@ -114,4 +113,20 @@ footer  {
     font-weight: bold;
     text-decoration: none;
     color: #101820;
+}
+.address-box    {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    font-size: 12px;
+
+}
+.address-box svg    {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 5px;
+}
+.address-box .line{
+    display: block;
+    margin-top: 5px;
 }
