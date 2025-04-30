@@ -1,5 +1,7 @@
 package app.persistence.mappers;
 
+import app.entities.orders.Order;
+import app.entities.users.Customer;
 import app.exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 import static app.Main.connectionPool;
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,12 +63,30 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("CreateOrder Test")
-    void createOrder() {
+    void createOrder() throws DatabaseException {
+        //Arrange
+        Order order = new Order(LocalDate.parse("2025-04-29"), "done", "paid", LocalDate.parse("2025-04-30"), new Customer());
+
+        //Act
+        OrderMapper.createOrder(order);
+
+
+        //Assert
+
     }
 
     @Test
     @DisplayName("GetAllOrders Test")
-    void getAllOrders() {
+    void getAllOrders() throws DatabaseException {
+        //Arrange
+
+        //Act
+        int actual = OrderMapper.getAllOrders().size();
+
+        //Assert
+        int expected = 3;
+        assertEquals(expected, actual);
+
     }
 
     @Test
@@ -85,11 +106,23 @@ class OrderMapperTest {
     @Test
     @DisplayName("GetOrdersByCustomerId Test")
     void getOrdersByCustomerId() {
+        //Arrange
+
+        //Act
+
+        //Assert
+
     }
 
     @Test
     @DisplayName("UpdateOrder Test")
     void updateOrder() {
+        //Arrange
+
+        //Act
+
+        //Assert
+
     }
 
     @Test
