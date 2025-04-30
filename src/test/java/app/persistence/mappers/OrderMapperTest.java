@@ -104,6 +104,5 @@ class OrderMapperTest {
         //Assert
         int expected = 2;
         assertEquals(expected, actual);
-
     }
 }
