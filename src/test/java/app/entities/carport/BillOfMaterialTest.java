@@ -1,9 +1,11 @@
 package app.entities.carport;
 
-import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
-import app.testutils.TestCarportFactory;
-import app.testutils.TestPlankFactory;
-import app.testutils.TestRoofCoverFactory;
+import app.entities.products.materials.roof.RoofCover;
+import app.entities.products.carport.BillOfMaterial;
+import app.entities.products.carport.Carport;
+import app.entities.carport.carportTestFactory.TestCarportFactory;
+import app.entities.carport.carportTestFactory.TestPlankFactory;
+import app.entities.carport.carportTestFactory.TestRoofCoverFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

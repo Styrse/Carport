@@ -1,10 +1,10 @@
-package app.entities.materials.planksAndRoofCovers.planks;
+package app.entities.products.materials.planks;
 
 public class Post extends Plank {
     private boolean treatedForGroundContact;
 
-    public Post(String name, String description, double costPrice, double salesPrice, String unit, int length, int width, int height, boolean treatedForGroundContact) {
-        super(name, description, costPrice, salesPrice, unit, length, width, height);
+    public Post(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int length, int width, int maxLength, String unit, int height, boolean treatedForGroundContact) {
+        super(productID, subProductID, name, description, costPrice, salesPrice, length, width, maxLength, unit, height);
         this.treatedForGroundContact = treatedForGroundContact;
     }
 

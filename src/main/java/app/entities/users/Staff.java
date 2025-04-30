@@ -1,6 +1,6 @@
 package app.entities.users;
 
-import app.entities.Order;
+import app.entities.orders.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,16 @@ import java.util.List;
 public class Staff extends User {
     private List<Order> myWorkOrders;
 
-    public Staff(String firstName, String lastName, int phoneNumber, String email) {
-        super(firstName, lastName, phoneNumber, email);
+    public Staff() {
+        this.myWorkOrders = new ArrayList<>();    }
+
+    public Staff(String firstName, String lastName, int phoneNumber, String email, String password) {
+        super(firstName, lastName, phoneNumber, email, password);
+        this.myWorkOrders = new ArrayList<>();
+    }
+
+    public Staff(int userID, String firstName, String lastName, int phoneNumber, String email, String password) {
+        super(userID, firstName, lastName, phoneNumber, email, password);
         this.myWorkOrders = new ArrayList<>();
     }
 
