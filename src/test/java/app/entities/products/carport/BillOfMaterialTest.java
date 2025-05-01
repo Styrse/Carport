@@ -1,12 +1,14 @@
-package app.entities.carport;
+package app.entities.products.carport;
 
-import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
-import app.testutils.TestCarportFactory;
-import app.testutils.TestPlankFactory;
-import app.testutils.TestRoofCoverFactory;
+import app.entities.products.materials.roof.RoofCover;
+import app.entities.products.carport.carportTestFactory.TestCarportFactory;
+import app.entities.products.carport.carportTestFactory.TestPlankFactory;
+import app.entities.products.carport.carportTestFactory.TestRoofCoverFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -2055,6 +2057,19 @@ class BillOfMaterialTest {
                 }
             }
         }
+
+    }
+
+    @Test
+    @DisplayName("GetBeams Test")
+    void getBeams() {
+        //Arrange
+        Carport carport = TestCarportFactory.createCarport(600, 1150);
+
+        //Act
+        BillOfMaterial bom = carport.getBillOfMaterial();
+
+        //Assert
 
     }
 }

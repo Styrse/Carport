@@ -1,20 +1,20 @@
-package app.entities.carport;
+package app.entities.products.carport;
 
-public class BillOfMaterialsLine {
+public class BillOfMaterialsItem {
     private final String name;
     private int length;
     private final int amount;
     private final String unit;
     private final String description;
 
-    public BillOfMaterialsLine(String name, int amount, String unit, String desc) {
+    public BillOfMaterialsItem(String name, int amount, String unit, String desc) {
         this.name = name;
         this.amount = amount;
         this.unit = unit;
         this.description = desc;
     }
 
-    public BillOfMaterialsLine(String name, int length, int amount, String unit, String desc) {
+    public BillOfMaterialsItem(String name, int length, int amount, String unit, String desc) {
         this.name = name;
         this.length = length;
         this.amount = amount;

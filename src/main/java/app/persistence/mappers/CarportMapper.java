@@ -17,6 +17,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.entities.products.carport.Carport;
+
 public class CarportMapper {
 
     public static List<Carport> getCarports(ConnectionPool connectionPool) throws DatabaseException {
@@ -69,4 +71,7 @@ public class CarportMapper {
 
 
 
+    public static Carport getCarportBySubProductID(int subProductId) {
+        return new Carport();
+    }
 }

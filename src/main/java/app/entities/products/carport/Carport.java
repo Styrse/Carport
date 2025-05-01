@@ -1,9 +1,13 @@
-package app.entities.carport;
+package app.entities.products.carport;
 
-import app.entities.materials.planksAndRoofCovers.planks.*;
-import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
+import app.entities.products.materials.planks.Beam;
+import app.entities.products.materials.planks.Fascia;
+import app.entities.products.materials.planks.Post;
+import app.entities.products.materials.planks.Rafter;
+import app.entities.products.materials.roof.RoofCover;
+import app.entities.products.Product;
 
-public class Carport {
+public class Carport extends Product {
     private int width;
     private int length;
     private int height;
@@ -16,9 +20,11 @@ public class Carport {
     private Fascia fascia;
     private RoofCover roofCover;
 
-    public Carport(int subProductId, int width, int length, int height, String roofType,
-                   Post post, Beam beam, Rafter rafter,
-                   Fascia fascia, RoofCover roofCover) {
+    public Carport() {
+    }
+
+    public Carport(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
+        super(productID, subProductID, name, description, costPrice, salesPrice);
         this.width = width;
         this.length = length;
         this.height = height;
@@ -30,15 +36,21 @@ public class Carport {
         this.roofCover = roofCover;
     }
 
-    public Carport(int subProductId, int width, int length, int height, String roofType,
-                   Post post, Beam beam, Rafter rafter,
-                   Fascia fascia, RoofCover roofCover, int roofAngle) {
-        this(subProductId, width, length, height, roofType, post, beam, rafter, fascia, roofCover);
+    public Carport(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, int roofAngle, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
+        super(productID, subProductID, name, description, costPrice, salesPrice);
+        this.width = width;
+        this.length = length;
+        this.height = height;
+        this.roofType = roofType;
         this.roofAngle = roofAngle;
+        this.post = post;
+        this.beam = beam;
+        this.rafter = rafter;
+        this.fascia = fascia;
+        this.roofCover = roofCover;
     }
 
-
-    // Generate fresh BillOfMaterial every time
+    //Generate fresh BillOfMaterial every time
     public BillOfMaterial getBillOfMaterial() {
         return new BillOfMaterial(this);
     }
@@ -136,9 +148,5 @@ public class Carport {
                 ", fascia=" + (fascia != null ? fascia.getName() : "None") +
                 ", roofCover=" + (roofCover != null ? roofCover.getName() : "None") +
                 '}';
-    }
-
-    public int getSubProductId() {
-        ret
     }
 }

@@ -1,6 +1,6 @@
-package app.entities.materials.planksAndRoofCovers.planks;
+package app.entities.products.materials.planks;
 
-import app.entities.materials.planksAndRoofCovers.PlankAndRoof;
+import app.entities.products.materials.Material;
 
 /**
  * Motivation for Specialized Plank Subclasses
@@ -29,11 +29,11 @@ import app.entities.materials.planksAndRoofCovers.PlankAndRoof;
  * Overall, using targeted subclasses improves maintainability, and scalability.
  */
 
-public abstract class Plank extends PlankAndRoof {
+public abstract class Plank extends Material {
     private int height;
 
-    public Plank(String name, String description, double costPrice, double salesPrice, String unit, int length, int width, int height) {
-        super(name, description, costPrice, salesPrice, unit, length, width);
+    public Plank(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int length, int width, int maxLength, String unit, int height) {
+        super(productID, subProductID, name, description, costPrice, salesPrice, length, width, maxLength, unit);
         this.height = height;
     }
 
