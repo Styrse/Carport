@@ -46,7 +46,7 @@ public class CarportMapper {
             }
         } catch(SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error");
+            throw new DatabaseException(e, "Error");
         }
         return allCarports;
     }
@@ -58,11 +58,5 @@ public class CarportMapper {
             }
         }
         return null; // or throw exception if not found
-    }
-
-
-
-    public static Carport getCarportBySubProductID(int subProductId) {
-        return new Carport();
     }
 }
