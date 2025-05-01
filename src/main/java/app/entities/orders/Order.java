@@ -17,7 +17,26 @@ public class Order {
     private LocalDate paymentDate;
     private Customer customer;
     private Staff staff;
-    private final List<OrderItem> orderItems = new ArrayList<>();
+    private final List<OrderItem> orderItems;
+
+    public Order(LocalDate orderDate, String orderStatus, String paymentStatus, LocalDate paymentDate, Customer customer) {
+        this.orderDate = orderDate;
+        this.orderStatus = orderStatus;
+        this.paymentStatus = paymentStatus;
+        this.paymentDate = paymentDate;
+        this.customer = customer;
+        this.orderItems = new ArrayList<>();
+    }
+
+    public Order(LocalDate orderDate, String orderStatus, String paymentStatus, LocalDate paymentDate, Customer customer, Staff staff) {
+        this.orderDate = orderDate;
+        this.orderStatus = orderStatus;
+        this.paymentStatus = paymentStatus;
+        this.paymentDate = paymentDate;
+        this.customer = customer;
+        this.staff = staff;
+        this.orderItems = new ArrayList<>();
+    }
 
     public Order(int orderId, LocalDate orderDate, String orderStatus, String paymentStatus, LocalDate paymentDate, Customer customer, Staff staff) {
         this.orderId = orderId;
@@ -27,6 +46,7 @@ public class Order {
         this.paymentDate = paymentDate;
         this.customer = customer;
         this.staff = staff;
+        this.orderItems = new ArrayList<>();
     }
 
     public int getOrderId() {

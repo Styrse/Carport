@@ -30,7 +30,7 @@ public class BillOfMaterial {
     }
 
     private List<BillOfMaterialsItem> getPosts() {
-        int posts = calcPostCountLength() * calcPostCountWidth();
+        int posts = calcPostsNeededLength() * calcPostCountWidth();
         List<BillOfMaterialsItem> result = new ArrayList<>();
         result.add(new BillOfMaterialsItem(
                 carport.getPost().getName(),
@@ -42,15 +42,18 @@ public class BillOfMaterial {
         return result;
     }
 
-    private List<BillOfMaterialsItem> getBeams() {
+    public List<BillOfMaterialsItem> getBeams() {
         List<BillOfMaterialsItem> beamList = new ArrayList<>();
 
-        float distanceBetweenPosts = (float) (carport.getLength() - OVERHANG) / calcPostCountLength();
-        int normalBeams = (calcPostCountLength() - 1) * calcPostCountWidth();
-        int endBeam = calcPostCountWidth();
+        float distanceBetweenPosts = (float) (carport.getLength() - OVERHANG) / calcPostsNeededLength();
 
-        int normalBestFit = bestFitLength(distanceBetweenPosts);
-        int endBestFit = bestFitLength(distanceBetweenPosts + OVERHANG);
+        int maxPostPrBeam = (int) Math.floor(carport.getBeam().getMaxLength() / distanceBetweenPosts);
+
+        int normalBestFit = bestFitLength(maxPostPrBeam * distanceBetweenPosts);
+        int endBestFit = bestFitLength(carport.getLength() - ((maxPostPrBeam * distanceBetweenPosts) * (maxPostPrBeam - 1)));
+
+        int normalBeams = (int) Math.floor((double) carport.getLength() / normalBestFit) * calcPostCountWidth();
+        int endBeam = calcPostCountWidth();
 
         beamList.add(new BillOfMaterialsItem(
                 carport.getBeam().getName(),
@@ -74,7 +77,7 @@ public class BillOfMaterial {
         List<BillOfMaterialsItem> rafterList = new ArrayList<>();
 
         int numberOfRafters = calcRafterCountLength() * calcRafterCountWidth();
-        int bestFitLength = bestFitLength(carport.getWidth());
+        int bestFitLength = bestFitLength((float) carport.getWidth() / calcRafterCountWidth());
 
         rafterList.add(new BillOfMaterialsItem(
                 carport.getRafter().getName(),
@@ -165,6 +168,23 @@ public class BillOfMaterial {
         return posts;
     }
 
+    //1. Calculate the m/2 of the carport (divided by 10.000 to get in m/2 and not cm/2)
+    //2. Calculate the total posts needed to carry the roof based on a posts buckling capacity.
+    //3. Then get the posts needed based on the beams maxGap.
+    //4. Returns the greater of the two.
+    public int calcPostsNeededLength() {
+        float carportSize = ((float) (carport.getLength() * carport.getWidth()) / 10000);
+        int postsByLoad = (int) Math.ceil(carportSize / carport.getPost().getBucklingCapacity());
+
+        int raftersNeededWidth = (int) Math.ceil((double) carport.getWidth() / carport.getRafter().getMaxLength());
+
+        int postByLoadNeededPrLength = postsByLoad / (raftersNeededWidth + 1);
+
+        int postLengthByBeamMaxGap = calcPostCountLength();
+
+        return Math.max(postByLoadNeededPrLength, postLengthByBeamMaxGap);
+    }
+
     //================================
     //============= Beams ============
     //================================
@@ -229,5 +249,13 @@ public class BillOfMaterial {
             }
         }
         return covers;
+    }
+
+    @Override
+    public String toString() {
+        return "BillOfMaterial{" +
+                "carport=" + carport +
+                ", lines=" + lines +
+                '}';
     }
 }
