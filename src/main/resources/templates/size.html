@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Fog - QuickByg</title>
+    <link href="../../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="page-wrapper">
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <main>
+        <div id="main-content">
+        <!-- Fill form action if needed -->
+        <form action="" method="post">
+            <div class="form-group">
+                <select name="length">
+                    <option hidden=""></option>
+                    <option value="bredde1">bredde1</option>
+                    <option value="bredde2">bredde2</option>
+                    <option value="bredde3">bredde3</option>
+                </select>
+                <select name="height">
+                    <option hidden=""></option>
+                    <option value="længde1">længde1</option>
+                    <option value="længde2">længde2</option>
+                    <option value="længde3">længde3</option>
+                </select>
+            </div>
+        </form>
+
+
+        <button onclick="toolShedShow()">Try it</button>
+
+        <form action="" method="post">
+            <div id="toolshed-div" class="form-group">
+                <select name="length">
+                    <option hidden="">bredde</option>
+                    <option value="bredde1">bredde1</option>
+                    <option value="bredde2">bredde2</option>
+                    <option value="bredde3">bredde3</option>
+                </select>
+                <select name="height">
+                    <option hidden="">længde</option>
+                    <option value="længde1">længde1</option>
+                    <option value="længde2">længde2</option>
+                    <option value="længde3">længde3</option>
+                </select>
+            </div>
+        </form>
+
+        <!-- Small script that hides the toolshed option -->
+
+        <script>
+            function toolShedShow() {
+                var x = document.getElementById("toolshed-div");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+        </script>
+        </div>
+    </main>
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</div>
+</body>
+</html>

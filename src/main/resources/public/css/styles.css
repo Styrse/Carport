@@ -6,16 +6,33 @@ body {
     padding: 0;
 }
 
+main {
+    flex: 1;
+}
+
+#main-content {
+    width: 100%;
+    max-width: 80vw;
+    margin: 2vw auto;
+    padding: 1rem;
+    background: #FFFFFF;
+}
+
 ul {
     margin: 0;
 }
-
 
 li {
     display: flex;
     flex-direction: row;
     text-align: center;
     border-bottom: 2px solid transparent;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /*navbar styling*/
@@ -129,4 +146,26 @@ footer {
 .address-box .line{
     display: block;
     margin-top: 5px;
+}
+
+/*Form Styling*/
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 18px 18px;
+    margin: 10px;
+    gap: 10px;
+}
+
+select, input   {
+    font-size: 16px;
+    border-radius: 5px;
+    background: #FFFFFF;
+    border: 1px solid #ccc;
+}
+
+#toolshed-div  {
+    display: none;
 }
