@@ -24,10 +24,12 @@ public class BuildingMaterialMapper {
         List<Material> allMaterials = new ArrayList<>();
 
         String sql =
-                "SELECT * " +
-                "FROM building_materials " +
-                "JOIN price_history USING (building_material_id) " +
-                "JOIN predefined_lengths USING (predefined_length_id)";
+                "SELECT DISTINCT ON (bm.building_material_id) " +
+                        "* " +
+                        "FROM building_materials bm " +
+                        "JOIN price_history ph ON bm.building_material_id = ph.building_material_id " +
+                        "WHERE bm.is_active = TRUE " +
+                        "AND ph.valid_to IS NULL;";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -35,7 +37,7 @@ public class BuildingMaterialMapper {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                int materialId = rs.getInt("building_material_id");
+                int itemId = rs.getInt("building_material_id");
                 String name = rs.getString("name");
                 String description = rs.getString("description");
                 String unit = rs.getString("unit");
@@ -46,17 +48,17 @@ public class BuildingMaterialMapper {
                 String type = rs.getString("material_type");
                 int bucklingCapacity = rs.getInt("buckling_capacity");
                 int postGap = rs.getInt("post_gap");
-                List<Integer> preCutLengths = getPreCutLengths(materialId);
+                List<Integer> preCutLengths = getPreCutLengths(itemId);
                 int lengthOverlap = rs.getInt("length_overlap");
                 int sideOverlap = rs.getInt("side_overlap");
                 int gapRafters = rs.getInt("gap_rafters");
 
                 Material material = switch (type) {
-                    case "post" -> new Post(name,description, costPrice, salesPrice, preCutLengths, unit, width, materialId, height, bucklingCapacity);
-                    case "beam" -> new Beam(name, description, costPrice, salesPrice, preCutLengths, unit, width, materialId, height, postGap);
-                    case "rafter" -> new Rafter(name, description, costPrice, salesPrice, preCutLengths, unit, width, materialId, height);
-                    case "fascia" -> new Fascia(name, description, costPrice, salesPrice, preCutLengths, unit, width, materialId, height);
-                    case "roof_cover" -> new RoofCover(name, description, costPrice, salesPrice, preCutLengths, unit, width, materialId, lengthOverlap, sideOverlap, gapRafters);
+                    case "post" -> new Post(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height, bucklingCapacity);
+                    case "beam" -> new Beam(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height, postGap);
+                    case "rafter" -> new Rafter(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height);
+                    case "fascia" -> new Fascia(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height);
+                    case "roof_cover" -> new RoofCover(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, lengthOverlap, sideOverlap, gapRafters);
                     default -> throw new DatabaseException("Unknown material type: " + type);
                 };
 

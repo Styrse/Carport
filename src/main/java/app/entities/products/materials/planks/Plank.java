@@ -34,8 +34,8 @@ import java.util.List;
 public abstract class Plank extends Material {
     private int height;
 
-    public Plank(String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int materialId, int height) {
-        super(name, description, costPrice, salesPrice, preCutsLengths, unit, width, materialId);
+    public Plank(int itemId, String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int height) {
+        super(itemId, name, description, costPrice, salesPrice, preCutsLengths, unit, width);
         this.height = height;
     }
 

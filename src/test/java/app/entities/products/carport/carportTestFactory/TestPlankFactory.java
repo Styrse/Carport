@@ -15,6 +15,7 @@ public class TestPlankFactory {
 
     public static Post createStandardPost() {
         return new Post(
+                1,
                 "Standard Test Post",
                 "Basic post for structural testing",
                 100.0,
@@ -22,7 +23,6 @@ public class TestPlankFactory {
                 preCutsLengths,
                 "pcs",
                 25,
-                1,
                 25,
                 5
         );
@@ -30,6 +30,7 @@ public class TestPlankFactory {
 
     public static Beam createStandardBeam() {
         return new Beam(
+                1,
                 "Standard Beam",
                 "Basic beam for testing",
                 120.0,
@@ -37,7 +38,6 @@ public class TestPlankFactory {
                 preCutsLengths,
                 "pcs",
                 25,
-                340,
                 25,
                 340
         );
@@ -46,6 +46,7 @@ public class TestPlankFactory {
     public static Beam createShorterBeam() {
         preCutsLengths.removeIf(n -> n > 400);
         return new Beam(
+                1,
                 "Shorter Beam",
                 "Shorter max distance beam",
                 120.0,
@@ -53,7 +54,6 @@ public class TestPlankFactory {
                 preCutsLengths,
                 "pcs",
                 25,
-                250,
                 25,
                 240
         );
@@ -62,6 +62,7 @@ public class TestPlankFactory {
     public static Beam createLongerBeam() {
         preCutsLengths.add(700);
         return new Beam(
+                1,
                 "Longer Beam",
                 "Longer max distance beam",
                 120.0,
@@ -69,7 +70,6 @@ public class TestPlankFactory {
                 preCutsLengths,
                 "pcs",
                 25,
-                1,
                 25,
                 400
         );
@@ -77,6 +77,7 @@ public class TestPlankFactory {
 
     public static Rafter createStandardRafter() {
         return new Rafter(
+                1,
                 "Standard Rafter",
                 "Basic rafter for testing",
                 110.0,
@@ -84,7 +85,6 @@ public class TestPlankFactory {
                 preCutsLengths,
                 "pcs",
                 25,
-                1,
                 25
         );
     }
@@ -92,6 +92,7 @@ public class TestPlankFactory {
     public static Rafter createShorterRafter() {
         preCutsLengths.removeIf(n -> n > 400);
         return new Rafter(
+                1,
                 "Shorter Rafter",
                 "Shorter max length rafter",
                 110.0,
@@ -99,7 +100,6 @@ public class TestPlankFactory {
                 preCutsLengths,
                 "pcs",
                 25,
-                1,
                 25
         );
     }
@@ -107,6 +107,7 @@ public class TestPlankFactory {
     public static Rafter createLongerRafter() {
         preCutsLengths.add(700);
         return new Rafter(
+                1,
                 "Longer Rafter",
                 "Longer max length rafter",
                 110.0,
@@ -114,13 +115,13 @@ public class TestPlankFactory {
                 preCutsLengths,
                 "pcs",
                 25,
-                1,
                 25
         );
     }
 
     public static Fascia createStandardFascia() {
         return new Fascia(
+                1,
                 "Standard Fascia",
                 "Basic fascia board for testing",
                 80.0,
@@ -128,13 +129,13 @@ public class TestPlankFactory {
                 preCutsLengths,
                 "pcs",
                 25,
-                1,
                 25
         );
     }
 
     public static RoofCover createStandardRoofCover() {
         return new RoofCover(
+                1,
                 "Standard roof",
                 "Clear strong roof",
                 25,
@@ -142,7 +143,6 @@ public class TestPlankFactory {
                 preCutsLengths,
                 "m",
                 100,
-                1,
                 20,
                 10,
                 55

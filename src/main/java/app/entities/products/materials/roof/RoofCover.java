@@ -9,8 +9,8 @@ public class RoofCover extends Material {
     private float sideOverlap;
     private int gapRafters;
 
-    public RoofCover(String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int materialId, int lengthOverlap, float sideOverlap, int gapRafters) {
-        super(name, description, costPrice, salesPrice, preCutsLengths, unit, width, materialId);
+    public RoofCover(int itemId, String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int lengthOverlap, float sideOverlap, int gapRafters) {
+        super(itemId, name, description, costPrice, salesPrice, preCutsLengths, unit, width);
         this.lengthOverlap = lengthOverlap;
         this.sideOverlap = sideOverlap;
         this.gapRafters = gapRafters;

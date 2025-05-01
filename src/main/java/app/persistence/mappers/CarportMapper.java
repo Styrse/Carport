@@ -1,5 +1,6 @@
 package app.persistence.mappers;
 
+import app.entities.products.materials.MaterialRole;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 
@@ -12,7 +13,40 @@ import java.util.List;
 
 import app.entities.products.carport.Carport;
 
+import static app.Main.connectionPool;
+
 public class CarportMapper {
+
+    //Create
+    public static int createCarport(Carport carport) throws SQLException {
+        String sql = "INSERT INTO carports (width, length, height, roof_type, roof_angle, " +
+                "post_building_material_id, beam_building_material_id, rafter_building_material_id, fascia_building_material_id, total_price) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING carport_id";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setFloat(1, carport.getWidth());
+            ps.setFloat(2, carport.getLength());
+            ps.setFloat(3, carport.getHeight());
+            ps.setString(4, carport.getRoofType());
+            ps.setFloat(5, carport.getRoofAngle());
+            ps.setInt(6, carport.getMaterial().get(MaterialRole.POST).getItemId());
+            ps.setInt(7, carport.getMaterial().get(MaterialRole.BEAM).getItemId());
+            ps.setInt(8, carport.getMaterial().get(MaterialRole.RAFTER).getItemId());
+            ps.setInt(9, carport.getMaterial().get(MaterialRole.FASCIA).getItemId());
+            ps.setFloat(10, carport.getBillOfMaterial().calcTotalPrice());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("carport_id");
+                } else {
+                    throw new SQLException("Failed to retrieve carport_id");
+                }
+            }
+        }
+    }
+
 
     public static List<Carport> getCarports(ConnectionPool connectionPool) throws DatabaseException {
         List<Carport> allCarports = new ArrayList<>();

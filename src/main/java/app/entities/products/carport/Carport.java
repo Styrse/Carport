@@ -48,8 +48,8 @@ public class Carport extends Product {
     }
 
     //Carport with pitched roof
-    public Carport(int carportId, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, int roofAngle, Map<MaterialRole, Material> materialMap) {
-        super(name, description, costPrice, salesPrice);
+    public Carport(int itemId, int carportId, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, int roofAngle, Map<MaterialRole, Material> materialMap) {
+        super(itemId, name, description, costPrice, salesPrice);
         this.carportId = carportId;
         this.width = width;
         this.length = length;
@@ -57,6 +57,11 @@ public class Carport extends Product {
         this.roofType = roofType;
         this.roofAngle = roofAngle;
         this.materialMap = materialMap;
+    }
+
+    @Override
+    public String getItemType() {
+        return "carport";
     }
 
     //Generate fresh BillOfMaterial every time

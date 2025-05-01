@@ -21,6 +21,12 @@ public class BillOfMaterial {
         calculateMaterials();
     }
 
+    public float calcTotalPrice(){
+        float total = 0;
+        //TODO: Do
+        return total;
+    }
+
     public List<BillOfMaterialsItem> getLines() {
         return lines;
     }
