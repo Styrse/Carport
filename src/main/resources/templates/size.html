@@ -12,16 +12,29 @@
 
     <main>
         <div id="main-content">
+
+            <h1>Angiv mål</h1>
+            <p>Udfyld nedenstående omhyggeligt og tryk "Videre".Felter markeret med * SKAL udfyldes!</p>
+
         <!-- Fill form action if needed -->
         <form action="" method="post">
             <div class="form-group">
-                <select name="length">
+                <label for="cwidth">Carport bredde *</label>
+                <select id="cwidth" name="length">
                     <option hidden=""></option>
                     <option value="bredde1">bredde1</option>
                     <option value="bredde2">bredde2</option>
                     <option value="bredde3">bredde3</option>
                 </select>
-                <select name="height">
+                <label for="cheight">Carport længde *</label>
+                <select id="cheight" name="height">
+                    <option hidden=""></option>
+                    <option value="længde1">længde1</option>
+                    <option value="længde2">længde2</option>
+                    <option value="længde3">længde3</option>
+                </select>
+                <label for="ctrapez">Carport trapeztag *</label>
+                <select id="ctrapez" name="height">
                     <option hidden=""></option>
                     <option value="længde1">længde1</option>
                     <option value="længde2">længde2</option>
@@ -30,27 +43,33 @@
             </div>
         </form>
 
+            <button onclick="toolShedShow()">Try it</button>
 
-        <button onclick="toolShedShow()">Try it</button>
+            <form action="" method="post">
+                <div id="toolshed-div" class="form-group">
+                    <select name="length">
+                        <option hidden="">bredde</option>
+                        <option value="bredde1">bredde1</option>
+                        <option value="bredde2">bredde2</option>
+                        <option value="bredde3">bredde3</option>
+                    </select>
+                    <select name="height">
+                        <option hidden="">længde</option>
+                        <option value="længde1">længde1</option>
+                        <option value="længde2">længde2</option>
+                        <option value="længde3">længde3</option>
+                    </select>
+                </div>
+            </form>
 
-        <form action="" method="post">
-            <div id="toolshed-div" class="form-group">
-                <select name="length">
-                    <option hidden="">bredde</option>
-                    <option value="bredde1">bredde1</option>
-                    <option value="bredde2">bredde2</option>
-                    <option value="bredde3">bredde3</option>
-                </select>
-                <select name="height">
-                    <option hidden="">længde</option>
-                    <option value="længde1">længde1</option>
-                    <option value="længde2">længde2</option>
-                    <option value="længde3">længde3</option>
-                </select>
-            </div>
-        </form>
+            <form action="" method="GET">
+                <button type="submit" class="active">Tilbage</button>
+            </form>
+            <form action="" method="GET">
+                <button type="submit" class="active">videre</button>
+            </form>
 
-        <!-- Small script that hides the toolshed option -->
+            <!-- Small script that hides the toolshed option -->
 
         <script>
             function toolShedShow() {
