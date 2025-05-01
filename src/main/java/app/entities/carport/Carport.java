@@ -16,7 +16,7 @@ public class Carport {
     private Fascia fascia;
     private RoofCover roofCover;
 
-    public Carport(int width, int length, int height, String roofType,
+    public Carport(int subProductId, int width, int length, int height, String roofType,
                    Post post, Beam beam, Rafter rafter,
                    Fascia fascia, RoofCover roofCover) {
         this.width = width;
@@ -30,12 +30,13 @@ public class Carport {
         this.roofCover = roofCover;
     }
 
-    public Carport(int width, int length, int height, String roofType,
+    public Carport(int subProductId, int width, int length, int height, String roofType,
                    Post post, Beam beam, Rafter rafter,
                    Fascia fascia, RoofCover roofCover, int roofAngle) {
-        this(width, length, height, roofType, post, beam, rafter, fascia, roofCover);
+        this(subProductId, width, length, height, roofType, post, beam, rafter, fascia, roofCover);
         this.roofAngle = roofAngle;
     }
+
 
     // Generate fresh BillOfMaterial every time
     public BillOfMaterial getBillOfMaterial() {
@@ -135,5 +136,9 @@ public class Carport {
                 ", fascia=" + (fascia != null ? fascia.getName() : "None") +
                 ", roofCover=" + (roofCover != null ? roofCover.getName() : "None") +
                 '}';
+    }
+
+    public int getSubProductId() {
+        ret
     }
 }
