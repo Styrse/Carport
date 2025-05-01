@@ -1,11 +1,27 @@
 package app.entities.products.carport;
 
-import app.entities.products.materials.planks.Beam;
-import app.entities.products.materials.planks.Fascia;
-import app.entities.products.materials.planks.Post;
-import app.entities.products.materials.planks.Rafter;
-import app.entities.products.materials.roof.RoofCover;
+import app.Main;
+import app.entities.products.materials.Material;
+import app.entities.products.materials.MaterialRole;
 import app.entities.products.Product;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * A map of materials used in this carport, categorized by their role (e.g., POST, BEAM, RAFTER),
+ * where each key corresponds to a single selected material of that type.
+ *
+ * <p><strong>Design decisions:</strong></p>
+ * <ul>
+ *   <li><strong>Map over List:</strong> A {@code Map<MaterialRole, Material>} is used instead of a {@code List<Material>}
+ *       to provide fast, descriptive access to specific materials by their role.
+ *       This approach avoids the need for iteration and type checks when retrieving materials,
+ *       and reflects that each role is uniquely represented in a carport (e.g., one POST type, one BEAM type, etc.).</li>
+ * </ul>
+ *
+ * <p>This design provides a good balance between flexibility and simplicity.</p>
+ */
 
 public class Carport extends Product {
     private int carportId;
@@ -15,30 +31,24 @@ public class Carport extends Product {
     private String roofType;
     private int roofAngle;
 
-    private Post post;
-    private Beam beam;
-    private Rafter rafter;
-    private Fascia fascia;
-    private RoofCover roofCover;
+    private Map<MaterialRole, Material> materialMap;
 
     public Carport() {
     }
 
-    public Carport(int carportId, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
+    //Carport with flat roof
+    public Carport(String name, String description, double costPrice, double salesPrice, int carportId, int width, int length, int height, String roofType, Map<MaterialRole, Material> materialMap) {
         super(name, description, costPrice, salesPrice);
         this.carportId = carportId;
         this.width = width;
         this.length = length;
         this.height = height;
         this.roofType = roofType;
-        this.post = post;
-        this.beam = beam;
-        this.rafter = rafter;
-        this.fascia = fascia;
-        this.roofCover = roofCover;
+        this.materialMap = materialMap;
     }
 
-    public Carport(int carportId, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, int roofAngle, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
+    //Carport with pitched roof
+    public Carport(int carportId, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, int roofAngle, Map<MaterialRole, Material> materialMap) {
         super(name, description, costPrice, salesPrice);
         this.carportId = carportId;
         this.width = width;
@@ -46,11 +56,7 @@ public class Carport extends Product {
         this.height = height;
         this.roofType = roofType;
         this.roofAngle = roofAngle;
-        this.post = post;
-        this.beam = beam;
-        this.rafter = rafter;
-        this.fascia = fascia;
-        this.roofCover = roofCover;
+        this.materialMap = materialMap;
     }
 
     //Generate fresh BillOfMaterial every time
@@ -82,26 +88,6 @@ public class Carport extends Product {
         return roofAngle;
     }
 
-    public Post getPost() {
-        return post;
-    }
-
-    public Beam getBeam() {
-        return beam;
-    }
-
-    public Rafter getRafter() {
-        return rafter;
-    }
-
-    public Fascia getFascia() {
-        return fascia;
-    }
-
-    public RoofCover getRoofCover() {
-        return roofCover;
-    }
-
     public void setWidth(int width) {
         this.width = width;
     }
@@ -126,24 +112,8 @@ public class Carport extends Product {
         this.roofAngle = roofAngle;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
-    }
-
-    public void setBeam(Beam beam) {
-        this.beam = beam;
-    }
-
-    public void setRafter(Rafter rafter) {
-        this.rafter = rafter;
-    }
-
-    public void setFascia(Fascia fascia) {
-        this.fascia = fascia;
-    }
-
-    public void setRoofCover(RoofCover roofCover) {
-        this.roofCover = roofCover;
+    public Map<MaterialRole, Material> getMaterial() {
+        return materialMap;
     }
 
     @Override
@@ -153,11 +123,6 @@ public class Carport extends Product {
                 ", length=" + length +
                 ", height=" + height +
                 ", roofType='" + roofType + '\'' +
-                ", post=" + (post != null ? post.getName() : "None") +
-                ", beam=" + (beam != null ? beam.getName() : "None") +
-                ", rafter=" + (rafter != null ? rafter.getName() : "None") +
-                ", fascia=" + (fascia != null ? fascia.getName() : "None") +
-                ", roofCover=" + (roofCover != null ? roofCover.getName() : "None") +
                 '}';
     }
 }
