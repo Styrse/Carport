@@ -1,4 +1,4 @@
-package app.entities.carport.carportTestFactory;
+package app.entities.products.carport.carportTestFactory;
 
 import app.entities.products.carport.Carport;
 import app.entities.products.materials.planks.Beam;
@@ -25,6 +25,26 @@ public class TestCarportFactory {
       Creates a Carport with standard posts, beams, rafters, fascias,
       but allows injecting any RoofCover and custom dimensions.
      */
+    public static Carport createCarport(int width, int length) {
+        return new Carport(
+                0,
+                0,
+                "Test Carport",
+                "Generated carport for measurement tests",
+                0.0,
+                0.0,
+                width,
+                length,
+                250,
+                "flat",
+                TestPlankFactory.createStandardPost(),
+                TestPlankFactory.createStandardBeam(),
+                TestPlankFactory.createStandardRafter(),
+                TestPlankFactory.createStandardFascia(),
+                TestPlankFactory.createStandardRoofCover()
+        );
+    }
+
     public static Carport createCarportWithRoofCover(RoofCover roofCover, int width, int length) {
         return new Carport(
                 0,

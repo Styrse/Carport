@@ -50,7 +50,7 @@ public class Carport extends Product {
         this.roofCover = roofCover;
     }
 
-    // Generate fresh BillOfMaterial every time
+    //Generate fresh BillOfMaterial every time
     public BillOfMaterial getBillOfMaterial() {
         return new BillOfMaterial(this);
     }

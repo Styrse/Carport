@@ -1,9 +1,10 @@
-package app.entities.carport.carportTestFactory;
+package app.entities.products.carport.carportTestFactory;
 
 import app.entities.products.materials.planks.Beam;
 import app.entities.products.materials.planks.Fascia;
 import app.entities.products.materials.planks.Post;
 import app.entities.products.materials.planks.Rafter;
+import app.entities.products.materials.roof.RoofCover;
 
 public class TestPlankFactory {
 
@@ -141,8 +142,25 @@ public class TestPlankFactory {
                 22,
                 50,
                 "pcs",
+                0
+        );
+    }
+
+    public static RoofCover createStandardRoofCover() {
+        return new RoofCover(
                 0,
-                false
+                0,
+                "Standard roof",
+                "Clear strong roof",
+                25,
+                55,
+                250,
+                110,
+                300,
+                "m",
+                20,
+                10,
+                55
         );
     }
 }
