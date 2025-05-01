@@ -25,13 +25,18 @@ class OrderMapperTest {
                 //Drop tables and sequences if they exist
                 stmt.execute("DROP TABLE IF EXISTS test.orders;");
                 stmt.execute("DROP SEQUENCE IF EXISTS test.orders_order_id_seq CASCADE;");
+                stmt.execute("DROP TABLE IF EXISTS test.order_status_history");
+                stmt.execute("DROP TABLE IF EXISTS test.order_items");
 
                 //Create tables as empty copies of the originals
                 stmt.execute("CREATE TABLE test.orders AS (SELECT * from public.orders) WITH NO DATA;");
+                stmt.execute("CREATE TABLE test.order_status_history AS (SELECT * from public.order_status_history) WITH NO DATA");
+                stmt.execute("CREATE TABLE test.order_items AS (SELECT * from public.order_items) WITH NO DATA");
 
                 //Create sequences and attach to ID columns
                 stmt.execute("CREATE SEQUENCE test.orders_order_id_seq;");
                 stmt.execute("ALTER TABLE test.orders ALTER COLUMN order_id SET DEFAULT nextval('test.orders_order_id_seq');");
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,10 +52,15 @@ class OrderMapperTest {
                 stmt.execute("TRUNCATE TABLE test.orders RESTART IDENTITY CASCADE;");
 
                 //Insert 3 example orders
-                stmt.execute("INSERT INTO test.orders (order_id, user_id, staff_id, product_id, order_date, payment_date, payment_status) VALUES " +
-                        "(1, 1, 2, 101, '2024-01-10 10:30:00', '2024-01-12 14:00:00', 'paid'), " +
-                        "(2, 2, 2, 102, '2024-02-05 09:15:00', null, 'pending'), " +
-                        "(3, 3, 2, 103, '2024-03-20 16:45:00', '2024-03-22 10:00:00', 'paid');");
+                stmt.execute("INSERT INTO test.orders (user_id, carport_id, building_material_id, staff_id, total_price) VALUES " +
+                        "(1, NULL, 2, 3, 7999.95), " +
+                        "(2, NULL, 3, 3, 10499.00), " +
+                        "(3, 4, NULL, 2, 6599.50);");
+
+                stmt.execute("INSERT INTO test.order_status_history (order_id, status, update_date) VALUES " +
+                        "(1, 'Received', CURRENT_DATE), " +
+                        "(1, 'Under Review', CURRENT_DATE + INTERVAL '1 day'), " +
+                        "(2, 'Received', CURRENT_DATE);");
 
                 //Reset sequences
                 stmt.execute("SELECT setval('test.orders_order_id_seq', COALESCE((SELECT MAX(order_id) + 1 FROM test.orders), 1), false)");
@@ -65,7 +75,8 @@ class OrderMapperTest {
     @DisplayName("CreateOrder Test")
     void createOrder() throws DatabaseException {
         //Arrange
-        Order order = new Order(LocalDate.parse("2025-04-29"), "done", "paid", LocalDate.parse("2025-04-30"), new Customer());
+        Customer user = new Customer("John", "Doe", 12345678, "john@doe.com", "John123", 1);
+        Order order = new Order(LocalDate.of(2025, 5, 1), "Shipped", user);
 
         //Act
         OrderMapper.createOrder(order);
@@ -95,10 +106,10 @@ class OrderMapperTest {
         //Arrange
 
         //Act
-        String actual = OrderMapper.getOrderByOrderId(1).getPaymentStatus();
+        String actual = OrderMapper.getOrderByOrderId(1).getOrderStatus();
 
         //Assert
-        String expected = "paid";
+        String expected = "Under Review";
         assertEquals(expected, actual);
 
     }
