@@ -64,7 +64,7 @@ entity building_materials {
   description
   width
   material_type : text, not null
-  treated_for_ground_contact : boolean
+  buckling_load : numeric
   post_gap
   support_gutters : boolean
   is_active : boolean, not null

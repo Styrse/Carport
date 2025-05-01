@@ -1,11 +1,11 @@
 package app.persistence.mappers;
 
-import app.entities.materials.Material;
-import app.entities.materials.planksAndRoofCovers.planks.Beam;
-import app.entities.materials.planksAndRoofCovers.planks.Fascia;
-import app.entities.materials.planksAndRoofCovers.planks.Post;
-import app.entities.materials.planksAndRoofCovers.planks.Rafter;
-import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
+import app.entities.products.materials.Material;
+import app.entities.products.materials.planks.Beam;
+import app.entities.products.materials.planks.Fascia;
+import app.entities.products.materials.planks.Post;
+import app.entities.products.materials.planks.Rafter;
+import app.entities.products.materials.roof.RoofCover;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 
@@ -65,7 +65,7 @@ public class BuildingMaterialMapper {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error retrieving materials", e);
+            throw new DatabaseException(e, "Error retrieving materials");
         }
 
         return allMaterials;

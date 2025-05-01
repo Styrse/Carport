@@ -75,8 +75,8 @@ public class OrderMapper {
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setInt(1, orderId);
-            ps.setInt(2, item.getProductId());
-            ps.setInt(3, item.getSubProductId());
+            ps.setInt(2, item.getCarportId());
+            ps.setInt(3, item.getBuildingMaterialId());
             ps.setInt(4, item.getQuantity());
 
             ps.executeUpdate();

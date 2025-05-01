@@ -7,8 +7,8 @@ public class RoofCover extends Material {
     private float sideOverlap;
     private int maxLengthBetweenRafters;
 
-    public RoofCover(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int length, int width, int maxLength, String unit, int lengthOverlap, float sideOverlap, int maxLengthBetweenRafters) {
-        super(productID, subProductID, name, description, costPrice, salesPrice, length, width, maxLength, unit);
+    public RoofCover(String name, String description, double costPrice, double salesPrice, int materialId, int length, int width, int maxLength, String unit, int lengthOverlap, float sideOverlap, int maxLengthBetweenRafters) {
+        super(name, description, costPrice, salesPrice, materialId, length, width, maxLength, unit);
         this.lengthOverlap = lengthOverlap;
         this.sideOverlap = sideOverlap;
         this.maxLengthBetweenRafters = maxLengthBetweenRafters;

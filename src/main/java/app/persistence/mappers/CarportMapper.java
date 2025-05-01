@@ -1,14 +1,7 @@
 package app.persistence.mappers;
 
-import app.entities.carport.Carport;
-import app.entities.materials.planksAndRoofCovers.planks.Beam;
-import app.entities.materials.planksAndRoofCovers.planks.Fascia;
-import app.entities.materials.planksAndRoofCovers.planks.Post;
-import app.entities.materials.planksAndRoofCovers.planks.Rafter;
-import app.entities.materials.planksAndRoofCovers.roof.RoofCover;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
-import javassist.convert.TransformBefore;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,9 +25,7 @@ public class CarportMapper {
                 ResultSet rs = ps.executeQuery();
 
                 while(rs.next()) {
-                    int subProductId = rs.getInt("sub_product_id");
-                    int productId = rs.getString("product_id");
-                    int width = rs.getString("width");
+                    int width = rs.getInt("width");
                     int length = rs.getInt("length");
                     int height = rs.getInt("height");
                     String roofType = rs.getString("roof_type");
@@ -60,9 +51,9 @@ public class CarportMapper {
         return allCarports;
     }
 
-    public static Carport getCarportBySubproductID(List<Carport> allCarports, int subProductId) {
+    public static Carport getCarportById(List<Carport> allCarports, int carportId) {
         for (Carport carport : allCarports) {
-            if (carport.getSubProductId() == subProductId) {
+            if (carport.getCarportId() == carportId) {
                 return carport;
             }
         }
