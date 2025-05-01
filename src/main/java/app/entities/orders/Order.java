@@ -1,9 +1,7 @@
 package app.entities.orders;
 
-import app.entities.products.carport.Carport;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
-import app.entities.users.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -32,8 +32,8 @@ import app.entities.products.materials.Material;
 public abstract class Plank extends Material {
     private int height;
 
-    public Plank(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int length, int width, int maxLength, String unit, int height) {
-        super(productID, subProductID, name, description, costPrice, salesPrice, length, width, maxLength, unit);
+    public Plank(String name, String description, double costPrice, double salesPrice, int materialId, int length, int width, int maxLength, String unit, int height) {
+        super(name, description, costPrice, salesPrice, materialId, length, width, maxLength, unit);
         this.height = height;
     }
 

@@ -3,10 +3,10 @@ package app.entities.products.materials;
 import app.entities.products.Product;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class Material extends Product {
+    private int materialId;
     private int length;
     private int width;
     private int maxLength;
@@ -15,12 +15,17 @@ public abstract class Material extends Product {
     //TODO: Make it specific to each material - DB table(predefined_lengths)
     public static final List<Integer> PREDEFINED_LENGTHS = Arrays.asList(300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600);
 
-    public Material(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int length, int width, int maxLength, String unit) {
-        super(productID, subProductID, name, description, costPrice, salesPrice);
+    public Material(String name, String description, double costPrice, double salesPrice, int materialId, int length, int width, int maxLength, String unit) {
+        super(name, description, costPrice, salesPrice);
+        this.materialId = materialId;
         this.length = length;
         this.width = width;
         this.maxLength = maxLength;
         this.unit = unit;
+    }
+
+    public int getMaterialId() {
+        return materialId;
     }
 
     public int getLength() {
@@ -33,6 +38,10 @@ public abstract class Material extends Product {
 
     public int getWidth() {
         return width;
+    }
+
+    public void setMaterialId(int materialId) {
+        this.materialId = materialId;
     }
 
     public void setWidth(int width) {

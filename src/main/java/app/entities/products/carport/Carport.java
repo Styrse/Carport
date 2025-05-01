@@ -8,6 +8,7 @@ import app.entities.products.materials.roof.RoofCover;
 import app.entities.products.Product;
 
 public class Carport extends Product {
+    private int carportId;
     private int width;
     private int length;
     private int height;
@@ -23,8 +24,9 @@ public class Carport extends Product {
     public Carport() {
     }
 
-    public Carport(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
-        super(productID, subProductID, name, description, costPrice, salesPrice);
+    public Carport(int carportId, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
+        super(name, description, costPrice, salesPrice);
+        this.carportId = carportId;
         this.width = width;
         this.length = length;
         this.height = height;
@@ -36,8 +38,9 @@ public class Carport extends Product {
         this.roofCover = roofCover;
     }
 
-    public Carport(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, int roofAngle, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
-        super(productID, subProductID, name, description, costPrice, salesPrice);
+    public Carport(int carportId, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, int roofAngle, Post post, Beam beam, Rafter rafter, Fascia fascia, RoofCover roofCover) {
+        super(name, description, costPrice, salesPrice);
+        this.carportId = carportId;
         this.width = width;
         this.length = length;
         this.height = height;
@@ -53,6 +56,10 @@ public class Carport extends Product {
     //Generate fresh BillOfMaterial every time
     public BillOfMaterial getBillOfMaterial() {
         return new BillOfMaterial(this);
+    }
+
+    public int getCarportId() {
+        return carportId;
     }
 
     public int getWidth() {
@@ -105,6 +112,10 @@ public class Carport extends Product {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public void setCarportId(int carportId) {
+        this.carportId = carportId;
     }
 
     public void setRoofType(String roofType) {
