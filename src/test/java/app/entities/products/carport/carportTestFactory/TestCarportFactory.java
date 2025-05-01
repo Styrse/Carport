@@ -28,7 +28,6 @@ public class TestCarportFactory {
     public static Carport createCarport(int width, int length) {
         return new Carport(
                 0,
-                0,
                 "Test Carport",
                 "Generated carport for measurement tests",
                 0.0,
@@ -47,7 +46,6 @@ public class TestCarportFactory {
 
     public static Carport createCarportWithRoofCover(RoofCover roofCover, int width, int length) {
         return new Carport(
-                0,
                 0,
                 "Test Carport",
                 "Generated carport for measurement tests",
@@ -68,7 +66,6 @@ public class TestCarportFactory {
     public static Carport createCarportWithRafter(Rafter rafter, int width, int length) {
         return new Carport(
                 0,
-                0,
                 "Test Carport",
                 "Generated carport for measurement tests",
                 0.0,
@@ -87,7 +84,6 @@ public class TestCarportFactory {
 
     public static Carport createCarportWithBeam(Beam beam, int width, int length) {
         return new Carport(
-                0,
                 0,
                 "Test Carport",
                 "Generated carport for measurement tests",

@@ -10,32 +10,30 @@ public class TestPlankFactory {
 
     public static Post createStandardPost() {
         return new Post(
-                0,
-                0,
                 "Standard Test Post",
                 "Basic post for structural testing",
                 100.0,
-                150.0,
-                600,
-                10,
-                10,
-                "pcs",
+                150,
                 0,
-                true
+                150,
+                20,
+                600,
+                "pcs",
+                25,
+                5
         );
     }
 
     public static Beam createStandardBeam() {
         return new Beam(
-                0,
-                0,
                 "Standard Beam",
                 "Basic beam for testing",
                 120.0,
                 180.0,
+                0,
                 600,
                 20,
-                45,
+                600,
                 "pcs",
                 0,
                 340
@@ -44,15 +42,14 @@ public class TestPlankFactory {
 
     public static Beam createShorterBeam() {
         Beam beam = new Beam(
-                0,
-                0,
                 "Shorter Beam",
                 "Shorter max distance beam",
                 120.0,
                 180.0,
-                400,
+                0,
+                600,
                 20,
-                45,
+                400,
                 "pcs",
                 0,
                 250
@@ -63,15 +60,14 @@ public class TestPlankFactory {
 
     public static Beam createLongerBeam() {
         return new Beam(
-                0,
-                0,
                 "Longer Beam",
                 "Longer max distance beam",
                 120.0,
                 180.0,
+                0,
                 600,
                 20,
-                45,
+                600,
                 "pcs",
                 0,
                 400
@@ -80,15 +76,14 @@ public class TestPlankFactory {
 
     public static Rafter createStandardRafter() {
         return new Rafter(
-                0,
-                0,
                 "Standard Rafter",
                 "Basic rafter for testing",
                 110.0,
                 160.0,
+                0,
                 600,
                 30,
-                55,
+                600,
                 "pcs",
                 0
         );
@@ -96,15 +91,14 @@ public class TestPlankFactory {
 
     public static Rafter createShorterRafter() {
         Rafter rafter = new Rafter(
-                0,
-                0,
                 "Shorter Rafter",
                 "Shorter max length rafter",
                 110.0,
                 160.0,
+                0,
                 400,
                 30,
-                55,
+                600,
                 "pcs",
                 0
         );
@@ -114,15 +108,14 @@ public class TestPlankFactory {
 
     public static Rafter createLongerRafter() {
         Rafter rafter = new Rafter(
-                0,
-                0,
                 "Longer Rafter",
                 "Longer max length rafter",
                 110.0,
                 160.0,
+                0,
                 700,
                 30,
-                55,
+                600,
                 "pcs",
                 0
         );
@@ -132,12 +125,11 @@ public class TestPlankFactory {
 
     public static Fascia createStandardFascia() {
         return new Fascia(
-                0,
-                0,
                 "Standard Fascia",
                 "Basic fascia board for testing",
                 80.0,
                 130.0,
+                0,
                 600,
                 22,
                 50,
@@ -148,12 +140,11 @@ public class TestPlankFactory {
 
     public static RoofCover createStandardRoofCover() {
         return new RoofCover(
-                0,
-                0,
                 "Standard roof",
                 "Clear strong roof",
                 25,
                 55,
+                0,
                 250,
                 110,
                 300,

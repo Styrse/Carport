@@ -1,18 +1,20 @@
 package app.entities.products.materials.planks;
 
+import java.util.List;
+
 public class Beam extends Plank {
-    private int maxLengthBetweenPosts;
+    private int postGap;
 
-    public Beam(String name, String description, double costPrice, double salesPrice, int materialId, int length, int width, int maxLength, String unit, int height, int maxLengthBetweenPosts) {
-        super(name, description, costPrice, salesPrice, materialId, length, width, maxLength, unit, height);
-        this.maxLengthBetweenPosts = maxLengthBetweenPosts;
+    public Beam(String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int materialId, int height, int postGap) {
+        super(name, description, costPrice, salesPrice, preCutsLengths, unit, width, materialId, height);
+        this.postGap = postGap;
     }
 
-    public int getMaxLengthBetweenPosts() {
-        return maxLengthBetweenPosts;
+    public int getPostGap() {
+        return postGap;
     }
 
-    public void setMaxLengthBetweenPosts(int maxLengthBetweenPosts) {
-        this.maxLengthBetweenPosts = maxLengthBetweenPosts;
+    public void setPostGap(int postGap) {
+        this.postGap = postGap;
     }
 }
