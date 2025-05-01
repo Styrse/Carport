@@ -9,15 +9,16 @@ public class Staff extends User {
     private List<Order> myWorkOrders;
 
     public Staff() {
-        this.myWorkOrders = new ArrayList<>();    }
-
-    public Staff(String firstName, String lastName, int phoneNumber, String email, String password) {
-        super(firstName, lastName, phoneNumber, email, password);
         this.myWorkOrders = new ArrayList<>();
     }
 
-    public Staff(int userID, String firstName, String lastName, int phoneNumber, String email, String password) {
-        super(userID, firstName, lastName, phoneNumber, email, password);
+    public Staff(String firstName, String lastName, int phoneNumber, String email, String password, int roleId) {
+        super(firstName, lastName, phoneNumber, email, password, roleId);
+        this.myWorkOrders = new ArrayList<>();
+    }
+
+    public Staff(int userID, String firstName, String lastName, int phoneNumber, String email, String password, int roleId) {
+        super(userID, firstName, lastName, phoneNumber, email, password, roleId);
         this.myWorkOrders = new ArrayList<>();
     }
 

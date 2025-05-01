@@ -9,6 +9,11 @@ public abstract class Product {
     public Product() {
     }
 
+    public Product(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public Product(String name, String description, double costPrice, double salesPrice) {
         this.name = name;
         this.description = description;

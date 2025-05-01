@@ -37,8 +37,8 @@ public class Carport extends Product {
     }
 
     //Carport with flat roof
-    public Carport(String name, String description, double costPrice, double salesPrice, int carportId, int width, int length, int height, String roofType, Map<MaterialRole, Material> materialMap) {
-        super(name, description, costPrice, salesPrice);
+    public Carport(String name, String description, int carportId, int width, int length, int height, String roofType, Map<MaterialRole, Material> materialMap) {
+        super(name, description);
         this.carportId = carportId;
         this.width = width;
         this.length = length;

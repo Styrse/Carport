@@ -2,6 +2,9 @@ package app.entities.products.carport.carportTestFactory;
 
 import app.entities.products.materials.roof.RoofCover;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * TestRoofCoverFactory
  *
@@ -14,40 +17,40 @@ import app.entities.products.materials.roof.RoofCover;
 
 public class TestRoofCoverFactory {
 
+    public static List<Integer> preCutsLengths = Arrays.asList(300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600);
+
     public static RoofCover createStandardTestRoofCover() {
         return new RoofCover(
                 "Standard Test Roof",
                 "Baseline for comparisons",
                 150,
                 250,
-                0,
-                600,
-                100,
-                600,
+                preCutsLengths,
                 "m2",
+                100,
+                1,
                 20,
-                20f,
+                10,
                 55
         );
     }
 
     public static RoofCover createShortPlankRoofCover() {
-        RoofCover roofCover = new RoofCover(
+        preCutsLengths.removeIf(n -> n > 400);
+        return new RoofCover(
                 "Short Plank Roof",
                 "Shorter planks for stress length tests",
                 160,
                 260,
-                0,
-                400,
-                100,
-                400,
+                preCutsLengths,
                 "m2",
+                100,
+                1,
                 20,
-                20f,
+                10,
                 55
+
         );
-        roofCover.setMaxLength(400);
-        return roofCover;
     }
 
     public static RoofCover createTinyOverlapRoofCover() {
@@ -56,13 +59,12 @@ public class TestRoofCoverFactory {
                 "Minimal overlaps to maximize coverage",
                 140,
                 240,
-                0,
-                600,
-                100,
-                600,
+                preCutsLengths,
                 "m2",
+                100,
+                1,
+                20,
                 5,
-                5f,
                 55
         );
     }
@@ -73,13 +75,12 @@ public class TestRoofCoverFactory {
                 "Extra wide sheet for width tests",
                 170,
                 270,
-                0,
-                600,
-                400,
-                600,
+                preCutsLengths,
                 "m2",
+                400,
+                1,
                 20,
-                20f,
+                10,
                 55
         );
     }

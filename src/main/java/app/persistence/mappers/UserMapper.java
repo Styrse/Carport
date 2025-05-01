@@ -1,5 +1,11 @@
 package app.persistence.mappers;
 
+import app.entities.products.materials.Material;
+import app.entities.products.materials.planks.Beam;
+import app.entities.products.materials.planks.Fascia;
+import app.entities.products.materials.planks.Post;
+import app.entities.products.materials.planks.Rafter;
+import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
 import app.entities.users.StaffManager;
@@ -30,8 +36,9 @@ import static app.Main.connectionPool;
 public class UserMapper {
     // Create
     public static void createUser(User user) throws DatabaseException {
-        String sql = "INSERT INTO users (firstname, lastname, phone_number, email, password, is_staff, is_staff_manager) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING user_id";
+        String sql =
+                "INSERT INTO users (firstname, lastname, phone_number, email, password, role_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?) RETURNING user_id";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -41,8 +48,7 @@ public class UserMapper {
             ps.setInt(3, user.getPhoneNumber());
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getPassword());
-            ps.setBoolean(6, user instanceof Staff || user instanceof StaffManager);
-            ps.setBoolean(7, user instanceof StaffManager);
+            ps.setInt(6, user.getUserRole());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -111,7 +117,7 @@ public class UserMapper {
 
     // Update full user
     public static void updateUser(User user) throws DatabaseException {
-        String sql = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, email = ?, password = ?, is_staff = ?, is_staff_manager = ? WHERE email = ?";
+        String sql = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, email = ?, password = ?, user_id = ? WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -121,9 +127,8 @@ public class UserMapper {
             ps.setInt(3, user.getPhoneNumber());
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getPassword());
-            ps.setBoolean(6, user instanceof Staff);
-            ps.setBoolean(7, user instanceof StaffManager);
-            ps.setString(8, user.getEmail());
+            ps.setInt(6, user.getUserRole());
+            ps.setString(7, user.getEmail());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -146,25 +151,21 @@ public class UserMapper {
     }
 
     // Helper: map ResultSet → correct subclass of User
-    public static User mapUser(ResultSet rs) throws SQLException {
-        boolean isStaff = rs.getBoolean("is_staff");
-        boolean isStaffManager = rs.getBoolean("is_staff_manager");
+    public static User mapUser(ResultSet rs) throws SQLException, DatabaseException {
+        int userId = rs.getInt("user_id");
+        String firstname = rs.getString("firstname");
+        String lastname = rs.getString("lastname");
+        int phoneNumber = rs.getInt("phone_number");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
+        int roleId = rs.getInt("role_id");
 
-        User user;
-        if (isStaffManager) {
-            user = new StaffManager();
-        } else if (isStaff) {
-            user = new Staff();
-        } else {
-            user = new Customer();
-        }
-
-        user.setUserId(rs.getInt("user_id"));
-        user.setFirstName(rs.getString("firstname"));
-        user.setLastName(rs.getString("lastname"));
-        user.setPhoneNumber(rs.getInt("phone_number"));
-        user.setEmail(rs.getString("email"));
-        user.setPassword(rs.getString("password"));
+        User user = switch (roleId) {
+            case 1 -> new Customer(userId, firstname, lastname, phoneNumber, email, password, roleId);
+            case 2 -> new Staff(userId, firstname, lastname, phoneNumber, email, password, roleId);
+            case 3 -> new StaffManager(userId, firstname, lastname, phoneNumber, email, password, roleId);
+            default -> throw new DatabaseException("Unknown material type: " + roleId);
+        };
 
         return user;
     }

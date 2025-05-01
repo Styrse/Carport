@@ -6,7 +6,12 @@ import app.entities.products.materials.planks.Post;
 import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class TestPlankFactory {
+
+    public static List<Integer> preCutsLengths = Arrays.asList(300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600);
 
     public static Post createStandardPost() {
         return new Post(
@@ -14,11 +19,10 @@ public class TestPlankFactory {
                 "Basic post for structural testing",
                 100.0,
                 150,
-                0,
-                150,
-                20,
-                600,
+                preCutsLengths,
                 "pcs",
+                25,
+                1,
                 25,
                 5
         );
@@ -30,46 +34,43 @@ public class TestPlankFactory {
                 "Basic beam for testing",
                 120.0,
                 180.0,
-                0,
-                600,
-                20,
-                600,
+                preCutsLengths,
                 "pcs",
-                0,
+                25,
+                340,
+                25,
                 340
         );
     }
 
     public static Beam createShorterBeam() {
-        Beam beam = new Beam(
+        preCutsLengths.removeIf(n -> n > 400);
+        return new Beam(
                 "Shorter Beam",
                 "Shorter max distance beam",
                 120.0,
                 180.0,
-                0,
-                600,
-                20,
-                400,
+                preCutsLengths,
                 "pcs",
-                0,
-                250
+                25,
+                250,
+                25,
+                240
         );
-        beam.setMaxLength(400);
-        return beam;
     }
 
     public static Beam createLongerBeam() {
+        preCutsLengths.add(700);
         return new Beam(
                 "Longer Beam",
                 "Longer max distance beam",
                 120.0,
                 180.0,
-                0,
-                600,
-                20,
-                600,
+                preCutsLengths,
                 "pcs",
-                0,
+                25,
+                1,
+                25,
                 400
         );
     }
@@ -80,47 +81,42 @@ public class TestPlankFactory {
                 "Basic rafter for testing",
                 110.0,
                 160.0,
-                0,
-                600,
-                30,
-                600,
+                preCutsLengths,
                 "pcs",
-                0
+                25,
+                1,
+                25
         );
     }
 
     public static Rafter createShorterRafter() {
-        Rafter rafter = new Rafter(
+        preCutsLengths.removeIf(n -> n > 400);
+        return new Rafter(
                 "Shorter Rafter",
                 "Shorter max length rafter",
                 110.0,
                 160.0,
-                0,
-                400,
-                30,
-                600,
+                preCutsLengths,
                 "pcs",
-                0
+                25,
+                1,
+                25
         );
-        rafter.setMaxLength(400);
-        return rafter;
     }
 
     public static Rafter createLongerRafter() {
-        Rafter rafter = new Rafter(
+        preCutsLengths.add(700);
+        return new Rafter(
                 "Longer Rafter",
                 "Longer max length rafter",
                 110.0,
                 160.0,
-                0,
-                700,
-                30,
-                600,
+                preCutsLengths,
                 "pcs",
-                0
+                25,
+                1,
+                25
         );
-        rafter.setMaxLength(700);
-        return rafter;
     }
 
     public static Fascia createStandardFascia() {
@@ -129,12 +125,11 @@ public class TestPlankFactory {
                 "Basic fascia board for testing",
                 80.0,
                 130.0,
-                0,
-                600,
-                22,
-                50,
+                preCutsLengths,
                 "pcs",
-                0
+                25,
+                1,
+                25
         );
     }
 
@@ -144,11 +139,10 @@ public class TestPlankFactory {
                 "Clear strong roof",
                 25,
                 55,
-                0,
-                250,
-                110,
-                300,
+                preCutsLengths,
                 "m",
+                100,
+                1,
                 20,
                 10,
                 55
