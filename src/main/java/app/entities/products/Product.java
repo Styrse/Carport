@@ -1,8 +1,7 @@
 package app.entities.products;
 
 public abstract class Product {
-    private int productID;
-    private int subProductID;
+    private int itemId;
     private String name;
     private String description;
     private double costPrice;
@@ -11,30 +10,28 @@ public abstract class Product {
     public Product() {
     }
 
-    public Product(int productID, int subProductID, String name, String description, double costPrice, double salesPrice) {
-        this.productID = productID;
-        this.subProductID = subProductID;
+    public Product(int itemId, String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public Product(int itemId, String name, String description, double costPrice, double salesPrice) {
+        this.itemId = itemId;
         this.name = name;
         this.description = description;
         this.costPrice = costPrice;
         this.salesPrice = salesPrice;
     }
 
-    public int getProductID() {
-        return productID;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
-    public int getSubProductID() {
-        return subProductID;
-    }
-
-    public void setSubProductID(int subProductID) {
-        this.subProductID = subProductID;
-    }
+    public abstract String getItemType();
 
     public String getName() {
         return name;

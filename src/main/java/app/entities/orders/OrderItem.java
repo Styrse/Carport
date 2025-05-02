@@ -3,38 +3,37 @@ package app.entities.orders;
 import app.entities.products.Product;
 
 public class OrderItem {
-    private int productId;
-    private int subProductId;
+    private Product product;
     private String itemName;
     private int quantity;
 
-    public OrderItem(int productId, int subProductId, String itemName, int quantity) {
-        this.productId = productId;
-        this.subProductId = subProductId;
-        this.itemName = itemName;
-        this.quantity = quantity;
-    }
-
     public OrderItem(Product product, int quantity) {
-        this.productId = product.getSubProductID();
-        this.subProductId = product.getProductID();
+        this.product = product;
         this.itemName = product.getName();
         this.quantity = quantity;
     }
 
-    public int getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public int getSubProductId() {
-        return subProductId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public String getItemName() {
         return itemName;
     }
 
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
     public int getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

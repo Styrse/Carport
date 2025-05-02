@@ -2,16 +2,18 @@ package app.entities.products.materials.roof;
 
 import app.entities.products.materials.Material;
 
+import java.util.List;
+
 public class RoofCover extends Material {
     private int lengthOverlap;
     private float sideOverlap;
-    private int maxLengthBetweenRafters;
+    private int gapRafters;
 
-    public RoofCover(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int length, int width, int maxLength, String unit, int lengthOverlap, float sideOverlap, int maxLengthBetweenRafters) {
-        super(productID, subProductID, name, description, costPrice, salesPrice, length, width, maxLength, unit);
+    public RoofCover(int itemId, String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int lengthOverlap, float sideOverlap, int gapRafters) {
+        super(itemId, name, description, costPrice, salesPrice, preCutsLengths, unit, width);
         this.lengthOverlap = lengthOverlap;
         this.sideOverlap = sideOverlap;
-        this.maxLengthBetweenRafters = maxLengthBetweenRafters;
+        this.gapRafters = gapRafters;
     }
 
     public int getLengthOverlap() {
@@ -30,11 +32,11 @@ public class RoofCover extends Material {
         this.sideOverlap = sideOverlap;
     }
 
-    public int getMaxLengthBetweenRafters() {
-        return maxLengthBetweenRafters;
+    public int getGapRafters() {
+        return gapRafters;
     }
 
-    public void setMaxLengthBetweenRafters(int maxLengthBetweenRafters) {
-        this.maxLengthBetweenRafters = maxLengthBetweenRafters;
+    public void setGapRafters(int gapRafters) {
+        this.gapRafters = gapRafters;
     }
 }

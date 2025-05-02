@@ -2,33 +2,23 @@ package app.entities.products.materials;
 
 import app.entities.products.Product;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class Material extends Product {
-    private int length;
     private int width;
-    private int maxLength;
     private String unit;
+    private final List<Integer> preCutsLengths;
 
-    //TODO: Make it specific to each material - DB table(predefined_lengths)
-    public static final List<Integer> PREDEFINED_LENGTHS = Arrays.asList(300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600);
-
-    public Material(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int length, int width, int maxLength, String unit) {
-        super(productID, subProductID, name, description, costPrice, salesPrice);
-        this.length = length;
-        this.width = width;
-        this.maxLength = maxLength;
+    public Material(int itemId, String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width) {
+        super(itemId, name, description, costPrice, salesPrice);
+        this.preCutsLengths = preCutsLengths;
         this.unit = unit;
+        this.width = width;
     }
 
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
+    @Override
+    public String getItemType() {
+        return "material";
     }
 
     public int getWidth() {
@@ -39,19 +29,15 @@ public abstract class Material extends Product {
         this.width = width;
     }
 
-    public int getMaxLength() {
-        return maxLength;
-    }
-
-    public void setMaxLength(int maxLength) {
-        this.maxLength = maxLength;
-    }
-
     public String getUnit() {
         return unit;
     }
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public List<Integer> getPreCutsLengths() {
+        return preCutsLengths;
     }
 }

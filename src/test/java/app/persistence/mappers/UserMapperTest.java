@@ -46,10 +46,10 @@ class UserMapperTest {
                 stmt.execute("TRUNCATE TABLE test.users RESTART IDENTITY CASCADE;");
 
                 //Insert 3 example users
-                stmt.execute("INSERT INTO test.users (user_id, firstname, email, password, is_staff, is_staff_manager) VALUES " +
-                        "(1, 'alice', 'alice@gmail.com', 'Alice123', false, false), " +
-                        "(2, 'bob', 'bob@hotmail.com', '123Bob', true, false), " +
-                        "(3, 'charlie', 'charlie@me.com', 'Char123Lie', true, true);");
+                stmt.execute("INSERT INTO test.users (user_id, firstname, email, password, role_id) VALUES " +
+                        "(1, 'alice', 'alice@gmail.com', 'Alice123', 1), " +
+                        "(2, 'bob', 'bob@hotmail.com', '123Bob', 2), " +
+                        "(3, 'charlie', 'charlie@me.com', 'Char123Lie', 3);");
 
                 //Reset sequences
                 stmt.execute("SELECT setval('test.users_user_id_seq', COALESCE((SELECT MAX(user_id) + 1 FROM test.users), 1), false)");
@@ -64,7 +64,7 @@ class UserMapperTest {
     @DisplayName("CreateUser Test")
     void createUser() throws DatabaseException {
         //Arrange
-        User user = new Customer("John", "Doe", 12345678, "john@doe.com", "Password123");
+        User user = new Customer("John", "Doe", 12345678, "john@doe.com", "Password123", 1) {};
 
         //Act
         UserMapper.createUser(user);
@@ -118,7 +118,7 @@ class UserMapperTest {
     @DisplayName("UpdateUser Test")
     void updateUser() throws DatabaseException {
         //Arrange
-        User user = new Customer("Alice", "Doe", 12345678, "alice@gmail.com", "Alice123");
+        User user = new Customer("Alice", "Doe", 12345678, "alice@gmail.com", "Alice123", 1);
 
         //Act
         UserMapper.updateUser(user);

@@ -1,148 +1,151 @@
-package app.entities.carport.carportTestFactory;
+package app.entities.products.carport.carportTestFactory;
 
 import app.entities.products.materials.planks.Beam;
 import app.entities.products.materials.planks.Fascia;
 import app.entities.products.materials.planks.Post;
 import app.entities.products.materials.planks.Rafter;
+import app.entities.products.materials.roof.RoofCover;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TestPlankFactory {
 
+    public static List<Integer> preCutsLengths = Arrays.asList(300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600);
+
     public static Post createStandardPost() {
         return new Post(
-                0,
-                0,
+                1,
                 "Standard Test Post",
                 "Basic post for structural testing",
                 100.0,
-                150.0,
-                600,
-                10,
-                10,
+                150,
+                preCutsLengths,
                 "pcs",
-                0,
-                true
+                25,
+                25,
+                5
         );
     }
 
     public static Beam createStandardBeam() {
         return new Beam(
-                0,
-                0,
+                1,
                 "Standard Beam",
                 "Basic beam for testing",
                 120.0,
                 180.0,
-                600,
-                20,
-                45,
+                preCutsLengths,
                 "pcs",
-                0,
+                25,
+                25,
                 340
         );
     }
 
     public static Beam createShorterBeam() {
-        Beam beam = new Beam(
-                0,
-                0,
+        preCutsLengths.removeIf(n -> n > 400);
+        return new Beam(
+                1,
                 "Shorter Beam",
                 "Shorter max distance beam",
                 120.0,
                 180.0,
-                400,
-                20,
-                45,
+                preCutsLengths,
                 "pcs",
-                0,
-                250
+                25,
+                25,
+                240
         );
-        beam.setMaxLength(400);
-        return beam;
     }
 
     public static Beam createLongerBeam() {
+        preCutsLengths.add(700);
         return new Beam(
-                0,
-                0,
+                1,
                 "Longer Beam",
                 "Longer max distance beam",
                 120.0,
                 180.0,
-                600,
-                20,
-                45,
+                preCutsLengths,
                 "pcs",
-                0,
+                25,
+                25,
                 400
         );
     }
 
     public static Rafter createStandardRafter() {
         return new Rafter(
-                0,
-                0,
+                1,
                 "Standard Rafter",
                 "Basic rafter for testing",
                 110.0,
                 160.0,
-                600,
-                30,
-                55,
+                preCutsLengths,
                 "pcs",
-                0
+                25,
+                25
         );
     }
 
     public static Rafter createShorterRafter() {
-        Rafter rafter = new Rafter(
-                0,
-                0,
+        preCutsLengths.removeIf(n -> n > 400);
+        return new Rafter(
+                1,
                 "Shorter Rafter",
                 "Shorter max length rafter",
                 110.0,
                 160.0,
-                400,
-                30,
-                55,
+                preCutsLengths,
                 "pcs",
-                0
+                25,
+                25
         );
-        rafter.setMaxLength(400);
-        return rafter;
     }
 
     public static Rafter createLongerRafter() {
-        Rafter rafter = new Rafter(
-                0,
-                0,
+        preCutsLengths.add(700);
+        return new Rafter(
+                1,
                 "Longer Rafter",
                 "Longer max length rafter",
                 110.0,
                 160.0,
-                700,
-                30,
-                55,
+                preCutsLengths,
                 "pcs",
-                0
+                25,
+                25
         );
-        rafter.setMaxLength(700);
-        return rafter;
     }
 
     public static Fascia createStandardFascia() {
         return new Fascia(
-                0,
-                0,
+                1,
                 "Standard Fascia",
                 "Basic fascia board for testing",
                 80.0,
                 130.0,
-                600,
-                22,
-                50,
+                preCutsLengths,
                 "pcs",
-                0,
-                false
+                25,
+                25
+        );
+    }
+
+    public static RoofCover createStandardRoofCover() {
+        return new RoofCover(
+                1,
+                "Standard roof",
+                "Clear strong roof",
+                25,
+                55,
+                preCutsLengths,
+                "m",
+                100,
+                20,
+                10,
+                55
         );
     }
 }

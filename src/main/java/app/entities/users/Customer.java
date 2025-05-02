@@ -12,13 +12,13 @@ public class Customer extends User {
         this.myOrders = new ArrayList<>();
     }
 
-    public Customer(String firstName, String lastName, int phoneNumber, String email, String password) {
-        super(firstName, lastName, phoneNumber, email, password);
+    public Customer(String firstName, String lastName, int phoneNumber, String email, String password, int roleId) {
+        super(firstName, lastName, phoneNumber, email, password, roleId);
         this.myOrders = new ArrayList<>();
     }
 
-    public Customer(int userID, String firstName, String lastName, int phoneNumber, String email, String password) {
-        super(userID, firstName, lastName, phoneNumber, email, password);
+    public Customer(int userID, String firstName, String lastName, int phoneNumber, String email, String password, int roleId) {
+        super(userID, firstName, lastName, phoneNumber, email, password, roleId);
         this.myOrders = new ArrayList<>();
     }
 

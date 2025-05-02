@@ -2,6 +2,8 @@ package app.persistence.mappers;
 
 import app.entities.orders.Order;
 import app.entities.orders.OrderItem;
+import app.entities.products.carport.Carport;
+import app.entities.products.materials.Material;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
 import app.exceptions.DatabaseException;
@@ -26,10 +28,10 @@ public class OrderMapper {
 
     // Create a new order and return the generated order_id
     public static int createOrder(Order order) throws DatabaseException {
-        String sql = "INSERT INTO orders (user_id, staff_id, order_date, payment_date, payment_status) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO orders (user_id, staff_id, total_price) VALUES (?, ?, ?) RETURNING order_id";
 
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setInt(1, order.getCustomer().getUserId());
             if (order.getStaff() != null) {
@@ -37,17 +39,9 @@ public class OrderMapper {
             } else {
                 ps.setNull(2, Types.INTEGER);
             }
-            ps.setDate(3, Date.valueOf(order.getOrderDate()));
-            if (order.getPaymentDate() != null) {
-                ps.setDate(4, Date.valueOf(order.getPaymentDate()));
-            } else {
-                ps.setNull(4, Types.DATE);
-            }
-            ps.setString(5, order.getPaymentStatus());
+            ps.setFloat(3, order.getTotalPrice());
 
-            ps.executeUpdate();
-
-            try (ResultSet rs = ps.getGeneratedKeys()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     int orderId = rs.getInt(1);
 
@@ -67,56 +61,198 @@ public class OrderMapper {
         }
     }
 
-    // Helper to insert an order item
-    private static void insertOrderItem(int orderId, OrderItem item) throws DatabaseException {
-        String sql = "INSERT INTO order_items (order_id, product_id, item_id, quantity) VALUES (?, ?, ?, ?)";
+    private static void insertOrderItem(int orderId, OrderItem item) throws SQLException {
+        String itemSql = "INSERT INTO order_items (order_id, item_type, quantity) VALUES (?, ?, ?) RETURNING order_item_id";
 
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
+             PreparedStatement ps = connection.prepareStatement(itemSql)) {
             ps.setInt(1, orderId);
-            ps.setInt(2, item.getProductId());
-            ps.setInt(3, item.getSubProductId());
-            ps.setInt(4, item.getQuantity());
+            ps.setString(2, item.getProduct().getItemType()); // "carport" or "material"
+            ps.setInt(3, item.getQuantity());
 
-            ps.executeUpdate();
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int orderItemId = rs.getInt(1);
 
-        } catch (SQLException e) {
-            throw new DatabaseException(e, "Error inserting order item");
+                    switch (item.getProduct().getItemType()) {
+                        case "carport" -> insertOrderItemCarport(orderItemId, item);
+                        case "material" -> insertOrderItemMaterial(orderItemId, item.getProduct().getItemId());
+                        default -> throw new SQLException("Unknown item type: " + item.getProduct().getItemType());
+                    }
+                }
+            }
         }
     }
+
+    private static void insertOrderItemCarport(int orderItemId, OrderItem orderItem) throws SQLException {
+        CarportMapper.createCarport((Carport) orderItem.getProduct());
+
+        String sql = "INSERT INTO order_item_carport (order_item_id, carport_id) VALUES (?, ?)";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, orderItemId);
+            ps.setInt(2, orderItem.getProduct().getItemId());
+            ps.executeUpdate();
+        }
+    }
+
+    private static void insertOrderItemMaterial(int orderItemId, int materialId) throws SQLException {
+        String sql = "INSERT INTO order_item_material (order_item_id, building_material_id) VALUES (?, ?)";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, orderItemId);
+            ps.setInt(2, materialId);
+            ps.executeUpdate();
+        }
+    }
+
+    public static Order getOrderByOrderId(int orderId) throws DatabaseException {
+        String orderSql =
+                "SELECT " +
+                        "  o.order_id, " +
+                        "  u.email AS user_email, " +
+                        "  s.email AS staff_email, " +
+                        "  received.update_date AS order_date, " +
+                        "  latest.status AS order_status " +
+                        "FROM orders o " +
+                        "JOIN users u ON o.user_id = u.user_id " +
+                        "LEFT JOIN users s ON o.staff_id = s.user_id " +
+                        "LEFT JOIN order_status_history received " +
+                        "  ON o.order_id = received.order_id AND received.status = 'Received' " +
+                        "LEFT JOIN order_status_history latest " +
+                        "  ON o.order_id = latest.order_id " +
+                        "  AND latest.update_date = ( " +
+                        "    SELECT MAX(update_date) " +
+                        "    FROM order_status_history " +
+                        "    WHERE order_id = o.order_id " +
+                        "  ) " +
+                        "WHERE o.order_id = ?";
+        //TODO: Make view
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(orderSql)) {
+
+            ps.setInt(1, orderId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Order order = mapOrder(rs);
+
+                    // Now fetch and attach order items
+                    List<OrderItem> items = getOrderItemsForOrder(orderId);
+                    order.setOrderItems(items);
+
+                    return order;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error fetching order by ID");
+        }
+
+        return null;
+    }
+
+    private static List<OrderItem> getOrderItemsForOrder(int orderId) throws SQLException {
+        List<OrderItem> items = new ArrayList<>();
+
+        String sql = "SELECT * FROM order_items WHERE order_id = ?";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int orderItemId = rs.getInt("order_item_id");
+                    String type = rs.getString("item_type");
+                    int quantity = rs.getInt("quantity");
+
+                    switch (type) {
+                        case "carport" -> items.add(getCarportItem(orderItemId, quantity));
+                        case "material" -> items.add(getMaterialItem(orderItemId, quantity));
+                    }
+                }
+            } catch (DatabaseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return items;
+    }
+
+    private static OrderItem getCarportItem(int orderItemId, int quantity) throws SQLException {
+        String sql = "SELECT c.* FROM order_item_carport oic JOIN carports c ON oic.carport_id = c.carport_id WHERE oic.order_item_id = ?";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, orderItemId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Carport carport = CarportMapper.mapCarport(rs);
+                    return new OrderItem(carport, quantity);
+                }
+            }
+        }
+        throw new SQLException("Carport not found for order_item_id=" + orderItemId);
+    }
+
+    private static OrderItem getMaterialItem(int orderItemId, int quantity) throws SQLException, DatabaseException {
+        Material material = MaterialMapper.getMaterialById(orderItemId);
+        return new OrderItem(material, quantity);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
 
     // Read all orders
     public static List<Order> getAllOrders() throws DatabaseException {
         List<Order> orders = new ArrayList<>();
-
-        String sql = "SELECT o.*, u.email AS user_email, s.email AS staff_email " +
-                "FROM orders o " +
-                "JOIN users u ON o.user_id = u.user_id " +
-                "LEFT JOIN users s ON o.staff_id = s.user_id";
-
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                orders.add(mapOrder(rs));
-            }
-
-        } catch (SQLException e) {
-            throw new DatabaseException(e, "Error fetching all orders");
-        }
-
         return orders;
     }
 
     // Read one order by orderId
     public static Order getOrderByOrderId(int orderId) throws DatabaseException {
-        String sql = "SELECT o.*, u.email AS user_email, s.email AS staff_email " +
-                "FROM orders o " +
-                "JOIN users u ON o.user_id = u.user_id " +
-                "LEFT JOIN users s ON o.staff_id = s.user_id " +
-                "WHERE o.order_id = ?";
+        String sql =
+                "SELECT " +
+                        "  o.order_id, " +
+                        "  u.email AS user_email, " +
+                        "  s.email AS staff_email, " +
+                        "  received.update_date AS order_date, " +
+                        "  latest.status AS order_status " +
+                        "FROM orders o " +
+                        "JOIN users u ON o.user_id = u.user_id " +
+                        "LEFT JOIN users s ON o.staff_id = s.user_id " +
+                        "LEFT JOIN order_status_history received " +
+                        "  ON o.order_id = received.order_id AND received.status = 'Received' " +
+                        "LEFT JOIN order_status_history latest " +
+                        "  ON o.order_id = latest.order_id " +
+                        "  AND latest.update_date = ( " +
+                        "    SELECT MAX(update_date) " +
+                        "    FROM order_status_history " +
+                        "    WHERE order_id = o.order_id " +
+                        "  ) " +
+                        "WHERE o.order_id = ?";
+        //TODO: Make SQL view
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -166,32 +302,7 @@ public class OrderMapper {
 
     // Update order
     public static void updateOrder(Order order) throws DatabaseException {
-        String sql = "UPDATE orders SET payment_date = ?, payment_status = ?, staff_id = ? WHERE order_id = ?";
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            if (order.getPaymentDate() != null) {
-                ps.setDate(1, Date.valueOf(order.getPaymentDate()));
-            } else {
-                ps.setNull(1, Types.DATE);
-            }
-
-            ps.setString(2, order.getPaymentStatus());
-
-            if (order.getStaff() != null) {
-                ps.setInt(3, order.getStaff().getUserId());
-            } else {
-                ps.setNull(3, Types.INTEGER);
-            }
-
-            ps.setInt(4, order.getOrderId());
-
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DatabaseException(e, "Error updating order");
-        }
     }
 
     // Delete order
@@ -209,24 +320,22 @@ public class OrderMapper {
         }
     }
 
-    // Map result set to full Order
+        // Map result set to full Order
     private static Order mapOrder(ResultSet rs) throws SQLException, DatabaseException {
         int orderId = rs.getInt("order_id");
         LocalDate orderDate = rs.getDate("order_date").toLocalDate();
         String orderStatus = rs.getString("order_status");
-        String paymentStatus = rs.getString("payment_status");
-        LocalDate paymentDate = rs.getDate("payment_date").toLocalDate();
 
         String userEmail = rs.getString("user_email");
         Customer customer = (Customer) UserMapper.getUserByEmail(userEmail);
 
-        String staffEmail = rs.getString("user_email");
+        String staffEmail = rs.getString("staff_email");
         Staff staff = null;
         if (staffEmail != null) {
             staff = (Staff) UserMapper.getUserByEmail(staffEmail);
         }
 
-        Order order = new Order(orderId, orderDate, orderStatus, paymentStatus, paymentDate, customer, staff);
+        Order order = new Order(orderId, orderDate, orderStatus, customer, staff);
 
         List<OrderItem> items = getOrderItemsByOrderId(orderId);
         order.getOrderItems().addAll(items);
@@ -236,35 +345,24 @@ public class OrderMapper {
 
     private static List<OrderItem> getOrderItemsByOrderId(int orderId) throws DatabaseException {
         List<OrderItem> items = new ArrayList<>();
+        return items;
+    }*/
 
-        String sql = "SELECT oi.product_id, oi.sub_product_id, oi.quantity,\n" +
-                "bm.name AS building_material_name\n" +
-                "FROM order_items oi\n" +
-                "LEFT JOIN building_materials bm ON oi.product_id = 1 AND oi.sub_product_id = bm.sub_product_id\n" +
-                "WHERE oi.order_id = ?";
+    private static Order mapOrder(ResultSet rs) throws SQLException, DatabaseException {
+        int orderId = rs.getInt("order_id");
+        LocalDate orderDate = rs.getDate("order_date").toLocalDate();
+        String orderStatus = rs.getString("order_status");
 
+        String userEmail = rs.getString("user_email");
+        Customer customer = (Customer) UserMapper.getUserByEmail(userEmail);
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            ps.setInt(1, orderId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    int productId = rs.getInt("product_id");
-                    int subProductId = rs.getInt("sub_product_id");
-                    String itemName = rs.getString("item_name");
-                    int quantity = rs.getInt("quantity");
-
-                    OrderItem orderItem = new OrderItem(productId, subProductId, itemName, quantity);
-                    items.add(orderItem);
-                }
-            }
-
-        } catch (SQLException e) {
-            throw new DatabaseException(e, "Error loading order items");
+        String staffEmail = rs.getString("staff_email");
+        Staff staff = null;
+        if (staffEmail != null) {
+            staff = (Staff) UserMapper.getUserByEmail(staffEmail);
         }
 
-        return items;
+        return new Order(orderId, orderDate, orderStatus, customer, staff);
     }
+
 }

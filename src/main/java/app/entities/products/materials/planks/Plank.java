@@ -2,6 +2,8 @@ package app.entities.products.materials.planks;
 
 import app.entities.products.materials.Material;
 
+import java.util.List;
+
 /**
  * Motivation for Specialized Plank Subclasses
  *
@@ -32,8 +34,8 @@ import app.entities.products.materials.Material;
 public abstract class Plank extends Material {
     private int height;
 
-    public Plank(int productID, int subProductID, String name, String description, double costPrice, double salesPrice, int length, int width, int maxLength, String unit, int height) {
-        super(productID, subProductID, name, description, costPrice, salesPrice, length, width, maxLength, unit);
+    public Plank(int itemId, String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int height) {
+        super(itemId, name, description, costPrice, salesPrice, preCutsLengths, unit, width);
         this.height = height;
     }
 
