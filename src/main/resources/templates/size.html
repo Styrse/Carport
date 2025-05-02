@@ -13,36 +13,58 @@
     <main>
 
         <div class="step-format">
-        <span class="step">1</span>
-        <span class="step">2</span>
-        <span class="step">3</span>
-        <span class="step">4</span>
+            <div class="step-wrapper finish">
+                <span class="step">1</span>
+                <p>Mål</p>
+            </div>
+
+            <div class="line-connect"></div>
+
+            <div class="step-wrapper">
+                <span class="step">2</span>
+                <p>Materiale</p>
+            </div>
+
+            <div class="line-connect finish-line"></div>
+
+            <div class="step-wrapper">
+                <span class="step">3</span>
+                <p>Personlige oplysninger</p>
+            </div>
+
+            <div class="line-connect"></div>
+
+            <div class="step-wrapper">
+                <span class="step">4</span>
+                <p>Bekræftelse</p>
+            </div>
         </div>
+
 
         <div id="main-content">
 
             <h1>Angiv mål</h1>
             <p>Udfyld nedenstående omhyggeligt og tryk "Videre".</p>
-            <p> Felter markeret med * SKAL udfyldes!</p>
+            <p> Felter markeret med <span style="color: red">*</span> SKAL udfyldes!</p>
 
             <!-- Fill form action if needed -->
             <form action="" method="post">
                 <div class="form-group">
-                    <label for="cwidth">Carport bredde *</label>
+                    <label for="cwidth">Carport bredde <span style="color: red">*</span></label>
                     <select id="cwidth" name="width">
                         <option hidden=""></option>
                         <option value="bredde1">bredde1</option>
                         <option value="bredde2">bredde2</option>
                         <option value="bredde3">bredde3</option>
                     </select>
-                    <label for="clength">Carport længde *</label>
+                    <label for="clength">Carport længde <span style="color: red">*</span></label>
                     <select id="clength" name="length">
                         <option hidden=""></option>
                         <option value="længde1">længde1</option>
                         <option value="længde2">længde2</option>
                         <option value="længde3">længde3</option>
                     </select>
-                    <label for="ctrapez">Carport trapeztag *</label>
+                    <label for="ctrapez">Carport trapeztag <span style="color: red">*</span></label>
                     <select id="ctrapez" name="trapez">
                         <option hidden=""></option>
                         <option value="valg1">valg1</option>
@@ -56,7 +78,7 @@
             <form action="" method="post">
                 <div class="form-group" id="toolshed-div">
                     <div>
-                        <label for="twidth">Redskabskur bredde *</label>
+                        <label for="twidth">Redskabskur bredde <span style="color: red">*</span></label>
                         <select id="twidth" name="width">
                             <option hidden=""></option>
                             <option value="bredde1">bredde1</option>
@@ -65,7 +87,7 @@
                         </select>
                     </div>
                     <div>
-                        <label for="tlength">Redskabskur længde *</label>
+                        <label for="tlength">Redskabskur længde <span style="color: red">*</span></label>
                         <select id="tlength" name="lenght">
                             <option hidden=""></option>
                             <option value="længde1">længde1</option>
