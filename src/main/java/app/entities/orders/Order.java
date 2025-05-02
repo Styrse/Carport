@@ -13,7 +13,7 @@ public class Order {
     private String orderStatus;
     private Customer customer;
     private Staff staff;
-    private final List<OrderItem> orderItems;
+    private List<OrderItem> orderItems;
 
     public Order(LocalDate orderDate, String orderStatus, Customer customer) {
         this.orderDate = orderDate;
@@ -95,5 +95,9 @@ public class Order {
 
     public List<OrderItem> getOrderItems() {
         return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 }

@@ -127,6 +127,19 @@ class OrderMapperTest {
     }
 
     @Test
+    @DisplayName("GetOrderById Test")
+    void testGetOrderByOrderId() throws DatabaseException {
+        //Arrange
+
+        //Act
+        String actual = OrderMapper.getOrderByOrderId(3).getCustomer().getFirstName();
+
+        //Assert
+        String expected = "charlie";
+        assertEquals(expected, actual);
+    }
+
+    @Test
     @DisplayName("GetAllOrders Test")
     void getAllOrders() throws DatabaseException {
         //Arrange

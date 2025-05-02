@@ -1,15 +1,17 @@
 package app.persistence.mappers;
 
+import app.entities.products.materials.Material;
 import app.entities.products.materials.MaterialRole;
 import app.exceptions.DatabaseException;
-import app.persistence.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import app.entities.products.carport.Carport;
 
@@ -18,7 +20,7 @@ import static app.Main.connectionPool;
 public class CarportMapper {
 
     //Create
-    public static int createCarport(Carport carport) throws SQLException {
+    public static void createCarport(Carport carport) throws SQLException {
         String sql = "INSERT INTO carports (width, length, height, roof_type, roof_angle, " +
                 "post_building_material_id, beam_building_material_id, rafter_building_material_id, fascia_building_material_id, total_price) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING carport_id";
@@ -39,7 +41,7 @@ public class CarportMapper {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("carport_id");
+                    rs.getInt("carport_id");
                 } else {
                     throw new SQLException("Failed to retrieve carport_id");
                 }
@@ -48,7 +50,7 @@ public class CarportMapper {
     }
 
 
-    public static List<Carport> getCarports(ConnectionPool connectionPool) throws DatabaseException {
+    public static List<Carport> getAllCarports() throws DatabaseException {
         List<Carport> allCarports = new ArrayList<>();
 
         String sql = "SELECT * FROM \"carports\"";
@@ -74,8 +76,6 @@ public class CarportMapper {
                     int fasciaColorId = rs.getInt("fascia_color_id");
                     int roofCoverSubProductId = rs.getInt("roof_cover_sub_product_id");
                     int roofCoverColorId = rs.getInt("roof_cover_color_id");
-
-
                 }
             }
         } catch(SQLException e) {
@@ -87,10 +87,38 @@ public class CarportMapper {
 
     public static Carport getCarportById(List<Carport> allCarports, int carportId) {
         for (Carport carport : allCarports) {
-            if (carport.getCarportId() == carportId) {
+            if (carport.getItemId() == carportId) {
                 return carport;
             }
         }
         return null; // or throw exception if not found
     }
+
+    public static Carport mapCarport(ResultSet rs) throws SQLException {
+        int carportId = rs.getInt("carport_id");
+        int width = rs.getInt("width");
+        int length = rs.getInt("length");
+        int height = rs.getInt("height");
+        String roofType = rs.getString("roof_type");
+        double roofAngle = rs.getDouble("roof_angle");
+
+        int postMaterialId = rs.getInt("post_building_material_id");
+        int beamMaterialId = rs.getInt("beam_building_material_id");
+        int rafterMaterialId = rs.getInt("rafter_building_material_id");
+        int fasciaMaterialId = rs.getInt("fascia_building_material_id");
+
+        Map<MaterialRole, Material> materials = new HashMap<>();
+        //TODO: Adjust for pitched roof
+        return new Carport(
+                carportId,
+                "Carport",
+                width + " x " + length,
+                width,
+                length,
+                height,
+                roofType,
+                materials
+        );
+    }
+
 }

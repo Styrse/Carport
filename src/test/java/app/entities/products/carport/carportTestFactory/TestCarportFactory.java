@@ -41,9 +41,9 @@ public class TestCarportFactory {
 
 
         return new Carport(
+                1,
                 "Test Carport",
                 "Generated carport for measurement tests",
-                1,
                 width,
                 length,
                 250,
@@ -60,9 +60,9 @@ public class TestCarportFactory {
         materials.put(MaterialRole.ROOF_COVER, roofCover);
 
         return new Carport(
+                1,
                 "Test Carport",
                 "Generated carport for measurement tests",
-                1,
                 width,
                 length,
                 250,
@@ -79,9 +79,9 @@ public class TestCarportFactory {
         materials.put(MaterialRole.ROOF_COVER, TestPlankFactory.createStandardRoofCover());
 
         return new Carport(
+                1,
                 "Test Carport",
                 "Generated carport for measurement tests",
-                1,
                 width,
                 length,
                 250,
@@ -98,9 +98,9 @@ public class TestCarportFactory {
         materials.put(MaterialRole.ROOF_COVER, TestPlankFactory.createStandardRoofCover());
 
         return new Carport(
+                1,
                 "Test Carport",
                 "Generated carport for measurement tests",
-                1,
                 width,
                 length,
                 250,

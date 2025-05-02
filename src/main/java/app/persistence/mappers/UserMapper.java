@@ -1,11 +1,5 @@
 package app.persistence.mappers;
 
-import app.entities.products.materials.Material;
-import app.entities.products.materials.planks.Beam;
-import app.entities.products.materials.planks.Fascia;
-import app.entities.products.materials.planks.Post;
-import app.entities.products.materials.planks.Rafter;
-import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
 import app.entities.users.StaffManager;

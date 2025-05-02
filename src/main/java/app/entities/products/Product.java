@@ -10,7 +10,7 @@ public abstract class Product {
     public Product() {
     }
 
-    public Product(String name, String description) {
+    public Product(int itemId, String name, String description) {
         this.name = name;
         this.description = description;
     }
