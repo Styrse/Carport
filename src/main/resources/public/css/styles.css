@@ -195,6 +195,10 @@ select, input   {
     cursor: pointer;
 }
 
+input[type="text"], input[type="tel"], input[type="email"] {
+    cursor: text;
+}
+
 #toolshed-div  {
     display: none;
 }
