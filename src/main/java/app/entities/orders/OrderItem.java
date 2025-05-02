@@ -1,31 +1,39 @@
 package app.entities.orders;
 
+import app.entities.products.Product;
+
 public class OrderItem {
-    private int carportId;
-    private int buildingMaterialId;
+    private Product product;
     private String itemName;
     private int quantity;
 
-    public OrderItem(int carportId, int buildingMaterialId, String itemName, int quantity) {
-        this.carportId = carportId;
-        this.buildingMaterialId = buildingMaterialId;
-        this.itemName = itemName;
+    public OrderItem(Product product, int quantity) {
+        this.product = product;
+        this.itemName = product.getName();
         this.quantity = quantity;
     }
 
-    public int getCarportId() {
-        return carportId;
+    public Product getProduct() {
+        return product;
     }
 
-    public int getBuildingMaterialId() {
-        return buildingMaterialId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public String getItemName() {
         return itemName;
     }
 
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
     public int getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

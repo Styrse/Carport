@@ -24,7 +24,6 @@ import java.util.Map;
  */
 
 public class Carport extends Product {
-    private int carportId;
     private int width;
     private int length;
     private int height;
@@ -37,9 +36,8 @@ public class Carport extends Product {
     }
 
     //Carport with flat roof
-    public Carport(String name, String description, double costPrice, double salesPrice, int carportId, int width, int length, int height, String roofType, Map<MaterialRole, Material> materialMap) {
-        super(name, description, costPrice, salesPrice);
-        this.carportId = carportId;
+    public Carport(int itemId, String name, String description, int width, int length, int height, String roofType, Map<MaterialRole, Material> materialMap) {
+        super(itemId, name, description);
         this.width = width;
         this.length = length;
         this.height = height;
@@ -48,9 +46,8 @@ public class Carport extends Product {
     }
 
     //Carport with pitched roof
-    public Carport(int carportId, String name, String description, double costPrice, double salesPrice, int width, int length, int height, String roofType, int roofAngle, Map<MaterialRole, Material> materialMap) {
-        super(name, description, costPrice, salesPrice);
-        this.carportId = carportId;
+    public Carport(int itemId, String name, String description, int width, int length, int height, String roofType, int roofAngle, Map<MaterialRole, Material> materialMap) {
+        super(itemId, name, description);
         this.width = width;
         this.length = length;
         this.height = height;
@@ -59,13 +56,14 @@ public class Carport extends Product {
         this.materialMap = materialMap;
     }
 
+    @Override
+    public String getItemType() {
+        return "carport";
+    }
+
     //Generate fresh BillOfMaterial every time
     public BillOfMaterial getBillOfMaterial() {
         return new BillOfMaterial(this);
-    }
-
-    public int getCarportId() {
-        return carportId;
     }
 
     public int getWidth() {
@@ -98,10 +96,6 @@ public class Carport extends Product {
 
     public void setHeight(int height) {
         this.height = height;
-    }
-
-    public void setCarportId(int carportId) {
-        this.carportId = carportId;
     }
 
     public void setRoofType(String roofType) {

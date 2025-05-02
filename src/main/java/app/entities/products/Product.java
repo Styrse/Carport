@@ -1,6 +1,7 @@
 package app.entities.products;
 
 public abstract class Product {
+    private int itemId;
     private String name;
     private String description;
     private double costPrice;
@@ -9,12 +10,28 @@ public abstract class Product {
     public Product() {
     }
 
-    public Product(String name, String description, double costPrice, double salesPrice) {
+    public Product(int itemId, String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public Product(int itemId, String name, String description, double costPrice, double salesPrice) {
+        this.itemId = itemId;
         this.name = name;
         this.description = description;
         this.costPrice = costPrice;
         this.salesPrice = salesPrice;
     }
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
+    }
+
+    public abstract String getItemType();
 
     public String getName() {
         return name;

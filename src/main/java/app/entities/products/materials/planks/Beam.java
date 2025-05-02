@@ -5,8 +5,8 @@ import java.util.List;
 public class Beam extends Plank {
     private int postGap;
 
-    public Beam(String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int materialId, int height, int postGap) {
-        super(name, description, costPrice, salesPrice, preCutsLengths, unit, width, materialId, height);
+    public Beam(int itemId, String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int height, int postGap) {
+        super(itemId, name, description, costPrice, salesPrice, preCutsLengths, unit, width, height);
         this.postGap = postGap;
     }
 
