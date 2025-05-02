@@ -69,7 +69,7 @@ class OrderMapperTest {
 
                 // Insert test carport (used for order_item_id = 3)
                 stmt.execute("INSERT INTO test.carports (width, length, height, roof_type, roof_angle, " +
-                        "post_building_material_id, beam_building_material_id, rafter_building_material_id, fascia_building_material_id, total_price) VALUES " +
+                        "post_material_id, beam_material_id, rafter_material_id, fascia_material_id, total_price) VALUES " +
                         "(600, 780, 250, 'flat', 0, 1, 2, 3, 4, 6599.50);");
 
                 // Insert test orders
@@ -85,7 +85,7 @@ class OrderMapperTest {
                         "(3, 'carport', 1);");
 
                 // Link to item details
-                stmt.execute("INSERT INTO test.order_item_material (order_item_id, building_material_id) VALUES " +
+                stmt.execute("INSERT INTO test.order_item_material (order_item_id, material_id) VALUES " +
                         "(1, 2), " +
                         "(2, 3);");
 
@@ -156,6 +156,8 @@ class OrderMapperTest {
         //Arrange
 
         //Act
+        Order order = OrderMapper.getOrderByOrderId(1);
+        System.out.println(order);
 
         //Assert
         String expected = "Under Review";

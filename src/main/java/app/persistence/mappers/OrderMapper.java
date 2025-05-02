@@ -67,7 +67,7 @@ public class OrderMapper {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(itemSql)) {
             ps.setInt(1, orderId);
-            ps.setString(2, item.getProduct().getItemType()); // "carport" or "material"
+            ps.setString(2, item.getProduct().getItemType());
             ps.setInt(3, item.getQuantity());
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -97,7 +97,7 @@ public class OrderMapper {
     }
 
     private static void insertOrderItemMaterial(int orderItemId, int materialId) throws SQLException {
-        String sql = "INSERT INTO order_item_material (order_item_id, building_material_id) VALUES (?, ?)";
+        String sql = "INSERT INTO order_item_material (order_item_id, material_id) VALUES (?, ?)";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderItemId);
@@ -133,12 +133,13 @@ public class OrderMapper {
              PreparedStatement ps = connection.prepareStatement(orderSql)) {
 
             ps.setInt(1, orderId);
+            System.out.println(orderId);
 
             try (ResultSet rs = ps.executeQuery()) {
+
                 if (rs.next()) {
                     Order order = mapOrder(rs);
 
-                    // Now fetch and attach order items
                     List<OrderItem> items = getOrderItemsForOrder(orderId);
                     order.setOrderItems(items);
 
@@ -189,6 +190,8 @@ public class OrderMapper {
                     Carport carport = CarportMapper.mapCarport(rs);
                     return new OrderItem(carport, quantity);
                 }
+            } catch (DatabaseException e) {
+                throw new RuntimeException(e);
             }
         }
         throw new SQLException("Carport not found for order_item_id=" + orderItemId);
@@ -200,76 +203,10 @@ public class OrderMapper {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-
     // Read all orders
     public static List<Order> getAllOrders() throws DatabaseException {
         List<Order> orders = new ArrayList<>();
         return orders;
-    }
-
-    // Read one order by orderId
-    public static Order getOrderByOrderId(int orderId) throws DatabaseException {
-        String sql =
-                "SELECT " +
-                        "  o.order_id, " +
-                        "  u.email AS user_email, " +
-                        "  s.email AS staff_email, " +
-                        "  received.update_date AS order_date, " +
-                        "  latest.status AS order_status " +
-                        "FROM orders o " +
-                        "JOIN users u ON o.user_id = u.user_id " +
-                        "LEFT JOIN users s ON o.staff_id = s.user_id " +
-                        "LEFT JOIN order_status_history received " +
-                        "  ON o.order_id = received.order_id AND received.status = 'Received' " +
-                        "LEFT JOIN order_status_history latest " +
-                        "  ON o.order_id = latest.order_id " +
-                        "  AND latest.update_date = ( " +
-                        "    SELECT MAX(update_date) " +
-                        "    FROM order_status_history " +
-                        "    WHERE order_id = o.order_id " +
-                        "  ) " +
-                        "WHERE o.order_id = ?";
-        //TODO: Make SQL view
-
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            ps.setInt(1, orderId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapOrder(rs);
-                }
-            }
-
-        } catch (SQLException e) {
-            throw new DatabaseException(e, "Error fetching order by ID");
-        }
-
-        return null;
     }
 
     // Read all orders by customerId
@@ -320,34 +257,12 @@ public class OrderMapper {
         }
     }
 
-        // Map result set to full Order
-    private static Order mapOrder(ResultSet rs) throws SQLException, DatabaseException {
-        int orderId = rs.getInt("order_id");
-        LocalDate orderDate = rs.getDate("order_date").toLocalDate();
-        String orderStatus = rs.getString("order_status");
-
-        String userEmail = rs.getString("user_email");
-        Customer customer = (Customer) UserMapper.getUserByEmail(userEmail);
-
-        String staffEmail = rs.getString("staff_email");
-        Staff staff = null;
-        if (staffEmail != null) {
-            staff = (Staff) UserMapper.getUserByEmail(staffEmail);
-        }
-
-        Order order = new Order(orderId, orderDate, orderStatus, customer, staff);
-
-        List<OrderItem> items = getOrderItemsByOrderId(orderId);
-        order.getOrderItems().addAll(items);
-
-        return order;
-    }
-
     private static List<OrderItem> getOrderItemsByOrderId(int orderId) throws DatabaseException {
         List<OrderItem> items = new ArrayList<>();
         return items;
-    }*/
+    }
 
+    // Map result set to full Order
     private static Order mapOrder(ResultSet rs) throws SQLException, DatabaseException {
         int orderId = rs.getInt("order_id");
         LocalDate orderDate = rs.getDate("order_date").toLocalDate();

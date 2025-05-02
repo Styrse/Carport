@@ -1,109 +1,95 @@
-// Carport Database - dbdiagram.io
-
 Table users {
-  user_id SERIAL [pk]
-  firstname VARCHAR(100)
-  lastname VARCHAR(100)
-  phone_number VARCHAR(20)
-  email VARCHAR(255) [unique]
-  password VARCHAR(255)
-  is_staff BOOLEAN
-  is_staff_manager BOOLEAN
+  user_id serial [pk]
+  firstname text
+  lastname text
+  phone_number text
+  email text [unique, not null]
+  password text
+  role_id int [ref: > roles.role_id]
 }
 
-Table products {
-  product_id SERIAL [pk]
-  product_type VARCHAR(50)
-}
-
-Table colors {
-  color_id SERIAL [pk]
-  color_name VARCHAR(50) [unique]
-  hex_code VARCHAR(7)
-}
-
-Table building_materials {
-  sub_product_id SERIAL [pk]
-  product_id INT [ref: > products.product_id]
-  name VARCHAR(100)
-  description TEXT
-  width INT
-  height INT
-  cost_price NUMERIC(10,2)
-  sales_price NUMERIC(10,2)
-  material_type VARCHAR(50)
-  treated_for_ground_contact BOOLEAN
-  max_length_between_posts INT
-  supports_gutters BOOLEAN
-}
-
-Table regular_products {
-  sub_product_id SERIAL [pk]
-  product_id INT [ref: > products.product_id]
-  name VARCHAR(100)
-  description TEXT
-  cost_price NUMERIC(10,2)
-  sales_price NUMERIC(10,2)
-}
-
-Table carports {
-  sub_product_id SERIAL [pk]
-  product_id INT [ref: > products.product_id]
-  width INT
-  length INT
-  height INT
-  roof_type VARCHAR(100)
-  roof_angle INT
-
-  post_sub_product_id INT [ref: > building_materials.sub_product_id]
-  post_color_id INT [ref: > colors.color_id]
-
-  beam_sub_product_id INT [ref: > building_materials.sub_product_id]
-  beam_color_id INT [ref: > colors.color_id]
-
-  rafter_sub_product_id INT [ref: > building_materials.sub_product_id]
-  rafter_color_id INT [ref: > colors.color_id]
-
-  fascia_sub_product_id INT [ref: > building_materials.sub_product_id]
-  fascia_color_id INT [ref: > colors.color_id]
-
-  roof_cover_sub_product_id INT [ref: > building_materials.sub_product_id]
-  roof_cover_color_id INT [ref: > colors.color_id]
-}
-
-Table material_colors {
-  id SERIAL [pk]
-  sub_product_id INT [ref: > building_materials.sub_product_id]
-  color_id INT [ref: > colors.color_id]
-}
-
-Table predefined_lengths {
-  id SERIAL [pk]
-  sub_product_id INT [ref: > building_materials.sub_product_id]
-  length INT
-}
-
-Table price_history {
-  price_history_id SERIAL [pk]
-  product_id INT [ref: > products.product_id]
-  sub_product_id INT
-  price_type VARCHAR(10)
-  price NUMERIC(10,2)
-  valid_from DATE
-  valid_to DATE
-  indexes {
-    (product_id, sub_product_id, price_type, valid_from) [unique]
-  }
+Table roles {
+  role_id serial [pk]
+  role text [unique, not null]
 }
 
 Table orders {
-  order_id SERIAL [pk]
-  user_id INT [ref: > users.user_id]
-  product_id INT [ref: > products.product_id]
-  sub_product_id INT
-  order_date DATE
-  payment_date DATE
-  order_status VARCHAR(50)
-  payment_status VARCHAR(50)
-  total_price NUMERIC(10,2)
+  order_id serial [pk]
+  user_id int [not null, ref: > users.user_id]
+  staff_id int [ref: > users.user_id]
+  total_price numeric
+}
+
+Table order_status_history {
+  order_id int [not null, ref: > orders.order_id]
+  status text
+  update_date timestamp [not null, default: `now()`]
+  Note: 'Primary key is (order_id, update_date)'
+}
+
+Table order_items {
+  order_item_id serial [pk]
+  order_id int [not null, ref: > orders.order_id]
+  item_type varchar(20) [not null, note: 'CHECK (item_type IN (\'carport\', \'material\'))']
+  quantity int [not null]
+}
+
+Table order_item_carport {
+  order_item_id int [pk, ref: > order_items.order_item_id]
+  carport_id int [not null, ref: > carports.carport_id]
+}
+
+Table order_item_material {
+  order_item_id int [pk, ref: > order_items.order_item_id]
+  material_id int [not null, ref: > materials.material_id]
+}
+
+Table carports {
+  carport_id serial [pk]
+  width numeric [not null]
+  length numeric [not null]
+  height numeric [not null]
+  roof_type text [not null]
+  roof_angle numeric [not null]
+  post_material_id int [ref: > materials.material_id]
+  beam_material_id int [ref: > materials.material_id]
+  rafter_material_id int [ref: > materials.material_id]
+  fascia_material_id int [ref: > materials.material_id]
+  total_price numeric
+}
+
+Table materials {
+  material_id serial [pk]
+  name text
+  description text
+  unit text
+  width numeric
+  height numeric
+  material_type text [not null]
+  buckling_capacity numeric
+  post_gap numeric
+  length_overlap numeric
+  side_overlap numeric
+  gap_rafters numeric
+  is_active boolean [not null]
+}
+
+Table predefined_lengths {
+  predefined_length_id serial [pk]
+  length int [not null]
+}
+
+Table material_lengths {
+  material_id int [ref: > materials.material_id]
+  predefined_length_id int [ref: > predefined_lengths.predefined_length_id]
+  Note: 'Primary key is (material_id, predefined_length_id)'
+}
+
+Table price_history {
+  price_history_id serial [pk]
+  material_id int [ref: > materials.material_id]
+  cost_price numeric
+  sales_price numeric
+  valid_from date
+  valid_to date
 }

@@ -132,11 +132,11 @@ class UserMapperTest {
 
     @Test
     @DisplayName("DeleteUser Test")
-    void deleteUser() throws DatabaseException {
+    void deleteUserByEmail() throws DatabaseException {
         //Arrange
 
         //Act
-        UserMapper.deleteUser("alice@gmail.com");
+        UserMapper.deleteUserByEmail("alice@gmail.com");
         int actual = UserMapper.getAllUsers().size();
 
         //Assert

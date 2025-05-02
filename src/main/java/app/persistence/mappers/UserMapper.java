@@ -28,7 +28,7 @@ import static app.Main.connectionPool;
  */
 
 public class UserMapper {
-    // Create
+    //Create
     public static void createUser(User user) throws DatabaseException {
         String sql =
                 "INSERT INTO users (firstname, lastname, phone_number, email, password, role_id) " +
@@ -55,7 +55,7 @@ public class UserMapper {
         }
     }
 
-    // Read: get all users
+    //Read: get all users
     public static List<User> getAllUsers() throws DatabaseException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
@@ -73,7 +73,7 @@ public class UserMapper {
         return users;
     }
 
-    // Read: get user by email
+    //Read: get user by email
     public static User getUserByEmail(String email) throws DatabaseException {
         String sql = "SELECT * FROM users WHERE email = ?";
 
@@ -92,7 +92,7 @@ public class UserMapper {
         return null;
     }
 
-    // Read: verify user login
+    //Read: verify user login
     public static boolean verifyUser(String email, String password) throws DatabaseException {
         String sql = "SELECT 1 FROM users WHERE email = ? AND password = ?";
 
@@ -109,7 +109,7 @@ public class UserMapper {
         }
     }
 
-    // Update full user
+    //Update full user
     public static void updateUser(User user) throws DatabaseException {
         String sql = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, email = ?, password = ?, user_id = ? WHERE email = ?";
 
@@ -130,8 +130,8 @@ public class UserMapper {
         }
     }
 
-    // Delete user by userId (GDPR-compliant hard delete)
-    public static void deleteUser(String email) throws DatabaseException {
+    //Delete user by userId (GDPR-compliant hard delete)
+    public static void deleteUserByEmail(String email) throws DatabaseException {
         String sql = "DELETE FROM users WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();
@@ -144,7 +144,7 @@ public class UserMapper {
         }
     }
 
-    // Helper: map ResultSet → correct subclass of User
+    //Helper: map ResultSet -> correct subclass of User
     public static User mapUser(ResultSet rs) throws SQLException, DatabaseException {
         int userId = rs.getInt("user_id");
         String firstname = rs.getString("firstname");

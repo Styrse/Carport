@@ -44,7 +44,7 @@ entity order_item_carport {
 
 entity order_item_material {
   *order_item_id : int
-  building_material_id : int <<not null>>
+  material_id : int <<not null>>
 }
 
 entity carports {
@@ -54,20 +54,20 @@ entity carports {
   height : numeric <<not null>>
   roof_type : text <<not null>>
   roof_angle : numeric <<not null>>
-  post_building_material_id : int
-  beam_building_material_id : int
-  rafter_building_material_id : int
-  fascia_building_material_id : int
+  post_material_id : int
+  beam_material_id : int
+  rafter_material_id : int
+  fascia_material_id : int
   total_price : numeric
 }
 
-entity building_materials {
-  +building_material_id : serial
+entity materials {
+  +material_id : serial
   name : text
   description : text
   unit : text
   width : numeric
-  heigth : numeric
+  height : numeric
   material_type : text <<not null>>
   buckling_capacity : numeric
   post_gap : numeric
@@ -83,13 +83,13 @@ entity predefined_lengths {
 }
 
 entity material_lengths {
-  *building_material_id : int
+  *material_id : int
   *predefined_length_id : int
 }
 
 entity price_history {
   +price_history_id : serial
-  building_material_id : int
+  material_id : int
   cost_price : numeric
   sales_price : numeric
   valid_from : date
@@ -105,9 +105,9 @@ orders ||--o{ order_items : order_id
 order_items ||--|| order_item_carport : order_item_id
 order_items ||--|| order_item_material : order_item_id
 order_item_carport }o--|| carports : carport_id
-order_item_material }o--|| building_materials : building_material_id
-carports }o--|| building_materials : post_material etc.
-building_materials ||--o{ material_lengths : building_material_id
+order_item_material }o--|| materials : material_id
+carports }o--|| materials : post_material etc.
+materials ||--o{ material_lengths : material_id
 predefined_lengths ||--o{ material_lengths : predefined_length_id
-building_materials ||--o{ price_history : building_material_id
+materials ||--o{ price_history : material_id
 @enduml

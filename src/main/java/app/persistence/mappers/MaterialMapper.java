@@ -7,28 +7,86 @@ import app.entities.products.materials.planks.Post;
 import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.exceptions.DatabaseException;
-import app.persistence.ConnectionPool;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static app.Main.connectionPool;
 
 public class MaterialMapper {
+    //Create
 
-    public static List<Material> getMaterials(ConnectionPool connectionPool) throws DatabaseException {
+
+
+
+
+
+
+
+    //Create
+    /*public void createMaterial(Material material) throws SQLException {
+        String sql = "INSERT INTO materials " +
+                "(name, description, unit, width, heigth, material_type, " +
+                "buckling_capacity, post_gap, length_overlap, side_overlap, gap_rafters, is_active) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = connectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, material.getName());
+            ps.setString(2, material.getDescription());
+            ps.setString(3, material.getUnit());
+
+            setNullableDouble(ps, 4, material.getWidth());
+            setNullableDouble(ps, 5, material.getHeigth());
+            ps.setString(6, material.getMaterialType());
+            setNullableDouble(ps, 7, material.getBucklingCapacity());
+            setNullableDouble(ps, 8, material.getPostGap());
+            setNullableDouble(ps, 9, material.getLengthOverlap());
+            setNullableDouble(ps, 10, material.getSideOverlap());
+            setNullableDouble(ps, 11, material.getGapRafters());
+
+            ps.setBoolean(12, material.isActive());
+
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                material.setId(rs.getInt(1));
+            }
+        }
+    }
+
+    private void setNullableDouble(PreparedStatement ps, int index, Double value) throws SQLException {
+        if (value != null) {
+            ps.setDouble(index, value);
+        } else {
+            ps.setNull(index, Types.NUMERIC);
+        }
+    }
+
+*/
+
+
+
+
+
+
+
+
+
+
+    //Read
+    public static List<Material> getAllMaterials() throws DatabaseException {
         List<Material> allMaterials = new ArrayList<>();
 
         String sql =
-                "SELECT DISTINCT ON (bm.building_material_id) " +
+                "SELECT DISTINCT ON (m.material_id) " +
                         "* " +
-                        "FROM building_materials bm " +
-                        "JOIN price_history ph ON bm.building_material_id = ph.building_material_id " +
-                        "WHERE bm.is_active = TRUE " +
+                        "FROM materials m " +
+                        "JOIN price_history ph ON m.material_id = ph.material_id " +
+                        "WHERE m.is_active = TRUE " +
                         "AND ph.valid_to IS NULL;";
 
         try (Connection connection = connectionPool.getConnection();
@@ -37,7 +95,7 @@ public class MaterialMapper {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                int itemId = rs.getInt("building_material_id");
+                int itemId = rs.getInt("material_id");
                 String name = rs.getString("name");
                 String description = rs.getString("description");
                 String unit = rs.getString("unit");
@@ -79,10 +137,10 @@ public class MaterialMapper {
 
     public static Material getMaterialById(int itemId) throws DatabaseException {
         String sql =
-                "SELECT bm.*, ph.cost_price, ph.sales_price " +
-                "FROM building_materials bm " +
-                "LEFT JOIN price_history ph ON bm.building_material_id = ph.building_material_id " +
-                "WHERE bm.building_material_id = ? " +
+                "SELECT m.*, ph.cost_price, ph.sales_price " +
+                "FROM materials m " +
+                "LEFT JOIN price_history ph ON m.material_id = ph.material_id " +
+                "WHERE m.material_id = ? " +
                 "AND (ph.valid_to IS NULL OR ph.valid_to > CURRENT_DATE) " +
                 "LIMIT 1";
         ;
@@ -96,7 +154,7 @@ public class MaterialMapper {
                 if (rs.next()) {
                     return mapMaterial(rs);
                 } else {
-                    throw new DatabaseException("Material not found with ID: " + itemId);
+                    throw new DatabaseException("Material not found with Id: " + itemId);
                 }
             }
 
@@ -113,7 +171,7 @@ public class MaterialMapper {
                 "SELECT length " +
                         "FROM material_lengths ml " +
                         "JOIN predefined_lengths pl ON ml.predefined_length_id = pl.predefined_length_id " +
-                        "WHERE ml.building_material_id = ?";
+                        "WHERE ml.material_id = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -134,7 +192,7 @@ public class MaterialMapper {
     }
 
     public static Material mapMaterial(ResultSet rs) throws SQLException, DatabaseException {
-        int itemId = rs.getInt("building_material_id");
+        int itemId = rs.getInt("material_id");
         String name = rs.getString("name");
         String description = rs.getString("description");
         String unit = rs.getString("unit");
@@ -145,7 +203,6 @@ public class MaterialMapper {
         String type = rs.getString("material_type");
         List<Integer> preCutLengths = getPreCutLengths(itemId);
 
-        // Optional material-specific attributes
         int bucklingCapacity = rs.getInt("buckling_capacity");
         int postGap = rs.getInt("post_gap");
         int lengthOverlap = rs.getInt("length_overlap");
@@ -166,4 +223,8 @@ public class MaterialMapper {
             default -> throw new DatabaseException("Unknown material type: " + type);
         };
     }
+
+    //Update
+
+    //Delete
 }

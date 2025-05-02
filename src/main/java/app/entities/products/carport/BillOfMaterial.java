@@ -45,7 +45,7 @@ public class BillOfMaterial {
         Material material = carport.getMaterial().get(MaterialRole.POST);
         result.add(new BillOfMaterialsItem(
                 material.getName(),
-                //Todo: Calculate the need post height
+                //Todo: Calculate the needed post height
                 Collections.max(material.getPreCutsLengths()),
                 posts,
                 material.getUnit(),
