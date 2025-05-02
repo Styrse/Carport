@@ -116,7 +116,7 @@ class OrderMapperTest {
         //Arrange
         Customer user = new Customer(10,"John", "Doe", 12345678, "john@doe.com", "John123", 1);
         Order order = new Order(LocalDate.of(2025, 5, 1), "Shipped", user);
-        Carport carport = TestCarportFactory.createCarport(630, 500);
+        Carport carport = TestCarportFactory.createCarportWidthLength(630, 500);
         order.getOrderItems().add(new OrderItem(carport, 1));
 
         //Act

@@ -75,7 +75,7 @@ public class CarportMapper {
     public static Carport getCarportById(int carportId) throws DatabaseException {
         String sql =
                 "SELECT * " +
-                "FROM orders " +
+                "FROM carports " +
                 "WHERE carport_id = ?";
 
         try (Connection connection = connectionPool.getConnection();
@@ -97,7 +97,7 @@ public class CarportMapper {
     //Update
     public static void updateCarport(Carport carport) throws DatabaseException {
         String sql = "UPDATE carports " +
-                "SET item_id = ?, name = ?, description = ?, width = ?, length = ?, height = ?, " +
+                "SET carport_id = ?, width = ?, length = ?, height = ?, " +
                 "roof_type = ?, roof_angle = ?, post_material_id = ?, beam_material_id = ?, " +
                 "rafter_material_id = ?, fascia_material_id = ?, total_price = ? " +
                 "WHERE carport_id = ?";
@@ -107,19 +107,17 @@ public class CarportMapper {
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setInt(1, carport.getItemId());
-            ps.setString(2, carport.getName());
-            ps.setString(3, carport.getDescription());
-            ps.setInt(4, carport.getWidth());
-            ps.setInt(5, carport.getLength());
-            ps.setInt(6, carport.getHeight());
-            ps.setString(7, carport.getRoofType());
-            ps.setInt(8, carport.getRoofAngle());
-            ps.setInt(9, carport.getMaterial().get(MaterialRole.POST).getItemId());
-            ps.setInt(10, carport.getMaterial().get(MaterialRole.BEAM).getItemId());
-            ps.setInt(11, carport.getMaterial().get(MaterialRole.RAFTER).getItemId());
-            ps.setInt(12, carport.getMaterial().get(MaterialRole.FASCIA).getItemId());
-            ps.setFloat(13, carport.getBillOfMaterial().calcTotalPrice());
-            ps.setInt(14, carport.getItemId());
+            ps.setInt(2, carport.getWidth());
+            ps.setInt(3, carport.getLength());
+            ps.setInt(4, carport.getHeight());
+            ps.setString(5, carport.getRoofType());
+            ps.setInt(6, carport.getRoofAngle());
+            ps.setInt(7, carport.getMaterial().get(MaterialRole.POST).getItemId());
+            ps.setInt(8, carport.getMaterial().get(MaterialRole.BEAM).getItemId());
+            ps.setInt(9, carport.getMaterial().get(MaterialRole.RAFTER).getItemId());
+            ps.setInt(10, carport.getMaterial().get(MaterialRole.FASCIA).getItemId());
+            ps.setFloat(11, carport.getBillOfMaterial().calcTotalPrice());
+            ps.setInt(12, carport.getItemId());
 
             ps.executeUpdate();
         } catch (SQLException e) {

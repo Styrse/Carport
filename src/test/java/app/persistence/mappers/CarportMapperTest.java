@@ -2,6 +2,7 @@ package app.persistence.mappers;
 
 import app.entities.products.carport.Carport;
 import app.entities.products.carport.carportTestFactory.TestCarportFactory;
+import app.exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,16 +23,24 @@ class CarportMapperTest {
             try (Statement stmt = connection.createStatement()) {
                 // Drop child tables first due to FK dependencies
                 stmt.execute("DROP TABLE IF EXISTS test.carports;");
+                stmt.execute("DROP TABLE IF EXISTS test.materials;");
                 stmt.execute("DROP SEQUENCE IF EXISTS test.carports_carport_id_seq CASCADE;");
+                stmt.execute("DROP SEQUENCE IF EXISTS test.materials_material_id_seq CASCADE;");
 
                 // Create empty copies of the original tables
+                stmt.execute("CREATE TABLE test.materials AS (SELECT * FROM public.materials) WITH NO DATA;");
                 stmt.execute("CREATE TABLE test.carports AS (SELECT * FROM public.carports) WITH NO DATA;");
 
                 // Recreate sequences
+                stmt.execute("CREATE SEQUENCE test.materials_material_id_seq;");
                 stmt.execute("CREATE SEQUENCE test.carports_carport_id_seq;");
 
                 // Attach sequences to ID columns
+                stmt.execute("ALTER TABLE test.materials ALTER COLUMN material_id SET DEFAULT nextval('test.materials_material_id_seq');");
                 stmt.execute("ALTER TABLE test.carports ALTER COLUMN carport_id SET DEFAULT nextval('test.carports_carport_id_seq');");
+
+                // Recreate constraints (optional, if dropped)
+                // e.g., FK from carports to materials — if needed in the test schema
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,6 +54,16 @@ class CarportMapperTest {
             try (Statement stmt = connection.createStatement()) {
                 // Truncate in FK order: child → parent
                 stmt.execute("TRUNCATE TABLE test.carports RESTART IDENTITY CASCADE;");
+                stmt.execute("TRUNCATE TABLE test.materials RESTART IDENTITY CASCADE;");
+
+                // Insert sample materials (IDs 1–4)
+                stmt.execute("INSERT INTO test.materials (material_id, name, description, unit, width, height, material_type, buckling_capacity, post_gap, length_overlap, side_overlap, gap_rafters, is_active) VALUES " +
+                        "(1, 'Post', 'Strong wood post', 'cm', 10, 10, 'wood', 500, 5, 2, 1, 60, true), " +
+                        "(2, 'Beam', 'Galvanized steel beam', 'cm', 15, 20, 'steel', 1000, 0, 3, 1, 90, true), " +
+                        "(3, 'Rafter', 'Softwood rafter', 'cm', 8, 20, 'wood', 400, 4, 2, 1, 70, true), " +
+                        "(4, 'Fascia', 'Aluminum fascia', 'cm', 5, 15, 'aluminum', 300, 0, 1, 0.5, 40, true);");
+
+                stmt.execute("SELECT setval('test.materials_material_id_seq', COALESCE((SELECT MAX(material_id) + 1 FROM test.materials), 1), false)");
 
                 // Insert 2 example carports
                 stmt.execute("INSERT INTO test.carports (width, length, height, roof_type, roof_angle, post_material_id, beam_material_id, rafter_material_id, fascia_material_id, total_price) VALUES " +
@@ -60,11 +79,12 @@ class CarportMapperTest {
     }
 
 
+
     @Test
     @DisplayName("CreateCarport Test")
     void createCarport() throws SQLException {
         //Arrange
-        Carport carport = TestCarportFactory.createCarport(600, 400);
+        Carport carport = TestCarportFactory.createCarport();
 
         //Act
         CarportMapper.createCarport(carport);
@@ -76,18 +96,60 @@ class CarportMapperTest {
     }
 
     @Test
-    void getAllCarports() {
+    @DisplayName("GetAllOrders Test")
+    void getAllCarports() throws DatabaseException {
+        //Arrange
+
+        //Act
+        int actual = CarportMapper.getAllCarports().size();
+
+        //Assert
+        int expected = 3;
+        assertEquals(expected, actual);
     }
 
     @Test
-    void getCarportById() {
+    @DisplayName("GetCarportById Test")
+    void getCarportById() throws DatabaseException {
+        //Arrange
+
+        //Act
+        int actual = CarportMapper.getCarportById(1).getLength();
+
+        //Assert
+        int expected = 500;
+        assertEquals(expected, actual);
+
     }
 
     @Test
-    void updateCarport() {
+    @DisplayName("UpdateCarport Test")
+    void updateCarport() throws DatabaseException {
+        //Arrange
+        Carport carport = TestCarportFactory.createCarport();
+
+        //Act
+        CarportMapper.updateCarport(carport);
+        Carport actual = CarportMapper.getCarportById(1);
+
+        //Assert
+        Carport expected = TestCarportFactory.createCarport();
+        assertEquals(expected.getLength(), actual.getLength());
+        assertEquals(expected.getWidth(), actual.getWidth());
+        assertEquals(expected.getHeight(), actual.getHeight());
     }
 
     @Test
-    void deleteCarportById() {
+    @DisplayName("DeleteCarportById Test")
+    void deleteCarportById() throws DatabaseException {
+        //Arrange
+
+        //Act
+        CarportMapper.deleteCarportById(1);
+        int actual = CarportMapper.getAllCarports().size();
+
+        //Assert
+        int expected = 1;
+        assertEquals(expected, actual);
     }
 }

@@ -136,14 +136,7 @@ public class MaterialMapper {
     }
 
     public static Material getMaterialById(int itemId) throws DatabaseException {
-        String sql =
-                "SELECT m.*, ph.cost_price, ph.sales_price " +
-                "FROM materials m " +
-                "LEFT JOIN price_history ph ON m.material_id = ph.material_id " +
-                "WHERE m.material_id = ? " +
-                "AND (ph.valid_to IS NULL OR ph.valid_to > CURRENT_DATE) " +
-                "LIMIT 1";
-        ;
+        String sql = "SELECT * FROM materials WHERE material_id = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -197,9 +190,9 @@ public class MaterialMapper {
         String description = rs.getString("description");
         String unit = rs.getString("unit");
         int width = rs.getInt("width");
-        int height = rs.getInt("heigth");
-        double costPrice = rs.getDouble("cost_price");
-        double salesPrice = rs.getDouble("sales_price");
+        int height = rs.getInt("height");
+        float costPrice = rs.getFloat("cost_price");
+        float salesPrice = rs.getFloat("sales_price");
         String type = rs.getString("material_type");
         List<Integer> preCutLengths = getPreCutLengths(itemId);
 
