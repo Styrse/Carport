@@ -14,7 +14,7 @@ main {
     width: 100%;
     max-width: 80vw;
     margin: 2vw auto;
-    padding: 1rem;
+    padding: 2rem;
     background: #FFFFFF;
 }
 
@@ -33,6 +33,22 @@ li {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+}
+
+button  {
+    background-color: #003D76;
+    color: #FFFFFF;
+    border: none;
+    padding: 6px 22px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+
+}
+button:hover    {
+    background-color: #004585;
 }
 
 /*navbar styling*/
@@ -159,13 +175,61 @@ footer {
     gap: 10px;
 }
 
+.form-group > div {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 10px 10px;
+
+    gap: 10px;
+}
+
+
 select, input   {
     font-size: 16px;
     border-radius: 5px;
     background: #FFFFFF;
     border: 1px solid #ccc;
+    padding: 0.5em;
 }
 
 #toolshed-div  {
     display: none;
+}
+
+.form-button-align  {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+/*Multible step styling*/
+
+.step-format    {
+    display: flex;
+    flex-direction: row;
+    background-color: red;
+    margin: 50px auto;
+    justify-content: center;
+    gap: 50px;
+}
+
+.step {
+    height: 80px;
+    width: 80px;
+    font-size: 70px;
+    text-align: center;
+    background-color: #bbbbbb;
+    border: none;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.step.active {
+    opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+    background-color: #04AA6D;
 }

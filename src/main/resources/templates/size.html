@@ -11,76 +11,92 @@
     <div th:insert="~{fragments/header :: header}"></div>
 
     <main>
+
+        <div class="step-format">
+        <span class="step">1</span>
+        <span class="step">2</span>
+        <span class="step">3</span>
+        <span class="step">4</span>
+        </div>
+
         <div id="main-content">
 
             <h1>Angiv mål</h1>
-            <p>Udfyld nedenstående omhyggeligt og tryk "Videre".Felter markeret med * SKAL udfyldes!</p>
+            <p>Udfyld nedenstående omhyggeligt og tryk "Videre".</p>
+            <p> Felter markeret med * SKAL udfyldes!</p>
 
-        <!-- Fill form action if needed -->
-        <form action="" method="post">
-            <div class="form-group">
-                <label for="cwidth">Carport bredde *</label>
-                <select id="cwidth" name="length">
-                    <option hidden=""></option>
-                    <option value="bredde1">bredde1</option>
-                    <option value="bredde2">bredde2</option>
-                    <option value="bredde3">bredde3</option>
-                </select>
-                <label for="cheight">Carport længde *</label>
-                <select id="cheight" name="height">
-                    <option hidden=""></option>
-                    <option value="længde1">længde1</option>
-                    <option value="længde2">længde2</option>
-                    <option value="længde3">længde3</option>
-                </select>
-                <label for="ctrapez">Carport trapeztag *</label>
-                <select id="ctrapez" name="height">
-                    <option hidden=""></option>
-                    <option value="længde1">længde1</option>
-                    <option value="længde2">længde2</option>
-                    <option value="længde3">længde3</option>
-                </select>
-            </div>
-        </form>
-
-            <button onclick="toolShedShow()">Try it</button>
-
+            <!-- Fill form action if needed -->
             <form action="" method="post">
-                <div id="toolshed-div" class="form-group">
-                    <select name="length">
-                        <option hidden="">bredde</option>
+                <div class="form-group">
+                    <label for="cwidth">Carport bredde *</label>
+                    <select id="cwidth" name="width">
+                        <option hidden=""></option>
                         <option value="bredde1">bredde1</option>
                         <option value="bredde2">bredde2</option>
                         <option value="bredde3">bredde3</option>
                     </select>
-                    <select name="height">
-                        <option hidden="">længde</option>
+                    <label for="clength">Carport længde *</label>
+                    <select id="clength" name="length">
+                        <option hidden=""></option>
                         <option value="længde1">længde1</option>
                         <option value="længde2">længde2</option>
                         <option value="længde3">længde3</option>
                     </select>
+                    <label for="ctrapez">Carport trapeztag *</label>
+                    <select id="ctrapez" name="trapez">
+                        <option hidden=""></option>
+                        <option value="valg1">valg1</option>
+                        <option value="valg2">valg2</option>
+                    </select>
                 </div>
             </form>
 
-            <form action="" method="GET">
-                <button type="submit" class="active">Tilbage</button>
+            <button onclick="toolShedShow()">Redskabskur tilvalg</button>
+
+            <form action="" method="post">
+                <div class="form-group" id="toolshed-div">
+                    <div>
+                        <label for="twidth">Redskabskur bredde *</label>
+                        <select id="twidth" name="width">
+                            <option hidden=""></option>
+                            <option value="bredde1">bredde1</option>
+                            <option value="bredde2">bredde2</option>
+                            <option value="bredde3">bredde3</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="tlength">Redskabskur længde *</label>
+                        <select id="tlength" name="lenght">
+                            <option hidden=""></option>
+                            <option value="længde1">længde1</option>
+                            <option value="længde2">længde2</option>
+                            <option value="længde3">længde3</option>
+                        </select>
+                    </div>
+                </div>
             </form>
-            <form action="" method="GET">
-                <button type="submit" class="active">videre</button>
-            </form>
+
+            <div class="form-button-align">
+                <form action="" method="GET">
+                    <button type="submit" class="active">Tilbage</button>
+                </form>
+                <form action="" method="GET">
+                    <button type="submit" class="active">Videre</button>
+                </form>
+            </div>
 
             <!-- Small script that hides the toolshed option -->
 
-        <script>
-            function toolShedShow() {
-                var x = document.getElementById("toolshed-div");
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
+            <script>
+                function toolShedShow() {
+                    var x = document.getElementById("toolshed-div");
+                    if (x.style.display === "none") {
+                        x.style.display = "block";
+                    } else {
+                        x.style.display = "none";
+                    }
                 }
-            }
-        </script>
+            </script>
         </div>
     </main>
     <div th:insert="~{fragments/footer :: footer}"></div>
