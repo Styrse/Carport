@@ -14,6 +14,7 @@ public class BillOfMaterial {
     private final Carport carport;
     private final List<BillOfMaterialsItem> lines = new ArrayList<>();
 
+    //TODO: Add front overhang
     private final static int OVERHANG = 30;
 
     public BillOfMaterial(Carport carport) {

@@ -1,6 +1,7 @@
 package app.persistence.mappers;
 
 import app.entities.products.carport.carportTestFactory.TestPlankFactory;
+import app.entities.products.materials.Material;
 import app.entities.products.materials.planks.Beam;
 import app.exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
@@ -59,38 +60,38 @@ class MaterialMapperTest {
     void setup() {
         try (Connection connection = connectionPool.getConnection()) {
             try (Statement stmt = connection.createStatement()) {
-                // Truncate in FK order
+                //Truncate in FK order
                 stmt.execute("TRUNCATE TABLE test.material_lengths RESTART IDENTITY CASCADE;");
                 stmt.execute("TRUNCATE TABLE test.price_history RESTART IDENTITY CASCADE;");
                 stmt.execute("TRUNCATE TABLE test.predefined_lengths RESTART IDENTITY CASCADE;");
                 stmt.execute("TRUNCATE TABLE test.materials RESTART IDENTITY CASCADE;");
 
-                // Insert predefined lengths (IDs 1–3)
+                //Insert predefined lengths (IDs 1–3)
                 stmt.execute("INSERT INTO test.predefined_lengths (predefined_length_id, length) VALUES " +
                         "(1, 300), (2, 400), (3, 500);");
                 stmt.execute("SELECT setval('test.predefined_lengths_predefined_length_id_seq', COALESCE((SELECT MAX(predefined_length_id) + 1 FROM test.predefined_lengths), 1), false)");
 
-                // Insert materials (IDs 1–3)
+                //Insert materials (IDs 1–3)
                 stmt.execute("INSERT INTO test.materials (material_id, name, description, unit, width, height, material_type, buckling_capacity, post_gap, length_overlap, side_overlap, gap_rafters, is_active) VALUES " +
                         "(1, 'Post', 'Pressure-treated post', 'cm', 10, 10, 'post', 500, 5, 2, 1, 60, true), " +
                         "(2, 'Beam', 'Steel I-beam', 'cm', 15, 20, 'beam', 1200, 0, 3, 1.5, 90, true), " +
                         "(3, 'Fascia', 'Aluminum fascia board', 'cm', 5, 15, 'fascia', 300, 0, 1, 0.5, 40, true);");
                 stmt.execute("SELECT setval('test.materials_material_id_seq', COALESCE((SELECT MAX(material_id) + 1 FROM test.materials), 1), false)");
 
-                // Insert price history for material 1
+                //Insert price history for material 1
                 stmt.execute("INSERT INTO test.price_history (price_history_id, material_id, cost_price, sales_price, valid_from, valid_to) VALUES " +
                         "(1, 1, 125.50, 199.99, '2024-01-01', '2024-03-01'), " +
                         "(2, 1, 135.00, 250.00, '2024-03-02', '2024-05-01'), " +
                         "(3, 1, 140.75, 269.95, '2024-05-02', NULL);");
                 stmt.execute("SELECT setval('test.price_history_price_history_id_seq', COALESCE((SELECT MAX(price_history_id) + 1 FROM test.price_history), 1), false)");
 
-                // Insert material_lengths entries
+                //Insert material_lengths entries
                 stmt.execute("INSERT INTO test.material_lengths (material_id, predefined_length_id) VALUES " +
-                        "(1, 1), (1, 2), " +  // material 1 supports length 300 and 400
-                        "(2, 2), (2, 3), " +  // material 2 supports length 400 and 500
-                        "(3, 1);");           // material 3 supports length 300
+                        "(1, 1), (1, 2), " +
+                        "(2, 2), (2, 3), " +
+                        "(3, 1);");
 
-                // Insert price history for all 3 materials
+                //Insert price history for all 3 materials
                 stmt.execute("INSERT INTO test.price_history (price_history_id, material_id, cost_price, sales_price, valid_from, valid_to) VALUES " +
                         "(1, 1, 125.50, 199.99, '2024-01-01', '2024-03-01'), " +
                         "(2, 1, 135.00, 250.00, '2024-03-02', '2024-05-01'), " +
@@ -113,11 +114,11 @@ class MaterialMapperTest {
     @DisplayName("CreateMaterial Test")
     void createMaterial() throws SQLException, DatabaseException {
         //Arrange
-        Beam material = TestPlankFactory.createStandardBeam();
+        Material material = TestPlankFactory.createStandardBeam();
+        MaterialMapper.createMaterial(material);
 
         //Act
-        MaterialMapper.createMaterial(material);
-        int actual = MaterialMapper.getMaterialById(4).getItemId();
+        int actual = material.getItemId();
 
         //Assert
         int expected = 4;
@@ -151,10 +152,12 @@ class MaterialMapperTest {
     }
 
     @Test
+    @DisplayName("UpdateMaterialById Test")
     void updateMaterialById() {
     }
 
     @Test
+    @DisplayName("DeleteMaterialById Test")
     void deleteMaterialById() {
     }
 }

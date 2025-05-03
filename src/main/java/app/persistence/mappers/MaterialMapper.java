@@ -16,23 +16,24 @@ import static app.Main.connectionPool;
 
 public class MaterialMapper {
     //Create
-    public static void createMaterial(Material material) throws SQLException {
+    public static void createMaterial(Material material) throws SQLException, DatabaseException {
         String sql = "INSERT INTO materials " +
                 "(name, description, unit, width, height, material_type, " +
                 "buckling_capacity, post_gap, length_overlap, side_overlap, gap_rafters) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING material_id";
 
-        try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
 
             material.prepareStatement(ps);
 
-            ps.executeUpdate();
-
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                material.setItemId(rs.getInt(1));
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    material.setItemId(rs.getInt("material_id"));
+                }
             }
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error inserting material");
         }
     }
 
@@ -40,7 +41,7 @@ public class MaterialMapper {
     public static List<Material> getAllMaterials() throws DatabaseException {
         List<Material> allMaterials = new ArrayList<>();
 
-        String sql = "SELECT * " +
+        String sql = "SELECT DISTINCT ON (material_id) * " +
                 "FROM materials " +
                 "JOIN price_history USING (material_id)";
 

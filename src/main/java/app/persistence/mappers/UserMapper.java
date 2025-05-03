@@ -49,7 +49,6 @@ public class UserMapper {
                     user.setUserId(rs.getInt("user_id"));
                 }
             }
-
         } catch (SQLException e) {
             throw new DatabaseException(e, "Error inserting user");
         }
