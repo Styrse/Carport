@@ -2,6 +2,8 @@ package app.entities.products.materials.planks;
 
 import app.entities.products.materials.Material;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -46,4 +48,7 @@ public abstract class Plank extends Material {
     public void setHeight(int height) {
         this.height = height;
     }
+
+    @Override
+    public abstract void prepareStatement(PreparedStatement ps) throws SQLException;
 }

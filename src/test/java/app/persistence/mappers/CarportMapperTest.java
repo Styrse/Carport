@@ -58,10 +58,10 @@ class CarportMapperTest {
 
                 // Insert sample materials (IDs 1–4)
                 stmt.execute("INSERT INTO test.materials (material_id, name, description, unit, width, height, material_type, buckling_capacity, post_gap, length_overlap, side_overlap, gap_rafters, is_active) VALUES " +
-                        "(1, 'Post', 'Strong wood post', 'cm', 10, 10, 'wood', 500, 5, 2, 1, 60, true), " +
-                        "(2, 'Beam', 'Galvanized steel beam', 'cm', 15, 20, 'steel', 1000, 0, 3, 1, 90, true), " +
-                        "(3, 'Rafter', 'Softwood rafter', 'cm', 8, 20, 'wood', 400, 4, 2, 1, 70, true), " +
-                        "(4, 'Fascia', 'Aluminum fascia', 'cm', 5, 15, 'aluminum', 300, 0, 1, 0.5, 40, true);");
+                        "(1, 'Post', 'Strong wood post', 'cm', 10, 10, 'post', 500, 5, 2, 1, 60, true), " +
+                        "(2, 'Beam', 'Galvanized steel beam', 'cm', 15, 20, 'beam', 1000, 0, 3, 1, 90, true), " +
+                        "(3, 'Rafter', 'Softwood rafter', 'cm', 8, 20, 'rafter', 400, 4, 2, 1, 70, true), " +
+                        "(4, 'Fascia', 'Aluminum fascia', 'cm', 5, 15, 'fascia', 300, 0, 1, 0.5, 40, true);");
 
                 stmt.execute("SELECT setval('test.materials_material_id_seq', COALESCE((SELECT MAX(material_id) + 1 FROM test.materials), 1), false)");
 
@@ -77,8 +77,6 @@ class CarportMapperTest {
             fail("Database reset for carports failed");
         }
     }
-
-
 
     @Test
     @DisplayName("CreateCarport Test")
