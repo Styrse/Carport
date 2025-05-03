@@ -24,20 +24,25 @@ class CarportMapperTest {
                 // Drop child tables first due to FK dependencies
                 stmt.execute("DROP TABLE IF EXISTS test.carports;");
                 stmt.execute("DROP TABLE IF EXISTS test.materials;");
+                stmt.execute("DROP TABLE IF EXISTS test.price_history;");
+                stmt.execute("DROP SEQUENCE IF EXISTS test.price_history_price_history_id_seq CASCADE;");
                 stmt.execute("DROP SEQUENCE IF EXISTS test.carports_carport_id_seq CASCADE;");
                 stmt.execute("DROP SEQUENCE IF EXISTS test.materials_material_id_seq CASCADE;");
 
                 // Create empty copies of the original tables
                 stmt.execute("CREATE TABLE test.materials AS (SELECT * FROM public.materials) WITH NO DATA;");
                 stmt.execute("CREATE TABLE test.carports AS (SELECT * FROM public.carports) WITH NO DATA;");
+                stmt.execute("CREATE TABLE test.price_history AS (SELECT * FROM public.price_history) WITH NO DATA;");
 
                 // Recreate sequences
                 stmt.execute("CREATE SEQUENCE test.materials_material_id_seq;");
                 stmt.execute("CREATE SEQUENCE test.carports_carport_id_seq;");
+                stmt.execute("CREATE SEQUENCE test.price_history_price_history_id_seq;");
 
                 // Attach sequences to ID columns
                 stmt.execute("ALTER TABLE test.materials ALTER COLUMN material_id SET DEFAULT nextval('test.materials_material_id_seq');");
                 stmt.execute("ALTER TABLE test.carports ALTER COLUMN carport_id SET DEFAULT nextval('test.carports_carport_id_seq');");
+                stmt.execute("ALTER TABLE test.price_history ALTER COLUMN price_history_id SET DEFAULT nextval('test.price_history_price_history_id_seq');");
 
                 // Recreate constraints (optional, if dropped)
                 // e.g., FK from carports to materials — if needed in the test schema
@@ -67,10 +72,21 @@ class CarportMapperTest {
 
                 // Insert 2 example carports
                 stmt.execute("INSERT INTO test.carports (width, length, height, roof_type, roof_angle, post_material_id, beam_material_id, rafter_material_id, fascia_material_id, total_price) VALUES " +
-                        "(300, 500, 250, 'flat', 0, 1, 2, 3, 4, 25000), " +
-                        "(400, 600, 275, 'pitched', 25, 1, 2, 3, 4, 32000);");
+                        "(300, 500, 250, 'flat', 0, 1, 2, 3, 2, 25000), " +
+                        "(400, 600, 275, 'pitched', 25, 1, 2, 3, 1, 32000);");
 
                 stmt.execute("SELECT setval('test.carports_carport_id_seq', COALESCE((SELECT MAX(carport_id) + 1 FROM test.carports), 1), false)");
+
+                // Insert price history for all materials (1–4)
+                stmt.execute("INSERT INTO test.price_history (price_history_id, material_id, cost_price, sales_price, valid_from, valid_to) VALUES " +
+                        "(1, 1, 100.00, 150.00, '2024-01-01', '2024-03-01'), " +
+                        "(2, 1, 110.00, 160.00, '2024-03-02', NULL), " +
+                        "(3, 2, 200.00, 280.00, '2024-01-01', NULL), " +
+                        "(4, 3, 180.00, 260.00, '2024-01-01', NULL), " +
+                        "(5, 4, 75.00, 120.00, '2024-01-01', NULL);");
+
+                stmt.execute("SELECT setval('test.price_history_price_history_id_seq', COALESCE((SELECT MAX(price_history_id) + 1 FROM test.price_history), 1), false);");
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
