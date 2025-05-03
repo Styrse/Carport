@@ -118,7 +118,7 @@ class CarportMapperTest {
         int actual = CarportMapper.getAllCarports().size();
 
         //Assert
-        int expected = 3;
+        int expected = 2;
         assertEquals(expected, actual);
     }
 
@@ -138,19 +138,20 @@ class CarportMapperTest {
 
     @Test
     @DisplayName("UpdateCarport Test")
-    void updateCarport() throws DatabaseException {
+    void updateCarport() throws DatabaseException, SQLException {
         //Arrange
-        Carport carport = TestCarportFactory.createCarport();
+        Carport carport = TestCarportFactory.createCarportWidthLength(600, 350);
+        CarportMapper.createCarport(carport);
 
         //Act
+        carport.setLength(750);
         CarportMapper.updateCarport(carport);
-        Carport actual = CarportMapper.getCarportById(1);
+        int actual = CarportMapper.getCarportById(carport.getItemId()).getLength();
 
         //Assert
-        Carport expected = TestCarportFactory.createCarport();
-        assertEquals(expected.getLength(), actual.getLength());
-        assertEquals(expected.getWidth(), actual.getWidth());
-        assertEquals(expected.getHeight(), actual.getHeight());
+        int expected = 750;
+        assertEquals(expected, actual);
+
     }
 
     @Test

@@ -110,7 +110,8 @@ public class UserMapper {
 
     //Update full user
     public static void updateUser(User user) throws DatabaseException {
-        String sql = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, email = ?, password = ?, user_id = ? WHERE email = ?";
+        String sql = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, email = ?," +
+                "password = ?,user_id = ? WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {

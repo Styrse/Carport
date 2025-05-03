@@ -157,7 +157,6 @@ class OrderMapperTest {
 
         //Act
         Order order = OrderMapper.getOrderByOrderId(1);
-        System.out.println(order);
 
         //Assert
         String expected = "Under Review";

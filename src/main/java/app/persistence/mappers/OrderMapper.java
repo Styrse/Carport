@@ -133,7 +133,6 @@ public class OrderMapper {
              PreparedStatement ps = connection.prepareStatement(orderSql)) {
 
             ps.setInt(1, orderId);
-            System.out.println(orderId);
 
             try (ResultSet rs = ps.executeQuery()) {
 
