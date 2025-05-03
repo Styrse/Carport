@@ -73,9 +73,9 @@ class MaterialMapperTest {
 
                 //Insert materials (IDs 1–3)
                 stmt.execute("INSERT INTO test.materials (material_id, name, description, unit, width, height, material_type, buckling_capacity, post_gap, length_overlap, side_overlap, gap_rafters, is_active) VALUES " +
-                        "(1, 'Post', 'Pressure-treated post', 'cm', 10, 10, 'post', 500, 5, 2, 1, 60, true), " +
-                        "(2, 'Beam', 'Steel I-beam', 'cm', 15, 20, 'beam', 1200, 0, 3, 1.5, 90, true), " +
-                        "(3, 'Fascia', 'Aluminum fascia board', 'cm', 5, 15, 'fascia', 300, 0, 1, 0.5, 40, true);");
+                        "(1, 'post', 'Pressure-treated post', 'cm', 10, 10, 'Post', 500, 5, 2, 1, 60, true), " +
+                        "(2, 'beam', 'Steel I-beam', 'cm', 15, 20, 'Beam', 1200, 0, 3, 1.5, 90, true), " +
+                        "(3, 'fascia', 'Aluminum fascia board', 'cm', 5, 15, 'Fascia', 300, 0, 1, 0.5, 40, true);");
                 stmt.execute("SELECT setval('test.materials_material_id_seq', COALESCE((SELECT MAX(material_id) + 1 FROM test.materials), 1), false)");
 
                 //Insert price history for material 1
@@ -152,12 +152,32 @@ class MaterialMapperTest {
     }
 
     @Test
-    @DisplayName("UpdateMaterialById Test")
-    void updateMaterialById() {
+    @DisplayName("UpdateMaterial Test")
+    void updateMaterialById() throws DatabaseException {
+        //Arrange
+        Material material = TestPlankFactory.createStandardPost();
+
+        //Act
+        MaterialMapper.updateMaterial(material);
+        Material actual = MaterialMapper.getMaterialById(1);
+
+        //Assert
+        Material expected = material;
+        assertEquals(expected.getWidth(), actual.getWidth());
+        assertEquals(expected.getDescription(), actual.getDescription());
     }
 
     @Test
     @DisplayName("DeleteMaterialById Test")
-    void deleteMaterialById() {
+    void deleteMaterialById() throws SQLException, DatabaseException {
+        //Arrange
+
+        //Act
+        MaterialMapper.deleteMaterialById(1);
+        int actual = MaterialMapper.getAllMaterials().size();
+
+        //Assert
+        int expected = 2;
+        assertEquals(expected, actual);
     }
 }

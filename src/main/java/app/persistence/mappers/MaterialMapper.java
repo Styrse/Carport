@@ -43,7 +43,8 @@ public class MaterialMapper {
 
         String sql = "SELECT DISTINCT ON (material_id) * " +
                 "FROM materials " +
-                "JOIN price_history USING (material_id)";
+                "JOIN price_history USING (material_id) " +
+                "WHERE is_active = true";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -88,15 +89,39 @@ public class MaterialMapper {
     }
 
     //Update
-    public static void updateMaterialById(int itemId) {
+    public static void updateMaterial(Material material) throws DatabaseException {
+        String sql = "UPDATE materials SET name = ?, description = ?, unit = ?, width = ?, height = ?," +
+                "material_type = ?, buckling_capacity = ?, post_gap = ?, length_overlap = ?," +
+                "side_overlap = ?, gap_rafters = ? WHERE material_id = ?";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
 
+            material.prepareStatement(ps);
+
+            ps.setInt(12, material.getItemId());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error updating material");
+        }
     }
 
-    //Delete
-    public static void deleteMaterialById(int itemId) {
+    //Delete: Soft delete. Changes is_active to false
+    public static void deleteMaterialById(int itemId) throws SQLException, DatabaseException {
+        String sql = "UPDATE materials SET is_active = false WHERE material_id = ?";
 
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, itemId);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error deleting material");
+        }
     }
 
+    //Helper Methods
     private static List<Integer> getPreCutLengths(int itemId) throws DatabaseException {
         List<Integer> lengths = new ArrayList<>();
 
@@ -142,15 +167,15 @@ public class MaterialMapper {
         int gapRafters = rs.getInt("gap_rafters");
 
         return switch (type) {
-            case "post" ->
+            case "Post" ->
                     new Post(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height, bucklingCapacity);
-            case "beam" ->
+            case "Beam" ->
                     new Beam(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height, postGap);
-            case "rafter" ->
+            case "Rafter" ->
                     new Rafter(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height);
-            case "fascia" ->
+            case "Fascia" ->
                     new Fascia(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height);
-            case "roof_cover" ->
+            case "RoofCover" ->
                     new RoofCover(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, lengthOverlap, sideOverlap, gapRafters);
             default -> throw new DatabaseException("Unknown material type: " + type);
         };
