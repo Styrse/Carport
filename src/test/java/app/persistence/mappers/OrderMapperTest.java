@@ -4,6 +4,8 @@ import app.entities.orders.Order;
 import app.entities.orders.OrderItem;
 import app.entities.products.carport.Carport;
 import app.entities.products.carport.carportTestFactory.TestCarportFactory;
+import app.entities.products.carport.carportTestFactory.TestPlankFactory;
+import app.entities.products.materials.planks.Post;
 import app.entities.users.Customer;
 import app.exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,11 +23,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class OrderMapperTest {
 
-    @BeforeAll
-    static void setupClass() {
+    @BeforeEach
+    void setup() {
         try (Connection connection = connectionPool.getConnection()) {
             try (Statement stmt = connection.createStatement()) {
-                // Drop test tables and sequences if they exist
+                //
                 stmt.execute("DROP TABLE IF EXISTS test.order_item_material;");
                 stmt.execute("DROP TABLE IF EXISTS test.order_item_carport;");
                 stmt.execute("DROP TABLE IF EXISTS test.order_items;");
@@ -71,17 +73,7 @@ class OrderMapperTest {
 
                 stmt.execute("CREATE SEQUENCE test.predefined_lengths_predefined_length_id_seq;");
                 stmt.execute("ALTER TABLE test.predefined_lengths ALTER COLUMN predefined_length_id SET DEFAULT nextval('test.predefined_lengths_predefined_length_id_seq');");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail("Database setup failed");
-        }
-    }
 
-    @BeforeEach
-    void setup() {
-        try (Connection connection = connectionPool.getConnection()) {
-            try (Statement stmt = connection.createStatement()) {
                 // Truncate all test tables and reset identities
                 stmt.execute("TRUNCATE TABLE " +
                         "test.order_item_material, " +
@@ -191,7 +183,9 @@ class OrderMapperTest {
         Customer user = new Customer(10,"John", "Doe", 12345678, "john@doe.com", "John123", 1);
         Order order = new Order(LocalDate.of(2025, 5, 1), "Shipped", user);
         Carport carport = TestCarportFactory.createCarportWidthLength(630, 500);
+        Post post = TestPlankFactory.createStandardPost();
         order.getOrderItems().add(new OrderItem(carport, 1));
+        order.getOrderItems().add(new OrderItem(post, 12));
 
         //Act
         OrderMapper.createOrder(order);
@@ -279,9 +273,13 @@ class OrderMapperTest {
     @DisplayName("DeleteOrder Test")
     void deleteOrder() throws DatabaseException {
         //Arrange
+        OrderMapper.deleteOrder(1);
 
         //Act
+        int actual = OrderMapper.getAllOrders().size();
 
         //Assert
+        int expected = 2;
+        assertEquals(expected, actual);
     }
 }

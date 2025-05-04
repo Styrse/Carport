@@ -17,11 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserMapperTest {
 
-    @BeforeAll
-    static void setupClass() {
+    @BeforeEach
+    void setup() {
         try (Connection connection = connectionPool.getConnection()) {
             try (Statement stmt = connection.createStatement()) {
-                //Drop tables and sequences if they exist
                 stmt.execute("DROP TABLE IF EXISTS test.users;");
                 stmt.execute("DROP SEQUENCE IF EXISTS test.users_user_id_seq CASCADE;");
 
@@ -31,17 +30,7 @@ class UserMapperTest {
                 //Create sequences and attach to ID columns
                 stmt.execute("CREATE SEQUENCE test.users_user_id_seq;");
                 stmt.execute("ALTER TABLE test.users ALTER COLUMN user_id SET DEFAULT nextval('test.users_user_id_seq');");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail("Database setup failed");
-        }
-    }
 
-    @BeforeEach
-    void setup() {
-        try (Connection connection = connectionPool.getConnection()) {
-            try (Statement stmt = connection.createStatement()) {
                 //Clean the test table
                 stmt.execute("TRUNCATE TABLE test.users RESTART IDENTITY CASCADE;");
 

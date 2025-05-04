@@ -307,11 +307,9 @@ public class OrderMapper {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-
         } catch (SQLException e) {
             throw new DatabaseException(e, "Error fetching orders by customer ID");
         }
-
         return orders;
     }
 

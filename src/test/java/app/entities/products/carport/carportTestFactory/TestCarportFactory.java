@@ -37,7 +37,7 @@ public class TestCarportFactory {
         materials.put(MaterialRole.BEAM, TestPlankFactory.createStandardBeam());
         materials.put(MaterialRole.RAFTER, TestPlankFactory.createStandardRafter());
         materials.put(MaterialRole.FASCIA, TestPlankFactory.createStandardFascia());
-        materials.put(MaterialRole.ROOF_COVER, TestPlankFactory.createStandardRoofCover());
+        materials.put(MaterialRole.ROOF_COVER, TestRoofCoverFactory.createStandardTestRoofCover());
 
 
         return new Carport(
@@ -57,8 +57,7 @@ public class TestCarportFactory {
         materials.put(MaterialRole.BEAM, TestPlankFactory.createStandardBeam());
         materials.put(MaterialRole.RAFTER, TestPlankFactory.createStandardRafter());
         materials.put(MaterialRole.FASCIA, TestPlankFactory.createStandardFascia());
-        materials.put(MaterialRole.ROOF_COVER, TestPlankFactory.createStandardRoofCover());
-
+        materials.put(MaterialRole.ROOF_COVER, TestRoofCoverFactory.createStandardTestRoofCover());
 
         return new Carport(
                 1,
@@ -96,7 +95,7 @@ public class TestCarportFactory {
         materials.put(MaterialRole.BEAM, TestPlankFactory.createStandardBeam());
         materials.put(MaterialRole.RAFTER, rafter);
         materials.put(MaterialRole.FASCIA, TestPlankFactory.createStandardFascia());
-        materials.put(MaterialRole.ROOF_COVER, TestPlankFactory.createStandardRoofCover());
+        materials.put(MaterialRole.ROOF_COVER, TestRoofCoverFactory.createStandardTestRoofCover());
 
         return new Carport(
                 1,
@@ -115,7 +114,7 @@ public class TestCarportFactory {
         materials.put(MaterialRole.BEAM, beam);
         materials.put(MaterialRole.RAFTER, TestPlankFactory.createStandardRafter());
         materials.put(MaterialRole.FASCIA, TestPlankFactory.createStandardFascia());
-        materials.put(MaterialRole.ROOF_COVER, TestPlankFactory.createStandardRoofCover());
+        materials.put(MaterialRole.ROOF_COVER, TestRoofCoverFactory.createStandardTestRoofCover());
 
         return new Carport(
                 1,

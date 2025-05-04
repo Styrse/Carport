@@ -2,7 +2,6 @@ package app.persistence.mappers;
 
 import app.entities.products.carport.carportTestFactory.TestPlankFactory;
 import app.entities.products.materials.Material;
-import app.entities.products.materials.planks.Beam;
 import app.exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,11 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MaterialMapperTest {
 
-    @BeforeAll
-    static void setupClass() {
+    @BeforeEach
+    void setup() {
         try (Connection connection = connectionPool.getConnection()) {
             try (Statement stmt = connection.createStatement()) {
-                // Drop tables in order of foreign key dependency: child → parent
                 stmt.execute("DROP TABLE IF EXISTS test.material_lengths;");
                 stmt.execute("DROP TABLE IF EXISTS test.price_history;");
                 stmt.execute("DROP TABLE IF EXISTS test.predefined_lengths;");
@@ -48,18 +46,7 @@ class MaterialMapperTest {
                 stmt.execute("ALTER TABLE test.materials ALTER COLUMN material_id SET DEFAULT nextval('test.materials_material_id_seq');");
                 stmt.execute("ALTER TABLE test.price_history ALTER COLUMN price_history_id SET DEFAULT nextval('test.price_history_price_history_id_seq');");
                 stmt.execute("ALTER TABLE test.predefined_lengths ALTER COLUMN predefined_length_id SET DEFAULT nextval('test.predefined_lengths_predefined_length_id_seq');");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail("Database setup for materials test failed");
-        }
-    }
 
-
-    @BeforeEach
-    void setup() {
-        try (Connection connection = connectionPool.getConnection()) {
-            try (Statement stmt = connection.createStatement()) {
                 //Truncate in FK order
                 stmt.execute("TRUNCATE TABLE test.material_lengths RESTART IDENTITY CASCADE;");
                 stmt.execute("TRUNCATE TABLE test.price_history RESTART IDENTITY CASCADE;");
