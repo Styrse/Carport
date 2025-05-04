@@ -9,13 +9,14 @@
 <body>
 
 <header>
+    <div th:insert="~{fragments/header :: header}"></div>
 </header>
 
 <main>
-    <div class="box-wrapper">
+
         <img class="top-image" src="/public/img/byg-selv-carporte.png" alt="En flot carport" />
 
-        <div class="container box-frame">
+        <div class="container-box-frame">
             <div class="box-frame">
                 <h1>Lad os tegne din carport drøm - bestil et Quick-Byg tilbud</h1>
 
@@ -54,10 +55,11 @@
                 </form>
             </div>
         </div>
-    </div>
+
 </main>
 
 <footer>
+    <div th:insert="~{fragments/footer :: footer}"></div>
 </footer>
 
 </body>
