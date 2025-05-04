@@ -2,8 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/css/index.css" th:href="@{/css/index.css}" rel="stylesheet" />
     <title>Fog - QuickByg</title>
 </head>
 <body>
+
+<header>
+    <div th:insert="~{fragments/header :: header}"></div>
+</header>
+
+<main>
+
+        <img class="top-image" src="/public/img/byg-selv-carporte.png" alt="En flot carport" />
+
+        <div class="container-box-frame">
+            <div class="box-frame">
+                <h1>Lad os tegne din carport drøm - bestil et Quick-Byg tilbud</h1>
+
+                <div>
+                    <p>
+                        Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen og udskrive en skitsetegning på en carport<br>
+                        indenfor vores standardprogram.<br>
+                        Tilbud og skitsetegning fremsendes på mail hurtigst muligt.<br>
+                        Ved bestilling medfølger standardbyggevejledning.<br><br>
+                        Vælg nedenfor, om du ønsker tilbud på carport med fladt tag eller carport med høj rejsning.
+                    </p>
+                </div>
+
+                <form action="/" method="post">
+                    <div class="options">
+                        <label class="radio-option">
+                            <input type="radio" name="rooftype" value="skråtag" />
+                            <div class="option-label">
+                                <img class="roof-images" src="/public/img/pitched-roof.png" alt="Skråtag">
+                                <div><strong>Skråtag</strong></div>
+                            </div>
+                        </label>
+
+                        <label class="radio-option">
+                            <input type="radio" name="rooftype" value="fladttag" />
+                            <div class="option-label">
+                                <img class="roof-images" src="/public/img/flat-roof.png" alt="Fladt tag">
+                                <div><strong>Fladt tag</strong></div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="container-button">
+                        <button type="submit">Kom i gang</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+</main>
+
+<footer>
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</footer>
+
 </body>
 </html>

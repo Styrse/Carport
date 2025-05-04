@@ -9,6 +9,5 @@ import java.util.Map;
 
 public class RoutingController {
     public static void routes(Javalin app) {
-        app.get("/", ctx -> ctx.render("index.html"));
-    }
+        app.get("/", ctx -> ctx.render("index.html"));}
 }
