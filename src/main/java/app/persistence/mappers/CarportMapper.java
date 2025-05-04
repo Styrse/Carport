@@ -19,7 +19,7 @@ import static app.Main.connectionPool;
 
 public class CarportMapper {
 
-    //Create
+    //Create: Create a new Carport config in the database
     public static void createCarport(Carport carport) throws SQLException {
         String sql = "INSERT INTO carports (width, length, height, roof_type, roof_angle, " +
                 "post_material_id, beam_material_id, rafter_material_id, fascia_material_id, total_price) " +
@@ -37,7 +37,7 @@ public class CarportMapper {
             ps.setInt(7, carport.getMaterial().get(MaterialRole.BEAM).getItemId());
             ps.setInt(8, carport.getMaterial().get(MaterialRole.RAFTER).getItemId());
             ps.setInt(9, carport.getMaterial().get(MaterialRole.FASCIA).getItemId());
-            ps.setFloat(10, carport.getBillOfMaterial().calcTotalPrice());
+            ps.setDouble(10, carport.getBillOfMaterial().calcTotalPrice());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -51,6 +51,28 @@ public class CarportMapper {
     }
 
     //Read: Get all carports
+    public static Carport getCarportById(int carportId) throws DatabaseException {
+        String sql =
+                "SELECT * " +
+                        "FROM carports " +
+                        "WHERE carport_id = ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, carportId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapCarport(rs);
+                } else {
+                    throw new DatabaseException("Carport not found with Id: " + carportId);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error retrieving carport by id. Carport id: " + carportId);
+        }
+    }
+
     public static List<Carport> getAllCarports() throws DatabaseException {
         List<Carport> allCarports = new ArrayList<>();
 
@@ -72,57 +94,55 @@ public class CarportMapper {
         return allCarports;
     }
 
-    public static Carport getCarportById(int carportId) throws DatabaseException {
-        String sql =
-                "SELECT * " +
-                "FROM carports " +
-                "WHERE carport_id = ?";
-
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            ps.setInt(1, carportId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapCarport(rs);
-                } else {
-                    throw new DatabaseException("Carport not found with Id: " + carportId);
-                }
-            }
-        } catch (SQLException e) {
-            throw new DatabaseException(e, "Error retrieving carport by id. Carport id: " + carportId);
-        }
-    }
-
     //Update
-    public static void updateCarport(Carport carport) throws DatabaseException {
+    public static void updateCarport(Connection connection, Carport carport) throws DatabaseException {
         String sql = "UPDATE carports " +
                 "SET width = ?, length = ?, height = ?, " +
                 "roof_type = ?, roof_angle = ?, post_material_id = ?, beam_material_id = ?, " +
                 "rafter_material_id = ?, fascia_material_id = ?, total_price = ? " +
                 "WHERE carport_id = ?";
 
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            // Extract material IDs safely
+            int postId = getMaterialId(carport, MaterialRole.POST);
+            int beamId = getMaterialId(carport, MaterialRole.BEAM);
+            int rafterId = getMaterialId(carport, MaterialRole.RAFTER);
+            int fasciaId = getMaterialId(carport, MaterialRole.FASCIA);
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+            double totalPrice = carport.getBillOfMaterial().calcTotalPrice();
 
             ps.setInt(1, carport.getWidth());
             ps.setInt(2, carport.getLength());
             ps.setInt(3, carport.getHeight());
             ps.setString(4, carport.getRoofType());
             ps.setInt(5, carport.getRoofAngle());
-            ps.setInt(6, carport.getMaterial().get(MaterialRole.POST).getItemId());
-            ps.setInt(7, carport.getMaterial().get(MaterialRole.BEAM).getItemId());
-            ps.setInt(8, carport.getMaterial().get(MaterialRole.RAFTER).getItemId());
-            ps.setInt(9, carport.getMaterial().get(MaterialRole.FASCIA).getItemId());
-            ps.setFloat(10, carport.getBillOfMaterial().calcTotalPrice());
+            ps.setInt(6, postId);
+            ps.setInt(7, beamId);
+            ps.setInt(8, rafterId);
+            ps.setInt(9, fasciaId);
+            ps.setDouble(10, totalPrice);
             ps.setInt(11, carport.getItemId());
 
-            ps.executeUpdate();
+            int rowsUpdated = ps.executeUpdate();
+
+            if (rowsUpdated == 0) {
+                throw new DatabaseException("Carport update affected 0 rows (check ID " + carport.getItemId() + ")");
+            }
+
         } catch (SQLException e) {
-            throw new DatabaseException(e, "Error updating carport");
+            throw new DatabaseException(e, "Error updating carport (ID: " + carport.getItemId() + ")");
         }
     }
+
+    private static int getMaterialId(Carport carport, MaterialRole role) throws DatabaseException {
+        Material material = carport.getMaterial().get(role);
+        if (material == null) {
+            throw new DatabaseException("Missing material for role: " + role);
+        }
+        return material.getItemId();
+    }
+
+
 
     //Delete
     //Could implement a soft delete for accounting purposes later
@@ -139,6 +159,7 @@ public class CarportMapper {
         }
     }
 
+    //Helper: Carport mapper
     public static Carport mapCarport(ResultSet rs) throws SQLException, DatabaseException {
         int carportId = rs.getInt("carport_id");
         int width = rs.getInt("width");
@@ -151,6 +172,7 @@ public class CarportMapper {
         int beamMaterialId = rs.getInt("beam_material_id");
         int rafterMaterialId = rs.getInt("rafter_material_id");
         int fasciaMaterialId = rs.getInt("fascia_material_id");
+        int roofCoverMaterialId = rs.getInt("roof_cover_material_id");
 
         Map<MaterialRole, Material> materials = new HashMap<>();
 
@@ -158,6 +180,7 @@ public class CarportMapper {
         materials.put(MaterialRole.BEAM, MaterialMapper.getMaterialById(beamMaterialId));
         materials.put(MaterialRole.RAFTER, MaterialMapper.getMaterialById(rafterMaterialId));
         materials.put(MaterialRole.FASCIA, MaterialMapper.getMaterialById(fasciaMaterialId));
+        materials.put(MaterialRole.ROOF_COVER, MaterialMapper.getMaterialById(roofCoverMaterialId));
 
         return switch (roofType) {
             case "flat" -> new Carport(carportId, "Carport", width + " x " + length, width, length, height, roofType, materials);

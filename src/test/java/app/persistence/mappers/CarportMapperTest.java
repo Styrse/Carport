@@ -145,7 +145,7 @@ class CarportMapperTest {
 
         //Act
         carport.setLength(750);
-        CarportMapper.updateCarport(carport);
+        CarportMapper.updateCarport(connectionPool.getConnection(), carport);
         int actual = CarportMapper.getCarportById(carport.getItemId()).getLength();
 
         //Assert

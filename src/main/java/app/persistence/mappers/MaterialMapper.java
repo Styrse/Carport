@@ -38,30 +38,6 @@ public class MaterialMapper {
     }
 
     //Read
-    public static List<Material> getAllMaterials() throws DatabaseException {
-        List<Material> allMaterials = new ArrayList<>();
-
-        String sql = "SELECT DISTINCT ON (material_id) * " +
-                "FROM materials " +
-                "JOIN price_history USING (material_id) " +
-                "WHERE is_active = true";
-
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                allMaterials.add(mapMaterial(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException(e, "Error retrieving materials");
-        }
-
-        return allMaterials;
-    }
-
     public static Material getMaterialById(int itemId) throws DatabaseException {
         String sql = "SELECT * " +
                 "FROM materials " +
@@ -88,13 +64,37 @@ public class MaterialMapper {
         }
     }
 
+    public static List<Material> getAllMaterials() throws DatabaseException {
+        List<Material> allMaterials = new ArrayList<>();
+
+        String sql = "SELECT DISTINCT ON (material_id) * " +
+                "FROM materials " +
+                "JOIN price_history USING (material_id) " +
+                "WHERE is_active = true";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                allMaterials.add(mapMaterial(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException(e, "Error retrieving materials");
+        }
+
+        return allMaterials;
+    }
+
     //Update
-    public static void updateMaterial(Material material) throws DatabaseException {
+    public static void updateMaterial(Connection connection, Material material) throws DatabaseException {
         String sql = "UPDATE materials SET name = ?, description = ?, unit = ?, width = ?, height = ?," +
                 "material_type = ?, buckling_capacity = ?, post_gap = ?, length_overlap = ?," +
                 "side_overlap = ?, gap_rafters = ? WHERE material_id = ?";
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
             material.prepareStatement(ps);
 
@@ -106,7 +106,7 @@ public class MaterialMapper {
         }
     }
 
-    //Delete: Soft delete. Changes is_active to false
+    //Delete: Soft delete. Changes is_active to false so materials still can be found for a Carport
     public static void deleteMaterialById(int itemId) throws SQLException, DatabaseException {
         String sql = "UPDATE materials SET is_active = false WHERE material_id = ?";
 

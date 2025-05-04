@@ -86,6 +86,4 @@ public abstract class User {
     public void setUserRole(int userRole) {
         this.userRole = userRole;
     }
-
-    //TODO: Add ps
 }

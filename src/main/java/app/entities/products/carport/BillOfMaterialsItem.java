@@ -1,25 +1,22 @@
 package app.entities.products.carport;
 
+import app.entities.products.materials.Material;
+
 public class BillOfMaterialsItem {
     private final String name;
     private int length;
-    private final int amount;
+    private final int quantity;
     private final String unit;
     private final String description;
+    private final double salesPrice;
 
-    public BillOfMaterialsItem(String name, int amount, String unit, String desc) {
-        this.name = name;
-        this.amount = amount;
-        this.unit = unit;
-        this.description = desc;
-    }
-
-    public BillOfMaterialsItem(String name, int length, int amount, String unit, String desc) {
+    public BillOfMaterialsItem(String name, int length, int quantity, String unit, String description, double salesPrice) {
         this.name = name;
         this.length = length;
-        this.amount = amount;
+        this.quantity = quantity;
         this.unit = unit;
-        this.description = desc;
+        this.description = description;
+        this.salesPrice = salesPrice;
     }
 
     public String getName() {
@@ -30,8 +27,8 @@ public class BillOfMaterialsItem {
         return length;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getQuantity() {
+        return quantity;
     }
 
     public String getUnit() {
@@ -42,14 +39,20 @@ public class BillOfMaterialsItem {
         return description;
     }
 
+    public double getSalesPrice() {
+        return salesPrice;
+    }
+
     @Override
     public String toString() {
         return "BillOfMaterialsLine{" +
                 "name='" + name + '\'' +
                 ", length=" + length +
-                ", amount=" + amount +
+                ", amount=" + quantity +
                 ", unit='" + unit + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }
+
+
 }

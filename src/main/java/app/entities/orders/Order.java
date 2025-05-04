@@ -1,5 +1,6 @@
 package app.entities.orders;
 
+import app.entities.products.Product;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
 
@@ -49,7 +50,10 @@ public class Order {
 
     public float getTotalPrice(){
         float totalPrice = 0;
-        //TODO: do
+
+        for (OrderItem item : orderItems) {
+            totalPrice += (float) (item.getProduct().getSalesPrice() * item.getQuantity());
+        }
         return totalPrice;
     }
 

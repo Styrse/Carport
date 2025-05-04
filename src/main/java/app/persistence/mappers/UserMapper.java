@@ -54,24 +54,6 @@ public class UserMapper {
         }
     }
 
-    //Read: get all users
-    public static List<User> getAllUsers() throws DatabaseException {
-        List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM users";
-
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                users.add(mapUser(rs));
-            }
-        } catch (SQLException e) {
-            throw new DatabaseException(e, "Error retrieving users");
-        }
-        return users;
-    }
-
     //Read: get user by email
     public static User getUserByEmail(String email) throws DatabaseException {
         String sql = "SELECT * FROM users WHERE email = ?";
@@ -89,6 +71,24 @@ public class UserMapper {
             throw new DatabaseException(e, "Error retrieving user by email");
         }
         return null;
+    }
+
+    //Read: get all users
+    public static List<User> getAllUsers() throws DatabaseException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error retrieving users");
+        }
+        return users;
     }
 
     //Read: verify user login
@@ -155,13 +155,11 @@ public class UserMapper {
         String password = rs.getString("password");
         int roleId = rs.getInt("role_id");
 
-        User user = switch (roleId) {
+        return switch (roleId) {
             case 1 -> new Customer(userId, firstname, lastname, phoneNumber, email, password, roleId);
             case 2 -> new Staff(userId, firstname, lastname, phoneNumber, email, password, roleId);
             case 3 -> new StaffManager(userId, firstname, lastname, phoneNumber, email, password, roleId);
             default -> throw new DatabaseException("Unknown material type: " + roleId);
         };
-
-        return user;
     }
 }

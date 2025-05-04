@@ -11,7 +11,7 @@ public class DatabaseException extends Exception {
         super(message);
     }
 
-    public DatabaseException(String dbFejl, String message) {
-        super(message + dbFejl );
+    public DatabaseException(String dbError, String message) {
+        super(message + dbError );
     }
 }

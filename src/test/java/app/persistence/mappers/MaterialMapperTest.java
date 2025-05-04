@@ -153,12 +153,12 @@ class MaterialMapperTest {
 
     @Test
     @DisplayName("UpdateMaterial Test")
-    void updateMaterialById() throws DatabaseException {
+    void updateMaterialById() throws DatabaseException, SQLException {
         //Arrange
         Material material = TestPlankFactory.createStandardPost();
 
         //Act
-        MaterialMapper.updateMaterial(material);
+        MaterialMapper.updateMaterial(connectionPool.getConnection(), material);
         Material actual = MaterialMapper.getMaterialById(1);
 
         //Assert
