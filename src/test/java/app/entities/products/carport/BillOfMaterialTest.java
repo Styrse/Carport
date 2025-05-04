@@ -246,7 +246,7 @@ class BillOfMaterialTest {
                     void lengthSmallerThanShorter() {
                         // Arrange
                         Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createShorterBeam(),
+                                TestPlankFactory.createShorterGapBeam(),
                                 300, 200
                         );
                         BillOfMaterial bom = new BillOfMaterial(carport);
@@ -264,7 +264,7 @@ class BillOfMaterialTest {
                     void lengthSmallerThanLonger() {
                         // Arrange
                         Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createLongerBeam(),
+                                TestPlankFactory.createLongerGapBeam(),
                                 300, 350
                         );
                         BillOfMaterial bom = new BillOfMaterial(carport);
@@ -287,7 +287,7 @@ class BillOfMaterialTest {
                     void lengthOverShorterBeam() {
                         // Arrange
                         Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createShorterBeam(),
+                                TestPlankFactory.createShorterGapBeam(),
                                 300, 260
                         );
                         BillOfMaterial bom = new BillOfMaterial(carport);
@@ -323,7 +323,7 @@ class BillOfMaterialTest {
                     void lengthOverLongerBeam() {
                         // Arrange
                         Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createLongerBeam(),
+                                TestPlankFactory.createLongerGapBeam(),
                                 300, 410
                         );
                         BillOfMaterial bom = new BillOfMaterial(carport);
@@ -364,8 +364,8 @@ class BillOfMaterialTest {
                     void hugeCarportShorterBeam() {
                         // Arrange
                         Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createShorterBeam(),
-                                300, 5000
+                                TestPlankFactory.createShorterGapBeam(),
+                                100, 5000
                         );
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
@@ -373,7 +373,7 @@ class BillOfMaterialTest {
                         int actual = bom.calcPostCountLength();
 
                         // Assert
-                        int expected = 21;
+                        int expected = 22;
                         assertEquals(expected, actual);
                     }
 
@@ -382,7 +382,7 @@ class BillOfMaterialTest {
                     void hugeCarportLongerBeam() {
                         // Arrange
                         Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createLongerBeam(),
+                                TestPlankFactory.createLongerGapBeam(),
                                 300, 5000
                         );
                         BillOfMaterial bom = new BillOfMaterial(carport);
@@ -433,7 +433,7 @@ class BillOfMaterialTest {
                     void lengthSmallerThanShorter() {
                         // Arrange
                         Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createShorterBeam(),
+                                TestPlankFactory.createShorterGapBeam(),
                                 300, 300
                         );
                         BillOfMaterial bom = new BillOfMaterial(carport);
@@ -451,7 +451,7 @@ class BillOfMaterialTest {
                     void lengthSmallerThanLonger() {
                         // Arrange
                         Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createLongerBeam(),
+                                TestPlankFactory.createLongerGapBeam(),
                                 300, 600
                         );
                         BillOfMaterial bom = new BillOfMaterial(carport);
@@ -468,24 +468,6 @@ class BillOfMaterialTest {
                 @Nested
                 @DisplayName("Edge Cases with Different Beams")
                 class EdgeCases {
-
-                    @Test
-                    @DisplayName("Length just over shorter beam max length (needs extra beam)")
-                    void lengthOverShorterBeam() {
-                        // Arrange
-                        Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createShorterBeam(),
-                                300, 401
-                        );
-                        BillOfMaterial bom = new BillOfMaterial(carport);
-
-                        // Act
-                        int actual = bom.calcBeamCountLength();
-
-                        // Assert
-                        int expected = 2;
-                        assertEquals(expected, actual);
-                    }
 
                     @Test
                     @DisplayName("Length just over standard beam max length (needs extra beam)")
@@ -510,7 +492,7 @@ class BillOfMaterialTest {
                     void lengthOverLongerBeam() {
                         // Arrange
                         Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createLongerBeam(),
+                                TestPlankFactory.createLongerGapBeam(),
                                 300, 701
                         );
                         BillOfMaterial bom = new BillOfMaterial(carport);
@@ -547,29 +529,11 @@ class BillOfMaterialTest {
                     }
 
                     @Test
-                    @DisplayName("Huge carport length with shorter beam")
-                    void hugeCarportShorterBeam() {
-                        // Arrange
-                        Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createShorterBeam(),
-                                300, 5000
-                        );
-                        BillOfMaterial bom = new BillOfMaterial(carport);
-
-                        // Act
-                        int actual = bom.calcBeamCountLength();
-
-                        // Assert
-                        int expected = 13;
-                        assertEquals(expected, actual);
-                    }
-
-                    @Test
                     @DisplayName("Huge carport length with longer beam")
                     void hugeCarportLongerBeam() {
                         // Arrange
                         Carport carport = TestCarportFactory.createCarportWithBeam(
-                                TestPlankFactory.createLongerBeam(),
+                                TestPlankFactory.createLongerGapBeam(),
                                 300, 5000
                         );
                         BillOfMaterial bom = new BillOfMaterial(carport);
@@ -578,7 +542,7 @@ class BillOfMaterialTest {
                         int actual = bom.calcBeamCountLength();
 
                         // Assert
-                        int expected = 9;
+                        int expected = 8;
                         assertEquals(expected, actual);
                     }
                 }
@@ -887,7 +851,7 @@ class BillOfMaterialTest {
                     void length500() {
                         // Arrange
                         RoofCover standard = TestRoofCoverFactory.createStandardTestRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 300, 500);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 100, 500);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -903,7 +867,7 @@ class BillOfMaterialTest {
                     void length1100() {
                         // Arrange
                         RoofCover standard = TestRoofCoverFactory.createStandardTestRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 300, 1100);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 100, 1100);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -919,7 +883,7 @@ class BillOfMaterialTest {
                     void length1300() {
                         // Arrange
                         RoofCover standard = TestRoofCoverFactory.createStandardTestRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 300, 1300);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 100, 1300);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -940,7 +904,7 @@ class BillOfMaterialTest {
                     void length599() {
                         // Arrange
                         RoofCover standard = TestRoofCoverFactory.createStandardTestRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 300, 599);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 100, 599);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -956,7 +920,7 @@ class BillOfMaterialTest {
                     void length600() {
                         // Arrange
                         RoofCover standard = TestRoofCoverFactory.createStandardTestRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 300, 600);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 100, 600);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -988,7 +952,7 @@ class BillOfMaterialTest {
                     void length1179() {
                         // Arrange
                         RoofCover standard = TestRoofCoverFactory.createStandardTestRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 300, 1179);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 100, 1179);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1004,7 +968,7 @@ class BillOfMaterialTest {
                     void length1180() {
                         // Arrange
                         RoofCover standard = TestRoofCoverFactory.createStandardTestRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 300, 1180);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 100, 1180);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1020,7 +984,7 @@ class BillOfMaterialTest {
                     void length1181() {
                         // Arrange
                         RoofCover standard = TestRoofCoverFactory.createStandardTestRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 300, 1181);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 100, 1181);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1057,7 +1021,7 @@ class BillOfMaterialTest {
                     void hugeCarport5000() {
                         // Arrange
                         RoofCover standard = TestRoofCoverFactory.createStandardTestRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 300, 5000);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 100, 5000);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1082,8 +1046,8 @@ class BillOfMaterialTest {
                     @DisplayName("Length 300 cm carport")
                     void length300() {
                         // Arrange
-                        RoofCover shortPlank = TestRoofCoverFactory.createShortPlankRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortPlank, 300, 300);
+                        RoofCover shortSheet = TestRoofCoverFactory.createShortSheetRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortSheet, 100, 300);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1098,7 +1062,7 @@ class BillOfMaterialTest {
                     @DisplayName("Length 750 cm carport")
                     void length750() {
                         // Arrange
-                        RoofCover shortPlank = TestRoofCoverFactory.createShortPlankRoofCover();
+                        RoofCover shortPlank = TestRoofCoverFactory.createShortSheetRoofCover();
                         Carport carport = TestCarportFactory.createCarportWithRoofCover(shortPlank, 300, 750);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
@@ -1111,11 +1075,11 @@ class BillOfMaterialTest {
                     }
 
                     @Test
-                    @DisplayName("Length 1150 cm carport")
-                    void length1150() {
+                    @DisplayName("Length 1130 cm carport")
+                    void length1130() {
                         // Arrange
-                        RoofCover shortPlank = TestRoofCoverFactory.createShortPlankRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortPlank, 300, 1150);
+                        RoofCover shortSheet = TestRoofCoverFactory.createShortSheetRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortSheet, 100, 1130);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1132,11 +1096,11 @@ class BillOfMaterialTest {
                 class EdgeCases {
 
                     @Test
-                    @DisplayName("Length 399 cm carport (just under)")
-                    void length399() {
+                    @DisplayName("Length 389 cm carport (just under)")
+                    void length389() {
                         // Arrange
-                        RoofCover shortPlank = TestRoofCoverFactory.createShortPlankRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortPlank, 300, 399);
+                        RoofCover shortSheet = TestRoofCoverFactory.createShortSheetRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortSheet, 100, 389);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1148,11 +1112,11 @@ class BillOfMaterialTest {
                     }
 
                     @Test
-                    @DisplayName("Length 400 cm carport (exact)")
-                    void length400() {
+                    @DisplayName("Length 390 cm carport (exact)")
+                    void length390() {
                         // Arrange
-                        RoofCover shortPlank = TestRoofCoverFactory.createShortPlankRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortPlank, 300, 400);
+                        RoofCover shortSheet = TestRoofCoverFactory.createShortSheetRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortSheet, 100, 390);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1164,11 +1128,11 @@ class BillOfMaterialTest {
                     }
 
                     @Test
-                    @DisplayName("Length 401 cm carport (just over)")
+                    @DisplayName("Length 391 cm carport (just over)")
                     void length401() {
                         // Arrange
-                        RoofCover shortPlank = TestRoofCoverFactory.createShortPlankRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortPlank, 300, 401);
+                        RoofCover shortSheet = TestRoofCoverFactory.createShortSheetRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortSheet, 100, 391);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1180,11 +1144,11 @@ class BillOfMaterialTest {
                     }
 
                     @Test
-                    @DisplayName("Length 779 cm carport (just under 2 sheets)")
+                    @DisplayName("Length 759 cm carport (just under 2 sheets)")
                     void length759() {
                         // Arrange
-                        RoofCover shortPlank = TestRoofCoverFactory.createShortPlankRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortPlank, 300, 779);
+                        RoofCover shortSheet = TestRoofCoverFactory.createShortSheetRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortSheet, 100, 759);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1196,11 +1160,11 @@ class BillOfMaterialTest {
                     }
 
                     @Test
-                    @DisplayName("Length 780 cm carport (exactly 2 sheets)")
+                    @DisplayName("Length 760 cm carport (exactly 2 sheets)")
                     void length760() {
                         // Arrange
-                        RoofCover shortPlank = TestRoofCoverFactory.createShortPlankRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortPlank, 300, 780);
+                        RoofCover shortSheet = TestRoofCoverFactory.createShortSheetRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortSheet, 100, 760);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1215,8 +1179,8 @@ class BillOfMaterialTest {
                     @DisplayName("Length 781 cm carport (just over 2 sheets)")
                     void length761() {
                         // Arrange
-                        RoofCover shortPlank = TestRoofCoverFactory.createShortPlankRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortPlank, 300, 781);
+                        RoofCover shortSheet = TestRoofCoverFactory.createShortSheetRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortSheet, 100, 781);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1236,8 +1200,8 @@ class BillOfMaterialTest {
                     @DisplayName("Tiny carport 50 cm")
                     void tinyCarport50() {
                         // Arrange
-                        RoofCover shortPlank = TestRoofCoverFactory.createShortPlankRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortPlank, 300, 50);
+                        RoofCover shortSheet = TestRoofCoverFactory.createShortSheetRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortSheet, 100, 50);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1252,8 +1216,8 @@ class BillOfMaterialTest {
                     @DisplayName("Huge carport 5000 cm")
                     void hugeCarport5000() {
                         // Arrange
-                        RoofCover shortPlank = TestRoofCoverFactory.createShortPlankRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortPlank, 300, 5000);
+                        RoofCover shortSheet = TestRoofCoverFactory.createShortSheetRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(shortSheet, 100, 5000);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1279,7 +1243,7 @@ class BillOfMaterialTest {
                     void length500() {
                         // Arrange
                         RoofCover tinyOverlap = TestRoofCoverFactory.createTinyOverlapRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(tinyOverlap, 300, 500);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(tinyOverlap, 100, 500);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1295,7 +1259,7 @@ class BillOfMaterialTest {
                     void length1100() {
                         // Arrange
                         RoofCover tinyOverlap = TestRoofCoverFactory.createTinyOverlapRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(tinyOverlap, 300, 1100);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(tinyOverlap, 100, 1100);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1363,8 +1327,8 @@ class BillOfMaterialTest {
                     @DisplayName("Length 601 cm carport (just over)")
                     void length601() {
                         // Arrange
-                        RoofCover tinyOverlap = TestRoofCoverFactory.createTinyOverlapRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(tinyOverlap, 300, 601);
+                        RoofCover tinyOverlap = TestRoofCoverFactory.createTinyOverlapLengthRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(tinyOverlap, 100, 601);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1379,8 +1343,8 @@ class BillOfMaterialTest {
                     @DisplayName("Length 1194 cm carport (just under 2 sheets)")
                     void length1194() {
                         // Arrange
-                        RoofCover tinyOverlap = TestRoofCoverFactory.createTinyOverlapRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(tinyOverlap, 300, 1194);
+                        RoofCover tinyOverlap = TestRoofCoverFactory.createTinyOverlapLengthRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(tinyOverlap, 100, 1194);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1395,8 +1359,8 @@ class BillOfMaterialTest {
                     @DisplayName("Length 1195 cm carport (exactly 2 sheets)")
                     void length1195() {
                         // Arrange
-                        RoofCover tinyOverlap = TestRoofCoverFactory.createTinyOverlapRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(tinyOverlap, 300, 1195);
+                        RoofCover tinyOverlap = TestRoofCoverFactory.createTinyOverlapLengthRoofCover();
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(tinyOverlap, 100, 1195);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1610,10 +1574,10 @@ class BillOfMaterialTest {
 
                     @Test
                     @DisplayName("Width 181 cm carport (just over, needs 3)")
-                    void width171() {
+                    void width191() {
                         // Arrange
                         RoofCover standard = TestRoofCoverFactory.createStandardTestRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 181, 600);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(standard, 191, 600);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -1657,7 +1621,7 @@ class BillOfMaterialTest {
                         int actual = bom.calcRoofCoverCountWidth();
 
                         // Assert
-                        int expected = 63;
+                        int expected = 56;
                         assertEquals(expected, actual);
                     }
                 }
@@ -2002,10 +1966,10 @@ class BillOfMaterialTest {
 
                     @Test
                     @DisplayName("Width 781 cm carport (needs 3 covers)")
-                    void width781() {
+                    void width791() {
                         // Arrange
                         RoofCover wide = TestRoofCoverFactory.createWideRoofCover();
-                        Carport carport = TestCarportFactory.createCarportWithRoofCover(wide, 781, 600);
+                        Carport carport = TestCarportFactory.createCarportWithRoofCover(wide, 791, 600);
                         BillOfMaterial bom = new BillOfMaterial(carport);
 
                         // Act
@@ -2049,25 +2013,11 @@ class BillOfMaterialTest {
                         int actual = bom.calcRoofCoverCountWidth();
 
                         // Assert
-                        int expected = 14;
+                        int expected = 13;
                         assertEquals(expected, actual);
                     }
                 }
             }
         }
-
-    }
-
-    @Test
-    @DisplayName("GetBeams Test")
-    void getBeams() {
-        //Arrange
-        Carport carport = TestCarportFactory.createCarportWidthLength(600, 1150);
-
-        //Act
-        BillOfMaterial bom = carport.getBillOfMaterial();
-
-        //Assert
-
     }
 }

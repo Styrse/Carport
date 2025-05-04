@@ -172,7 +172,7 @@ public class BillOfMaterial {
     //================================
     public int calcPostCountWidth() {
         int posts = 2;
-        int maxLength = Collections.max(carport.getMaterial().get(MaterialRole.POST).getPreCutsLengths());
+        int maxLength = Collections.max(carport.getMaterial().get(MaterialRole.RAFTER).getPreCutsLengths());
         if (carport.getWidth() > maxLength) {
             for (int i = maxLength; i < carport.getWidth(); i += maxLength) {
                 posts++;
@@ -183,9 +183,9 @@ public class BillOfMaterial {
 
     public int calcPostCountLength() {
         int posts = 2;
-        int maxDistanceBetweenPosts = ((Beam) carport.getMaterial().get(MaterialRole.BEAM)).getPostGap();
-        if (carport.getLength() > maxDistanceBetweenPosts) {
-            for (int i = maxDistanceBetweenPosts; i < carport.getLength(); i += maxDistanceBetweenPosts) {
+        int postGap = ((Beam) carport.getMaterial().get(MaterialRole.BEAM)).getPostGap();
+        if (carport.getLength() > postGap) {
+            for (int i = postGap; i < carport.getLength(); i += postGap) {
                 posts++;
             }
         }
