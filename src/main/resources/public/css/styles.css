@@ -1,1 +1,273 @@
 /*style*/
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F5F5F3;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    flex: 1;
+}
+
+#main-content {
+    width: 100%;
+    max-width: 80vw;
+    margin: 2vw auto;
+    padding: 2rem;
+    background: #FFFFFF;
+}
+
+ul {
+    margin: 0;
+}
+
+li {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    border-bottom: 2px solid transparent;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+button  {
+    background-color: #003D76;
+    color: #FFFFFF;
+    border: none;
+    padding: 6px 22px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+button:hover    {
+    background-color: #004585;
+}
+
+/*navbar styling*/
+
+.logo {
+    float: left;
+    width: 70px;
+    height: 70px;
+}
+
+#navbar {
+    position: sticky;
+    top: 0;
+    background-color: #FFFFFF;
+    height: 70px;
+}
+
+#navbar a {
+
+    float: left;
+    display: block;
+    color: #101820;
+    text-align: center;
+    padding: 25px 18px;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+#navbar a:hover {
+    border-bottom: 2px solid #101820;
+}
+
+#navbar a.active {
+    border-bottom: 2px solid #101820;
+}
+
+/*Footer styling*/
+
+footer {
+    position: static;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #FFFFFF;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    margin: 0 auto;
+    padding: 60px 18px;
+    max-width: 1680px;
+    width: 100%;
+
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.footer-links a {
+    position: relative;
+    display: inline-block;
+    color: #101820;
+    text-align: left;
+    padding: 5px 5px;
+    text-decoration: none;
+    font-size: 12px;
+    transition: 0.4s;
+}
+
+.footer-links a::before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 1px;
+    background-color: #101820;
+    bottom: 0;
+    left: 0;
+    transition: width 0.4s ease;
+}
+
+.footer-links a:hover::before {
+    width: 100%;
+}
+
+.footer-title {
+    margin-bottom: 12px;
+    display: inline-block;
+    padding: 5px 5px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #101820;
+}
+.address-box    {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    font-size: 12px;
+
+}
+.address-box svg    {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 5px;
+}
+.address-box .line{
+    display: block;
+    margin-top: 5px;
+}
+
+/*Form Styling*/
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 18px 18px;
+    margin: 10px;
+    gap: 10px;
+}
+
+.form-group > div {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 10px 10px;
+
+    gap: 10px;
+}
+
+
+select, input   {
+    font-size: 16px;
+    border-radius: 5px;
+    background: #FFFFFF;
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    cursor: pointer;
+}
+
+input[type="text"], input[type="tel"], input[type="email"] {
+    cursor: text;
+}
+
+#toolshed-div  {
+    display: none;
+}
+
+.form-button-align  {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+/*Multible step styling*/
+
+.step-format    {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 3vw auto;
+    max-width: 40vw;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.step-wrapper   {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    width: 10vw;
+}
+.step-wrapper p {
+    margin-top: 1vw;
+    font-size: 1vw;
+}
+
+.line-connect {
+    top: 1.5vw;
+    width: 10vw;
+    height: 0.2vw;
+    border-radius: 18%;
+    background-color: lightgray;
+    position: relative;
+}
+
+
+.step {
+    height: 3vw;
+    width: 3vw;
+    font-size: 2vw;
+    text-align: center;
+    background-color: #FFFFFF;
+    border: 0.2vw solid lightgray;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step.active {
+    opacity: 1;
+}
+/* Mark the steps that are finished and valid: */
+
+.step-wrapper.finish .step {
+    background-color: #003D76;
+    color: #FFFFFF;
+    border: solid #003D76;
+}
+
+.line-connect.finish-line {
+    background-color: #003D76;
+}

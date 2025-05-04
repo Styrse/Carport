@@ -1,134 +1,113 @@
 @startuml
-title Database Design - Carport Project (with composite key in price_history)
+!theme plain
 
-' --- Tables ---
-
-class Users {
-    +user_id : int <<PK>>
-    +firstname : string
-    +lastname : string
-    +phone_number : string
-    +email : string
-    +password : string
-    +is_staff : boolean
-    +is_staff_manager : boolean
+entity users {
+  +user_id : serial
+  firstname : text
+  lastname : text
+  phone_number : text
+  email : text <<unique, not null>>
+  password : text
+  role_id : int
 }
 
-class Products {
-    +product_id : int <<PK>>
-    +product_type : string
+entity roles {
+  +role_id : serial
+  role : text <<unique, not null>>
 }
 
-class Colors {
-    +color_id : int <<PK>>
-    +color_name : string
-    +hex_code : string
+entity orders {
+  +order_id : serial
+  user_id : int <<not null>>
+  staff_id : int
+  total_price : numeric
 }
 
-class BuildingMaterials {
-    +sub_product_id : int <<PK>>
-    +product_id : int <<FK>>
-    +name : string
-    +description : string
-    +width : int
-    +height : int
-    +cost_price : decimal
-    +sales_price : decimal
-    +material_type : string
-    +treated_for_ground_contact : boolean
-    +max_length_between_posts : int
-    +supports_gutters : boolean
-    +is_active : boolean
+entity order_status_history {
+  *order_id : int
+  status : text
+  update_date : timestamp <<not null, default: now()>>
+  -- PK: (order_id, update_date)
 }
 
-class RegularProducts {
-    +sub_product_id : int <<PK>>
-    +product_id : int <<FK>>
-    +name : string
-    +description : string
-    +cost_price : decimal
-    +sales_price : decimal
-    +is_active : boolean
+entity order_items {
+  +order_item_id : serial
+  order_id : int <<not null>>
+  item_type : varchar(20) <<CHECK ('carport', 'material')>>
+  quantity : int <<not null>>
 }
 
-class Carports {
-    +sub_product_id : int <<PK>>
-    +product_id : int <<FK>>
-    +width : int
-    +length : int
-    +height : int
-    +roof_type : string
-    +roof_angle : int
-    +post_sub_product_id : int <<FK>>
-    +post_color_id : int <<FK>>
-    +beam_sub_product_id : int <<FK>>
-    +beam_color_id : int <<FK>>
-    +rafter_sub_product_id : int <<FK>>
-    +rafter_color_id : int <<FK>>
-    +fascia_sub_product_id : int <<FK>>
-    +fascia_color_id : int <<FK>>
-    +roof_cover_sub_product_id : int <<FK>>
-    +roof_cover_color_id : int <<FK>>
+entity order_item_carport {
+  *order_item_id : int
+  carport_id : int <<not null>>
 }
 
-class MaterialColors {
-    +id : int <<PK>>
-    +sub_product_id : int <<FK>>
-    +color_id : int <<FK>>
+entity order_item_material {
+  *order_item_id : int
+  building_material_id : int <<not null>>
 }
 
-class PredefinedLengths {
-    +id : int <<PK>>
-    +sub_product_id : int <<FK>>
-    +length : int
+entity carports {
+  +carport_id : serial
+  width : numeric <<not null>>
+  length : numeric <<not null>>
+  height : numeric <<not null>>
+  roof_type : text <<not null>>
+  roof_angle : numeric <<not null>>
+  post_building_material_id : int
+  beam_building_material_id : int
+  rafter_building_material_id : int
+  fascia_building_material_id : int
+  total_price : numeric
 }
 
-class PriceHistory {
-    +price_history_id : int <<PK>>
-    +product_id : int <<FK>>
-    +sub_product_id : int
-    +price_type : string
-    +price : decimal
-    +valid_from : date
-    +valid_to : date
+entity building_materials {
+  +building_material_id : serial
+  name : text
+  description : text
+  unit : text
+  width : numeric
+  heigth : numeric
+  material_type : text <<not null>>
+  buckling_capacity : numeric
+  post_gap : numeric
+  length_overlap : numeric
+  side_overlap : numeric
+  gap_rafters : numeric
+  is_active : boolean <<not null>>
 }
 
-entity Orders {
-    * order_id : int <<PK>>
-    * user_id : int <<FK>>
-    * staff_id : int <<FK>>
-    * product_id : int <<FK>>
-    * sub_product_id : int
-    * order_date : timestamp
-    * payment_date : timestamp
-    * payment_status : varchar
-    * total_price : numeric
+entity predefined_lengths {
+  +predefined_length_id : serial
+  length : int <<not null>>
 }
 
-entity OrderStatusHistory {
-    * status_id : int <<PK>>
-    * order_id : int <<FK>>
-    * status : varchar
-    * update_date : timestamp
+entity material_lengths {
+  *building_material_id : int
+  *predefined_length_id : int
 }
 
-' --- Relationships ---
+entity price_history {
+  +price_history_id : serial
+  building_material_id : int
+  cost_price : numeric
+  sales_price : numeric
+  valid_from : date
+  valid_to : date
+}
 
-Users ||--o{ Orders : places >
-Users ||--o{ Orders : assigned >
-
-Orders "0..*" -- "1" Users : belongs to >
-Orders "0..*" -- "1" Products : contains >
-Orders ||--o{ OrderStatusHistory : has >
-
-BuildingMaterials "0..*" -- "1" Products : defines >
-RegularProducts "0..*" -- "1" Products : defines >
-Carports "0..*" -- "1" Products : defines >
-
-BuildingMaterials "1" -- "0..*" PredefinedLengths : has cuts >
-BuildingMaterials "1" -- "0..*" MaterialColors : available colors >
-MaterialColors "0..*" -- "1" Colors : uses >
-
-PriceHistory "0..*" -- "1" Products : pricing >
-
+' Relationships
+users ||--o{ orders : user_id
+users ||--o{ orders : staff_id
+roles ||--o{ users : role_id
+orders ||--o{ order_status_history : order_id
+orders ||--o{ order_items : order_id
+order_items ||--|| order_item_carport : order_item_id
+order_items ||--|| order_item_material : order_item_id
+order_item_carport }o--|| carports : carport_id
+order_item_material }o--|| building_materials : building_material_id
+carports }o--|| building_materials : post_material etc.
+building_materials ||--o{ material_lengths : building_material_id
+predefined_lengths ||--o{ material_lengths : predefined_length_id
+building_materials ||--o{ price_history : building_material_id
 @enduml

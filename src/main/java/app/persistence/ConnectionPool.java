@@ -34,6 +34,18 @@ public class  ConnectionPool {
      * @param db Database name
      * @return Singleton instance of ConnectionPool
      */
+
+    /**
+     * The {@code connectionPool} is a shared resource that manages a pool of reusable database connections.
+     * <p>
+     * Motivation:
+     * <ul>
+     *   <li><b>Efficiency:</b> Avoids the overhead of opening and closing connections repeatedly by reusing a fixed set.</li>
+     *   <li><b>Scalability:</b> Improves performance in multi-user environments by reducing latency and managing concurrent access.</li>
+     *   <li><b>Resource Management:</b> Prevents resource exhaustion by limiting the maximum number of simultaneous connections.</li>
+     *   <li><b>Centralized Access:</b> Ensures consistent and controlled connection usage across all data access classes.</li>
+     * </ul>
+     */
     public static ConnectionPool getInstance(String user, String password, String url, String db) {
         if (instance == null) {
             synchronized (ConnectionPool.class) {
