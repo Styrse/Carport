@@ -26,13 +26,11 @@ body {
     outline: none;
 }
 
-/* Only show hover effect when actually hovered */
 .icon:hover {
     background-color: #3569A5;
     transform: translateY(-5px);
 }
 
-/* Remove lingering focus/active styles */
 .icon:focus:not(:hover),
 .icon:active:not(:hover) {
     background-color: transparent;
@@ -55,6 +53,57 @@ body {
 .logo-icon img {
     width: 60px;
     height: 60px;
+}
+
+/* ===== Carport Configuration Form ===== */
+.carport-form {
+    display: grid;
+    max-width: 500px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.carport-form label {
+    font-weight: 600;
+    margin-top: 10px;
+    display: block;
+    color: #2c3e50;
+}
+
+.carport-form select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    transition: border-color 0.2s ease;
+}
+
+.carport-form select:focus {
+    outline: none;
+    border-color: #2980b9;
+    background-color: #fff;
+}
+
+.carport-form button {
+    margin-top: 10px;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.carport-form button:hover {
+    background-color: #1c6394;
 }
 
 /* ===== Container & Filters ===== */

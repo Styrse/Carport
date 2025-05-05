@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 
 public class DashboardController {
 
-    public static void newOrder(Context context) {
+    public static void newCarport(Context ctx) {
+        ctx.render("dashboard/dashboard-new-carport.html");
     }
 
     public static void showOrders(Context ctx) {
@@ -115,12 +116,12 @@ public class DashboardController {
         Map<String, Object> model = new HashMap<>();
         model.put("customers", customers);
         ctx.render("dashboard/dashboard-customers", model);
-        //TODO: Add search box and fix buttons
+        //TODO: Add search box and fix buttons. Add "Send email" button
     }
 
-    public static void showMaterials(Context context) {
+    public static void showMaterials(Context ctx) {
     }
 
-    public static void showProfile(Context context) {
+    public static void showProfile(Context ctx) {
     }
 }
