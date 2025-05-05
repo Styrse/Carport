@@ -3,7 +3,7 @@ package app.persistence.mappers;
 import app.entities.users.Customer;
 import app.entities.users.User;
 import app.exceptions.DatabaseException;
-import org.junit.jupiter.api.BeforeAll;
+import app.utils.PasswordUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,10 +35,15 @@ class UserMapperTest {
                 stmt.execute("TRUNCATE TABLE test.users RESTART IDENTITY CASCADE;");
 
                 //Insert 3 example users
+                String hash1 = PasswordUtil.hashPassword("Alice123");
+                String hash2 = PasswordUtil.hashPassword("123Bob");
+                String hash3 = PasswordUtil.hashPassword("Char123Lie");
+
                 stmt.execute("INSERT INTO test.users (user_id, firstname, email, password, role_id) VALUES " +
-                        "(1, 'alice', 'alice@gmail.com', 'Alice123', 1), " +
-                        "(2, 'bob', 'bob@hotmail.com', '123Bob', 2), " +
-                        "(3, 'charlie', 'charlie@me.com', 'Char123Lie', 3);");
+                        "(1, 'alice', 'alice@gmail.com', '" + hash1 + "', 1), " +
+                        "(2, 'bob', 'bob@hotmail.com', '" + hash2 + "', 2), " +
+                        "(3, 'charlie', 'charlie@me.com', '" + hash3 + "', 3);");
+
 
                 //Reset sequences
                 stmt.execute("SELECT setval('test.users_user_id_seq', COALESCE((SELECT MAX(user_id) + 1 FROM test.users), 1), false)");

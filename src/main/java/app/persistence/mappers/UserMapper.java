@@ -5,6 +5,7 @@ import app.entities.users.Staff;
 import app.entities.users.StaffManager;
 import app.entities.users.User;
 import app.exceptions.DatabaseException;
+import app.utils.PasswordUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -30,8 +31,7 @@ import static app.Main.connectionPool;
 public class UserMapper {
     //Create
     public static void createUser(User user) throws DatabaseException {
-        String sql =
-                "INSERT INTO users (firstname, lastname, phone_number, email, password, role_id) " +
+        String sql = "INSERT INTO users (firstname, lastname, phone_number, email, password, role_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?) RETURNING user_id";
 
         try (Connection connection = connectionPool.getConnection();
@@ -41,7 +41,7 @@ public class UserMapper {
             ps.setString(2, user.getLastName());
             ps.setInt(3, user.getPhoneNumber());
             ps.setString(4, user.getEmail());
-            ps.setString(5, user.getPassword());
+            ps.setString(5, PasswordUtil.hashPassword(user.getPassword()));
             ps.setInt(6, user.getUserRole());
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -93,15 +93,20 @@ public class UserMapper {
 
     //Read: verify user login
     public static boolean verifyUser(String email, String password) throws DatabaseException {
-        String sql = "SELECT 1 FROM users WHERE email = ? AND password = ?";
+        String sql = "SELECT password FROM users WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, email);
-            ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
-                return rs.next(); // true if a row exists
+                if (rs.next()) {
+                    //Using PasswordUtils to verify hashed password
+                    String hashedPassword = rs.getString("password");
+                    return PasswordUtil.checkPassword(password, hashedPassword);
+                } else {
+                    throw new DatabaseException("No user with that email");
+                }
             }
         } catch (SQLException e) {
             throw new DatabaseException(e, "Error verifying user credentials");
@@ -120,7 +125,7 @@ public class UserMapper {
             ps.setString(2, user.getLastName());
             ps.setInt(3, user.getPhoneNumber());
             ps.setString(4, user.getEmail());
-            ps.setString(5, user.getPassword());
+            ps.setString(5, PasswordUtil.hashPassword(user.getPassword()));
             ps.setInt(6, user.getUserRole());
             ps.setString(7, user.getEmail());
 

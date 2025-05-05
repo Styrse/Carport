@@ -1,113 +1,121 @@
 @startuml
-!theme plain
+skinparam linetype ortho
 
-entity users {
-  +user_id : serial
-  firstname : text
-  lastname : text
+entity "users" as users {
+  *user_id : serial <<pk>>
+  --
+  *firstname : text
+  *lastname : text
   phone_number : text
-  email : text <<unique, not null>>
-  password : text
+  *email : text <<unique>>
+  *password : text
   role_id : int
 }
 
-entity roles {
-  +role_id : serial
-  role : text <<unique, not null>>
-}
-
-entity orders {
-  +order_id : serial
-  user_id : int <<not null>>
-  staff_id : int
+entity "orders" as orders {
+  *order_id : serial <<pk>>
+  --
+  *user_id : int <<fk>>
+  staff_id : int <<fk>>
   total_price : numeric
 }
 
-entity order_status_history {
-  *order_id : int
+entity "order_status_history" as order_status_history {
+  *order_id : int <<fk>>
+  *update_date : timestamp <<default: now()>>
+  --
   status : text
-  update_date : timestamp <<not null, default: now()>>
-  -- PK: (order_id, update_date)
 }
 
-entity order_items {
-  +order_item_id : serial
-  order_id : int <<not null>>
-  item_type : varchar(20) <<CHECK ('carport', 'material')>>
-  quantity : int <<not null>>
+entity "order_items" as order_items {
+  *order_item_id : serial <<pk>>
+  --
+  *order_id : int <<fk>>
+  *item_type : varchar(20)
+  *quantity : int
 }
 
-entity order_item_carport {
-  *order_item_id : int
-  carport_id : int <<not null>>
+entity "order_item_carport" as order_item_carport {
+  *order_item_id : int <<pk, fk>>
+  --
+  *carport_id : int <<fk>>
 }
 
-entity order_item_material {
-  *order_item_id : int
-  material_id : int <<not null>>
+entity "order_item_material" as order_item_material {
+  *order_item_id : int <<pk, fk>>
+  --
+  *material_id : int <<fk>>
 }
 
-entity carports {
-  +carport_id : serial
-  width : numeric <<not null>>
-  length : numeric <<not null>>
-  height : numeric <<not null>>
-  roof_type : text <<not null>>
-  roof_angle : numeric <<not null>>
-  post_material_id : int
-  beam_material_id : int
-  rafter_material_id : int
-  fascia_material_id : int
+entity "carports" as carports {
+  *carport_id : serial <<pk>>
+  --
+  *width : numeric
+  *length : numeric
+  *height : numeric
+  *roof_type : text
+  *roof_angle : numeric
+  post_material_id : int <<fk>>
+  beam_material_id : int <<fk>>
+  rafter_material_id : int <<fk>>
+  fascia_material_id : int <<fk>>
+  roof_cover_material_id : int <<fk>>
   total_price : numeric
 }
 
-entity materials {
-  +material_id : serial
+entity "materials" as materials {
+  *material_id : serial <<pk>>
+  --
   name : text
   description : text
   unit : text
   width : numeric
   height : numeric
-  material_type : text <<not null>>
+  *material_type : text
   buckling_capacity : numeric
   post_gap : numeric
   length_overlap : numeric
   side_overlap : numeric
   gap_rafters : numeric
-  is_active : boolean <<not null>>
+  *is_active : boolean
 }
 
-entity predefined_lengths {
-  +predefined_length_id : serial
-  length : int <<not null>>
+entity "predefined_lengths" as predefined_lengths {
+  *predefined_length_id : serial <<pk>>
+  --
+  *length : int
 }
 
-entity material_lengths {
-  *material_id : int
-  *predefined_length_id : int
+entity "material_lengths" as material_lengths {
+  *material_id : int <<fk>>
+  *predefined_length_id : int <<fk>>
 }
 
-entity price_history {
-  +price_history_id : serial
-  material_id : int
+entity "price_history" as price_history {
+  *price_history_id : serial <<pk>>
+  --
+  material_id : int <<fk>>
   cost_price : numeric
   sales_price : numeric
   valid_from : date
   valid_to : date
 }
 
-' Relationships
-users ||--o{ orders : user_id
-users ||--o{ orders : staff_id
-roles ||--o{ users : role_id
-orders ||--o{ order_status_history : order_id
-orders ||--o{ order_items : order_id
-order_items ||--|| order_item_carport : order_item_id
-order_items ||--|| order_item_material : order_item_id
-order_item_carport }o--|| carports : carport_id
-order_item_material }o--|| materials : material_id
-carports }o--|| materials : post_material etc.
-materials ||--o{ material_lengths : material_id
-predefined_lengths ||--o{ material_lengths : predefined_length_id
-materials ||--o{ price_history : material_id
+' Define relationships
+users ||--o{ orders : places
+users ||--o{ orders : processes
+orders ||--o{ order_status_history : has
+orders ||--o{ order_items : contains
+order_items ||--o{ order_item_carport : includes
+order_items ||--o{ order_item_material : includes
+order_item_carport ||--|| carports : references
+order_item_material ||--|| materials : references
+carports ||--|| materials : uses_post
+carports ||--|| materials : uses_beam
+carports ||--|| materials : uses_rafter
+carports ||--|| materials : uses_fascia
+carports ||--|| materials : uses_roof_cover
+materials ||--o{ material_lengths : has
+predefined_lengths ||--o{ material_lengths : defines
+materials ||--o{ price_history : has
 @enduml
