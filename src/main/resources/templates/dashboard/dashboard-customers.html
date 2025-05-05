@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Johannes Fog Customers</title>
+    <title>Johannes Fog Kunder</title>
     <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
     <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
 </head>
@@ -13,7 +13,40 @@
 </header>
 
 <main>
-    Text
+    <div class="container">
+        <div class="list">
+            <table>
+                <thead>
+                <tr>
+                    <th>Kunde ID</th>
+                    <th>Kunde email</th>
+                    <th>Kunde telefon</th>
+                    <th>Se profil</th>
+                    <th>Se ordre</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="customer, iterStat : ${customers}">
+                    <td th:text="${customer.customerId}"></td>
+                    <td th:text="${customer.customerEmail}"></td>
+                    <td th:text="${customer.customerPhone}"></td>
+                    <td>
+                        <form action="/orders/see-profile" method="post">
+                            <input type="hidden" name="index" th:value="${iterStat.index}">
+                            <button type="submit" class="see-line-button">Se profil</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/orders/see-orders" method="post">
+                            <input type="hidden" name="index" th:value="${iterStat.index}">
+                            <button type="submit" class="see-line-button">Se ordre</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </main>
 
 </body>

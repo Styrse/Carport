@@ -75,10 +75,47 @@ public class DashboardController {
         model.put("orders", filteredOrders);
         model.put("selectedStatus", statusFilter);
         ctx.render("dashboard/dashboard-orders.html", model);
+        //TODO: Add search box. Fix routing for "Se" and "Slet" buttons
     }
 
+    public static void showCustomers(Context ctx) {
+        List<Map<String, Object>> customers = new ArrayList<>();
 
-    public static void showCustomers(Context context) {
+        Map<String, Object> customer1 = new HashMap<>();
+        customer1.put("customerId", 101);
+        customer1.put("customerEmail", "emma@example.com");
+        customer1.put("customerPhone", "22334455");
+
+        Map<String, Object> customer2 = new HashMap<>();
+        customer2.put("customerId", 102);
+        customer2.put("customerEmail", "oliver@example.com");
+        customer2.put("customerPhone", "33445566");
+
+        Map<String, Object> customer3 = new HashMap<>();
+        customer3.put("customerId", 103);
+        customer3.put("customerEmail", "freja@example.com");
+        customer3.put("customerPhone", "44556677");
+
+        Map<String, Object> customer4 = new HashMap<>();
+        customer4.put("customerId", 104);
+        customer4.put("customerEmail", "mads@example.com");
+        customer4.put("customerPhone", "55667788");
+
+        Map<String, Object> customer5 = new HashMap<>();
+        customer5.put("customerId", 105);
+        customer5.put("customerEmail", "sofia@example.com");
+        customer5.put("customerPhone", "66778899");
+
+        customers.add(customer1);
+        customers.add(customer2);
+        customers.add(customer3);
+        customers.add(customer4);
+        customers.add(customer5);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("customers", customers);
+        ctx.render("dashboard/dashboard-customers", model);
+        //TODO: Add search box and fix buttons
     }
 
     public static void showMaterials(Context context) {
