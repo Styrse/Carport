@@ -2,6 +2,8 @@ package app.entities.products.materials;
 
 import app.entities.products.Product;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public abstract class Material extends Product {
@@ -40,4 +42,6 @@ public abstract class Material extends Product {
     public List<Integer> getPreCutsLengths() {
         return preCutsLengths;
     }
+
+    public abstract void prepareStatement(PreparedStatement ps) throws SQLException;
 }

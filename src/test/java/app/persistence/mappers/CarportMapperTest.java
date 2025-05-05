@@ -1,14 +1,8 @@
 package app.persistence.mappers;
 
-import app.entities.orders.Order;
-import app.entities.orders.OrderItem;
 import app.entities.products.carport.Carport;
 import app.entities.products.carport.carportTestFactory.TestCarportFactory;
-import app.entities.products.carport.carportTestFactory.TestPlankFactory;
-import app.entities.products.materials.planks.Post;
-import app.entities.users.Customer;
 import app.exceptions.DatabaseException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,12 +10,11 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 
 import static app.Main.connectionPool;
 import static org.junit.jupiter.api.Assertions.*;
 
-class OrderMapperTest {
+class CarportMapperTest {
 
     @BeforeEach
     void setup() {
@@ -86,6 +79,20 @@ class OrderMapperTest {
                         "test.materials, " +
                         "test.price_history RESTART IDENTITY CASCADE;");
 
+                stmt.execute("SELECT setval('test.orders_order_id_seq', 1, false)");
+                stmt.execute("SELECT setval('test.order_items_order_item_id_seq', 1, false)");
+                stmt.execute("SELECT setval('test.carports_carport_id_seq', 1, false)");
+                stmt.execute("SELECT setval('test.users_user_id_seq', 1, false)");
+                stmt.execute("SELECT setval('test.predefined_lengths_predefined_length_id_seq', 1, false)");
+
+                // Insert test materials
+                stmt.execute("INSERT INTO test.materials (material_id, name, description, unit, width, height, material_type, buckling_capacity, post_gap, length_overlap, side_overlap, gap_rafters, is_active) VALUES " +
+                        "(1, 'post', 'Pressure-treated post', 'cm', 10, 10, 'Post', 5, 0, 0, 0, 0, true), " +
+                        "(2, 'beam', 'Steel I-beam', 'cm', 15, 20, 'Beam', 0, 340, 0, 0, 0, true), " +
+                        "(3, 'fascia', 'Aluminum fascia board', 'cm', 5, 15, 'Fascia', 0, 0, 0, 0, 0, true), " +
+                        "(4, 'rafter', 'Wooden rafter plank', 'cm', 25, 55, 'Rafter', 0, 0, 0, 0, 0, true)," +
+                        "(5, 'roofCover', 'plastic roof', 'm2', 100, 10, 'RoofCover', 0, 0, 20, 10, 55, true);");
+
                 // Insert test carport (used for order_item_id = 3)
                 stmt.execute("INSERT INTO test.carports (width, length, height, roof_type, roof_angle, " +
                         "post_material_id, beam_material_id, rafter_material_id, fascia_material_id, roof_cover_material_id, total_price) VALUES " +
@@ -96,14 +103,6 @@ class OrderMapperTest {
                         "(1, 'Alice', 'Anderson', 12345678, 'alice@example.com', 'pass1', 1), " +
                         "(2, 'Bob', 'Brown', 87654321, 'bob@example.com', 'pass2', 1), " +
                         "(3, 'Charlie', 'Clark', 11223344, 'charlie@example.com', 'pass3', 2);");
-
-                // Insert test materials
-                stmt.execute("INSERT INTO test.materials (material_id, name, description, unit, width, height, material_type, buckling_capacity, post_gap, length_overlap, side_overlap, gap_rafters, is_active) VALUES " +
-                        "(1, 'post', 'Pressure-treated post', 'cm', 10, 10, 'Post', 5, 0, 0, 0, 0, true), " +
-                        "(2, 'beam', 'Steel I-beam', 'cm', 15, 20, 'Beam', 0, 340, 0, 0, 0, true), " +
-                        "(3, 'fascia', 'Aluminum fascia board', 'cm', 5, 15, 'Fascia', 0, 0, 0, 0, 0, true), " +
-                        "(4, 'rafter', 'Wooden rafter plank', 'cm', 25, 55, 'Rafter', 0, 0, 0, 0, 0, true)," +
-                        "(5, 'roofCover', 'plastic roof', 'm2', 100, 10, 'RoofCover', 0, 0, 20, 10, 55, true);");
 
                 // Insert price history for materials (active prices)
                 stmt.execute("INSERT INTO test.price_history (material_id, cost_price, sales_price, valid_from, valid_to) VALUES " +
@@ -131,7 +130,7 @@ class OrderMapperTest {
                         "(2, 3);");
 
                 stmt.execute("INSERT INTO test.order_item_carport (order_item_id, carport_id) VALUES " +
-                        "(3, 1);"); // carport_id = 1 (auto-increment starts at 1)
+                        "(3, 1);");
 
                 // Insert order status history
                 stmt.execute("INSERT INTO test.order_status_history (order_id, status, update_date) VALUES " +
@@ -162,13 +161,6 @@ class OrderMapperTest {
                         "(5, 3), " +
                         "(5, 4), " +
                         "(5, 5);");
-
-                // Reset sequences
-                stmt.execute("SELECT setval('test.orders_order_id_seq', COALESCE((SELECT MAX(order_id) + 1 FROM test.orders), 1), false)");
-                stmt.execute("SELECT setval('test.order_items_order_item_id_seq', COALESCE((SELECT MAX(order_item_id) + 1 FROM test.order_items), 1), false)");
-                stmt.execute("SELECT setval('test.carports_carport_id_seq', COALESCE((SELECT MAX(carport_id) + 1 FROM test.carports), 1), false)");
-                stmt.execute("SELECT setval('test.users_user_id_seq', COALESCE((SELECT MAX(user_id) + 1 FROM test.users), 1), false)");
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -177,109 +169,76 @@ class OrderMapperTest {
     }
 
     @Test
-    @DisplayName("CreateOrder Test")
-    void createOrder() throws DatabaseException {
+    @DisplayName("CreateCarport Test")
+    void createCarport() throws SQLException {
         //Arrange
-        Customer user = new Customer(10,"John", "Doe", 12345678, "john@doe.com", "John123", 1);
-        Order order = new Order(LocalDate.of(2025, 5, 1), "Shipped", user);
-        Carport carport = TestCarportFactory.createCarportWidthLength(630, 500);
-        Post post = TestPlankFactory.createStandardPost();
-        order.getOrderItems().add(new OrderItem(carport, 1));
-        order.getOrderItems().add(new OrderItem(post, 12));
+        Carport carport = TestCarportFactory.createCarport();
 
         //Act
-        OrderMapper.createOrder(order);
-        int actual  = order.getOrderId();
+        CarportMapper.createCarport(carport);
+        int actual = carport.getItemId();
 
         //Assert
-        int expected = 4;
-        assertEquals(expected, actual);
-
-    }
-
-    @Test
-    @DisplayName("GetOrderById Test")
-    void testGetOrderByOrderId() throws DatabaseException {
-        //Arrange
-
-        //Act
-        String actual = OrderMapper.getOrderByOrderId(1).getCustomer().getFirstName();
-
-        //Assert
-        String expected = "Alice";
+        int expected = 2;
         assertEquals(expected, actual);
     }
 
     @Test
     @DisplayName("GetAllOrders Test")
-    void getAllOrders() throws DatabaseException {
+    void getAllCarports() throws DatabaseException {
         //Arrange
 
         //Act
-        int actual = OrderMapper.getAllOrders().size();
+        int actual = CarportMapper.getAllCarports().size();
 
         //Assert
-        int expected = 3;
+        int expected = 1;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("GetCarportById Test")
+    void getCarportById() throws DatabaseException {
+        //Arrange
+
+        //Act
+        int actual = CarportMapper.getCarportById(1).getLength();
+
+        //Assert
+        int expected = 780;
         assertEquals(expected, actual);
 
     }
 
     @Test
-    @DisplayName("GetOrderByOrderId Test")
-    void getOrderByOrderId() throws DatabaseException {
+    @DisplayName("UpdateCarport Test")
+    void updateCarport() throws DatabaseException, SQLException {
         //Arrange
+        Carport carport = TestCarportFactory.createCarportWidthLength(600, 350);
+        CarportMapper.createCarport(carport);
 
         //Act
-        String actual = OrderMapper.getOrderByOrderId(1).getOrderStatus();
+        carport.setLength(750);
+        CarportMapper.updateCarport(connectionPool.getConnection(), carport);
+        int actual = CarportMapper.getCarportById(carport.getItemId()).getLength();
 
         //Assert
-        String expected = "under review";
+        int expected = 750;
         assertEquals(expected, actual);
 
     }
 
     @Test
-    @DisplayName("GetOrdersByCustomerId Test")
-    void getOrdersByCustomerId() throws DatabaseException {
+    @DisplayName("DeleteCarportById Test")
+    void deleteCarportById() throws DatabaseException {
         //Arrange
 
         //Act
-        int actual = OrderMapper.getOrdersByCustomerId(2).size();
+        CarportMapper.deleteCarportById(1);
+        int actual = CarportMapper.getAllCarports().size();
 
         //Assert
-        int expected = 2;
-        assertEquals(expected, actual);
-
-    }
-
-    @Test
-    @DisplayName("UpdateOrder Test")
-    void updateOrder() throws DatabaseException {
-        //Arrange
-        Order order = OrderMapper.getOrderByOrderId(3);
-        Carport carport = ((Carport) order.getOrderItems().get(0).getProduct());
-        carport.setWidth(300);
-
-        //Act
-        OrderMapper.updateOrder(order);
-        int actual = ((Carport) OrderMapper.getOrderByOrderId(order.getOrderId()).getOrderItems().get(0).getProduct()).getWidth();
-
-        //Assert
-        int expected = 300;
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("DeleteOrder Test")
-    void deleteOrder() throws DatabaseException {
-        //Arrange
-        OrderMapper.deleteOrder(1);
-
-        //Act
-        int actual = OrderMapper.getAllOrders().size();
-
-        //Assert
-        int expected = 2;
+        int expected = 0;
         assertEquals(expected, actual);
     }
 }

@@ -19,11 +19,11 @@ import static app.Main.connectionPool;
 
 public class CarportMapper {
 
-    //Create
+    //Create: Create a new Carport config in the database
     public static void createCarport(Carport carport) throws SQLException {
-        String sql = "INSERT INTO carports (width, length, height, roof_type, roof_angle, " +
-                "post_building_material_id, beam_building_material_id, rafter_building_material_id, fascia_building_material_id, total_price) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING carport_id";
+        String sql = "INSERT INTO carports (width, length, height, roof_type, roof_angle, post_material_id, " +
+                "beam_material_id, rafter_material_id, fascia_material_id, roof_cover_material_id, total_price) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING carport_id";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -37,11 +37,13 @@ public class CarportMapper {
             ps.setInt(7, carport.getMaterial().get(MaterialRole.BEAM).getItemId());
             ps.setInt(8, carport.getMaterial().get(MaterialRole.RAFTER).getItemId());
             ps.setInt(9, carport.getMaterial().get(MaterialRole.FASCIA).getItemId());
-            ps.setFloat(10, carport.getBillOfMaterial().calcTotalPrice());
+            ps.setInt(10, carport.getMaterial().get(MaterialRole.ROOF_COVER).getItemId());
+            ps.setDouble(11, carport.getBillOfMaterial().calcTotalPrice());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    rs.getInt("carport_id");
+                    int itemId = rs.getInt("carport_id");
+                    carport.setItemId(itemId);
                 } else {
                     throw new SQLException("Failed to retrieve carport_id");
                 }
@@ -49,76 +51,145 @@ public class CarportMapper {
         }
     }
 
+    //Read: Get all carports
+    public static Carport getCarportById(int carportId) throws DatabaseException {
+        String sql = "SELECT * " +
+                "FROM carports " +
+                "WHERE carport_id = ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, carportId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapCarport(rs);
+                } else {
+                    throw new DatabaseException("Carport not found with Id: " + carportId);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error retrieving carport by id. Carport id: " + carportId);
+        }
+    }
 
     public static List<Carport> getAllCarports() throws DatabaseException {
         List<Carport> allCarports = new ArrayList<>();
 
-        String sql = "SELECT * FROM \"carports\"";
+        String sql = "SELECT * FROM carports";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
                 ResultSet rs = ps.executeQuery();
 
-                while(rs.next()) {
-                    int width = rs.getInt("width");
-                    int length = rs.getInt("length");
-                    int height = rs.getInt("height");
-                    String roofType = rs.getString("roof_type");
-                    String roofAngle = rs.getString("roof_angle");
-                    int postSubProductId = rs.getInt("post_sub_product_id");
-                    int postColorId = rs.getInt("post_color_id");
-                    int beamSubProductId = rs.getInt("beam_sub_product_id");
-                    int beamColorId = rs.getInt("beam_color_id");
-                    int rafterSubProductId = rs.getInt("rafter_sub_product_id");
-                    int rafterColorId = rs.getInt("rafter_color_id");
-                    int fasciaSubProductId = rs.getInt("fascia_sub_product_id");
-                    int fasciaColorId = rs.getInt("fascia_color_id");
-                    int roofCoverSubProductId = rs.getInt("roof_cover_sub_product_id");
-                    int roofCoverColorId = rs.getInt("roof_cover_color_id");
+                while (rs.next()) {
+                    allCarports.add(mapCarport(rs));
                 }
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException(e, "Error");
+            throw new DatabaseException(e, "Error getting all carports");
         }
         return allCarports;
     }
 
-    public static Carport getCarportById(List<Carport> allCarports, int carportId) {
-        for (Carport carport : allCarports) {
-            if (carport.getItemId() == carportId) {
-                return carport;
+    //Update
+    public static void updateCarport(Connection connection, Carport carport) throws DatabaseException {
+        String sql = "UPDATE carports " +
+                "SET width = ?, length = ?, height = ?, " +
+                "roof_type = ?, roof_angle = ?, post_material_id = ?, beam_material_id = ?, " +
+                "rafter_material_id = ?, fascia_material_id = ?, roof_cover_material_id = ?, total_price = ? " +
+                "WHERE carport_id = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            // Extract material IDs safely
+            int postId = getMaterialId(carport, MaterialRole.POST);
+            int beamId = getMaterialId(carport, MaterialRole.BEAM);
+            int rafterId = getMaterialId(carport, MaterialRole.RAFTER);
+            int fasciaId = getMaterialId(carport, MaterialRole.FASCIA);
+            int roofCoverId = getMaterialId(carport, MaterialRole.ROOF_COVER);
+
+            double totalPrice = carport.getBillOfMaterial().calcTotalPrice();
+
+            ps.setInt(1, carport.getWidth());
+            ps.setInt(2, carport.getLength());
+            ps.setInt(3, carport.getHeight());
+            ps.setString(4, carport.getRoofType());
+            ps.setInt(5, carport.getRoofAngle());
+            ps.setInt(6, postId);
+            ps.setInt(7, beamId);
+            ps.setInt(8, rafterId);
+            ps.setInt(9, fasciaId);
+            ps.setInt(10, roofCoverId);
+            ps.setDouble(11, totalPrice);
+            ps.setInt(12, carport.getItemId());
+
+            int rowsUpdated = ps.executeUpdate();
+
+            if (rowsUpdated == 0) {
+                throw new DatabaseException("Carport update affected 0 rows (check ID " + carport.getItemId() + ")");
             }
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error updating carport (ID: " + carport.getItemId() + ")");
         }
-        return null; // or throw exception if not found
     }
 
-    public static Carport mapCarport(ResultSet rs) throws SQLException {
+    private static int getMaterialId(Carport carport, MaterialRole role) throws DatabaseException {
+        Material material = carport.getMaterial().get(role);
+        if (material == null) {
+            throw new DatabaseException("Missing material for role: " + role);
+        }
+        return material.getItemId();
+    }
+
+
+    //Delete
+    //Could implement a soft delete for accounting purposes later
+    public static void deleteCarportById(int carportId) throws DatabaseException {
+        String sql = "DELETE FROM carports WHERE carport_id = ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, carportId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error deleting carport. Carport id: " + carportId);
+        }
+    }
+
+    //Helper: Carport mapper
+    public static Carport mapCarport(ResultSet rs) throws SQLException, DatabaseException {
         int carportId = rs.getInt("carport_id");
         int width = rs.getInt("width");
         int length = rs.getInt("length");
         int height = rs.getInt("height");
         String roofType = rs.getString("roof_type");
-        double roofAngle = rs.getDouble("roof_angle");
+        int roofAngle = rs.getInt("roof_angle");
 
-        int postMaterialId = rs.getInt("post_building_material_id");
-        int beamMaterialId = rs.getInt("beam_building_material_id");
-        int rafterMaterialId = rs.getInt("rafter_building_material_id");
-        int fasciaMaterialId = rs.getInt("fascia_building_material_id");
+        int postMaterialId = rs.getInt("post_material_id");
+        int beamMaterialId = rs.getInt("beam_material_id");
+        int rafterMaterialId = rs.getInt("rafter_material_id");
+        int fasciaMaterialId = rs.getInt("fascia_material_id");
+        int roofCoverMaterialId = rs.getInt("roof_cover_material_id");
 
         Map<MaterialRole, Material> materials = new HashMap<>();
-        //TODO: Adjust for pitched roof
-        return new Carport(
-                carportId,
-                "Carport",
-                width + " x " + length,
-                width,
-                length,
-                height,
-                roofType,
-                materials
-        );
+
+        materials.put(MaterialRole.POST, MaterialMapper.getMaterialById(postMaterialId));
+        materials.put(MaterialRole.BEAM, MaterialMapper.getMaterialById(beamMaterialId));
+        materials.put(MaterialRole.RAFTER, MaterialMapper.getMaterialById(rafterMaterialId));
+        materials.put(MaterialRole.FASCIA, MaterialMapper.getMaterialById(fasciaMaterialId));
+        materials.put(MaterialRole.ROOF_COVER, MaterialMapper.getMaterialById(roofCoverMaterialId));
+
+        return switch (roofType) {
+            case "flat" ->
+                    new Carport(carportId, "Carport", width + " x " + length, width, length, height, roofType, materials);
+            case "pitched" ->
+                    new Carport(carportId, "Carport", width + " x " + length, width, length, height, roofType, roofAngle, materials);
+            default -> throw new IllegalStateException("Unexpected value: " + roofType);
+        };
     }
 
 }

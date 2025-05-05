@@ -32,13 +32,32 @@ public class TestCarportFactory {
      */
     public static Map<MaterialRole, Material> materials = new HashMap<>();
 
-    public static Carport createCarport(int width, int length) {
+    public static Carport createCarport() {
         materials.put(MaterialRole.POST, TestPlankFactory.createStandardPost());
         materials.put(MaterialRole.BEAM, TestPlankFactory.createStandardBeam());
         materials.put(MaterialRole.RAFTER, TestPlankFactory.createStandardRafter());
         materials.put(MaterialRole.FASCIA, TestPlankFactory.createStandardFascia());
-        materials.put(MaterialRole.ROOF_COVER, TestPlankFactory.createStandardRoofCover());
+        materials.put(MaterialRole.ROOF_COVER, TestRoofCoverFactory.createStandardTestRoofCover());
 
+
+        return new Carport(
+                1,
+                "Test Carport",
+                "Generated carport for measurement tests",
+                600,
+                500,
+                250,
+                "flat",
+                materials
+        );
+    }
+
+    public static Carport createCarportWidthLength(int width, int length) {
+        materials.put(MaterialRole.POST, TestPlankFactory.createStandardPost());
+        materials.put(MaterialRole.BEAM, TestPlankFactory.createStandardBeam());
+        materials.put(MaterialRole.RAFTER, TestPlankFactory.createStandardRafter());
+        materials.put(MaterialRole.FASCIA, TestPlankFactory.createStandardFascia());
+        materials.put(MaterialRole.ROOF_COVER, TestRoofCoverFactory.createStandardTestRoofCover());
 
         return new Carport(
                 1,
@@ -76,7 +95,7 @@ public class TestCarportFactory {
         materials.put(MaterialRole.BEAM, TestPlankFactory.createStandardBeam());
         materials.put(MaterialRole.RAFTER, rafter);
         materials.put(MaterialRole.FASCIA, TestPlankFactory.createStandardFascia());
-        materials.put(MaterialRole.ROOF_COVER, TestPlankFactory.createStandardRoofCover());
+        materials.put(MaterialRole.ROOF_COVER, TestRoofCoverFactory.createStandardTestRoofCover());
 
         return new Carport(
                 1,
@@ -95,7 +114,7 @@ public class TestCarportFactory {
         materials.put(MaterialRole.BEAM, beam);
         materials.put(MaterialRole.RAFTER, TestPlankFactory.createStandardRafter());
         materials.put(MaterialRole.FASCIA, TestPlankFactory.createStandardFascia());
-        materials.put(MaterialRole.ROOF_COVER, TestPlankFactory.createStandardRoofCover());
+        materials.put(MaterialRole.ROOF_COVER, TestRoofCoverFactory.createStandardTestRoofCover());
 
         return new Carport(
                 1,

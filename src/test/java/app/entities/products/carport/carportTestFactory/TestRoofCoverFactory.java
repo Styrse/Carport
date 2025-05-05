@@ -2,8 +2,12 @@ package app.entities.products.carport.carportTestFactory;
 
 import app.entities.products.materials.roof.RoofCover;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static app.entities.products.carport.carportTestFactory.TestPlankFactory.PRE_CUT_LENGTHS;
+import static app.entities.products.carport.carportTestFactory.TestPlankFactory.SHORT_PRE_CUTS_LENGTHS;
 
 /**
  * TestRoofCoverFactory
@@ -17,17 +21,15 @@ import java.util.List;
 
 public class TestRoofCoverFactory {
 
-    public static List<Integer> preCutsLengths = Arrays.asList(300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600);
-
     public static RoofCover createStandardTestRoofCover() {
         return new RoofCover(
-                1,
-                "Standard Test Roof",
-                "Baseline for comparisons",
-                150,
-                250,
-                preCutsLengths,
-                "m2",
+                5,
+                "Standard Roof",
+                "Basic roof cover for testing",
+                1.079,
+                1.5,
+                PRE_CUT_LENGTHS,
+                "cm",
                 100,
                 20,
                 10,
@@ -35,33 +37,31 @@ public class TestRoofCoverFactory {
         );
     }
 
-    public static RoofCover createShortPlankRoofCover() {
-        preCutsLengths.removeIf(n -> n > 400);
+    public static RoofCover createShortSheetRoofCover() {
         return new RoofCover(
-                1,
+                5,
                 "Short Plank Roof",
                 "Shorter planks for stress length tests",
-                160,
-                260,
-                preCutsLengths,
-                "m2",
+                .971,
+                1.35,
+                SHORT_PRE_CUTS_LENGTHS,
+                "cm",
                 100,
                 20,
                 10,
                 55
-
         );
     }
 
     public static RoofCover createTinyOverlapRoofCover() {
         return new RoofCover(
-                1,
+                5,
                 "Tiny Overlap Roof",
                 "Minimal overlaps to maximize coverage",
-                140,
-                240,
-                preCutsLengths,
-                "m2",
+                1.115,
+                1.55,
+                PRE_CUT_LENGTHS,
+                "cm",
                 100,
                 20,
                 5,
@@ -69,15 +69,31 @@ public class TestRoofCoverFactory {
         );
     }
 
+    public static RoofCover createTinyOverlapLengthRoofCover() {
+        return new RoofCover(
+                5,
+                "Tiny Overlap Roof",
+                "Minimal overlaps to maximize coverage",
+                1.151,
+                1.6,
+                PRE_CUT_LENGTHS,
+                "cm",
+                100,
+                5,
+                10,
+                55
+        );
+    }
+
     public static RoofCover createWideRoofCover() {
         return new RoofCover(
-                1,
+                5,
                 "Wide Roof Cover",
                 "Extra wide sheet for width tests",
-                170,
-                270,
-                preCutsLengths,
-                "m2",
+                4.316,
+                6,
+                PRE_CUT_LENGTHS,
+                "cm",
                 400,
                 20,
                 10,
