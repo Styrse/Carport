@@ -1,13 +1,19 @@
 package app.controller;
 
-import app.entities.products.carport.Carport;
-import app.entities.users.Customer;
 import io.javalin.Javalin;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class RoutingController {
-    public static void routes(Javalin app) {
-        app.get("/", ctx -> ctx.render("dashboard/dashboard.html"));}
+    public static void routingController(Javalin app) {
+        app.get("/", ctx -> ctx.render("dashboard/dashboard.html"));
+
+
+
+        //Dashboard routing
+        app.get("/dashboard/", ctx -> ctx.render("dashboard/dashboard.html"));
+        app.get("/dashboard/new-order", DashboardController::newOrder);
+        app.get("/dashboard/orders", DashboardController::showOrders);
+        app.get("/dashboard/customers", DashboardController::showCustomers);
+        app.get("/dashboard/materials", DashboardController::showMaterials);
+        app.get("/dashboard/profile", DashboardController::showProfile);
+    }
 }

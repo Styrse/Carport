@@ -1,9 +1,12 @@
- body {
-     margin: 0;
-     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-     background-color: #f4f4f4;
- }
+/* ===== General ===== */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    color: #2c3e50;
+}
 
+/* ===== Dashboard Top Bar ===== */
 .dashboard-top-bar {
     display: flex;
     align-items: center;
@@ -20,11 +23,21 @@
     transition: transform 0.2s ease, background-color 0.2s ease;
     padding: 10px;
     border-radius: 10px;
+    outline: none;
 }
 
+/* Only show hover effect when actually hovered */
 .icon:hover {
     background-color: #3569A5;
     transform: translateY(-5px);
+}
+
+/* Remove lingering focus/active styles */
+.icon:focus:not(:hover),
+.icon:active:not(:hover) {
+    background-color: transparent;
+    transform: none;
+    outline: none;
 }
 
 .icon img {
@@ -34,12 +47,147 @@
     margin: 0 auto 10px;
 }
 
- .logo-icon img {
-     width: 60px;
-     height: 60px;
- }
-
 .icon p {
     margin: 0;
     font-size: 14px;
+}
+
+.logo-icon img {
+    width: 60px;
+    height: 60px;
+}
+
+/* ===== Container & Filters ===== */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.filters {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.filter-button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.filter-button:hover {
+    background-color: #1c6394;
+}
+
+/* ===== Generic Table Styling ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: #154985;
+    color: white;
+}
+
+th, td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* ===== Action Buttons (e.g. Remove/See) ===== */
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.remove-line-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.remove-line-button:hover {
+    background-color: #c0392b;
+}
+
+.see-line-button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.see-line-button:hover {
+    background-color: #1c6394;
+}
+
+/* ===== Responsive Table Layout ===== */
+@media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        padding: 10px;
+    }
+
+    td {
+        position: relative;
+        padding-left: 50%;
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    td::before {
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        white-space: nowrap;
+        font-weight: bold;
+        color: #555;
+        content: attr(data-label);
+    }
 }
