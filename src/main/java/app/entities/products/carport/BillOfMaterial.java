@@ -70,14 +70,16 @@ public class BillOfMaterial {
         int normalBeams = (int) Math.floor((double) carport.getLength() / normalBestFit) * calcPostCountWidth();
         int endBeam = calcPostCountWidth();
 
-        beamList.add(new BillOfMaterialsItem(
-                material.getName(),
-                normalBestFit,
-                normalBeams,
-                material.getUnit(),
-                material.getDescription(),
-                material.getSalesPrice() * normalBestFit
-        ));
+        if (normalBeams > 0) {
+            beamList.add(new BillOfMaterialsItem(
+                    material.getName(),
+                    normalBestFit,
+                    normalBeams,
+                    material.getUnit(),
+                    material.getDescription(),
+                    material.getSalesPrice() * normalBestFit
+            ));
+        }
 
         beamList.add(new BillOfMaterialsItem(
                 material.getName(),
@@ -118,24 +120,36 @@ public class BillOfMaterial {
         int bestFitLength = bestFitLength(material, (float) carport.getLength() / fasciasCountLength);
         int bestFitWidth = bestFitLength(material, (float) carport.getWidth() / fasciasCountWidth);
 
-        fasciaList.add(new BillOfMaterialsItem(
-                material.getName(),
-                bestFitLength,
-                fasciasCountLength * 2,
-                material.getUnit(),
-                material.getDescription(),
-                material.getSalesPrice() * bestFitLength
-        ));
+        if (bestFitWidth == bestFitLength) {
+            fasciaList.add(new BillOfMaterialsItem(
+                    material.getName(),
+                    bestFitLength,
+                    (fasciasCountLength + fasciasCountWidth) * 2,
+                    material.getUnit(),
+                    material.getDescription(),
+                    material.getSalesPrice() * bestFitLength
+            ));
+            return fasciaList;
+        } else {
+            fasciaList.add(new BillOfMaterialsItem(
+                    material.getName(),
+                    bestFitLength,
+                    fasciasCountLength * 2,
+                    material.getUnit(),
+                    material.getDescription(),
+                    material.getSalesPrice() * bestFitLength
+            ));
 
-        fasciaList.add(new BillOfMaterialsItem(
-                material.getName(),
-                bestFitWidth,
-                fasciasCountWidth * 2,
-                material.getUnit(),
-                material.getDescription(),
-                material.getSalesPrice() * bestFitWidth
-        ));
-        return fasciaList;
+            fasciaList.add(new BillOfMaterialsItem(
+                    material.getName(),
+                    bestFitWidth,
+                    fasciasCountWidth * 2,
+                    material.getUnit(),
+                    material.getDescription(),
+                    material.getSalesPrice() * bestFitWidth
+            ));
+            return fasciaList;
+        }
     }
 
     private List<BillOfMaterialsItem> getRoofCover() {
@@ -274,13 +288,5 @@ public class BillOfMaterial {
             }
         }
         return covers;
-    }
-
-    @Override
-    public String toString() {
-        return "BillOfMaterial{" +
-                "carport=" + carport +
-                ", lines=" + lines +
-                '}';
     }
 }

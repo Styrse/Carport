@@ -2020,4 +2020,35 @@ class BillOfMaterialTest {
             }
         }
     }
+
+    @Test
+    @DisplayName("TotalPrice Test")
+    void calcTotalPrice() {
+        //Arrange
+        Carport carport = TestCarportFactory.createCarportWidthLength(500, 750);
+
+        //Act
+        double actual = carport.getBillOfMaterial().calcTotalPrice();
+
+        //Assert
+        double expected = 10268.4;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("GetLines Test")
+    void getLines() {
+        //Arrange
+        Carport carport = TestCarportFactory.createCarportWidthLength(100, 100);
+
+        //Act
+        int actual = carport.getBillOfMaterial().getLines().size();
+        for (BillOfMaterialsItem item : carport.getBillOfMaterial().getLines()) {
+            System.out.println(item);
+        }
+
+        //Assert
+        int expected = 5;
+        assertEquals(expected, actual);
+    }
 }
