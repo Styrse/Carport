@@ -8,6 +8,8 @@ import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Staff;
 import app.entities.users.StaffManager;
+import app.exceptions.DatabaseException;
+import app.persistence.service.MaterialService;
 import io.javalin.http.Context;
 
 import java.util.ArrayList;
@@ -151,13 +153,10 @@ public class DashboardController {
         //TODO: Add search box and fix buttons. Add "Send email" button
     }
 
-    public static void showMaterials(Context ctx) {
+    public static void showMaterials(Context ctx) throws DatabaseException {
         List<Integer> lengths = List.of(240, 270, 300);
 
-        List<Post> posts = List.of(
-                new Post(1, "97x97 stolpe trykimprægneret", "Til hjørner", 25.0, 42.5, lengths, "m", 97, 300, 7),
-                new Post(2, "90x90 stolpe", "Standard stolpe", 20.0, 38.0, lengths, "m", 90, 270, 5)
-        );
+        List<Post> posts = MaterialService.getAllPosts();
 
         List<Beam> beams = List.of(
                 new Beam(3, "45x195 rem", "Anvendes til spærunderstøttelse", 35.0, 55.0, lengths, "m", 45, 195, 340),
@@ -204,8 +203,8 @@ public class DashboardController {
 
         model.put("posts", filteredPosts);
         model.put("beams", filteredBeams);
-        model.put("rafters", rafters); // no filter
-        model.put("fascias", fascias); // no filter
+        model.put("rafters", rafters);
+        model.put("fascias", fascias);
         model.put("roofCovers", filteredRoofCovers);
 
         model.put("minBuckling", ctx.queryParam("minBuckling"));

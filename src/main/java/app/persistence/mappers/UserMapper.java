@@ -33,6 +33,7 @@ public class UserMapper {
         String sql =
                 "INSERT INTO users (firstname, lastname, phone_number, email, password, role_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?) RETURNING user_id";
+        //TODO: Address
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -56,7 +57,7 @@ public class UserMapper {
 
     //Read: get user by email
     public static User getUserByEmail(String email) throws DatabaseException {
-        String sql = "SELECT * FROM users WHERE email = ?";
+        String sql = "SELECT * FROM users JOIN postcodes USING (postcode) WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -112,6 +113,7 @@ public class UserMapper {
     public static void updateUser(User user) throws DatabaseException {
         String sql = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, email = ?," +
                 "password = ?,user_id = ? WHERE email = ?";
+        //TODO: Address
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -150,16 +152,19 @@ public class UserMapper {
         int userId = rs.getInt("user_id");
         String firstname = rs.getString("firstname");
         String lastname = rs.getString("lastname");
+        String address = rs.getString("address");
+        int postcode = rs.getInt("postcode");
+        String city = rs.getString("city");
         int phoneNumber = rs.getInt("phone_number");
         String email = rs.getString("email");
         String password = rs.getString("password");
         int roleId = rs.getInt("role_id");
 
         return switch (roleId) {
-            case 1 -> new Customer(userId, firstname, lastname, phoneNumber, email, password, roleId);
+            case 1 -> new Customer(userId, firstname, lastname, address, postcode, city, phoneNumber, email, password, roleId);
             case 2 -> new Staff(userId, firstname, lastname, phoneNumber, email, password, roleId);
             case 3 -> new StaffManager(userId, firstname, lastname, phoneNumber, email, password, roleId);
-            default -> throw new DatabaseException("Unknown material type: " + roleId);
+            default -> throw new DatabaseException("Unknown role type: " + roleId);
         };
     }
 }

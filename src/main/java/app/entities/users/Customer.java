@@ -22,6 +22,16 @@ public class Customer extends User {
         this.myOrders = new ArrayList<>();
     }
 
+    public Customer(String firstName, String lastName, String address, int postcode, String city, int phoneNumber, String email, String password, int userRole) {
+        super(firstName, lastName, address, postcode, city, phoneNumber, email, password, userRole);
+        this.myOrders = new ArrayList<>();
+    }
+
+    public Customer(int userId, String firstName, String lastName, String address, int postcode, String city, int phoneNumber, String email, String password, int userRole) {
+        super(userId, firstName, lastName, address, postcode, city, phoneNumber, email, password, userRole);
+        this.myOrders = new ArrayList<>();
+    }
+
     public List<Order> getMyOrders() {
         return myOrders;
     }
