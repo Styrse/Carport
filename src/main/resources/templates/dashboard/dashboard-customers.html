@@ -22,24 +22,25 @@
                     <th>Kunde email</th>
                     <th>Kunde telefon</th>
                     <th>Se profil</th>
-                    <th>Se ordre</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="customer, iterStat : ${customers}">
                     <td th:text="${customer.customerId}"></td>
-                    <td th:text="${customer.customerEmail}"></td>
+                    <td>
+                        <div class="email-with-button">
+                            <span th:text="${customer.customerEmail}"></span>
+                            <form action="/send-email" method="post" style="display:inline;">
+                                <input type="hidden" name="index" th:value="${iterStat.index}">
+                                <button type="submit" class="see-line-button">Send email</button>
+                            </form>
+                        </div>
+                    </td>
                     <td th:text="${customer.customerPhone}"></td>
                     <td>
                         <form action="/orders/see-profile" method="post">
                             <input type="hidden" name="index" th:value="${iterStat.index}">
                             <button type="submit" class="see-line-button">Se profil</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/orders/see-orders" method="post">
-                            <input type="hidden" name="index" th:value="${iterStat.index}">
-                            <button type="submit" class="see-line-button">Se ordre</button>
                         </form>
                     </td>
                 </tr>

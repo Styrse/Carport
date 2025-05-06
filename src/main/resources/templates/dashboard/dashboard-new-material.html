@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tilføj materiale</title>
+  <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+  <style>
+    .hidden { display: none; }
+    .carport-form { max-width: 600px; margin: 40px auto; display: grid; gap: 14px; }
+    .carport-form label { font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+  <form action="/materials/create" method="post" class="carport-form">
+    <h1>Tilføj materiale</h1>
+
+    <label for="type">Materialetype:</label>
+    <select name="type" id="type" required>
+      <option value="" disabled selected>Vælg type</option>
+      <option value="post">Stolpe</option>
+      <option value="beam">Rem</option>
+      <option value="rafter">Spær</option>
+      <option value="fascia">Stern</option>
+      <option value="roofCover">Tagbeklædning</option>
+    </select>
+
+    <label for="name">Navn:</label>
+    <input type="text" name="name" id="name" placeholder="97x97 Bøgetræs stolpe" required>
+
+    <label for="description">Beskrivelse:</label>
+    <input type="text" name="description" id="description" placeholder="Rem monteres på stolpe" required>
+
+    <label for="costPrice">Indkøbspris (kr. /m):</label>
+    <input type="number" name="costPrice" id="costPrice" placeholder="Indkøbspris pr meter" step="0.01" required>
+
+    <label for="salesPrice">Salgspris (kr./m):</label>
+    <input type="number" name="salesPrice" id="salesPrice" placeholder="Salgspris pr meter" step="0.01" required>
+
+    <label for="unit">Enhed (m, pakke osv.):</label>
+    <input type="text" name="unit" id="unit" placeholder="m, pakke osv." required>
+
+    <label for="width">Bredde (cm):</label>
+    <input type="number" name="width" id="width" placeholder="25" required>
+
+    <!-- All except RoofCover -->
+    <div data-type="nonRoof" class="type-specific hidden">
+      <label for="height">Højde (cm):</label>
+      <input type="number" id="height" placeholder="25" name="height">
+    </div>
+
+    <label for="preCuts">Forhåndsskårne længder (Kommasepareret, fx 240,270,300):</label>
+    <input type="text" name="preCuts" id="preCuts" placeholder="Kommasepareret, fx 240,270,300" required>
+
+    <!-- RoofCover only -->
+    <div data-type="roofCover" class="type-specific hidden">
+      <label for="overlapLength">Overlap længde (cm):</label>
+      <input type="number" id="overlapLength" placeholder="20" name="overlapLength">
+
+      <label for="overlapWidth">Overlap bredde (cm):</label>
+      <input type="number" id="overlapWidth" placeholder="10" name="overlapWidth">
+
+      <label for="gapRafters">Max mellemrum spær (cm):</label>
+      <input type="number" id="gapRafters" placeholder="55" name="gapRafters">
+    </div>
+
+    <!-- Post only -->
+    <div data-type="post" class="type-specific hidden">
+      <label for="bucklingCapacity">Knækstyrke (M²):</label>
+      <input type="number" step="0.01" id="bucklingCapacity" placeholder="5" name="bucklingCapacity">
+    </div>
+
+    <!-- Beam only -->
+    <div data-type="beam" class="type-specific hidden">
+      <label for="postGap">Mellemrum stolper (cm):</label>
+      <input type="number" id="postGap" placeholder="340" name="postGap">
+    </div>
+
+    <button type="submit" class="see-line-button">Opret materiale</button>
+  </form>
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const typeSelect = document.getElementById('type');
+    const sections = document.querySelectorAll('.type-specific');
+
+    function toggleFields() {
+      const selected = typeSelect.value;
+      sections.forEach(section => {
+        const type = section.getAttribute('data-type');
+        if (type === selected || (type === 'nonRoof' && selected !== 'roofCover')) {
+          section.classList.remove('hidden');
+        } else {
+          section.classList.add('hidden');
+        }
+      });
+    }
+
+    typeSelect.addEventListener('change', toggleFields);
+  });
+</script>
+
+</body>
+</html>

@@ -37,7 +37,8 @@
                     <th>Ordre ID</th>
                     <th>Status</th>
                     <th>Kunde navn</th>
-                    <th>Kunde telefon</th>
+                    <th>Email</th>
+                    <th>Telefon</th>
                     <th>Total pris</th>
                     <th>Se ordre</th>
                     <th>Slet ordre</th>
@@ -48,6 +49,12 @@
                     <td th:text="${order.orderId}"></td>
                     <td th:text="${order.orderStatus}"></td>
                     <td th:text="${order.customerName}"></td>
+                    <td>
+                        <form action="/send-email" method="post">
+                            <input type="hidden" name="index" th:value="${iterStat.index}">
+                            <button type="submit" class="see-line-button">Send email</button>
+                        </form>
+                    </td>
                     <td th:text="${order.customerPhone}"></td>
                     <td th:text="${order.totalPrice}"></td>
                     <td>

@@ -17,5 +17,6 @@ public class RoutingController {
         app.get("/dashboard/materials", DashboardController::showMaterials);
         app.get("/dashboard/profile", DashboardController::showProfile);
         app.get("/dashboard/logout", DashboardController::logout);
+        app.get("/dashboard/new-material", DashboardController::newMaterial);
     }
 }

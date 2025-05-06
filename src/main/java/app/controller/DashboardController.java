@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.entities.orders.Order;
-import app.entities.products.materials.Material;
 import app.entities.products.materials.planks.Beam;
 import app.entities.products.materials.planks.Fascia;
 import app.entities.products.materials.planks.Post;
@@ -9,7 +8,6 @@ import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Staff;
 import app.entities.users.StaffManager;
-import app.entities.users.User;
 import io.javalin.http.Context;
 
 import java.util.ArrayList;
@@ -92,7 +90,6 @@ public class DashboardController {
         order5.put("customerPhone", "78945612");
         order5.put("totalPrice", 0);
 
-        // Add all orders to list
         orders.add(order1);
         orders.add(order2);
         orders.add(order3);
@@ -158,13 +155,13 @@ public class DashboardController {
         List<Integer> lengths = List.of(240, 270, 300);
 
         List<Post> posts = List.of(
-                new Post(1, "97x97 stolpe trykimprægneret", "Til hjørner", 25.0, 42.5, lengths, "m", 97, 300, 250),
-                new Post(2, "90x90 stolpe", "Standard stolpe", 20.0, 38.0, lengths, "m", 90, 270, 200)
+                new Post(1, "97x97 stolpe trykimprægneret", "Til hjørner", 25.0, 42.5, lengths, "m", 97, 300, 7),
+                new Post(2, "90x90 stolpe", "Standard stolpe", 20.0, 38.0, lengths, "m", 90, 270, 5)
         );
 
         List<Beam> beams = List.of(
-                new Beam(3, "45x195 rem", "Anvendes til spærunderstøttelse", 35.0, 55.0, lengths, "m", 45, 195, 150),
-                new Beam(4, "45x245 rem", "Ekstra høj rem", 40.0, 62.0, lengths, "m", 45, 245, 180)
+                new Beam(3, "45x195 rem", "Anvendes til spærunderstøttelse", 35.0, 55.0, lengths, "m", 45, 195, 340),
+                new Beam(4, "45x245 rem", "Ekstra høj rem", 40.0, 62.0, lengths, "m", 45, 245, 295)
         );
 
         List<Rafter> rafters = List.of(
@@ -182,14 +179,49 @@ public class DashboardController {
                 new RoofCover(10, "Stålplade", "Robust tagdækning", 80.0, 140.0, lengths, "m", 1000, 100, 8f, 70)
         );
 
+        float minBuckling = parseFloat(ctx.queryParam("minBuckling"), 0);
+        float minGapPost = parseFloat(ctx.queryParam("minGapPost"), 0);
+        float minGapRafter = parseFloat(ctx.queryParam("minGapRafter"), 0);
+
+        List<Post> filteredPosts = posts.stream()
+                .filter(p -> p.getBucklingCapacity() >= minBuckling)
+                .toList();
+
+        List<Beam> filteredBeams = beams.stream()
+                .filter(b -> b.getPostGap() >= minGapPost)
+                .toList();
+
+        List<RoofCover> filteredRoofCovers = roofCovers.stream()
+                .filter(r -> r.getGapRafters() >= minGapRafter)
+                .toList();
+
         Map<String, Object> model = new HashMap<>();
-        model.put("posts", posts);
-        model.put("beams", beams);
-        model.put("rafters", rafters);
-        model.put("fascias", fascias);
-        model.put("roofCovers", roofCovers);
+        //Staff staff = new Staff("Jonas", "Hansen", 22553344, "jonas@fog.dk", "secret", 2);
+        StaffManager staff = new StaffManager("Anna", "Fog", 11223344, "anna@fog.dk", "admin", 3);
+        boolean isManager = staff instanceof StaffManager;
+
+        model.put("isManager", isManager);
+
+        model.put("posts", filteredPosts);
+        model.put("beams", filteredBeams);
+        model.put("rafters", rafters); // no filter
+        model.put("fascias", fascias); // no filter
+        model.put("roofCovers", filteredRoofCovers);
+
+        model.put("minBuckling", ctx.queryParam("minBuckling"));
+        model.put("minGapPost", ctx.queryParam("minGapPost"));
+        model.put("minGapRafter", ctx.queryParam("minGapRafter"));
 
         ctx.render("dashboard/dashboard-materials.html", model);
+    }
+
+    private static float parseFloat(String input, float fallback) {
+        if (input == null || input.isBlank()) return fallback;
+        try {
+            return Float.parseFloat(input);
+        } catch (NumberFormatException e) {
+            return fallback;
+        }
     }
 
     public static void showProfile(Context ctx) {
@@ -213,5 +245,9 @@ public class DashboardController {
 
     public static void logout(Context ctx) {
         ctx.render("dashboard/dashboard-login.html");
+    }
+
+    public static void newMaterial(Context ctx) {
+        ctx.render("dashboard/dashboard-new-material.html");
     }
 }

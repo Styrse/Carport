@@ -16,96 +16,186 @@
     <div class="container">
         <h1>Materialeoversigt</h1>
 
-        <section>
-            <h2>Stolper</h2>
-            <table class="material-table">
-                <thead>
-                <tr>
-                    <th>Navn</th>
-                    <th>Salgspris (kr./m)</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="material : ${posts}">
-                    <td th:text="${material.name}"></td>
-                    <td th:text="${material.salesPrice} + ' kr.'"></td>
-                </tr>
-                </tbody>
-            </table>
+        <nav class="material-nav">
+            <a href="#posts">Stolper</a>
+            <a href="#beams">Remme</a>
+            <a href="#rafters">Spær</a>
+            <a href="#fascias">Stern</a>
+            <a href="#roof">Tagbelægning</a>
+            <div th:if="${isManager}" class="material-action-bar">
+                <form action="/dashboard/new-material" method="get">
+                    <button type="submit" class="see-line-button">Tilføj materiale</button>
+                </form>
+            </div>
+        </nav>
+
+        <section id="posts">
+            <div class="material-section">
+                <h2>Stolper</h2>
+                <form method="get" action="/dashboard/materials#posts" class="filter-group">
+                    <label for="minBuckling">Knækstyrke:</label>
+                    <input type="number" name="minBuckling" id="minBuckling" min="0"
+                           th:value="${minBuckling}" class="filter-select" placeholder="Minimums knækstyrke (M²)">
+                    <button type="submit" class="filter-button">Filtrér</button>
+                </form>
+                <table class="material-table">
+                    <thead>
+                    <tr>
+                        <th>Navn</th>
+                        <th>Knækstyrke</th>
+                        <th>Salgspris (kr./m)</th>
+                        <th th:if="${isManager}">Rediger</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="material : ${posts}">
+                        <td th:text="${material.name}"></td>
+                        <td th:text="${material.bucklingCapacity} + ' M²'"></td>
+                        <td th:text="${material.salesPrice} + ' kr.'"></td>
+                        <td th:if="${isManager}">
+                            <form action="/materials/edit" method="get">
+                                <input type="hidden" name="id" th:value="${material.itemId}">
+                                <button type="submit" class="see-line-button">Rediger</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(posts)}">
+                        <td colspan="3">Ingen resultater</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
-        <section>
-            <h2>Remme</h2>
-            <table class="material-table">
-            <thead>
-                <tr>
-                    <th>Navn</th>
-                    <th>Salgspris (kr./m)</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="material : ${beams}">
-                    <td th:text="${material.name}"></td>
-                    <td th:text="${material.salesPrice} + ' kr.'"></td>
-                </tr>
-                </tbody>
-            </table>
+        <section id="beams">
+            <div class="material-section">
+                <h2>Remme</h2>
+                <form method="get" action="/dashboard/materials#beams" class="filter-group">
+                    <label for="minGapPost">Mellemrum stolper:</label>
+                    <input type="number" name="minGapPost" id="minGapPost" min="0"
+                           th:value="${gapPost}" class="filter-select" placeholder="Minimum mellemrum">
+                    <button type="submit" class="filter-button">Filtrér</button>
+                </form>
+                <table class="material-table">
+                    <thead>
+                    <tr>
+                        <th>Navn</th>
+                        <th>Max mellemrum stolper</th>
+                        <th>Salgspris (kr./m)</th>
+                        <th th:if="${isManager}">Rediger</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="material : ${beams}">
+                        <td th:text="${material.name}"></td>
+                        <td th:text="${material.postGap}"></td>
+                        <td th:text="${material.salesPrice} + ' kr.'"></td>
+                        <td th:if="${isManager}">
+                            <form action="/materials/edit" method="get">
+                                <input type="hidden" name="id" th:value="${material.itemId}">
+                                <button type="submit" class="see-line-button">Rediger</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(posts)}">
+                        <td colspan="3">Ingen resultater</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
-        <section>
-            <h2>Spær</h2>
-            <table class="material-table">
-                <thead>
-                <tr>
-                    <th>Navn</th>
-                    <th>Salgspris (kr./m)</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="material : ${rafters}">
-                    <td th:text="${material.name}"></td>
-                    <td th:text="${material.salesPrice} + ' kr.'"></td>
-                </tr>
-                </tbody>
-            </table>
+        <section id="rafters">
+            <div class="material-section">
+                <h2>Spær</h2>
+                <table class="material-table">
+                    <thead>
+                    <tr>
+                        <th>Navn</th>
+                        <th>Salgspris (kr./m)</th>
+                        <th th:if="${isManager}">Rediger</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="material : ${rafters}">
+                        <td th:text="${material.name}"></td>
+                        <td th:text="${material.salesPrice} + ' kr.'"></td>
+                        <td th:if="${isManager}">
+                            <form action="/materials/edit" method="get">
+                                <input type="hidden" name="id" th:value="${material.itemId}">
+                                <button type="submit" class="see-line-button">Rediger</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
-        <section>
-            <h2>Sternbræt</h2>
-            <table class="material-table">
-                <thead>
-                <tr>
-                    <th>Navn</th>
-                    <th>Salgspris (kr./m)</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="material : ${fascias}">
-                    <td th:text="${material.name}"></td>
-                    <td th:text="${material.salesPrice} + ' kr.'"></td>
-                </tr>
-                </tbody>
-            </table>
+        <section id="fascias">
+            <div class="material-section">
+                <h2>Sternbræt</h2>
+                <table class="material-table">
+                    <thead>
+                    <tr>
+                        <th>Navn</th>
+                        <th>Salgspris (kr./m)</th>
+                        <th th:if="${isManager}">Rediger</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="material : ${fascias}">
+                        <td th:text="${material.name}"></td>
+                        <td th:text="${material.salesPrice} + ' kr.'"></td>
+                        <td th:if="${isManager}">
+                            <form action="/materials/edit" method="get">
+                                <input type="hidden" name="id" th:value="${material.itemId}">
+                                <button type="submit" class="see-line-button">Rediger</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
-        <section>
-            <h2>Tagbeklædning</h2>
-            <table class="material-table">
-                <thead>
-                <tr>
-                    <th>Navn</th>
-                    <th>Salgspris (kr./m)</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="material : ${roofCovers}">
-                    <td th:text="${material.name}"></td>
-                    <td th:text="${material.salesPrice} + ' kr.'"></td>
-                </tr>
-                </tbody>
-            </table>
+        <section id="roof">
+            <div class="material-section">
+                <h2>Tagbeklædning</h2>
+                <form method="get" action="/dashboard/materials#roof" class="filter-group">
+                    <label for="minGapRafter">Mellemrum spær</label>
+                    <input type="number" name="minGapRafter" id="minGapRafter" min="0"
+                           th:value="${minGapRafter}" class="filter-select" placeholder="Minimums mellemrum">
+                    <button type="submit" class="filter-button">Filtrér</button>
+                </form>
+                <table class="material-table">
+                    <thead>
+                    <tr>
+                        <th>Navn</th>
+                        <th>Max mellemrum stern</th>
+                        <th>Salgspris (kr./m)</th>
+                        <th th:if="${isManager}">Rediger</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="material : ${roofCovers}">
+                        <td th:text="${material.name}"></td>
+                        <td th:text="${material.gapRafters}"></td>
+                        <td th:text="${material.salesPrice} + ' kr.'"></td>
+                        <td th:if="${isManager}">
+                            <form action="/materials/edit" method="get">
+                                <input type="hidden" name="id" th:value="${material.itemId}">
+                                <button type="submit" class="see-line-button">Rediger</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(posts)}">
+                        <td colspan="3">Ingen resultater</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
-
     </div>
 </main>
 
