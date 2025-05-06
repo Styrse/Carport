@@ -10,9 +10,7 @@ import app.exceptions.DatabaseException;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static app.Main.connectionPool;
 
@@ -98,6 +96,8 @@ public class MaterialMapper {
 
                 int length = rs.getInt("length");
                 material.addToPreCutsLengths(length);
+                //TODO: sout
+                System.out.println("Name: " + material.getName() + " ID: " + material.getItemId());
             }
         } catch (SQLException e) {
             e.printStackTrace();
