@@ -10,7 +10,9 @@ import app.exceptions.DatabaseException;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static app.Main.connectionPool;
 
@@ -67,10 +69,16 @@ public class MaterialMapper {
     public static List<Material> getAllMaterials() throws DatabaseException {
         List<Material> allMaterials = new ArrayList<>();
 
-        String sql = "SELECT DISTINCT ON (material_id) * " +
+        String sql = "SELECT * " +
                 "FROM materials " +
-                "JOIN price_history USING (material_id) " +
-                "WHERE is_active = true";
+                "JOIN (" +
+                "    SELECT DISTINCT ON (material_id) * " +
+                "    FROM price_history " +
+                "    ORDER BY material_id, valid_from DESC" +
+                ") AS latest_price USING (material_id) " +
+                "JOIN material_lengths USING (material_id) " +
+                "JOIN predefined_lengths USING (predefined_length_id) " +
+                "WHERE materials.is_active = true";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -78,7 +86,18 @@ public class MaterialMapper {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                allMaterials.add(mapMaterial(rs));
+                int material_id = rs.getInt("material_id");
+
+                Material material = allMaterials.stream().filter(m -> m.getItemId() == material_id)
+                        .findFirst().orElse(null);
+
+                if (material == null) {
+                    material = mapMaterial(rs);
+                    allMaterials.add(material);
+                }
+
+                int length = rs.getInt("length");
+                material.addToPreCutsLengths(length);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,7 +177,6 @@ public class MaterialMapper {
         float costPrice = rs.getFloat("cost_price");
         float salesPrice = rs.getFloat("sales_price");
         String type = rs.getString("material_type");
-        List<Integer> preCutLengths = getPreCutLengths(itemId);
 
         int bucklingCapacity = rs.getInt("buckling_capacity");
         int postGap = rs.getInt("post_gap");
@@ -168,15 +186,15 @@ public class MaterialMapper {
 
         return switch (type) {
             case "Post" ->
-                    new Post(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height, bucklingCapacity);
+                    new Post(itemId, name, description, costPrice, salesPrice, unit, width, height, bucklingCapacity);
             case "Beam" ->
-                    new Beam(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height, postGap);
+                    new Beam(itemId, name, description, costPrice, salesPrice, unit, width, height, postGap);
             case "Rafter" ->
-                    new Rafter(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height);
+                    new Rafter(itemId, name, description, costPrice, salesPrice, unit, width, height);
             case "Fascia" ->
-                    new Fascia(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, height);
+                    new Fascia(itemId, name, description, costPrice, salesPrice, unit, width, height);
             case "RoofCover" ->
-                    new RoofCover(itemId, name, description, costPrice, salesPrice, preCutLengths, unit, width, lengthOverlap, sideOverlap, gapRafters);
+                    new RoofCover(itemId, name, description, costPrice, salesPrice, unit, width, lengthOverlap, sideOverlap, gapRafters);
             default -> throw new DatabaseException("Unknown material type: " + type);
         };
     }

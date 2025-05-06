@@ -3,13 +3,12 @@ package app.entities.products.materials.planks;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.List;
 
 public class Beam extends Plank {
     private int postGap;
 
-    public Beam(int itemId, String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int height, int postGap) {
-        super(itemId, name, description, costPrice, salesPrice, preCutsLengths, unit, width, height);
+    public Beam(int itemId, String name, String description, double costPrice, double salesPrice, String unit, int width, int height, int postGap) {
+        super(itemId, name, description, costPrice, salesPrice, unit, width, height);
         this.postGap = postGap;
     }
 

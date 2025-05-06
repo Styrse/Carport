@@ -3,15 +3,14 @@ package app.entities.products.materials.planks;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.List;
 
 public class Fascia extends Plank {
     private final boolean supportsGutters;
 
     public static int MIN_THICKNESS_FOR_GUTTERS = 22;
 
-    public Fascia(int itemId, String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int height) {
-        super(itemId, name, description, costPrice, salesPrice, preCutsLengths, unit, width, height);
+    public Fascia(int itemId, String name, String description, double costPrice, double salesPrice, String unit, int width, int height) {
+        super(itemId, name, description, costPrice, salesPrice, unit, width, height);
         this.supportsGutters = determineSupportsGutters();
     }
 

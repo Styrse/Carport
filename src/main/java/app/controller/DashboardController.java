@@ -154,29 +154,11 @@ public class DashboardController {
     }
 
     public static void showMaterials(Context ctx) throws DatabaseException {
-        List<Integer> lengths = List.of(240, 270, 300);
-
         List<Post> posts = MaterialService.getAllPosts();
-
-        List<Beam> beams = List.of(
-                new Beam(3, "45x195 rem", "Anvendes til spærunderstøttelse", 35.0, 55.0, lengths, "m", 45, 195, 340),
-                new Beam(4, "45x245 rem", "Ekstra høj rem", 40.0, 62.0, lengths, "m", 45, 245, 295)
-        );
-
-        List<Rafter> rafters = List.of(
-                new Rafter(5, "45x195 spær", "Standard spær", 30.0, 48.0, lengths, "m", 45, 195),
-                new Rafter(6, "45x245 spær", "For højere tag", 34.0, 53.5, lengths, "m", 45, 245)
-        );
-
-        List<Fascia> fascias = List.of(
-                new Fascia(7, "25x150 stern", "Til afslutning", 22.0, 32.0, lengths, "m", 25, 150),
-                new Fascia(8, "25x200 stern", "For større tag", 25.0, 36.0, lengths, "m", 25, 200)
-        );
-
-        List<RoofCover> roofCovers = List.of(
-                new RoofCover(9, "Sort trapezplade", "Plast tag", 70.0, 120.0, lengths, "m", 1000, 150, 10f, 60),
-                new RoofCover(10, "Stålplade", "Robust tagdækning", 80.0, 140.0, lengths, "m", 1000, 100, 8f, 70)
-        );
+        List<Beam> beams = MaterialService.getAllBeams();
+        List<Rafter> rafters = MaterialService.getAllRafters();
+        List<Fascia> fascias = MaterialService.getAllFascias();
+        List<RoofCover> roofCovers = MaterialService.getAllRoofCovers();
 
         float minBuckling = parseFloat(ctx.queryParam("minBuckling"), 0);
         float minGapPost = parseFloat(ctx.queryParam("minGapPost"), 0);

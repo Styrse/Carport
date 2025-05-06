@@ -4,18 +4,19 @@ import app.entities.products.Product;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Material extends Product {
     private int width;
     private String unit;
-    private final List<Integer> preCutsLengths;
+    private List<Integer> preCutsLengths;
 
-    public Material(int itemId, String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width) {
+    public Material(int itemId, String name, String description, double costPrice, double salesPrice, String unit, int width) {
         super(itemId, name, description, costPrice, salesPrice);
-        this.preCutsLengths = preCutsLengths;
-        this.unit = unit;
         this.width = width;
+        this.unit = unit;
+        this.preCutsLengths = new ArrayList<>();
     }
 
     @Override
@@ -41,6 +42,10 @@ public abstract class Material extends Product {
 
     public List<Integer> getPreCutsLengths() {
         return preCutsLengths;
+    }
+
+    public void addToPreCutsLengths(int length) {
+        this.preCutsLengths.add(length);
     }
 
     public abstract void prepareStatement(PreparedStatement ps) throws SQLException;

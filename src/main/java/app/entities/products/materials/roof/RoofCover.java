@@ -5,6 +5,7 @@ import app.entities.products.materials.Material;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoofCover extends Material {
@@ -12,8 +13,8 @@ public class RoofCover extends Material {
     private float sideOverlap;
     private int gapRafters;
 
-    public RoofCover(int itemId, String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width, int lengthOverlap, float sideOverlap, int gapRafters) {
-        super(itemId, name, description, costPrice, salesPrice, preCutsLengths, unit, width);
+    public RoofCover(int itemId, String name, String description, double costPrice, double salesPrice, String unit, int width, int lengthOverlap, float sideOverlap, int gapRafters) {
+        super(itemId, name, description, costPrice, salesPrice, unit, width);
         this.lengthOverlap = lengthOverlap;
         this.sideOverlap = sideOverlap;
         this.gapRafters = gapRafters;
