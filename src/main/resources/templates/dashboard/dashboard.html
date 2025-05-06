@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Johannes Fog Carport</title>
+    <title>Johannes Fog - Carport</title>
     <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
     <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
 </head>
@@ -13,7 +13,86 @@
 </header>
 
 <main>
-    Text
+    <div class="container dashboard-front">
+
+        <!-- Greeting -->
+        <h1>Hej, <span th:text="${staff.firstName}">Bruger</span>!</h1>
+
+        <!-- Section: My Open Orders -->
+        <section>
+            <h2>Mine åbne ordrer</h2>
+            <table class="material-table">
+                <thead>
+                <tr>
+                    <th>Ordre ID</th>
+                    <th>Kunde</th>
+                    <th>Status</th>
+                    <th>Pris</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${myOpenOrders}">
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${order.customer.name}"></td>
+                    <td th:text="${order.orderStatus}"></td>
+                    <td th:text="${order.orderItems.getTotalPrice()} + ' kr.'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section: Unassigned Orders -->
+        <section>
+            <h2>Ufordelte ordrer</h2>
+            <table class="material-table">
+                <thead>
+                <tr>
+                    <th>Ordre ID</th>
+                    <th>Kunde</th>
+                    <th>Status</th>
+                    <th>Pris</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${unassignedOrders}">
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${order.customer.name}"></td>
+                    <td th:text="${order.orderStatus}"></td>
+                    <td th:text="${order.orderItems.getTotalPrice()} + ' kr.'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section: Sales Info -->
+        <section>
+            <h2>Salgsoverblik</h2>
+            <div class="dashboard-stat">
+                <h3>Dine salg denne måned</h3>
+                <p th:text="${salesTotal} + ' kr.'">0 kr.</p>
+            </div>
+        </section>
+
+        <!-- Section: Manager-only -->
+        <section th:if="${isManager}">
+            <h2>Ledelsesoverblik</h2>
+            <div class="manager-cards">
+                <div class="dashboard-stat">
+                    <h3>Ordrer i dag</h3>
+                    <p th:text="${ordersToday}">0</p>
+                </div>
+                <div class="dashboard-stat">
+                    <h3>Aktive medarbejdere</h3>
+                    <p th:text="${activeStaff}">0</p>
+                </div>
+                <div class="dashboard-stat">
+                    <h3>Materialetyper</h3>
+                    <p th:text="${materialsCount}">0</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
 </main>
 
 </body>

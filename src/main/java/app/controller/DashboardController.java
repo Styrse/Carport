@@ -1,5 +1,15 @@
 package app.controller;
 
+import app.entities.orders.Order;
+import app.entities.products.materials.Material;
+import app.entities.products.materials.planks.Beam;
+import app.entities.products.materials.planks.Fascia;
+import app.entities.products.materials.planks.Post;
+import app.entities.products.materials.planks.Rafter;
+import app.entities.products.materials.roof.RoofCover;
+import app.entities.users.Staff;
+import app.entities.users.StaffManager;
+import app.entities.users.User;
 import io.javalin.http.Context;
 
 import java.util.ArrayList;
@@ -9,6 +19,31 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DashboardController {
+
+    public static void login(Context ctx) {
+        ctx.render("dashboard/dashboard-login");
+    }
+
+    public static void dashboard(Context ctx) {
+        //Staff staff = new Staff("Jonas", "Hansen", 22553344, "jonas@fog.dk", "secret", 2);
+        StaffManager staff = new StaffManager("Anna", "Fog", 11223344, "anna@fog.dk", "admin", 3);
+
+        List<Order> myOpenOrders = List.of(); // or create dummy orders
+        List<Order> unassignedOrders = List.of();
+        double salesTotal = 23800.0;
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("staff", staff);
+        model.put("isManager", staff instanceof StaffManager);
+        model.put("myOpenOrders", myOpenOrders);
+        model.put("unassignedOrders", unassignedOrders);
+        model.put("salesTotal", salesTotal);
+        model.put("ordersToday", 8);
+        model.put("activeStaff", 4);
+        model.put("materialsCount", 42);
+
+        ctx.render("dashboard/dashboard.html", model);
+    }
 
     public static void newCarport(Context ctx) {
         ctx.render("dashboard/dashboard-new-carport.html");
@@ -120,8 +155,63 @@ public class DashboardController {
     }
 
     public static void showMaterials(Context ctx) {
+        List<Integer> lengths = List.of(240, 270, 300);
+
+        List<Post> posts = List.of(
+                new Post(1, "97x97 stolpe trykimprægneret", "Til hjørner", 25.0, 42.5, lengths, "m", 97, 300, 250),
+                new Post(2, "90x90 stolpe", "Standard stolpe", 20.0, 38.0, lengths, "m", 90, 270, 200)
+        );
+
+        List<Beam> beams = List.of(
+                new Beam(3, "45x195 rem", "Anvendes til spærunderstøttelse", 35.0, 55.0, lengths, "m", 45, 195, 150),
+                new Beam(4, "45x245 rem", "Ekstra høj rem", 40.0, 62.0, lengths, "m", 45, 245, 180)
+        );
+
+        List<Rafter> rafters = List.of(
+                new Rafter(5, "45x195 spær", "Standard spær", 30.0, 48.0, lengths, "m", 45, 195),
+                new Rafter(6, "45x245 spær", "For højere tag", 34.0, 53.5, lengths, "m", 45, 245)
+        );
+
+        List<Fascia> fascias = List.of(
+                new Fascia(7, "25x150 stern", "Til afslutning", 22.0, 32.0, lengths, "m", 25, 150),
+                new Fascia(8, "25x200 stern", "For større tag", 25.0, 36.0, lengths, "m", 25, 200)
+        );
+
+        List<RoofCover> roofCovers = List.of(
+                new RoofCover(9, "Sort trapezplade", "Plast tag", 70.0, 120.0, lengths, "m", 1000, 150, 10f, 60),
+                new RoofCover(10, "Stålplade", "Robust tagdækning", 80.0, 140.0, lengths, "m", 1000, 100, 8f, 70)
+        );
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("posts", posts);
+        model.put("beams", beams);
+        model.put("rafters", rafters);
+        model.put("fascias", fascias);
+        model.put("roofCovers", roofCovers);
+
+        ctx.render("dashboard/dashboard-materials.html", model);
     }
 
     public static void showProfile(Context ctx) {
+        Staff dummyStaff = new Staff(
+                "John",
+                "Doe",
+                22553344,
+                "johndoe@fog.dk",
+                "securepassword",
+                2
+        );
+
+        ctx.sessionAttribute("currentUser", dummyStaff);
+
+        Staff staff = ctx.sessionAttribute("currentUser");
+        Map<String, Object> model = new HashMap<>();
+        model.put("staff", staff);
+
+        ctx.render("dashboard/dashboard-profile.html", model);
+    }
+
+    public static void logout(Context ctx) {
+        ctx.render("dashboard/dashboard-login.html");
     }
 }

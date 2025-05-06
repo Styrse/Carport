@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Johannes Fog Materials</title>
+    <title>Johannes Fog - Materialer</title>
     <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
     <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
 </head>
@@ -13,7 +13,100 @@
 </header>
 
 <main>
-    Text
+    <div class="container">
+        <h1>Materialeoversigt</h1>
+
+        <section>
+            <h2>Stolper</h2>
+            <table class="material-table">
+                <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>Salgspris (kr./m)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material : ${posts}">
+                    <td th:text="${material.name}"></td>
+                    <td th:text="${material.salesPrice} + ' kr.'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Remme</h2>
+            <table class="material-table">
+            <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>Salgspris (kr./m)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material : ${beams}">
+                    <td th:text="${material.name}"></td>
+                    <td th:text="${material.salesPrice} + ' kr.'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Spær</h2>
+            <table class="material-table">
+                <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>Salgspris (kr./m)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material : ${rafters}">
+                    <td th:text="${material.name}"></td>
+                    <td th:text="${material.salesPrice} + ' kr.'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Sternbræt</h2>
+            <table class="material-table">
+                <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>Salgspris (kr./m)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material : ${fascias}">
+                    <td th:text="${material.name}"></td>
+                    <td th:text="${material.salesPrice} + ' kr.'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Tagbeklædning</h2>
+            <table class="material-table">
+                <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>Salgspris (kr./m)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material : ${roofCovers}">
+                    <td th:text="${material.name}"></td>
+                    <td th:text="${material.salesPrice} + ' kr.'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
 </main>
 
 </body>

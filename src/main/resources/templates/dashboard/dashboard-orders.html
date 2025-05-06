@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Johannes Fog Ordre</title>
+    <title>Johannes Fog - Ordrer</title>
     <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
     <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
 </head>
@@ -18,7 +18,7 @@
             <div class="filter-group">
                 <form method="get" action="/dashboard/orders">
                     <label for="status">Status:</label>
-                    <select name="status" id="status" class="filter-select">
+                    <select name="status" id="status" class="filter-select" onchange="this.form.submit()">
                         <option value="Alle" th:selected="${selectedStatus == 'Alle'}">Alle</option>
                         <option value="Forespørgsel" th:selected="${selectedStatus == 'Forespørgsel'}">Forespørgsel</option>
                         <option value="Betalt" th:selected="${selectedStatus == 'Betalt'}">Betalt</option>
@@ -26,7 +26,6 @@
                         <option value="Leveret" th:selected="${selectedStatus == 'Leveret'}">Leveret</option>
                         <option value="Annuleret" th:selected="${selectedStatus == 'Annuleret'}">Annuleret</option>
                     </select>
-                    <button type="submit" class="filter-button">Filtrér</button>
                 </form>
             </div>
         </div>

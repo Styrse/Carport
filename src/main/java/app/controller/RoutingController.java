@@ -9,11 +9,13 @@ public class RoutingController {
 
 
         //Dashboard routing
-        app.get("/dashboard/", ctx -> ctx.render("dashboard/dashboard.html"));
+        app.get("/dashboard/login", DashboardController::login);
+        app.get("/dashboard/", DashboardController::dashboard);
         app.get("/dashboard/new-carport", DashboardController::newCarport);
         app.get("/dashboard/orders", DashboardController::showOrders);
         app.get("/dashboard/customers", DashboardController::showCustomers);
         app.get("/dashboard/materials", DashboardController::showMaterials);
         app.get("/dashboard/profile", DashboardController::showProfile);
+        app.get("/dashboard/logout", DashboardController::logout);
     }
 }
