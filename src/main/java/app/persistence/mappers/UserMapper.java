@@ -93,16 +93,16 @@ public class UserMapper {
     }
 
     //Read: verify user login
+    //TODO: hashed pw
     public static boolean verifyUser(String email, String password) throws DatabaseException {
         String sql = "SELECT 1 FROM users WHERE email = ? AND password = ?";
-
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, email);
             ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
-                return rs.next(); // true if a row exists
+                return rs.next();
             }
         } catch (SQLException e) {
             throw new DatabaseException(e, "Error verifying user credentials");

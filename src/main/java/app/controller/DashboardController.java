@@ -24,26 +24,45 @@ import java.util.stream.Collectors;
 public class DashboardController {
 
     public static void login(Context ctx) {
-        ctx.render("dashboard/dashboard-login");
+        ctx.render("dashboard/dashboard-login.html");
+    }
+
+    public static void handleLogin(Context ctx) {
+        String email = ctx.formParam("email");
+        String password = ctx.formParam("password");
+
+        try {
+            boolean valid = UserMapper.verifyUser(email, password);
+            if (!valid) {
+                ctx.attribute("loginError", "Forkert email eller adgangskode");
+                ctx.render("dashboard/dashboard-login.html");
+                return;
+            }
+
+            User user = UserMapper.getUserByEmail(email);
+
+            if (!(user instanceof Staff staff)) {
+                ctx.render("index.html");
+                return;
+            }
+
+            boolean isManager = staff instanceof StaffManager;
+
+            ctx.sessionAttribute("currentUser", staff);
+            ctx.sessionAttribute("isManager", isManager);
+
+            ctx.redirect("/dashboard");
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            ctx.status(500).result("Loginfejl – prøv igen senere.");
+        }
     }
 
     public static void dashboard(Context ctx) {
-        //Staff staff = new Staff("Jonas", "Hansen", 22553344, "jonas@fog.dk", "secret", 2);
-        StaffManager staff = new StaffManager("Anna", "Fog", "11223344", "anna@fog.dk", "admin", 3);
-
-        List<Order> myOpenOrders = List.of(); // or create dummy orders
-        List<Order> unassignedOrders = List.of();
-        double salesTotal = 23800.0;
+        Staff staff = ctx.sessionAttribute("currentUser");
 
         Map<String, Object> model = new HashMap<>();
         model.put("staff", staff);
-        model.put("isManager", staff instanceof StaffManager);
-        model.put("myOpenOrders", myOpenOrders);
-        model.put("unassignedOrders", unassignedOrders);
-        model.put("salesTotal", salesTotal);
-        model.put("ordersToday", 8);
-        model.put("activeStaff", 4);
-        model.put("materialsCount", 42);
 
         ctx.render("dashboard/dashboard.html", model);
     }
@@ -113,8 +132,8 @@ public class DashboardController {
         model.put("orders", filteredOrders);
         model.put("selectedStatus", statusFilter);
         ctx.render("dashboard/dashboard-orders.html", model);
-        //TODO: Add search box. Fix routing for "Se" and "Slet" buttons
     }
+    //TODO: Add search box. Fix routing for "Se" and "Slet" buttons
 
     public static void showCustomers(Context ctx) {
         try {
@@ -160,11 +179,10 @@ public class DashboardController {
                 .filter(r -> r.getGapRafters() >= minGapRafter)
                 .toList();
 
-        Map<String, Object> model = new HashMap<>();
-        //Staff staff = new Staff("Jonas", "Hansen", 22553344, "jonas@fog.dk", "secret", 2);
-        StaffManager staff = new StaffManager("Anna", "Fog", "11223344", "anna@fog.dk", "admin", 3);
+        Staff staff = ctx.sessionAttribute("currentUser");
         boolean isManager = staff instanceof StaffManager;
 
+        Map<String, Object> model = new HashMap<>();
         model.put("isManager", isManager);
 
         model.put("posts", filteredPosts);
@@ -178,15 +196,6 @@ public class DashboardController {
         model.put("minGapRafter", ctx.queryParam("minGapRafter"));
 
         ctx.render("dashboard/dashboard-materials.html", model);
-    }
-
-    private static float parseFloat(String input, float fallback) {
-        if (input == null || input.isBlank()) return fallback;
-        try {
-            return Float.parseFloat(input);
-        } catch (NumberFormatException e) {
-            return fallback;
-        }
     }
 
     public static void showProfile(Context ctx) {
@@ -234,7 +243,6 @@ public class DashboardController {
         }
     }
 
-    // Controller
     public static void editMaterial(Context ctx) {
         int itemId = Integer.parseInt(ctx.queryParam("id"));
 
@@ -256,6 +264,7 @@ public class DashboardController {
         material.setItemId(Integer.parseInt(ctx.formParam("materialId")));
 
         MaterialMapper.updateMaterial(material);
+        MaterialService.refreshMaterials();
         ctx.redirect("/dashboard/materials");
     }
 
@@ -263,5 +272,14 @@ public class DashboardController {
             int itemId = Integer.parseInt(ctx.formParam("materialId"));
             MaterialMapper.deleteMaterialById(itemId);
             ctx.redirect("/dashboard/materials");
+    }
+
+    private static float parseFloat(String input, float fallback) {
+        if (input == null || input.isBlank()) return fallback;
+        try {
+            return Float.parseFloat(input);
+        } catch (NumberFormatException e) {
+            return fallback;
+        }
     }
 }

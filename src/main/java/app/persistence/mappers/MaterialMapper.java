@@ -147,6 +147,9 @@ public class MaterialMapper {
                 "material_type = ?, buckling_capacity = ?, post_gap = ?, length_overlap = ?, side_overlap = ?, " +
                 "gap_rafters = ? WHERE material_id = ?";
 
+        String closePreviousPriceSql = "UPDATE price_history SET valid_to = CURRENT_DATE " +
+                "WHERE material_id = ? AND valid_to IS NULL";
+
         String insertPriceSql = "INSERT INTO price_history (material_id, cost_price, sales_price, valid_from) " +
                 "VALUES (?, ?, ?, CURRENT_DATE)";
 
@@ -157,19 +160,27 @@ public class MaterialMapper {
             connection.setAutoCommit(false);
             try (
                     PreparedStatement updateStmt = connection.prepareStatement(updateMaterialSql);
+                    PreparedStatement closePriceStmt = connection.prepareStatement(closePreviousPriceSql);
                     PreparedStatement insertPriceStmt = connection.prepareStatement(insertPriceSql);
                     PreparedStatement deleteLengthsStmt = connection.prepareStatement(deleteLengthsSql);
                     PreparedStatement insertLengthStmt = connection.prepareStatement(insertLengthSql)
             ) {
+                //Update material fields
                 material.prepareStatement(updateStmt);
                 updateStmt.setInt(12, material.getItemId());
                 updateStmt.executeUpdate();
 
+                //Close old price entry
+                closePriceStmt.setInt(1, material.getItemId());
+                closePriceStmt.executeUpdate();
+
+                //Insert new price entry
                 insertPriceStmt.setInt(1, material.getItemId());
                 insertPriceStmt.setBigDecimal(2, BigDecimal.valueOf(material.getCostPrice()));
                 insertPriceStmt.setBigDecimal(3, BigDecimal.valueOf(material.getSalesPrice()));
                 insertPriceStmt.executeUpdate();
 
+                //Update predefined lengths
                 deleteLengthsStmt.setInt(1, material.getItemId());
                 deleteLengthsStmt.executeUpdate();
 
@@ -190,7 +201,6 @@ public class MaterialMapper {
             }
         }
     }
-
 
     //Delete: Soft delete. Changes is_active to false so materials still can be found for a Carport
     public static void deleteMaterialById(int itemId) throws SQLException, DatabaseException {

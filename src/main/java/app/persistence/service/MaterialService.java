@@ -88,6 +88,6 @@ public class MaterialService {
     }
 
     public static float parseOrDefault(String value, int defaultValue) {
-        return (value == null || value.isBlank()) ? defaultValue : Integer.parseInt(value);
+        return (value == null || value.isBlank()) ? defaultValue : Float.parseFloat(value);
     }
 }
