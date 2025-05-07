@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tilføj materiale</title>
+  <title>Fog - Tilføj materiale</title>
+  <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
   <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
   <style>
     .hidden { display: none; }
@@ -46,39 +47,39 @@
     <input type="text" name="unit" id="unit" placeholder="m, pakke osv." required>
 
     <label for="width">Bredde (cm):</label>
-    <input type="number" name="width" id="width" placeholder="25" required>
+    <input type="number" name="width" id="width" placeholder="25 cm" required>
 
     <!-- All except RoofCover -->
     <div data-type="nonRoof" class="type-specific hidden">
       <label for="height">Højde (cm):</label>
-      <input type="number" id="height" placeholder="25" name="height">
+      <input type="number" id="height" placeholder="25 cm" name="height">
     </div>
 
     <label for="preCuts">Forhåndsskårne længder (Kommasepareret, fx 240,270,300):</label>
-    <input type="text" name="preCuts" id="preCuts" placeholder="Kommasepareret, fx 240,270,300" required>
+    <input type="text" name="preCuts" id="preCuts" placeholder="Kommasepareret, fx 240,270,300 cm" required>
 
     <!-- RoofCover only -->
     <div data-type="roofCover" class="type-specific hidden">
       <label for="overlapLength">Overlap længde (cm):</label>
-      <input type="number" id="overlapLength" placeholder="20" name="overlapLength">
+      <input type="number" id="overlapLength" placeholder="20 cm" name="overlapLength">
 
       <label for="overlapWidth">Overlap bredde (cm):</label>
-      <input type="number" id="overlapWidth" placeholder="10" name="overlapWidth">
+      <input type="number" id="overlapWidth" placeholder="10 cm" name="overlapWidth">
 
       <label for="gapRafters">Max mellemrum spær (cm):</label>
-      <input type="number" id="gapRafters" placeholder="55" name="gapRafters">
+      <input type="number" id="gapRafters" placeholder="55 cm" name="gapRafters">
     </div>
 
     <!-- Post only -->
     <div data-type="post" class="type-specific hidden">
       <label for="bucklingCapacity">Knækstyrke (M²):</label>
-      <input type="number" step="0.01" id="bucklingCapacity" placeholder="5" name="bucklingCapacity">
+      <input type="number" step="0.01" id="bucklingCapacity" placeholder="5 cm" name="bucklingCapacity">
     </div>
 
     <!-- Beam only -->
     <div data-type="beam" class="type-specific hidden">
       <label for="postGap">Mellemrum stolper (cm):</label>
-      <input type="number" id="postGap" placeholder="340" name="postGap">
+      <input type="number" id="postGap" placeholder="340 cm" name="postGap">
     </div>
 
     <button type="submit" class="see-line-button">Opret materiale</button>
