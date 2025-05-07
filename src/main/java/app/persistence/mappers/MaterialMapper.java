@@ -44,7 +44,7 @@ public class MaterialMapper {
                     material.setItemId(materialId);
 
                     //Insert predefined lengths
-                    for (Integer rawLength : material.getPreCutsLengths()) {
+                    for (Integer rawLength : material.getPreCutLengths()) {
                         int lengthId = getOrCreatePredefinedLengthId(connection, rawLength);
                         insertLengthStmt.setInt(1, materialId);
                         insertLengthStmt.setInt(2, lengthId);
@@ -87,7 +87,9 @@ public class MaterialMapper {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return mapMaterial(rs);
+                    Material material = mapMaterial(rs);
+                    material.setPreCutsLengths(MaterialMapper.getPreCutLengths(connection, itemId));
+                    return material;
                 } else {
                     throw new DatabaseException("Material not found with id: " + itemId);
                 }
@@ -140,22 +142,55 @@ public class MaterialMapper {
     }
 
     //Update
-    public static void updateMaterial(Connection connection, Material material) throws DatabaseException {
-        String sql = "UPDATE materials SET name = ?, description = ?, unit = ?, width = ?, height = ?," +
-                "material_type = ?, buckling_capacity = ?, post_gap = ?, length_overlap = ?," +
-                "side_overlap = ?, gap_rafters = ? WHERE material_id = ?";
+    public static void updateMaterial(Material material) throws SQLException, DatabaseException {
+        String updateMaterialSql = "UPDATE materials SET name = ?, description = ?, unit = ?, width = ?, height = ?, " +
+                "material_type = ?, buckling_capacity = ?, post_gap = ?, length_overlap = ?, side_overlap = ?, " +
+                "gap_rafters = ? WHERE material_id = ?";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        String insertPriceSql = "INSERT INTO price_history (material_id, cost_price, sales_price, valid_from) " +
+                "VALUES (?, ?, ?, CURRENT_DATE)";
 
-            material.prepareStatement(ps);
+        String deleteLengthsSql = "DELETE FROM material_lengths WHERE material_id = ?";
+        String insertLengthSql = "INSERT INTO material_lengths (material_id, predefined_length_id) VALUES (?, ?)";
 
-            ps.setInt(12, material.getItemId());
+        try (Connection connection = connectionPool.getConnection()) {
+            connection.setAutoCommit(false);
+            try (
+                    PreparedStatement updateStmt = connection.prepareStatement(updateMaterialSql);
+                    PreparedStatement insertPriceStmt = connection.prepareStatement(insertPriceSql);
+                    PreparedStatement deleteLengthsStmt = connection.prepareStatement(deleteLengthsSql);
+                    PreparedStatement insertLengthStmt = connection.prepareStatement(insertLengthSql)
+            ) {
+                material.prepareStatement(updateStmt);
+                updateStmt.setInt(12, material.getItemId());
+                updateStmt.executeUpdate();
 
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new DatabaseException(e, "Error updating material");
+                insertPriceStmt.setInt(1, material.getItemId());
+                insertPriceStmt.setBigDecimal(2, BigDecimal.valueOf(material.getCostPrice()));
+                insertPriceStmt.setBigDecimal(3, BigDecimal.valueOf(material.getSalesPrice()));
+                insertPriceStmt.executeUpdate();
+
+                deleteLengthsStmt.setInt(1, material.getItemId());
+                deleteLengthsStmt.executeUpdate();
+
+                for (int length : material.getPreCutLengths()) {
+                    int lengthId = getOrCreatePredefinedLengthId(connection, length);
+                    insertLengthStmt.setInt(1, material.getItemId());
+                    insertLengthStmt.setInt(2, lengthId);
+                    insertLengthStmt.addBatch();
+                }
+                insertLengthStmt.executeBatch();
+
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new DatabaseException(e, "Error updating material and related data");
+            } finally {
+                connection.setAutoCommit(true);
+            }
         }
     }
+
 
     //Delete: Soft delete. Changes is_active to false so materials still can be found for a Carport
     public static void deleteMaterialById(int itemId) throws SQLException, DatabaseException {
@@ -199,6 +234,22 @@ public class MaterialMapper {
         throw new SQLException("Failed to insert or retrieve predefined length ID for length: " + length);
     }
 
+    private static List<Integer> getPreCutLengths(Connection connection, int itemId) throws SQLException {
+        String sql = "SELECT pl.length FROM material_lengths ml JOIN predefined_lengths pl " +
+                "ON ml.predefined_length_id = pl.predefined_length_id WHERE ml.material_id = ?";
+
+        List<Integer> lengths = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, itemId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lengths.add(rs.getInt("length"));
+                }
+            }
+        }
+        return lengths;
+    }
+
     public static Material mapMaterial(ResultSet rs) throws SQLException, DatabaseException {
         int itemId = rs.getInt("material_id");
         String name = rs.getString("name");
@@ -219,12 +270,9 @@ public class MaterialMapper {
         return switch (type) {
             case "Post" ->
                     new Post(itemId, name, description, costPrice, salesPrice, unit, width, height, bucklingCapacity);
-            case "Beam" ->
-                    new Beam(itemId, name, description, costPrice, salesPrice, unit, width, height, postGap);
-            case "Rafter" ->
-                    new Rafter(itemId, name, description, costPrice, salesPrice, unit, width, height);
-            case "Fascia" ->
-                    new Fascia(itemId, name, description, costPrice, salesPrice, unit, width, height);
+            case "Beam" -> new Beam(itemId, name, description, costPrice, salesPrice, unit, width, height, postGap);
+            case "Rafter" -> new Rafter(itemId, name, description, costPrice, salesPrice, unit, width, height);
+            case "Fascia" -> new Fascia(itemId, name, description, costPrice, salesPrice, unit, width, height);
             case "RoofCover" ->
                     new RoofCover(itemId, name, description, costPrice, salesPrice, unit, width, lengthOverlap, sideOverlap, gapRafters);
             default -> throw new DatabaseException("Unknown material type: " + type);

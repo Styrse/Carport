@@ -28,7 +28,7 @@ public class TestPlankFactory {
                 25,
                 5
         );
-        post.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        post.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return post;
     }
 
@@ -44,7 +44,7 @@ public class TestPlankFactory {
                 25,
                 340
         );
-        beam.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        beam.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return beam;
     }
 
@@ -60,7 +60,7 @@ public class TestPlankFactory {
                 25,
                 240
         );
-        beam.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        beam.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return beam;
     }
 
@@ -76,7 +76,7 @@ public class TestPlankFactory {
                 25,
                 400
         );
-        beam.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        beam.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return beam;
     }
 
@@ -91,7 +91,7 @@ public class TestPlankFactory {
                 25,
                 25
         );
-        rafter.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        rafter.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return rafter;
     }
 
@@ -106,7 +106,7 @@ public class TestPlankFactory {
                 25,
                 25
         );
-        rafter.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        rafter.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return rafter;
     }
 
@@ -121,7 +121,7 @@ public class TestPlankFactory {
                 25,
                 25
         );
-        rafter.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        rafter.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return rafter;
     }
 
@@ -136,7 +136,7 @@ public class TestPlankFactory {
                 25,
                 25
         );
-        fascia.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        fascia.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return fascia;
     }
 }

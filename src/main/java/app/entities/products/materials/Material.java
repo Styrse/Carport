@@ -47,13 +47,22 @@ public abstract class Material extends Product {
         this.unit = unit;
     }
 
-    public List<Integer> getPreCutsLengths() {
+    public List<Integer> getPreCutLengths() {
         return preCutsLengths;
     }
 
     public void addToPreCutsLengths(int length) {
         this.preCutsLengths.add(length);
     }
+
+    public void setPreCutsLengths(List<Integer> preCutsLengths) {
+        this.preCutsLengths = preCutsLengths;
+    }
+
+    public String getType() {
+        return this.getClass().getSimpleName();
+    }
+
 
     public abstract void prepareStatement(PreparedStatement ps) throws SQLException;
 }

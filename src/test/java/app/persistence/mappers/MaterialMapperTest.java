@@ -131,7 +131,7 @@ class MaterialMapperTest {
         //Arrange
 
         //Act
-        int actual = MaterialMapper.getMaterialById(1).getWidth();
+        float actual = MaterialMapper.getMaterialById(1).getWidth();
 
         //Assert
         int expected = 10;
@@ -145,7 +145,7 @@ class MaterialMapperTest {
         Material material = TestPlankFactory.createStandardPost();
 
         //Act
-        MaterialMapper.updateMaterial(connectionPool.getConnection(), material);
+        MaterialMapper.updateMaterial(material);
         Material actual = MaterialMapper.getMaterialById(1);
 
         //Assert

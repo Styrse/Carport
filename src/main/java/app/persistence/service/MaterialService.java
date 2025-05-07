@@ -58,7 +58,7 @@ public class MaterialService {
         return materialService().stream().filter(RoofCover.class::isInstance).map(RoofCover.class::cast).toList();
     }
 
-    public static Material createMaterial(Context ctx) {
+    public static Material extractMaterialFromForm(Context ctx) {
         String type = ctx.formParam("type");
         String name = ctx.formParam("name");
         String description = ctx.formParam("description");

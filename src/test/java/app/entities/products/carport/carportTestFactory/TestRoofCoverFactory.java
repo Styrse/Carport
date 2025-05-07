@@ -2,12 +2,7 @@ package app.entities.products.carport.carportTestFactory;
 
 import app.entities.products.materials.roof.RoofCover;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static app.entities.products.carport.carportTestFactory.TestPlankFactory.PRE_CUT_LENGTHS;
-import static app.entities.products.carport.carportTestFactory.TestPlankFactory.SHORT_PRE_CUTS_LENGTHS;
 
 /**
  * TestRoofCoverFactory
@@ -34,7 +29,7 @@ public class TestRoofCoverFactory {
                 10,
                 55
         );
-        roofCover.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        roofCover.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return roofCover;
     }
 
@@ -51,7 +46,7 @@ public class TestRoofCoverFactory {
                 10,
                 55
         );
-        roofCover.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        roofCover.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return roofCover;
     }
 
@@ -68,7 +63,7 @@ public class TestRoofCoverFactory {
                 5,
                 55
         );
-        roofCover.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        roofCover.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return roofCover;
     }
 
@@ -85,7 +80,7 @@ public class TestRoofCoverFactory {
                 10,
                 55
         );
-        roofCover.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        roofCover.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return roofCover;
     }
 
@@ -102,7 +97,7 @@ public class TestRoofCoverFactory {
                 10,
                 55
         );
-        roofCover.getPreCutsLengths().addAll(PRE_CUT_LENGTHS);
+        roofCover.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
         return roofCover;
     }
 }

@@ -53,7 +53,7 @@
                         <td th:text="${material.bucklingCapacity} + ' M²'"></td>
                         <td th:text="${material.salesPrice} + ' kr.'"></td>
                         <td th:if="${isManager}">
-                            <form action="/materials/edit" method="get">
+                            <form action="/dashboard/edit-material" method="get">
                                 <input type="hidden" name="id" th:value="${material.itemId}">
                                 <button type="submit" class="default-button">Rediger</button>
                             </form>
@@ -91,7 +91,7 @@
                         <td th:text="${material.postGap}"></td>
                         <td th:text="${material.salesPrice} + ' kr.'"></td>
                         <td th:if="${isManager}">
-                            <form action="/materials/edit" method="get">
+                            <form action="/dashboard/edit-material" method="get">
                                 <input type="hidden" name="id" th:value="${material.itemId}">
                                 <button type="submit" class="default-button">Rediger</button>
                             </form>
@@ -121,7 +121,7 @@
                         <td th:text="${material.name}"></td>
                         <td th:text="${material.salesPrice} + ' kr.'"></td>
                         <td th:if="${isManager}">
-                            <form action="/materials/edit" method="get">
+                            <form action="/dashboard/edit-material" method="get">
                                 <input type="hidden" name="id" th:value="${material.itemId}">
                                 <button type="submit" class="default-button">Rediger</button>
                             </form>
@@ -148,7 +148,7 @@
                         <td th:text="${material.name}"></td>
                         <td th:text="${material.salesPrice} + ' kr.'"></td>
                         <td th:if="${isManager}">
-                            <form action="/materials/edit" method="get">
+                            <form action="/dashboard/edit-material" method="get">
                                 <input type="hidden" name="id" th:value="${material.itemId}">
                                 <button type="submit" class="default-button">Rediger</button>
                             </form>
@@ -183,7 +183,7 @@
                         <td th:text="${material.gapRafters}"></td>
                         <td th:text="${material.salesPrice} + ' kr.'"></td>
                         <td th:if="${isManager}">
-                            <form action="/materials/edit" method="get">
+                            <form action="/dashboard/edit-material" method="get">
                                 <input type="hidden" name="id" th:value="${material.itemId}">
                                 <button type="submit" class="default-button">Rediger</button>
                             </form>

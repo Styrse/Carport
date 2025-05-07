@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Rediger materiale</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+    <style>
+        .hidden { display: none; }
+        .carport-form { max-width: 600px; margin: 40px auto; display: grid; gap: 14px; }
+        .carport-form label { font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="container">
+        <form class="carport-form" action="/dashboard/update" method="post">
+            <h1>Rediger materiale</h1>
+
+            <input type="hidden" name="materialId" th:value="${material.itemId}"/>
+
+            <label for="type">Materialetype</label>
+            <input type="text" id="type" name="type" th:value="${material.type}" readonly>
+
+            <label for="name">Navn</label>
+            <input type="text" id="name" name="name" th:value="${material.name}" required>
+
+            <label for="description">Beskrivelse</label>
+            <input type="text" id="description" name="description" th:value="${material.description}" required>
+
+            <label for="costPrice">Indkøbspris (kr./m)</label>
+            <input type="number" step="0.01" id="costPrice" name="costPrice" th:value="${material.costPrice}" required>
+
+            <label for="salesPrice">Salgspris (kr./m)</label>
+            <input type="number" step="0.01" id="salesPrice" name="salesPrice" th:value="${material.salesPrice}" required>
+
+            <label for="unit">Enhed</label>
+            <input type="text" id="unit" name="unit" th:value="${material.unit}" required>
+
+            <label for="width">Bredde (cm)</label>
+            <input type="number" step="0.1" id="width" name="width" th:value="${material.width}" required>
+
+            <label for="height">Højde (cm)</label>
+            <input type="number" id="height" name="height" th:value="${material.height}">
+
+            <label for="preCuts">Forhåndsskårne længder</label>
+            <input type="text" id="preCuts" name="preCuts"
+                   th:value="${#strings.listJoin(material.preCutLengths, ',')}"
+                   placeholder="fx 240,270,300">
+
+            <!-- Conditionally shown fields -->
+            <div th:if="${material.type == 'RoofCover'}">
+                <label for="overlapLength">Overlap længde (cm)</label>
+                <input type="number" id="overlapLength" name="overlapLength" th:value="${material.overlapLength}">
+
+                <label for="overlapWidth">Overlap bredde (cm)</label>
+                <input type="number" id="overlapWidth" name="overlapWidth" th:value="${material.overlapWidth}">
+
+                <label for="gapRafters">Maks mellemrum spær (cm)</label>
+                <input type="number" id="gapRafters" name="gapRafters" th:value="${material.gapRafters}">
+            </div>
+
+            <div th:if="${material.type == 'Post'}">
+                <label for="bucklingCapacity">Knækstyrke (M²)</label>
+                <input type="number" step="0.01" id="bucklingCapacity" name="bucklingCapacity"
+                       th:value="${material.bucklingCapacity}">
+            </div>
+
+            <div th:if="${material.type == 'Beam'}">
+                <label for="postGap">Mellemrum stolper (cm)</label>
+                <input type="number" id="postGap" name="postGap" th:value="${material.postGap}">
+            </div>
+
+            <button type="submit">Gem ændringer</button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

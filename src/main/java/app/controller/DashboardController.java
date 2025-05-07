@@ -14,11 +14,9 @@ import app.persistence.mappers.MaterialMapper;
 import app.persistence.service.MaterialService;
 import io.javalin.http.Context;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class DashboardController {
 
@@ -156,6 +154,8 @@ public class DashboardController {
     }
 
     public static void showMaterials(Context ctx) throws DatabaseException {
+        MaterialService.refreshMaterials();
+        
         List<Post> posts = MaterialService.getAllPosts();
         List<Beam> beams = MaterialService.getAllBeams();
         List<Rafter> rafters = MaterialService.getAllRafters();
@@ -235,7 +235,7 @@ public class DashboardController {
     }
 
     public static void createMaterial(Context ctx) {
-        Material material = MaterialService.createMaterial(ctx);
+        Material material = MaterialService.extractMaterialFromForm(ctx);
 
         if (material == null) {
             ctx.status(400).result("Invalid input: could not create material.");
@@ -250,5 +250,30 @@ public class DashboardController {
             e.printStackTrace();
             ctx.status(500).result("Server error while saving material.");
         }
+    }
+
+    // Controller
+    public static void editMaterial(Context ctx) {
+        int itemId = Integer.parseInt(ctx.queryParam("id"));
+
+        try {
+            Material material = MaterialMapper.getMaterialById(itemId);
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("material", material);
+
+            ctx.render("dashboard/dashboard-edit-material.html", model);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(404).result("Materiale ikke fundet");
+        }
+    }
+
+    public static void updateMaterial(Context ctx) throws SQLException, DatabaseException {
+        Material material = MaterialService.extractMaterialFromForm(ctx);
+        material.setItemId(Integer.parseInt(ctx.formParam("materialId")));
+
+        MaterialMapper.updateMaterial(material);
+        ctx.redirect("/dashboard/materials");
     }
 }
