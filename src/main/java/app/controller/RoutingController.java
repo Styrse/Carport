@@ -34,5 +34,6 @@ public class RoutingController {
         app.post("/dashboard/materials/create", DashboardController::createMaterial);
         app.post("/dashboard/update", DashboardController::updateMaterial);
         app.post("/dashboard/materials/delete", DashboardController::deleteMaterial);
+        app.post("/dashboard/profile/update", DashboardController::updateUserProfile);
     }
 }

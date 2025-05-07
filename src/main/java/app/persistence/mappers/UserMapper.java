@@ -94,7 +94,6 @@ public class UserMapper {
     //Read: verify user login
     //TODO: hashed pw
     public static boolean verifyUser(String email, String password) throws DatabaseException {
-        String sql = "SELECT 1 FROM users WHERE email = ? AND password = ?";
         String sql = "SELECT password FROM users WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();

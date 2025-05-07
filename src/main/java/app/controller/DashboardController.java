@@ -218,8 +218,11 @@ public class DashboardController {
     }
 
     public static void logout(Context ctx) {
-        ctx.render("dashboard/dashboard-login.html");
+        //Destroys the session and removes all attributes
+        ctx.req().getSession().invalidate();
+        ctx.redirect("/login");
     }
+
 
     public static void newMaterial(Context ctx) {
         ctx.render("dashboard/dashboard-new-material.html");
