@@ -2043,9 +2043,6 @@ class BillOfMaterialTest {
 
         //Act
         int actual = carport.getBillOfMaterial().getLines().size();
-        for (BillOfMaterialsItem item : carport.getBillOfMaterial().getLines()) {
-            System.out.println(item);
-        }
 
         //Assert
         int expected = 5;

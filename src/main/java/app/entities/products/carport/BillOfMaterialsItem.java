@@ -1,10 +1,8 @@
 package app.entities.products.carport;
 
-import app.entities.products.materials.Material;
-
 public class BillOfMaterialsItem {
     private final String name;
-    private int length;
+    private final int length;
     private final int quantity;
     private final String unit;
     private final String description;
@@ -53,6 +51,4 @@ public class BillOfMaterialsItem {
                 ", description='" + description + '\'' +
                 '}';
     }
-
-
 }

@@ -4,18 +4,26 @@ import app.entities.products.Product;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Material extends Product {
-    private int width;
+    private float width;
     private String unit;
-    private final List<Integer> preCutsLengths;
+    private List<Integer> preCutsLengths;
 
-    public Material(int itemId, String name, String description, double costPrice, double salesPrice, List<Integer> preCutsLengths, String unit, int width) {
-        super(itemId, name, description, costPrice, salesPrice);
-        this.preCutsLengths = preCutsLengths;
-        this.unit = unit;
+    public Material(String name, String description, double costPrice, double salesPrice, float width, String unit, List<Integer> preCutsLengths) {
+        super(name, description, costPrice, salesPrice);
         this.width = width;
+        this.unit = unit;
+        this.preCutsLengths = preCutsLengths;
+    }
+
+    public Material(int itemId, String name, String description, double costPrice, double salesPrice, String unit, float width) {
+        super(itemId, name, description, costPrice, salesPrice);
+        this.width = width;
+        this.unit = unit;
+        this.preCutsLengths = new ArrayList<>();
     }
 
     @Override
@@ -23,11 +31,11 @@ public abstract class Material extends Product {
         return "material";
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         this.width = width;
     }
 
@@ -39,9 +47,22 @@ public abstract class Material extends Product {
         this.unit = unit;
     }
 
-    public List<Integer> getPreCutsLengths() {
+    public List<Integer> getPreCutLengths() {
         return preCutsLengths;
     }
+
+    public void addToPreCutsLengths(int length) {
+        this.preCutsLengths.add(length);
+    }
+
+    public void setPreCutsLengths(List<Integer> preCutsLengths) {
+        this.preCutsLengths = preCutsLengths;
+    }
+
+    public String getType() {
+        return this.getClass().getSimpleName();
+    }
+
 
     public abstract void prepareStatement(PreparedStatement ps) throws SQLException;
 }

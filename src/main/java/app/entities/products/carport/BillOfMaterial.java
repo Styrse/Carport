@@ -47,11 +47,11 @@ public class BillOfMaterial {
         result.add(new BillOfMaterialsItem(
                 material.getName(),
                 //Todo: Calculate the needed post height. Remember to check how deep they go and think of the slope even for a flat roof
-                Collections.max(material.getPreCutsLengths()),
+                Collections.max(material.getPreCutLengths()),
                 posts,
                 material.getUnit(),
                 material.getDescription(),
-                material.getSalesPrice() * Collections.max(material.getPreCutsLengths())
+                material.getSalesPrice() * Collections.max(material.getPreCutLengths())
         ));
         return result;
     }
@@ -62,7 +62,7 @@ public class BillOfMaterial {
 
         float distanceBetweenPosts = (float) (carport.getLength() - OVERHANG) / calcPostsNeededLength();
 
-        int maxPostPrBeam = (int) Math.floor(Collections.max(material.getPreCutsLengths()) / distanceBetweenPosts);
+        int maxPostPrBeam = (int) Math.floor(Collections.max(material.getPreCutLengths()) / distanceBetweenPosts);
 
         int normalBestFit = bestFitLength(material, maxPostPrBeam * distanceBetweenPosts);
         int endBestFit = bestFitLength(material, carport.getLength() - ((maxPostPrBeam * distanceBetweenPosts) * (maxPostPrBeam - 1)));
@@ -114,8 +114,8 @@ public class BillOfMaterial {
         List<BillOfMaterialsItem> fasciaList = new ArrayList<>();
         Material material = carport.getMaterial().get(MaterialRole.FASCIA);
 
-        int fasciasCountLength = (int) Math.ceil((double) carport.getLength() / Collections.max(material.getPreCutsLengths()));
-        int fasciasCountWidth = (int) Math.ceil((double) carport.getWidth() / Collections.max(material.getPreCutsLengths()));
+        int fasciasCountLength = (int) Math.ceil((double) carport.getLength() / Collections.max(material.getPreCutLengths()));
+        int fasciasCountWidth = (int) Math.ceil((double) carport.getWidth() / Collections.max(material.getPreCutLengths()));
 
         int bestFitLength = bestFitLength(material, (float) carport.getLength() / fasciasCountLength);
         int bestFitWidth = bestFitLength(material, (float) carport.getWidth() / fasciasCountWidth);
@@ -158,7 +158,7 @@ public class BillOfMaterial {
 
         int totalCovers = calcRoofCoverCountLength() * calcRoofCoverCountWidth();
 
-        int idealRoofLength = Collections.max(material.getPreCutsLengths());
+        int idealRoofLength = Collections.max(material.getPreCutLengths());
 
         int bestFitLength = bestFitLength(material, (float) idealRoofLength / calcRoofCoverCountLength());
 
@@ -175,10 +175,10 @@ public class BillOfMaterial {
 
     // Finds the first length in PREDEFINED_LENGTHS that is greater than the required value or returns the maximum length.
     private int bestFitLength(Material material, float neededLength) {
-        return material.getPreCutsLengths().stream()
+        return material.getPreCutLengths().stream()
                 .filter(length -> length > neededLength)
                 .findFirst()
-                .orElse(Collections.max(material.getPreCutsLengths()));
+                .orElse(Collections.max(material.getPreCutLengths()));
     }
 
     //================================
@@ -186,7 +186,7 @@ public class BillOfMaterial {
     //================================
     public int calcPostCountWidth() {
         int posts = 2;
-        int maxLength = Collections.max(carport.getMaterial().get(MaterialRole.RAFTER).getPreCutsLengths());
+        int maxLength = Collections.max(carport.getMaterial().get(MaterialRole.RAFTER).getPreCutLengths());
         if (carport.getWidth() > maxLength) {
             for (int i = maxLength; i < carport.getWidth(); i += maxLength) {
                 posts++;
@@ -215,7 +215,7 @@ public class BillOfMaterial {
 
         int postsByLoad = (int) Math.ceil(carportSize / ((Post) carport.getMaterial().get(MaterialRole.POST)).getBucklingCapacity());
 
-        int raftersNeededWidth = (int) Math.ceil((double) carport.getWidth() / Collections.max(carport.getMaterial().get(MaterialRole.RAFTER).getPreCutsLengths()));
+        int raftersNeededWidth = (int) Math.ceil((double) carport.getWidth() / Collections.max(carport.getMaterial().get(MaterialRole.RAFTER).getPreCutLengths()));
 
         int postByLoadNeededPrLength = postsByLoad / (raftersNeededWidth + 1);
 
@@ -229,7 +229,7 @@ public class BillOfMaterial {
     //================================
     public int calcBeamCountLength() {
         int beams = 1;
-        int maxLength = Collections.max(carport.getMaterial().get(MaterialRole.BEAM).getPreCutsLengths());
+        int maxLength = Collections.max(carport.getMaterial().get(MaterialRole.BEAM).getPreCutLengths());
         if (carport.getLength() > maxLength) {
             for (int i = maxLength; i < carport.getLength(); i += maxLength) {
                 beams++;
@@ -243,7 +243,7 @@ public class BillOfMaterial {
     //================================
     public int calcRafterCountWidth() {
         int rafters = 1;
-        int maxLength = Collections.max(carport.getMaterial().get(MaterialRole.RAFTER).getPreCutsLengths());
+        int maxLength = Collections.max(carport.getMaterial().get(MaterialRole.RAFTER).getPreCutLengths());
         if (carport.getWidth() > maxLength) {
             for (int i = maxLength; i < carport.getWidth(); i += maxLength) {
                 rafters++;
@@ -268,7 +268,7 @@ public class BillOfMaterial {
     //================================
     public int calcRoofCoverCountLength() {
         int covers = 1;
-        int maxLength = Collections.max(carport.getMaterial().get(MaterialRole.ROOF_COVER).getPreCutsLengths());
+        int maxLength = Collections.max(carport.getMaterial().get(MaterialRole.ROOF_COVER).getPreCutLengths());
         int lengthOverlap = ((RoofCover) carport.getMaterial().get(MaterialRole.ROOF_COVER)).getLengthOverlap();
         if (carport.getLength() > maxLength) {
             for (int i = maxLength; i < carport.getLength(); i += (maxLength - lengthOverlap)) {
@@ -280,7 +280,7 @@ public class BillOfMaterial {
 
     public int calcRoofCoverCountWidth() {
         int covers = 1;
-        int maxWidth = carport.getMaterial().get(MaterialRole.ROOF_COVER).getWidth();
+        float maxWidth = carport.getMaterial().get(MaterialRole.ROOF_COVER).getWidth();
         float sideOverlap = ((RoofCover) carport.getMaterial().get(MaterialRole.ROOF_COVER)).getSideOverlap();
         if (carport.getWidth() > maxWidth) {
             for (float i = maxWidth; i < carport.getWidth(); i += (maxWidth - sideOverlap)) {

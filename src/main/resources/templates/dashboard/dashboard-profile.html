@@ -1,0 +1,47 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Fog - Profil</title>
+        <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+        <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+    </head>
+    <body>
+
+    <header>
+        <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+    </header>
+
+    <main>
+        <div class="container">
+            <form class="carport-form" action="/profile/update" method="post">
+                <h1>Profilindstillinger</h1>
+
+                <label for="firstName">Fornavn</label>
+                <input type="text" id="firstName" name="firstName" th:value="${staff.firstName}" required>
+
+                <label for="lastName">Efternavn</label>
+                <input type="text" id="lastName" name="lastName" th:value="${staff.lastName}" required>
+
+                <label for="phoneNumber">Telefonnummer</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" th:value="${staff.phone}" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" th:value="${staff.email}" required>
+
+                <label for="password">Ny adgangskode</label>
+                <input type="password" id="password" name="password" placeholder="Skriv ny adgangskode">
+
+                <label for="password-repeat">Gentag ny adgangskode</label>
+                <input type="password" id="password-repeat" name="password" placeholder="Skriv ny adgangskode igen">
+
+                <label for="current-password">Nuværende adgangskode</label>
+                <input type="password" id="current-password" name="password" placeholder="Skriv nuværende adganskode">
+
+                <button type="submit">Opdater profil</button>
+            </form>
+        </div>
+    </main>
+
+    </body>
+    </html>

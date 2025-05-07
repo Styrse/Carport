@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Carport</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="container dashboard-front">
+        <h1>Hej, <span th:text="${staff.firstName}">Bruger</span>!</h1>
+    </div>
+</main>
+
+</body>
+</html>

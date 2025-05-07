@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Ordrer</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="filters">
+            <div class="filter-group">
+                <form method="get" action="/dashboard/orders">
+                    <label for="status">Status:</label>
+                    <select name="status" id="status" class="filter-select" onchange="this.form.submit()">
+                        <option value="Alle" th:selected="${selectedStatus == 'Alle'}">Alle</option>
+                        <option value="Forespørgsel" th:selected="${selectedStatus == 'Forespørgsel'}">Forespørgsel</option>
+                        <option value="Betalt" th:selected="${selectedStatus == 'Betalt'}">Betalt</option>
+                        <option value="Afsendt" th:selected="${selectedStatus == 'Afsendt'}">Afsendt</option>
+                        <option value="Leveret" th:selected="${selectedStatus == 'Leveret'}">Leveret</option>
+                        <option value="Annuleret" th:selected="${selectedStatus == 'Annuleret'}">Annuleret</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+
+        <div class="list">
+            <table>
+                <thead>
+                <tr>
+                    <th>Ordre ID</th>
+                    <th>Status</th>
+                    <th>Kunde navn</th>
+                    <th>Email</th>
+                    <th>Telefon</th>
+                    <th>Total pris</th>
+                    <th>Se ordre</th>
+                    <th>Slet ordre</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order, iterStat : ${orders}">
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${order.orderStatus}"></td>
+                    <td th:text="${order.customerName}"></td>
+                    <td>
+                        <form action="/send-email" method="post">
+                            <input type="hidden" name="index" th:value="${iterStat.index}">
+                            <button type="submit" class="default-button">Send email</button>
+                        </form>
+                    </td>
+                    <td th:text="${order.customerPhone}"></td>
+                    <td th:text="${order.totalPrice}"></td>
+                    <td>
+                        <form action="/orders/see" method="post">
+                            <input type="hidden" name="index" th:value="${iterStat.index}">
+                            <button type="submit" class="default-button">Se</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/orders/remove" method="post">
+                            <input type="hidden" name="index" th:value="${iterStat.index}">
+                            <button type="submit" class="remove-button">Slet</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

@@ -39,7 +39,7 @@ public class UserMapper {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setInt(3, user.getPhoneNumber());
+            ps.setString(3, user.getPhone());
             ps.setString(4, user.getEmail());
             ps.setString(5, PasswordUtil.hashPassword(user.getPassword()));
             ps.setInt(6, user.getUserRole());
@@ -56,7 +56,7 @@ public class UserMapper {
 
     //Read: get user by email
     public static User getUserByEmail(String email) throws DatabaseException {
-        String sql = "SELECT * FROM users WHERE email = ?";
+        String sql = "SELECT * FROM users JOIN postcodes USING (postcode) WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -76,7 +76,7 @@ public class UserMapper {
     //Read: get all users
     public static List<User> getAllUsers() throws DatabaseException {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM users JOIN postcodes USING (postcode)";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
@@ -92,14 +92,18 @@ public class UserMapper {
     }
 
     //Read: verify user login
+    //TODO: hashed pw
     public static boolean verifyUser(String email, String password) throws DatabaseException {
+        String sql = "SELECT 1 FROM users WHERE email = ? AND password = ?";
         String sql = "SELECT password FROM users WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, email);
+            ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
                 if (rs.next()) {
                     //Using PasswordUtils to verify hashed password
                     String hashedPassword = rs.getString("password");
@@ -123,7 +127,7 @@ public class UserMapper {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setInt(3, user.getPhoneNumber());
+            ps.setString(3, user.getPhone());
             ps.setString(4, user.getEmail());
             ps.setString(5, PasswordUtil.hashPassword(user.getPassword()));
             ps.setInt(6, user.getUserRole());
@@ -155,16 +159,19 @@ public class UserMapper {
         int userId = rs.getInt("user_id");
         String firstname = rs.getString("firstname");
         String lastname = rs.getString("lastname");
-        int phoneNumber = rs.getInt("phone_number");
+        String address = rs.getString("address");
+        int postcode = rs.getInt("postcode");
+        String city = rs.getString("city");
+        String phoneNumber = rs.getString("phone_number");
         String email = rs.getString("email");
         String password = rs.getString("password");
         int roleId = rs.getInt("role_id");
 
         return switch (roleId) {
-            case 1 -> new Customer(userId, firstname, lastname, phoneNumber, email, password, roleId);
+            case 1 -> new Customer(userId, firstname, lastname, address, postcode, city, phoneNumber, email, password, roleId);
             case 2 -> new Staff(userId, firstname, lastname, phoneNumber, email, password, roleId);
             case 3 -> new StaffManager(userId, firstname, lastname, phoneNumber, email, password, roleId);
-            default -> throw new DatabaseException("Unknown material type: " + roleId);
+            default -> throw new DatabaseException("Unknown role type: " + roleId);
         };
     }
 }

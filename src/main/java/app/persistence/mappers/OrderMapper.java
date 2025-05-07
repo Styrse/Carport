@@ -338,7 +338,7 @@ public class OrderMapper {
                 if (item.getProduct() instanceof Carport carport) {
                     CarportMapper.updateCarport(connection, carport);
                 } else if (item.getProduct() instanceof Material material) {
-                    MaterialMapper.updateMaterial(connection, material);
+                    MaterialMapper.updateMaterial(material);
                 }
             }
 

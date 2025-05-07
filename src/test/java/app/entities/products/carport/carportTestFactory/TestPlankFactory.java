@@ -17,118 +17,126 @@ public class TestPlankFactory {
 
 
     public static Post createStandardPost() {
-        return new Post(
+        Post post = new Post(
                 1,
                 "Standard Post",
                 "Basic post for testing",
                 .144,
                 .2,
-                PRE_CUT_LENGTHS,
                 "cm",
                 25,
                 25,
                 5
         );
+        post.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
+        return post;
     }
 
     public static Beam createStandardBeam() {
-        return new Beam(
+        Beam beam = new Beam(
                 2,
                 "Standard Beam",
                 "Basic beam for testing",
                 .252,
                 .35,
-                PRE_CUT_LENGTHS,
                 "cm",
                 25,
                 25,
                 340
         );
+        beam.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
+        return beam;
     }
 
     public static Beam createShorterGapBeam() {
-        return new Beam(
+        Beam beam = new Beam(
                 2,
                 "Shorter Beam",
                 "Shorter max gap beam",
                 .216,
                 .3,
-                PRE_CUT_LENGTHS,
                 "cm",
                 25,
                 25,
                 240
         );
+        beam.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
+        return beam;
     }
 
     public static Beam createLongerGapBeam() {
-        return new Beam(
+        Beam beam = new Beam(
                 2,
                 "Longer Beam",
                 "Longer max distance beam",
                 .288,
                 .4,
-                LONG_PRE_CUTS_LENGTHS,
                 "cm",
                 25,
                 25,
                 400
         );
+        beam.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
+        return beam;
     }
 
     public static Rafter createStandardRafter() {
-        return new Rafter(
+        Rafter rafter = new Rafter(
                 3,
                 "Standard Rafter",
                 "Basic rafter for testing",
                 .216,
                 .3,
-                PRE_CUT_LENGTHS,
                 "cm",
                 25,
                 25
         );
+        rafter.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
+        return rafter;
     }
 
     public static Rafter createShorterRafter() {
-        return new Rafter(
+        Rafter rafter = new Rafter(
                 3,
                 "Shorter Rafter",
                 "Shorter max length rafter",
                 .18,
                 .25,
-                SHORT_PRE_CUTS_LENGTHS,
                 "cm",
                 25,
                 25
         );
+        rafter.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
+        return rafter;
     }
 
     public static Rafter createLongerRafter() {
-        return new Rafter(
+        Rafter rafter = new Rafter(
                 3,
                 "Longer Rafter",
                 "Longer max length rafter",
                 .252,
                 .35,
-                LONG_PRE_CUTS_LENGTHS,
                 "cm",
                 25,
                 25
         );
+        rafter.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
+        return rafter;
     }
 
     public static Fascia createStandardFascia() {
-        return new Fascia(
+        Fascia fascia = new Fascia(
                 4,
                 "Standard Fascia",
                 "Basic fascia board for testing",
                 .129,
                 .18,
-                PRE_CUT_LENGTHS,
                 "cm",
                 25,
                 25
         );
+        fascia.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
+        return fascia;
     }
 }

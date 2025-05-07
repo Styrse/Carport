@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fog - Ny Carport</title>
+  <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+  <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+  <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+  <form action="/configure-carport" method="post" class="carport-form">
+    <h1>Konfigurer Carport</h1>
+
+    <label for="width">Bredde:</label>
+    <select name="width" id="width" required>
+      <option value="" disabled selected>Vælg bredde</option>
+      <th:block th:each="val : ${#numbers.sequence(200, 1000, 10)}">
+        <option th:value="${val}" th:text="${val} + ' cm'"></option>
+      </th:block>
+    </select>
+
+    <label for="length">Længde:</label>
+    <select name="length" id="length" required>
+      <option value="" disabled selected>Vælg længde</option>
+      <th:block th:each="val : ${#numbers.sequence(200, 1000, 10)}">
+        <option th:value="${val}" th:text="${val} + ' cm'"></option>
+      </th:block>
+    </select>
+
+    <label for="height">Højde:</label>
+    <select name="height" id="height" required>
+      <option value="" disabled selected>Vælg højde</option>
+      <th:block th:each="val : ${#numbers.sequence(200, 300, 10)}">
+        <option th:value="${val}" th:text="${val} + ' cm'"></option>
+      </th:block>
+    </select>
+
+    <label for="roofType">Tagtype:</label>
+    <select name="roofType" id="roofType" required>
+      <option value="" disabled selected>Vælg tagtype</option>
+      <option value="flat">Fladt tag</option>
+      <option value="pitched">Tag med rejsning</option>
+    </select>
+
+    <label for="slope">Taghældning:</label>
+    <select name="slope" id="slope" required>
+      <option value="" disabled selected>Vælg taghældning</option>
+      <option value="15">15°</option>
+      <option value="20">20°</option>
+      <option value="25">25°</option>
+      <option value="30">30°</option>
+      <option value="35">35°</option>
+      <option value="40">40°</option>
+      <option value="45">45°</option>
+    </select>
+
+    <button type="submit" class="default-button">Gem valg</button>
+  </form>
+</main>
+
+</body>
+</html>
