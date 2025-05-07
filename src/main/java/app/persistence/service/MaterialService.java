@@ -12,9 +12,18 @@ import app.persistence.mappers.MaterialMapper;
 import java.util.List;
 
 public class MaterialService {
+    private static List<Material> allMaterials = null;
 
     private static List<Material> materialService() throws DatabaseException {
-        return MaterialMapper.getAllMaterials();
+        if (allMaterials == null) {
+            allMaterials = MaterialMapper.getAllMaterials();
+        }
+        return allMaterials;
+    }
+
+    //TODO: reload button
+    public static void refreshMaterials() throws DatabaseException {
+        allMaterials = MaterialMapper.getAllMaterials();
     }
 
     public static List<Post> getAllPosts() throws DatabaseException {

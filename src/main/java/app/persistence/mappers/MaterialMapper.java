@@ -96,8 +96,6 @@ public class MaterialMapper {
 
                 int length = rs.getInt("length");
                 material.addToPreCutsLengths(length);
-                //TODO: sout
-                System.out.println("Name: " + material.getName() + " ID: " + material.getItemId());
             }
         } catch (SQLException e) {
             e.printStackTrace();
