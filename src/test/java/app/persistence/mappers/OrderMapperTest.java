@@ -103,7 +103,7 @@ class OrderMapperTest {
                         "(2, 'beam', 'Steel I-beam', 'cm', 15, 20, 'Beam', 0, 340, 0, 0, 0, true), " +
                         "(3, 'fascia', 'Aluminum fascia board', 'cm', 5, 15, 'Fascia', 0, 0, 0, 0, 0, true), " +
                         "(4, 'rafter', 'Wooden rafter plank', 'cm', 25, 55, 'Rafter', 0, 0, 0, 0, 0, true)," +
-                        "(5, 'roofCover', 'plastic roof', 'm2', 100, 10, 'RoofCover', 0, 0, 20, 10, 55, true);");
+                        "(5, 'roofCover', 'Plastic roof', 'm2', 100, 10, 'RoofCover', 0, 0, 20, 10, 55, true);");
 
                 // Insert price history for materials (active prices)
                 stmt.execute("INSERT INTO test.price_history (material_id, cost_price, sales_price, valid_from, valid_to) VALUES " +
