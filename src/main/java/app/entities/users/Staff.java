@@ -12,12 +12,12 @@ public class Staff extends User {
         this.myWorkOrders = new ArrayList<>();
     }
 
-    public Staff(String firstName, String lastName, int phoneNumber, String email, String password, int roleId) {
+    public Staff(String firstName, String lastName, String phoneNumber, String email, String password, int roleId) {
         super(firstName, lastName, phoneNumber, email, password, roleId);
         this.myWorkOrders = new ArrayList<>();
     }
 
-    public Staff(int userID, String firstName, String lastName, int phoneNumber, String email, String password, int roleId) {
+    public Staff(int userID, String firstName, String lastName, String phoneNumber, String email, String password, int roleId) {
         super(userID, firstName, lastName, phoneNumber, email, password, roleId);
         this.myWorkOrders = new ArrayList<>();
     }

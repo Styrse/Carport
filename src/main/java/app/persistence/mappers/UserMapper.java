@@ -40,7 +40,7 @@ public class UserMapper {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setInt(3, user.getPhoneNumber());
+            ps.setString(3, user.getPhone());
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getPassword());
             ps.setInt(6, user.getUserRole());
@@ -77,7 +77,7 @@ public class UserMapper {
     //Read: get all users
     public static List<User> getAllUsers() throws DatabaseException {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM users JOIN postcodes USING (postcode)";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
@@ -120,7 +120,7 @@ public class UserMapper {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setInt(3, user.getPhoneNumber());
+            ps.setString(3, user.getPhone());
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getPassword());
             ps.setInt(6, user.getUserRole());
@@ -155,7 +155,7 @@ public class UserMapper {
         String address = rs.getString("address");
         int postcode = rs.getInt("postcode");
         String city = rs.getString("city");
-        int phoneNumber = rs.getInt("phone_number");
+        String phoneNumber = rs.getString("phone_number");
         String email = rs.getString("email");
         String password = rs.getString("password");
         int roleId = rs.getInt("role_id");

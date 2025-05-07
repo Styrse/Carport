@@ -7,10 +7,13 @@ import app.entities.products.materials.planks.Fascia;
 import app.entities.products.materials.planks.Post;
 import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
+import app.entities.users.Customer;
 import app.entities.users.Staff;
 import app.entities.users.StaffManager;
+import app.entities.users.User;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.MaterialMapper;
+import app.persistence.mappers.UserMapper;
 import app.persistence.service.MaterialService;
 import io.javalin.http.Context;
 
@@ -26,7 +29,7 @@ public class DashboardController {
 
     public static void dashboard(Context ctx) {
         //Staff staff = new Staff("Jonas", "Hansen", 22553344, "jonas@fog.dk", "secret", 2);
-        StaffManager staff = new StaffManager("Anna", "Fog", 11223344, "anna@fog.dk", "admin", 3);
+        StaffManager staff = new StaffManager("Anna", "Fog", "11223344", "anna@fog.dk", "admin", 3);
 
         List<Order> myOpenOrders = List.of(); // or create dummy orders
         List<Order> unassignedOrders = List.of();
@@ -114,44 +117,23 @@ public class DashboardController {
     }
 
     public static void showCustomers(Context ctx) {
-        List<Map<String, Object>> customers = new ArrayList<>();
+        try {
+            List<User> allUsers = UserMapper.getAllUsers();
 
-        Map<String, Object> customer1 = new HashMap<>();
-        customer1.put("customerId", 101);
-        customer1.put("customerEmail", "emma@example.com");
-        customer1.put("customerPhone", "22334455");
+            List<Customer> customers = allUsers.stream()
+                    .filter(user -> user instanceof Customer)
+                    .map(user -> (Customer) user)
+                    .toList();
 
-        Map<String, Object> customer2 = new HashMap<>();
-        customer2.put("customerId", 102);
-        customer2.put("customerEmail", "oliver@example.com");
-        customer2.put("customerPhone", "33445566");
-
-        Map<String, Object> customer3 = new HashMap<>();
-        customer3.put("customerId", 103);
-        customer3.put("customerEmail", "freja@example.com");
-        customer3.put("customerPhone", "44556677");
-
-        Map<String, Object> customer4 = new HashMap<>();
-        customer4.put("customerId", 104);
-        customer4.put("customerEmail", "mads@example.com");
-        customer4.put("customerPhone", "55667788");
-
-        Map<String, Object> customer5 = new HashMap<>();
-        customer5.put("customerId", 105);
-        customer5.put("customerEmail", "sofia@example.com");
-        customer5.put("customerPhone", "66778899");
-
-        customers.add(customer1);
-        customers.add(customer2);
-        customers.add(customer3);
-        customers.add(customer4);
-        customers.add(customer5);
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("customers", customers);
-        ctx.render("dashboard/dashboard-customers", model);
-        //TODO: Add search box and fix buttons. Add "Send email" button
+            Map<String, Object> model = new HashMap<>();
+            model.put("customers", customers);
+            ctx.render("dashboard/dashboard-customers", model);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke hente kundelisten");
+        }
     }
+    //TODO: Add search box and fix buttons. Add "Send email" button
 
     public static void showMaterials(Context ctx) throws DatabaseException {
         MaterialService.refreshMaterials();
@@ -180,7 +162,7 @@ public class DashboardController {
 
         Map<String, Object> model = new HashMap<>();
         //Staff staff = new Staff("Jonas", "Hansen", 22553344, "jonas@fog.dk", "secret", 2);
-        StaffManager staff = new StaffManager("Anna", "Fog", 11223344, "anna@fog.dk", "admin", 3);
+        StaffManager staff = new StaffManager("Anna", "Fog", "11223344", "anna@fog.dk", "admin", 3);
         boolean isManager = staff instanceof StaffManager;
 
         model.put("isManager", isManager);
@@ -211,7 +193,7 @@ public class DashboardController {
         Staff dummyStaff = new Staff(
                 "John",
                 "Doe",
-                22553344,
+                "22553344",
                 "johndoe@fog.dk",
                 "securepassword",
                 2

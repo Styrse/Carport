@@ -29,7 +29,6 @@ public class MaterialService {
         return null;
     }
 
-    //TODO: reload button
     public static void refreshMaterials() {
         try {
             allMaterials = MaterialMapper.getAllMaterials();

@@ -26,17 +26,17 @@
                 </thead>
                 <tbody>
                 <tr th:each="customer, iterStat : ${customers}">
-                    <td th:text="${customer.customerId}"></td>
+                    <td th:text="${customer.userId}"></td>
                     <td>
                         <div class="email-with-button">
-                            <span th:text="${customer.customerEmail}"></span>
+                            <span th:text="${customer.email}"></span>
                             <form action="/send-email" method="post" style="display:inline;">
                                 <input type="hidden" name="index" th:value="${iterStat.index}">
                                 <button type="submit" class="default-button">Send email</button>
                             </form>
                         </div>
                     </td>
-                    <td th:text="${customer.customerPhone}"></td>
+                    <td th:text="${customer.phone}"></td>
                     <td>
                         <form action="/orders/see-profile" method="post">
                             <input type="hidden" name="index" th:value="${iterStat.index}">
