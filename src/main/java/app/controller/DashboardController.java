@@ -155,7 +155,7 @@ public class DashboardController {
 
     public static void showMaterials(Context ctx) throws DatabaseException {
         MaterialService.refreshMaterials();
-        
+
         List<Post> posts = MaterialService.getAllPosts();
         List<Beam> beams = MaterialService.getAllBeams();
         List<Rafter> rafters = MaterialService.getAllRafters();
@@ -275,5 +275,11 @@ public class DashboardController {
 
         MaterialMapper.updateMaterial(material);
         ctx.redirect("/dashboard/materials");
+    }
+
+    public static void deleteMaterial(Context ctx) throws SQLException, DatabaseException {
+            int itemId = Integer.parseInt(ctx.formParam("materialId"));
+            MaterialMapper.deleteMaterialById(itemId);
+            ctx.redirect("/dashboard/materials");
     }
 }

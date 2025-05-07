@@ -77,6 +77,14 @@
             </div>
 
             <button type="submit">Gem ændringer</button>
+
+            <button type="submit"
+                    formaction="/dashboard/materials/delete"
+                    formmethod="post"
+                    class="remove-button"
+                    onclick="return confirm('Er du sikker på, at du vil slette materialet?')">
+                Slet materiale
+            </button>
         </form>
     </div>
 </main>

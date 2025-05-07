@@ -240,7 +240,7 @@ button {
 }
 
 .remove-button {
-    background-color: #e74c3c;
+    background-color: #e74c3c !important;
     color: white;
     border: none;
     padding: 8px 12px;
@@ -250,7 +250,7 @@ button {
 }
 
 .remove-button:hover {
-    background-color: #c0392b;
+    background-color: #c0392b !important;
 }
 
 .email-with-button {
