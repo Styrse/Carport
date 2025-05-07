@@ -52,7 +52,7 @@
                     <td>
                         <form action="/send-email" method="post">
                             <input type="hidden" name="index" th:value="${iterStat.index}">
-                            <button type="submit" class="see-line-button">Send email</button>
+                            <button type="submit" class="default-button">Send email</button>
                         </form>
                     </td>
                     <td th:text="${order.customerPhone}"></td>
@@ -60,13 +60,13 @@
                     <td>
                         <form action="/orders/see" method="post">
                             <input type="hidden" name="index" th:value="${iterStat.index}">
-                            <button type="submit" class="see-line-button">Se</button>
+                            <button type="submit" class="default-button">Se</button>
                         </form>
                     </td>
                     <td>
                         <form action="/orders/remove" method="post">
                             <input type="hidden" name="index" th:value="${iterStat.index}">
-                            <button type="submit" class="remove-line-button">Slet</button>
+                            <button type="submit" class="remove-button">Slet</button>
                         </form>
                     </td>
                 </tr>

@@ -193,7 +193,7 @@ h1 {
     font-size: 14px;
 }
 
-.filter-button {
+.default-button {
     background-color: #2980b9;
     color: white;
     border: none;
@@ -204,7 +204,7 @@ h1 {
     transition: background-color 0.2s ease;
 }
 
-.filter-button:hover {
+.default-button:hover {
     background-color: #1c6394;
 }
 
@@ -239,7 +239,7 @@ button {
     cursor: pointer;
 }
 
-.remove-line-button {
+.remove-button {
     background-color: #e74c3c;
     color: white;
     border: none;
@@ -249,23 +249,8 @@ button {
     transition: background-color 0.2s ease;
 }
 
-.remove-line-button:hover {
+.remove-button:hover {
     background-color: #c0392b;
-}
-
-.see-line-button {
-    background-color: #2980b9;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.see-line-button:hover {
-    background-color: #1c6394;
 }
 
 .email-with-button {

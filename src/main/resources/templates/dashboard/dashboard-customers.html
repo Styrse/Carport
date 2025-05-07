@@ -32,7 +32,7 @@
                             <span th:text="${customer.customerEmail}"></span>
                             <form action="/send-email" method="post" style="display:inline;">
                                 <input type="hidden" name="index" th:value="${iterStat.index}">
-                                <button type="submit" class="see-line-button">Send email</button>
+                                <button type="submit" class="default-button">Send email</button>
                             </form>
                         </div>
                     </td>
@@ -40,7 +40,7 @@
                     <td>
                         <form action="/orders/see-profile" method="post">
                             <input type="hidden" name="index" th:value="${iterStat.index}">
-                            <button type="submit" class="see-line-button">Se profil</button>
+                            <button type="submit" class="default-button">Se profil</button>
                         </form>
                     </td>
                 </tr>
