@@ -8,6 +8,7 @@ import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.exceptions.DatabaseException;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,23 +18,56 @@ import static app.Main.connectionPool;
 public class MaterialMapper {
     //Create
     public static void createMaterial(Material material) throws SQLException, DatabaseException {
-        String sql = "INSERT INTO materials " +
-                "(name, description, unit, width, height, material_type, " +
-                "buckling_capacity, post_gap, length_overlap, side_overlap, gap_rafters) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING material_id";
+        String insertMaterialSql = "INSERT INTO materials (name, description, unit, width, height, material_type, " +
+                "buckling_capacity, post_gap, length_overlap, side_overlap, gap_rafters, is_active)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true) RETURNING material_id";
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+        String insertMaterialLengthsSql = "INSERT INTO material_lengths (material_id, predefined_length_id) " +
+                "VALUES (?, ?)";
 
-            material.prepareStatement(ps);
+        String insertPriceHistorySql = "INSERT INTO price_history (material_id, cost_price, sales_price, valid_from) " +
+                "VALUES (?, ?, ?, CURRENT_DATE)";
 
-            try (ResultSet rs = ps.executeQuery()) {
+        try (Connection connection = connectionPool.getConnection()) {
+            connection.setAutoCommit(false);
+
+            try (
+                    PreparedStatement insertMaterialStmt = connection.prepareStatement(insertMaterialSql);
+                    PreparedStatement insertLengthStmt = connection.prepareStatement(insertMaterialLengthsSql);
+                    PreparedStatement insertPriceStmt = connection.prepareStatement(insertPriceHistorySql)
+            ) {
+                //Insert into materials
+                material.prepareStatement(insertMaterialStmt);
+                ResultSet rs = insertMaterialStmt.executeQuery();
                 if (rs.next()) {
-                    material.setItemId(rs.getInt("material_id"));
+                    int materialId = rs.getInt("material_id");
+                    material.setItemId(materialId);
+
+                    //Insert predefined lengths
+                    for (Integer rawLength : material.getPreCutsLengths()) {
+                        int lengthId = getOrCreatePredefinedLengthId(connection, rawLength);
+                        insertLengthStmt.setInt(1, materialId);
+                        insertLengthStmt.setInt(2, lengthId);
+                        insertLengthStmt.addBatch();
+                    }
+                    insertLengthStmt.executeBatch();
+
+                    //Insert price history
+                    insertPriceStmt.setInt(1, materialId);
+                    insertPriceStmt.setBigDecimal(2, BigDecimal.valueOf(material.getCostPrice()));
+                    insertPriceStmt.setBigDecimal(3, BigDecimal.valueOf(material.getSalesPrice()));
+                    insertPriceStmt.executeUpdate();
+                } else {
+                    throw new DatabaseException("Failed to retrieve generated material_id.");
                 }
+
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new DatabaseException(e, "Error inserting material and related data.");
+            } finally {
+                connection.setAutoCommit(true);
             }
-        } catch (SQLException e) {
-            throw new DatabaseException(e, "Error inserting material");
         }
     }
 
@@ -139,30 +173,30 @@ public class MaterialMapper {
     }
 
     //Helper Methods
-    private static List<Integer> getPreCutLengths(int itemId) throws DatabaseException {
-        List<Integer> lengths = new ArrayList<>();
+    private static int getOrCreatePredefinedLengthId(Connection connection, int length) throws SQLException {
+        String selectSql = "SELECT predefined_length_id FROM predefined_lengths WHERE length = ?";
+        String insertSql = "INSERT INTO predefined_lengths (length) VALUES (?) RETURNING predefined_length_id";
 
-        String sql = "SELECT length " +
-                "FROM predefined_lengths  " +
-                "JOIN material_lengths  USING (predefined_length_id) " +
-                "WHERE material_id = ?";
-
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            ps.setInt(1, itemId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    lengths.add(rs.getInt("length"));
+        try (PreparedStatement selectStmt = connection.prepareStatement(selectSql)) {
+            selectStmt.setInt(1, length);
+            try (ResultSet rs = selectStmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("predefined_length_id");
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException(e, "Error retrieving materials");
         }
 
-        return lengths;
+        //If not found in DB it will be inserted
+        try (PreparedStatement insertStmt = connection.prepareStatement(insertSql)) {
+            insertStmt.setInt(1, length);
+            try (ResultSet rs = insertStmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("predefined_length_id");
+                }
+            }
+        }
+
+        throw new SQLException("Failed to insert or retrieve predefined length ID for length: " + length);
     }
 
     public static Material mapMaterial(ResultSet rs) throws SQLException, DatabaseException {

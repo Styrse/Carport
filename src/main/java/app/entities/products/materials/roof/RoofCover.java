@@ -5,7 +5,6 @@ import app.entities.products.materials.Material;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RoofCover extends Material {
@@ -13,7 +12,14 @@ public class RoofCover extends Material {
     private float sideOverlap;
     private int gapRafters;
 
-    public RoofCover(int itemId, String name, String description, double costPrice, double salesPrice, String unit, int width, int lengthOverlap, float sideOverlap, int gapRafters) {
+    public RoofCover(String name, String description, double costPrice, double salesPrice, float width, String unit, List<Integer> preCutsLengths, int lengthOverlap, float sideOverlap, int gapRafters) {
+        super(name, description, costPrice, salesPrice, width, unit, preCutsLengths);
+        this.lengthOverlap = lengthOverlap;
+        this.sideOverlap = sideOverlap;
+        this.gapRafters = gapRafters;
+    }
+
+    public RoofCover(int itemId, String name, String description, double costPrice, double salesPrice, String unit, float width, int lengthOverlap, float sideOverlap, int gapRafters) {
         super(itemId, name, description, costPrice, salesPrice, unit, width);
         this.lengthOverlap = lengthOverlap;
         this.sideOverlap = sideOverlap;
@@ -49,7 +55,7 @@ public class RoofCover extends Material {
         ps.setString(1, this.getName());
         ps.setString(2, this.getDescription());
         ps.setString(3, this.getUnit());
-        ps.setInt(4, this.getWidth());
+        ps.setFloat(4, this.getWidth());
         ps.setNull(5, Types.NUMERIC);
         ps.setString(6, this.getClass().getSimpleName());
         ps.setNull(7, Types.NUMERIC);

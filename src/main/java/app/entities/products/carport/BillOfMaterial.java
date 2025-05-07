@@ -280,7 +280,7 @@ public class BillOfMaterial {
 
     public int calcRoofCoverCountWidth() {
         int covers = 1;
-        int maxWidth = carport.getMaterial().get(MaterialRole.ROOF_COVER).getWidth();
+        float maxWidth = carport.getMaterial().get(MaterialRole.ROOF_COVER).getWidth();
         float sideOverlap = ((RoofCover) carport.getMaterial().get(MaterialRole.ROOF_COVER)).getSideOverlap();
         if (carport.getWidth() > maxWidth) {
             for (float i = maxWidth; i < carport.getWidth(); i += (maxWidth - sideOverlap)) {

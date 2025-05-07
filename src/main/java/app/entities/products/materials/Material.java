@@ -8,11 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Material extends Product {
-    private int width;
+    private float width;
     private String unit;
     private List<Integer> preCutsLengths;
 
-    public Material(int itemId, String name, String description, double costPrice, double salesPrice, String unit, int width) {
+    public Material(String name, String description, double costPrice, double salesPrice, float width, String unit, List<Integer> preCutsLengths) {
+        super(name, description, costPrice, salesPrice);
+        this.width = width;
+        this.unit = unit;
+        this.preCutsLengths = preCutsLengths;
+    }
+
+    public Material(int itemId, String name, String description, double costPrice, double salesPrice, String unit, float width) {
         super(itemId, name, description, costPrice, salesPrice);
         this.width = width;
         this.unit = unit;
@@ -24,11 +31,11 @@ public abstract class Material extends Product {
         return "material";
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         this.width = width;
     }
 

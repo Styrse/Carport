@@ -18,17 +18,17 @@
 </header>
 
 <main>
-  <form action="/materials/create" method="post" class="carport-form">
+  <form action="/dashboard/materials/create" method="post" class="carport-form">
     <h1>Tilføj materiale</h1>
 
     <label for="type">Materialetype:</label>
     <select name="type" id="type" required>
       <option value="" disabled selected>Vælg type</option>
-      <option value="post">Stolpe</option>
-      <option value="beam">Rem</option>
-      <option value="rafter">Spær</option>
-      <option value="fascia">Stern</option>
-      <option value="roofCover">Tagbeklædning</option>
+      <option value="Post">Stolpe</option>
+      <option value="Beam">Rem</option>
+      <option value="Rafter">Spær</option>
+      <option value="Fascia">Stern</option>
+      <option value="RoofCover">Tagbeklædning</option>
     </select>
 
     <label for="name">Navn:</label>
@@ -47,7 +47,7 @@
     <input type="text" name="unit" id="unit" placeholder="m, pakke osv." required>
 
     <label for="width">Bredde (cm):</label>
-    <input type="number" name="width" id="width" placeholder="25 cm" required>
+    <input type="number" name="width" id="width" placeholder="25 cm" step="0.1" required>
 
     <!-- All except RoofCover -->
     <div data-type="nonRoof" class="type-specific hidden">
@@ -59,7 +59,7 @@
     <input type="text" name="preCuts" id="preCuts" placeholder="Kommasepareret, fx 240,270,300" required>
 
     <!-- RoofCover only -->
-    <div data-type="roofCover" class="type-specific hidden">
+    <div data-type="RoofCover" class="type-specific hidden">
       <label for="overlapLength">Overlap længde (cm):</label>
       <input type="number" id="overlapLength" placeholder="20 cm" name="overlapLength">
 
@@ -71,13 +71,13 @@
     </div>
 
     <!-- Post only -->
-    <div data-type="post" class="type-specific hidden">
+    <div data-type="Post" class="type-specific hidden">
       <label for="bucklingCapacity">Knækstyrke (M²):</label>
-      <input type="number" step="0.01" id="bucklingCapacity" placeholder="5 cm" name="bucklingCapacity">
+      <input type="number" step="0.01" id="bucklingCapacity" placeholder="5 M²" name="bucklingCapacity">
     </div>
 
     <!-- Beam only -->
-    <div data-type="beam" class="type-specific hidden">
+    <div data-type="Beam" class="type-specific hidden">
       <label for="postGap">Mellemrum stolper (cm):</label>
       <input type="number" id="postGap" placeholder="340 cm" name="postGap">
     </div>
@@ -95,7 +95,7 @@
       const selected = typeSelect.value;
       sections.forEach(section => {
         const type = section.getAttribute('data-type');
-        if (type === selected || (type === 'nonRoof' && selected !== 'roofCover')) {
+        if (type === selected || (type === 'nonRoof' && selected !== 'RoofCover')) {
           section.classList.remove('hidden');
         } else {
           section.classList.add('hidden');
@@ -104,6 +104,7 @@
     }
 
     typeSelect.addEventListener('change', toggleFields);
+    toggleFields();
   });
 </script>
 

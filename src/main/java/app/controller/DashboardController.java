@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.entities.orders.Order;
+import app.entities.products.materials.Material;
 import app.entities.products.materials.planks.Beam;
 import app.entities.products.materials.planks.Fascia;
 import app.entities.products.materials.planks.Post;
@@ -9,14 +10,15 @@ import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Staff;
 import app.entities.users.StaffManager;
 import app.exceptions.DatabaseException;
+import app.persistence.mappers.MaterialMapper;
 import app.persistence.service.MaterialService;
 import io.javalin.http.Context;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DashboardController {
 
@@ -230,5 +232,23 @@ public class DashboardController {
 
     public static void newMaterial(Context ctx) {
         ctx.render("dashboard/dashboard-new-material.html");
+    }
+
+    public static void createMaterial(Context ctx) {
+        Material material = MaterialService.createMaterial(ctx);
+
+        if (material == null) {
+            ctx.status(400).result("Invalid input: could not create material.");
+            return;
+        }
+
+        try {
+            MaterialMapper.createMaterial(material);
+            MaterialService.refreshMaterials();
+            ctx.redirect("/dashboard/materials");
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Server error while saving material.");
+        }
     }
 }
