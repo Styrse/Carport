@@ -8,12 +8,12 @@ import java.util.List;
 public class Beam extends Plank {
     private int postGap;
 
-    public Beam(String name, String description, double costPrice, double salesPrice, float width, String unit, List<Integer> preCutsLengths, int height, int postGap) {
+    public Beam(String name, String description, float costPrice, float salesPrice, float width, String unit, List<Integer> preCutsLengths, int height, int postGap) {
         super(name, description, costPrice, salesPrice, width, unit, preCutsLengths, height);
         this.postGap = postGap;
     }
 
-    public Beam(int itemId, String name, String description, double costPrice, double salesPrice, String unit, float width, int height, int postGap) {
+    public Beam(int itemId, String name, String description, float costPrice, float salesPrice, String unit, float width, int height, int postGap) {
         super(itemId, name, description, costPrice, salesPrice, unit, width, height);
         this.postGap = postGap;
     }

@@ -16,19 +16,22 @@
     <div class="container">
         <h1>Ordre #<span th:text="${order.orderId}">123</span></h1>
 
-        <section class="material-section">
-            <h2>Kundeinformation</h2>
-            <p><strong>Navn:</strong> <span th:text="|${order.customer.firstName} ${order.customer.lastName}|"></span></p>
-            <p><strong>Email:</strong> <span th:text="${order.customer.email}"></span></p>
-            <p><strong>Telefon:</strong> <span th:text="${order.customer.phone}"></span></p>
-        </section>
+        <div class="order-sections">
+            <section class="material-section order-info">
+                <h2>Kundeinformation</h2>
+                <p><strong>Navn:</strong> <span
+                        th:text="|${order.customer.firstName} ${order.customer.lastName}|"></span></p>
+                <p><strong>Email:</strong> <span th:text="${order.customer.email}"></span></p>
+                <p><strong>Telefon:</strong> <span th:text="${order.customer.phone}"></span></p>
+            </section>
 
-        <section class="material-section">
-            <h2>Ordreinformation</h2>
-            <p><strong>Dato:</strong> <span th:text="${order.orderDate}"></span></p>
-            <p><strong>Status:</strong> <span th:text="${order.orderStatus}"></span></p>
-            <p><strong>Pris:</strong> <span th:text="${order.totalPrice} + ' kr.'"></span></p>
-        </section>
+            <section class="material-section order-info">
+                <h2>Ordreinformation</h2>
+                <p><strong>Dato:</strong> <span th:text="${order.orderDate}"></span></p>
+                <p><strong>Status:</strong> <span th:text="${order.orderStatus}"></span></p>
+                <p><strong>Pris:</strong> <span th:text="${order.totalPrice} + ' kr.'"></span></p>
+            </section>
+        </div>
 
         <section class="material-section">
             <h2>Materialer i ordren</h2>

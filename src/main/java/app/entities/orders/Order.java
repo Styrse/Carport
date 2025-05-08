@@ -52,7 +52,7 @@ public class Order {
         float totalPrice = 0;
 
         for (OrderItem item : orderItems) {
-            totalPrice += (float) (item.getProduct().getSalesPrice() * item.getQuantity());
+            totalPrice += item.getProduct().getSalesPrice() * item.getQuantity();
         }
         return totalPrice;
     }

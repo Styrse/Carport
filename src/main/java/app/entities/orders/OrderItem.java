@@ -38,6 +38,6 @@ public class OrderItem {
     }
 
     public float getTotalPrice() {
-        return (float) (product.getSalesPrice() * quantity);
+        return product.getSalesPrice() * quantity;
     }
 }

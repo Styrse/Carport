@@ -1,11 +1,9 @@
 package app.entities.products.carport;
 
-import app.Main;
 import app.entities.products.materials.Material;
 import app.entities.products.materials.MaterialRole;
 import app.entities.products.Product;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -109,6 +107,10 @@ public class Carport extends Product {
 
     public Map<MaterialRole, Material> getMaterial() {
         return materialMap;
+    }
+
+    public float getSalesPrice() {
+        return totalPrice;
     }
 
     public float getTotalPrice() {

@@ -4,8 +4,8 @@ public abstract class Product {
     private int itemId;
     private String name;
     private String description;
-    private double costPrice;
-    private double salesPrice;
+    private float costPrice;
+    private float salesPrice;
 
     public Product() {
     }
@@ -15,14 +15,14 @@ public abstract class Product {
         this.description = description;
     }
 
-    public Product(String name, String description, double costPrice, double salesPrice) {
+    public Product(String name, String description, float costPrice, float salesPrice) {
         this.name = name;
         this.description = description;
         this.costPrice = costPrice;
         this.salesPrice = salesPrice;
     }
 
-    public Product(int itemId, String name, String description, double costPrice, double salesPrice) {
+    public Product(int itemId, String name, String description, float costPrice, float salesPrice) {
         this.itemId = itemId;
         this.name = name;
         this.description = description;
@@ -56,19 +56,19 @@ public abstract class Product {
         this.description = description;
     }
 
-    public double getCostPrice() {
+    public float getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(double costPrice) {
+    public void setCostPrice(float costPrice) {
         this.costPrice = costPrice;
     }
 
-    public double getSalesPrice() {
+    public float getSalesPrice() {
         return salesPrice;
     }
 
-    public void setSalesPrice(double salesPrice) {
+    public void setSalesPrice(float salesPrice) {
         this.salesPrice = salesPrice;
     }
 }
