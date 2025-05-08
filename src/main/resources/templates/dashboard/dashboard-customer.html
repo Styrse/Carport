@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Opret medarbejder</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="container">
+        <h1>Kundeprofil</h1>
+
+        <form class="carport-form" action="/dashboard/customers/update" method="post">
+            <input type="hidden" name="customerId" th:value="${customer.userId}" />
+
+            <label for="firstName">Fornavn</label>
+            <input type="text" id="firstName" name="firstName" th:value="${customer.firstName}" required>
+
+            <label for="lastName">Efternavn</label>
+            <input type="text" id="lastName" name="lastName" th:value="${customer.lastName}" required>
+
+            <label for="phone">Telefonnummer</label>
+            <input type="tel" id="phone" name="phone" th:value="${customer.phone}" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" th:value="${customer.email}" required>
+
+            <button type="submit" class="default-button">Opdater kundeinfo</button>
+        </form>
+
+        <section class="material-section">
+            <h2>Ordrer</h2>
+            <table class="material-table">
+                <thead>
+                <tr>
+                    <th>Ordre ID</th>
+                    <th>Status</th>
+                    <th>Totalpris</th>
+                    <th>Se</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${order.orderStatus}"></td>
+                    <td th:text="${order.orderItems.getTotalPrice()} + ' kr.'"></td>
+                    <td>
+                        <form method="get" action="/dashboard/order/view">
+                            <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                            <button type="submit" class="default-button">Se</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</main>
+
+</body>
+</html>

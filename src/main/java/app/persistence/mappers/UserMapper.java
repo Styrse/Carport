@@ -73,10 +73,28 @@ public class UserMapper {
         return null;
     }
 
+    public static User getUserById(int id) throws DatabaseException {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapUser(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error retrieving user by email");
+        }
+        return null;
+    }
+
     //Read: get all users
     public static List<User> getAllUsers() throws DatabaseException {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM users ORDER BY user_id DESC";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);

@@ -368,4 +368,49 @@ public class DashboardController {
             ctx.status(500).result("Kunne ikke hente medarbejderlisten.");
         }
     }
+
+    public static void showCustomerPage(Context ctx) {
+        int customerId = Integer.parseInt(ctx.formParam("customerId"));
+
+        try {
+            User user = UserMapper.getUserById(customerId);
+            if (!(user instanceof Customer customer)) {
+                ctx.status(400).result("Brugeren blev ikke fundet");
+                return;
+            }
+
+            List<Order> orders = OrderMapper.getOrdersByCustomerId(customerId);
+
+            Map<String, Object> model = DashboardController.createBaseModel(ctx);
+            model.put("customer", customer);
+            model.put("orders", orders);
+
+            ctx.render("dashboard/dashboard-customer.html", model);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke hente kundeinformation");
+        }
+    }
+
+    public static void updateCustomerInfo(Context ctx) {
+        try {
+            int customerId = Integer.parseInt(ctx.formParam("customerId"));
+            User user = UserMapper.getUserById(customerId);
+            if (!(user instanceof Customer customer)) {
+                ctx.status(400).result("Brugeren er ikke en kunde");
+                return;
+            }
+
+            customer.setFirstName(ctx.formParam("firstName"));
+            customer.setLastName(ctx.formParam("lastName"));
+            customer.setPhone(ctx.formParam("phone"));
+            customer.setEmail(ctx.formParam("email"));
+
+            UserMapper.updateUser(customer);
+            ctx.redirect("/dashboard/customers"); // Or back to the customer page if needed
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Fejl ved opdatering af kundeinfo");
+        }
+    }
 }

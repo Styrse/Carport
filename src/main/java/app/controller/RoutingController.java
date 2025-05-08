@@ -32,6 +32,8 @@ public class RoutingController {
         // 🛒 Orders
         app.get("/dashboard/orders", DashboardController::showOrders);
         app.get("/dashboard/customers", DashboardController::showCustomers);
+        app.post("/dashboard/customer", DashboardController::showCustomerPage);
+        app.post("/dashboard/customers/update", DashboardController::updateCustomerInfo);
 
         // 🪵 Materials
         app.get("/dashboard/materials", DashboardController::showMaterials);
