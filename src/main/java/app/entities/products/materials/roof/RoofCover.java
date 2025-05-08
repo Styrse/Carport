@@ -12,14 +12,14 @@ public class RoofCover extends Material {
     private float sideOverlap;
     private int gapRafters;
 
-    public RoofCover(String name, String description, double costPrice, double salesPrice, float width, String unit, List<Integer> preCutsLengths, int lengthOverlap, float sideOverlap, int gapRafters) {
+    public RoofCover(String name, String description, float costPrice, float salesPrice, float width, String unit, List<Integer> preCutsLengths, int lengthOverlap, float sideOverlap, int gapRafters) {
         super(name, description, costPrice, salesPrice, width, unit, preCutsLengths);
         this.lengthOverlap = lengthOverlap;
         this.sideOverlap = sideOverlap;
         this.gapRafters = gapRafters;
     }
 
-    public RoofCover(int itemId, String name, String description, double costPrice, double salesPrice, String unit, float width, int lengthOverlap, float sideOverlap, int gapRafters) {
+    public RoofCover(int itemId, String name, String description, float costPrice, float salesPrice, String unit, float width, int lengthOverlap, float sideOverlap, int gapRafters) {
         super(itemId, name, description, costPrice, salesPrice, unit, width);
         this.lengthOverlap = lengthOverlap;
         this.sideOverlap = sideOverlap;

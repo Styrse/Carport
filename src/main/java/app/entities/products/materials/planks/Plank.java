@@ -36,12 +36,12 @@ import java.util.List;
 public abstract class Plank extends Material {
     private int height;
 
-    public Plank(String name, String description, double costPrice, double salesPrice, float width, String unit, List<Integer> preCutsLengths, int height) {
+    public Plank(String name, String description, float costPrice, float salesPrice, float width, String unit, List<Integer> preCutsLengths, int height) {
         super(name, description, costPrice, salesPrice, width, unit, preCutsLengths);
         this.height = height;
     }
 
-    public Plank(int itemId, String name, String description, double costPrice, double salesPrice, String unit, float width, int height) {
+    public Plank(int itemId, String name, String description, float costPrice, float salesPrice, String unit, float width, int height) {
         super(itemId, name, description, costPrice, salesPrice, unit, width);
         this.height = height;
     }

@@ -10,12 +10,12 @@ public class Fascia extends Plank {
 
     public static int MIN_THICKNESS_FOR_GUTTERS = 22;
 
-    public Fascia(String name, String description, double costPrice, double salesPrice, float width, String unit, List<Integer> preCutsLengths, int height) {
+    public Fascia(String name, String description, float costPrice, float salesPrice, float width, String unit, List<Integer> preCutsLengths, int height) {
         super(name, description, costPrice, salesPrice, width, unit, preCutsLengths, height);
         this.supportsGutters = determineSupportsGutters();
     }
 
-    public Fascia(int itemId, String name, String description, double costPrice, double salesPrice, String unit, float width, int height) {
+    public Fascia(int itemId, String name, String description, float costPrice, float salesPrice, String unit, float width, int height) {
         super(itemId, name, description, costPrice, salesPrice, unit, width, height);
         this.supportsGutters = determineSupportsGutters();
     }

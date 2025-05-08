@@ -25,4 +25,8 @@ public class Staff extends User {
     public List<Order> getMyWorkOrders() {
         return myWorkOrders;
     }
+
+    public String getJobTitle() {
+        return "Sælger";
+    }
 }

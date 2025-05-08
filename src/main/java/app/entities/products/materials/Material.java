@@ -12,14 +12,14 @@ public abstract class Material extends Product {
     private String unit;
     private List<Integer> preCutsLengths;
 
-    public Material(String name, String description, double costPrice, double salesPrice, float width, String unit, List<Integer> preCutsLengths) {
+    public Material(String name, String description, float costPrice, float salesPrice, float width, String unit, List<Integer> preCutsLengths) {
         super(name, description, costPrice, salesPrice);
         this.width = width;
         this.unit = unit;
         this.preCutsLengths = preCutsLengths;
     }
 
-    public Material(int itemId, String name, String description, double costPrice, double salesPrice, String unit, float width) {
+    public Material(int itemId, String name, String description, float costPrice, float salesPrice, String unit, float width) {
         super(itemId, name, description, costPrice, salesPrice);
         this.width = width;
         this.unit = unit;

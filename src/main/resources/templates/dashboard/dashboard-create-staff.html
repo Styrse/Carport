@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Opret medarbejder</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="container">
+        <form class="carport-form" action="/dashboard/staff/create" method="post">
+            <h1>Opret medarbejder</h1>
+
+            <label for="role">Rolle</label>
+            <select id="role" name="role" required>
+                <option value="">Vælg rolle</option>
+                <option value="Staff">Sælger</option>
+                <option value="StaffManager">Salgsmanager</option>
+            </select>
+
+            <label for="firstName">Fornavn</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Fornavn" required>
+
+            <label for="lastName">Efternavn</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Efternavn" required>
+
+            <label for="phone">Telefonnummer</label>
+            <input type="tel" id="phone" name="phone" placeholder="22 33 44 55" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="eksempel@fog.dk" required>
+
+            <label for="password">Adgangskode</label>
+            <input type="password" id="password" name="password" placeholder="Skriv adgangskode" required>
+
+            <label for="passwordRepeat">Gentag adgangskode</label>
+            <input type="password" id="passwordRepeat" name="passwordRepeat" placeholder="Gentag adgangskode" required>
+
+            <button type="submit">Opret medarbejder</button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

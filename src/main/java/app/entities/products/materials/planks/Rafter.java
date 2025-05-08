@@ -7,11 +7,11 @@ import java.util.List;
 
 public class Rafter extends Plank {
 
-    public Rafter(String name, String description, double costPrice, double salesPrice, float width, String unit, List<Integer> preCutsLengths, int height) {
+    public Rafter(String name, String description, float costPrice, float salesPrice, float width, String unit, List<Integer> preCutsLengths, int height) {
         super(name, description, costPrice, salesPrice, width, unit, preCutsLengths, height);
     }
 
-    public Rafter(int itemId, String name, String description, double costPrice, double salesPrice, String unit, float width, int height) {
+    public Rafter(int itemId, String name, String description, float costPrice, float salesPrice, String unit, float width, int height) {
         super(itemId, name, description, costPrice, salesPrice, unit, width, height);
     }
 

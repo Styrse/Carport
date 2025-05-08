@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <title>Fog - Ordrer</title>
@@ -19,12 +19,12 @@
                 <form method="get" action="/dashboard/orders">
                     <label for="status">Status:</label>
                     <select name="status" id="status" class="filter-select" onchange="this.form.submit()">
-                        <option value="Alle" th:selected="${selectedStatus == 'Alle'}">Alle</option>
-                        <option value="Forespørgsel" th:selected="${selectedStatus == 'Forespørgsel'}">Forespørgsel</option>
-                        <option value="Betalt" th:selected="${selectedStatus == 'Betalt'}">Betalt</option>
-                        <option value="Afsendt" th:selected="${selectedStatus == 'Afsendt'}">Afsendt</option>
-                        <option value="Leveret" th:selected="${selectedStatus == 'Leveret'}">Leveret</option>
-                        <option value="Annuleret" th:selected="${selectedStatus == 'Annuleret'}">Annuleret</option>
+                        <option value="All" th:selected="${selectedStatus == 'All'}">Alle</option>
+                        <option value="Inquiry" th:selected="${selectedStatus == 'Inquiry'}">Forespørgsel</option>
+                        <option value="Paid" th:selected="${selectedStatus == 'Paid'}">Betalt</option>
+                        <option value="Shipped" th:selected="${selectedStatus == 'Shipped'}">Afsendt</option>
+                        <option value="Delivered" th:selected="${selectedStatus == 'Delivered'}">Leveret</option>
+                        <option value="Cancelled" th:selected="${selectedStatus == 'Cancelled'}">Annuleret</option>
                     </select>
                 </form>
             </div>
@@ -48,24 +48,24 @@
                 <tr th:each="order, iterStat : ${orders}">
                     <td th:text="${order.orderId}"></td>
                     <td th:text="${order.orderStatus}"></td>
-                    <td th:text="${order.customerName}"></td>
+                    <td th:text="|${order.customer.firstname} ${order.customer.lastname}|"></td>
                     <td>
                         <form action="/send-email" method="post">
-                            <input type="hidden" name="index" th:value="${iterStat.index}">
+                            <input type="hidden" name="email" th:value="${order.customer.email}">
                             <button type="submit" class="default-button">Send email</button>
                         </form>
                     </td>
-                    <td th:text="${order.customerPhone}"></td>
+                    <td th:text="${order.customer.phone}"></td>
                     <td th:text="${order.totalPrice}"></td>
                     <td>
-                        <form action="/orders/see" method="post">
-                            <input type="hidden" name="index" th:value="${iterStat.index}">
+                        <form action="/dashboard/order" method="get">
+                            <input type="hidden" name="orderId" th:value="${order.orderId}">
                             <button type="submit" class="default-button">Se</button>
                         </form>
                     </td>
                     <td>
                         <form action="/orders/remove" method="post">
-                            <input type="hidden" name="index" th:value="${iterStat.index}">
+                            <input type="hidden" name="orderId" th:value="${order.orderId}">
                             <button type="submit" class="remove-button">Slet</button>
                         </form>
                     </td>

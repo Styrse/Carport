@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Medarbejdere</title>
+    <link rel="icon" href="/img/fog.jpeg" type="image/x-icon">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="container">
+        <h1>Medarbejdere</h1>
+
+        <section class="general-section">
+            <div th:if="${isManager}">
+                <form action="/dashboard/staff/create" method="get">
+                    <button type="submit" class="default-button" id="add-employee-button" >Tilføj medarbejder</button>
+                </form>
+            </div>
+
+            <table class="material-table">
+                <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>Jobtitel</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="staff : ${staffList}">
+                    <td th:text="|${staff.firstname} ${staff.lastname}|"></td>
+                    <td th:text="${staff.getJobTitle()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+</main>
+
+</body>
+</html>

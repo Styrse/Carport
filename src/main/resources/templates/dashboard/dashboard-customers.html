@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <title>Fog - Kunder</title>
@@ -38,8 +38,8 @@
                     </td>
                     <td th:text="${customer.phone}"></td>
                     <td>
-                        <form action="/orders/see-profile" method="post">
-                            <input type="hidden" name="index" th:value="${iterStat.index}">
+                        <form action="/dashboard/customer" method="post">
+                            <input type="hidden" name="customerId" th:value="${customer.userId}">
                             <button type="submit" class="default-button">Se profil</button>
                         </form>
                     </td>
