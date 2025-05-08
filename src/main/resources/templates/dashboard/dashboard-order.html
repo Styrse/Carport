@@ -30,6 +30,9 @@
                 <p><strong>Dato:</strong> <span th:text="${order.orderDate}"></span></p>
                 <p><strong>Status:</strong> <span th:text="${order.orderStatus}"></span></p>
                 <p><strong>Pris:</strong> <span th:text="${order.totalPrice} + ' kr.'"></span></p>
+                <p th:if="${order.staff != null}">
+                    <strong>Medarbejder:</strong> <span th:text="|${order.staff.firstname} ${order.staff.lastname}|"></span>
+                </p>
             </section>
         </div>
 
