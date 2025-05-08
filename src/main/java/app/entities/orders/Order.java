@@ -14,6 +14,7 @@ public class Order {
     private Customer customer;
     private Staff staff;
     private List<OrderItem> orderItems;
+    private float totalPrice;
 
     public Order(LocalDate orderDate, String orderStatus, Customer customer) {
         this.orderDate = orderDate;
@@ -47,7 +48,7 @@ public class Order {
         this.orderItems = new ArrayList<>();
     }
 
-    public float getTotalPrice(){
+    public float calcTotalPrice(){
         float totalPrice = 0;
 
         for (OrderItem item : orderItems) {
@@ -102,5 +103,13 @@ public class Order {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

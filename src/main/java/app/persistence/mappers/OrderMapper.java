@@ -47,7 +47,7 @@ public class OrderMapper {
                 } else {
                     ps.setNull(2, Types.INTEGER);
                 }
-                ps.setFloat(3, order.getTotalPrice());
+                ps.setFloat(3, order.calcTotalPrice());
 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
@@ -136,17 +136,12 @@ public class OrderMapper {
     // - The latest status of the order based on the most recent update
     // Uses LEFT JOINs to allow for missing data (e.g., unassigned staff or missing 'received' status)
     public static Order getOrderByOrderId(int orderId) throws DatabaseException {
-        String orderSql = "SELECT " +
-                "  o.order_id, " +
-                "  u.email AS user_email, " +
-                "  s.email AS staff_email, " +
-                "  received.update_date AS order_date, " +
-                "  latest.status AS order_status " +
-                "FROM orders o " +
-                "JOIN users u ON o.user_id = u.user_id " +
+        String sql = "SELECT o.order_id, o.total_price, u.email AS user_email, s.email AS staff_email, " +
+                "received.update_date AS order_date, latest.status AS order_status " +
+                "FROM orders o JOIN users u ON o.user_id = u.user_id " +
                 "LEFT JOIN users s ON o.staff_id = s.user_id " +
                 "LEFT JOIN order_status_history received " +
-                "  ON o.order_id = received.order_id AND received.status = 'Inquiry' " + //TODO: update to Danish
+                "  ON o.order_id = received.order_id AND received.status = 'Inquiry' " +
                 "LEFT JOIN order_status_history latest " +
                 "  ON o.order_id = latest.order_id " +
                 "  AND latest.update_date = ( " +
@@ -157,7 +152,7 @@ public class OrderMapper {
                 "WHERE o.order_id = ?";
 
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(orderSql)) {
+             PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setInt(1, orderId);
 
@@ -329,7 +324,7 @@ public class OrderMapper {
                 } else {
                     ps.setNull(2, Types.INTEGER);
                 }
-                ps.setFloat(3, order.getTotalPrice());
+                ps.setFloat(3, order.calcTotalPrice());
                 ps.setInt(4, order.getOrderId());
 
                 ps.executeUpdate();
@@ -366,36 +361,25 @@ public class OrderMapper {
         }
     }
 
-    // Map result set to full Order
+    //Map result set to full Order
     private static Order mapOrder(ResultSet rs) throws Exception {
         int orderId = rs.getInt("order_id");
         LocalDate orderDate = rs.getDate("order_date").toLocalDate();
         String orderStatus = rs.getString("order_status");
+        float totalPrice = rs.getFloat("total_price");
 
         String userEmail = rs.getString("user_email");
-
         User customerUser = UserMapper.getUserByEmail(userEmail);
-        Customer customer;
-        if (customerUser instanceof Customer) {
-            customer = (Customer) customerUser;
-        } else {
-            throw new Exception("Expected a Customer, but got: " + customerUser.getClass().getSimpleName());
-        }
+        Customer customer = (Customer) customerUser;
 
         String staffEmail = rs.getString("staff_email");
         Staff staff = null;
         if (staffEmail != null) {
             User staffUser = UserMapper.getUserByEmail(staffEmail);
-            if (staffUser instanceof Staff) {
-                if (staffUser instanceof StaffManager) {
-                    staff = (StaffManager) staffUser;
-                } else {
-                    staff = (Staff) staffUser;
-                }
-            } else {
-                throw new Exception("Expected Staff or StaffManager, but got: " + staffUser.getClass().getSimpleName());
-            }
+            staff = (staffUser instanceof StaffManager manager) ? manager : (Staff) staffUser;
         }
-        return new Order(orderId, orderDate, orderStatus, customer, staff);
+        Order order = new Order(orderId, orderDate, orderStatus, customer, staff);
+        order.setTotalPrice(totalPrice);
+        return order;
     }
 }

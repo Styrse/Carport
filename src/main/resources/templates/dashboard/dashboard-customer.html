@@ -49,7 +49,7 @@
                 <tr th:each="order : ${orders}">
                     <td th:text="${order.orderId}"></td>
                     <td th:text="${order.orderStatus}"></td>
-                    <td th:text="${order.orderItems.getTotalPrice()} + ' kr.'"></td>
+                    <td th:text="${order.getTotalPrice()} + ' kr.'"></td>
                     <td>
                         <form method="get" action="/dashboard/order/view">
                             <input type="hidden" name="orderId" th:value="${order.orderId}" />

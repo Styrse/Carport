@@ -24,7 +24,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static app.Main.connectionPool;
 
@@ -72,7 +71,9 @@ public class DashboardController {
     }
 
     public static void newCarport(Context ctx) {
-        ctx.render("dashboard/dashboard-new-carport.html");
+        Map<String, Object> model = createBaseModel(ctx);
+
+        ctx.render("dashboard/dashboard-new-carport.html", model);
     }
 
     public static void showOrders(Context ctx) {
@@ -321,7 +322,9 @@ public class DashboardController {
     }
 
     public static void createStaff(Context ctx) {
-        ctx.render("dashboard/dashboard-create-staff.html");
+        Map<String, Object> model = createBaseModel(ctx);
+
+        ctx.render("dashboard/dashboard-create-staff.html", model);
     }
 
     public static void handleCreateStaff(Context ctx) throws SQLException, DatabaseException {
