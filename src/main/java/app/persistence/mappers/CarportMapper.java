@@ -175,6 +175,8 @@ public class CarportMapper {
         int fasciaMaterialId = rs.getInt("fascia_material_id");
         int roofCoverMaterialId = rs.getInt("roof_cover_material_id");
 
+        float totalPrice = rs.getFloat("total_price");
+
         Map<MaterialRole, Material> materials = new HashMap<>();
 
         materials.put(MaterialRole.POST, MaterialMapper.getMaterialById(postMaterialId));
@@ -183,13 +185,17 @@ public class CarportMapper {
         materials.put(MaterialRole.FASCIA, MaterialMapper.getMaterialById(fasciaMaterialId));
         materials.put(MaterialRole.ROOF_COVER, MaterialMapper.getMaterialById(roofCoverMaterialId));
 
-        return switch (roofType) {
-            case "flat" ->
-                    new Carport(carportId, "Carport", width + " x " + length, width, length, height, roofType, materials);
-            case "pitched" ->
-                    new Carport(carportId, "Carport", width + " x " + length, width, length, height, roofType, roofAngle, materials);
-            default -> throw new IllegalStateException("Unexpected value: " + roofType);
-        };
-    }
+        Carport carport;
 
+        if ("flat".equals(roofType)) {
+            carport = new Carport(carportId, "Carport", width + " x " + length, width, length, height, roofType, materials);
+        } else if ("pitched".equals(roofType)) {
+            carport = new Carport(carportId, "Carport", width + " x " + length, width, length, height, roofType, roofAngle, materials);
+        } else {
+            throw new IllegalStateException("Unexpected value: " + roofType);
+        }
+
+        carport.setTotalPrice(totalPrice);
+        return carport;
+    }
 }

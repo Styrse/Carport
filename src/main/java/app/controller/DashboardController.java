@@ -416,4 +416,24 @@ public class DashboardController {
             ctx.status(500).result("Fejl ved opdatering af kundeinfo");
         }
     }
+
+    public static void showOrderDetails(Context ctx) {
+        try {
+            int orderId = Integer.parseInt(ctx.queryParam("orderId"));
+
+            Order order = OrderMapper.getOrderByOrderId(orderId);
+            if (order == null) {
+                ctx.status(404).result("Ordre ikke fundet");
+                return;
+            }
+
+            Map<String, Object> model = createBaseModel(ctx);
+            model.put("order", order);
+
+            ctx.render("dashboard/dashboard-order.html", model);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke hente ordreinformation");
+        }
+    }
 }

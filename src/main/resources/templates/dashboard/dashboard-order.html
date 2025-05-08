@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Ordredetaljer</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="container">
+        <h1>Ordre #<span th:text="${order.orderId}">123</span></h1>
+
+        <section class="material-section">
+            <h2>Kundeinformation</h2>
+            <p><strong>Navn:</strong> <span th:text="|${order.customer.firstName} ${order.customer.lastName}|"></span></p>
+            <p><strong>Email:</strong> <span th:text="${order.customer.email}"></span></p>
+            <p><strong>Telefon:</strong> <span th:text="${order.customer.phone}"></span></p>
+        </section>
+
+        <section class="material-section">
+            <h2>Ordreinformation</h2>
+            <p><strong>Dato:</strong> <span th:text="${order.orderDate}"></span></p>
+            <p><strong>Status:</strong> <span th:text="${order.orderStatus}"></span></p>
+            <p><strong>Pris:</strong> <span th:text="${order.totalPrice} + ' kr.'"></span></p>
+        </section>
+
+        <section class="material-section">
+            <h2>Materialer i ordren</h2>
+            <table class="material-table">
+                <thead>
+                <tr>
+                    <th>Produktnavn</th>
+                    <th>Type</th>
+                    <th>Antal</th>
+                    <th>Stykpris</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${order.orderItems}">
+                    <td th:text="${item.product.name}">Træbjælke</td>
+                    <td th:text="${item.product.itemType}">material</td>
+                    <td th:text="${item.quantity}">2</td>
+                    <td th:text="${item.product.salesPrice} + ' kr.'">150 kr.</td>
+                    <td th:text="${item.totalPrice} + ' kr.'">300 kr.</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</main>
+
+</body>
+</html>

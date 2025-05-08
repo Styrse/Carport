@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <title>Fog - Opret medarbejder</title>
@@ -51,7 +51,7 @@
                     <td th:text="${order.orderStatus}"></td>
                     <td th:text="${order.getTotalPrice()} + ' kr.'"></td>
                     <td>
-                        <form method="get" action="/dashboard/order/view">
+                        <form method="get" action="/dashboard/order">
                             <input type="hidden" name="orderId" th:value="${order.orderId}" />
                             <button type="submit" class="default-button">Se</button>
                         </form>

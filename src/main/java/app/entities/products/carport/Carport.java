@@ -29,6 +29,7 @@ public class Carport extends Product {
     private int height;
     private String roofType;
     private int roofAngle;
+    private float totalPrice;
 
     private Map<MaterialRole, Material> materialMap;
 
@@ -108,6 +109,14 @@ public class Carport extends Product {
 
     public Map<MaterialRole, Material> getMaterial() {
         return materialMap;
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override
