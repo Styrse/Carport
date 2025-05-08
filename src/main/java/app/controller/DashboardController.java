@@ -66,12 +66,7 @@ public class DashboardController {
     }
 
     public static void dashboard(Context ctx) {
-        Staff staff = ctx.sessionAttribute("currentUser");
-        boolean isManager = staff instanceof StaffManager;
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("staff", staff);
-        model.put("isManager", isManager);
+        Map<String, Object> model = createBaseModel(ctx);
 
         ctx.render("dashboard/dashboard.html", model);
     }
@@ -88,14 +83,6 @@ public class DashboardController {
 
         try {
             List<Order> allOrders = OrderMapper.getAllOrders();
-            allOrders.forEach(System.out::println);
-            Order order1 = allOrders.get(0);
-            System.out.println(order1.getOrderId());
-            System.out.println(order1.getOrderStatus());
-            System.out.println(order1.getCustomer().getFirstName() + " " + order1.getCustomer().getLastName());
-            System.out.println(order1.getCustomer().getEmail());
-            System.out.println(order1.getCustomer().getPhone());
-            System.out.println(order1.getTotalPrice());
 
             String finalStatusFilter = statusFilter;
             List<Order> filteredOrders = allOrders.stream()
@@ -103,7 +90,7 @@ public class DashboardController {
                             finalStatusFilter.equalsIgnoreCase(order.getOrderStatus()))
                     .toList();
 
-            Map<String, Object> model = new HashMap<>();
+            Map<String, Object> model = createBaseModel(ctx);
             model.put("orders", filteredOrders);
             model.put("selectedStatus", statusFilter);
 
@@ -125,7 +112,7 @@ public class DashboardController {
                     .map(user -> (Customer) user)
                     .toList();
 
-            Map<String, Object> model = new HashMap<>();
+            Map<String, Object> model = createBaseModel(ctx);
             model.put("customers", customers);
             ctx.render("dashboard/dashboard-customers", model);
         } catch (DatabaseException e) {
@@ -160,11 +147,7 @@ public class DashboardController {
                 .filter(r -> r.getGapRafters() >= minGapRafter)
                 .toList();
 
-        Staff staff = ctx.sessionAttribute("currentUser");
-        boolean isManager = staff instanceof StaffManager;
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("isManager", isManager);
+        Map<String, Object> model = createBaseModel(ctx);
 
         model.put("posts", filteredPosts);
         model.put("beams", filteredBeams);
@@ -180,10 +163,7 @@ public class DashboardController {
     }
 
     public static void showProfile(Context ctx) {
-        Staff staff = ctx.sessionAttribute("currentUser");
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("staff", staff);
+        Map<String, Object> model = createBaseModel(ctx);
 
         ctx.render("dashboard/dashboard-profile.html", model);
     }
@@ -196,7 +176,9 @@ public class DashboardController {
 
 
     public static void newMaterial(Context ctx) {
-        ctx.render("dashboard/dashboard-new-material.html");
+        Map<String, Object> model = createBaseModel(ctx);
+
+        ctx.render("dashboard/dashboard-new-material.html", model);
     }
 
     public static void createMaterial(Context ctx) {
@@ -223,7 +205,7 @@ public class DashboardController {
         try {
             Material material = MaterialMapper.getMaterialById(itemId);
 
-            Map<String, Object> model = new HashMap<>();
+            Map<String, Object> model = createBaseModel(ctx);
             model.put("material", material);
 
             ctx.render("dashboard/dashboard-edit-material.html", model);
@@ -356,5 +338,34 @@ public class DashboardController {
 
         UserMapper.createUser(staff);
         ctx.redirect("/dashboard/");
+    }
+
+    public static Map<String, Object> createBaseModel(Context ctx) {
+        Staff staff = ctx.sessionAttribute("currentUser");
+        boolean isManager = staff instanceof StaffManager;
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("staff", staff);
+        model.put("isManager", isManager);
+        return model;
+    }
+
+    public static void showStaff(Context ctx) {
+        try {
+            List<User> allUsers = UserMapper.getAllUsers();
+
+            List<Staff> staffList = allUsers.stream()
+                    .filter(user -> user instanceof Staff)
+                    .map(user -> (Staff) user)
+                    .toList();
+
+            Map<String, Object> model = createBaseModel(ctx);
+            model.put("staffList", staffList);
+
+            ctx.render("dashboard/dashboard-staff.html", model);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke hente medarbejderlisten.");
+        }
     }
 }

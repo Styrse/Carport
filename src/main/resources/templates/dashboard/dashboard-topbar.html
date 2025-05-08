@@ -29,6 +29,11 @@
             <p>Profil</p>
         </a>
 
+        <a href="/dashboard/staff" class="icon" th:if="${isManager}">
+            <img src="/img/dashboard/staff.png">
+            <p>Medarbejdere</p>
+        </a>
+
         <a href="/dashboard/logout" class="icon">
             <img src="/img/dashboard/logout.png">
             <p>Log ud</p>

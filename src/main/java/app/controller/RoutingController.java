@@ -42,6 +42,7 @@ public class RoutingController {
         app.post("/dashboard/materials/delete", DashboardController::deleteMaterial);
 
         // 🧑‍💼 Staff Management (Managers only)
+        app.get("/dashboard/staff", DashboardController::showStaff);
         app.get("/dashboard/staff/create", DashboardController::createStaff);
         app.post("/dashboard/staff/create", DashboardController::handleCreateStaff);
 

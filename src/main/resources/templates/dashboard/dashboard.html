@@ -16,12 +16,6 @@
     <div class="container dashboard-front">
         <h1>Hej, <span th:text="${staff.firstName}">Bruger</span>!</h1>
     </div>
-
-    <div th:if="${isManager}">
-        <form action="/dashboard/staff/create" method="get">
-            <button type="submit" class="default-button">Tilføj medarbejder</button>
-        </form>
-    </div>
 </main>
 
 </body>

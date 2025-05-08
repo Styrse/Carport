@@ -12,9 +12,9 @@ import java.sql.SQLException;
 public class UserService {
 
     public static User mapUserService(Context ctx) throws SQLException, DatabaseException {
-        String firstname = ctx.formParam("firstname");
-        String lastname = ctx.formParam("lastname");
-        String phone = ctx.formParam("phone_number");
+        String firstname = ctx.formParam("firstName");
+        String lastname = ctx.formParam("lastName");
+        String phone = ctx.formParam("phone");
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
         String role = ctx.formParam("role");
