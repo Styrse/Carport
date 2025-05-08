@@ -52,5 +52,6 @@ public class RoutingController {
 
         // 🏗️ Carport Configuration
         app.get("/dashboard/new-carport", DashboardController::newCarport);
+        //app.post("/dashboard/configure-carport", DashboardController::handleNewCarport);
     }
 }

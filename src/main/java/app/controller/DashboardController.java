@@ -71,9 +71,47 @@ public class DashboardController {
     }
 
     public static void newCarport(Context ctx) {
+        // Fetch from service
+        MaterialService.refreshMaterials();
+
+        List<Post> posts = MaterialService.getAllPosts();
+        List<Beam> beams = MaterialService.getAllBeams();
+        List<Rafter> rafters = MaterialService.getAllRafters();
+        List<Fascia> fascias = MaterialService.getAllFascias();
+        List<RoofCover> roofCovers = MaterialService.getAllRoofCovers();
+
         Map<String, Object> model = createBaseModel(ctx);
+        model.put("posts", posts);
+        model.put("beams", beams);
+        model.put("rafters", rafters);
+        model.put("fascias", fascias);
+        model.put("roofCovers", roofCovers);
 
         ctx.render("dashboard/dashboard-new-carport.html", model);
+    }
+
+    public static void handleNewCarport(Context ctx) {
+        int width = Integer.parseInt(ctx.formParam("width"));
+        int length = Integer.parseInt(ctx.formParam("length"));
+        int height = Integer.parseInt(ctx.formParam("height"));
+        String roofType = ctx.formParam("roofType");
+        int slope = Integer.parseInt(ctx.formParam("slope"));
+
+        int postId = Integer.parseInt(ctx.formParam("postId"));
+        int beamId = Integer.parseInt(ctx.formParam("beamId"));
+        int rafterId = Integer.parseInt(ctx.formParam("rafterId"));
+        int fasciaId = Integer.parseInt(ctx.formParam("fasciaId"));
+        int roofCoverId = Integer.parseInt(ctx.formParam("roofCoverId"));
+
+        String firstName = ctx.formParam("firstName");
+        String lastName = ctx.formParam("lastName");
+        String phone = ctx.formParam("phone");
+        String email = ctx.formParam("email");
+        String address = ctx.formParam("address");
+        String postcode = ctx.formParam("postcode");
+        String city = ctx.formParam("city");
+
+        ctx.redirect("/dashboard/orders");
     }
 
     public static void showOrders(Context ctx) {
@@ -289,35 +327,6 @@ public class DashboardController {
         } catch (Exception e) {
             e.printStackTrace();
             ctx.status(500).result("Kunne ikke opdatere profil.");
-        }
-    }
-
-    public static void updatePasswordQuickly(Context ctx) {
-        User user = ctx.sessionAttribute("currentUser");
-        if (user == null) {
-            ctx.redirect("/login");
-            return;
-        }
-
-        String newPassword = ctx.formParam("newPassword");
-
-        if (newPassword == null || newPassword.isBlank()) {
-            ctx.status(400).result("Adgangskode må ikke være tom.");
-            return;
-        }
-
-        try (Connection connection = connectionPool.getConnection()) {
-            String sql = "UPDATE users SET password = ? WHERE user_id = ?";
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setString(1, PasswordUtil.hashPassword(newPassword));
-                ps.setInt(2, user.getUserId());
-                ps.executeUpdate();
-            }
-
-            ctx.redirect("/dashboard/");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            ctx.status(500).result("Fejl ved opdatering af adgangskode.");
         }
     }
 
