@@ -24,19 +24,20 @@
                 <input type="text" id="lastName" name="lastName" th:value="${staff.lastName}" required>
 
                 <label for="phoneNumber">Telefonnummer</label>
+
                 <input type="tel" id="phoneNumber" name="phoneNumber" th:value="${staff.phone}" required>
 
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" th:value="${staff.email}" required>
 
                 <label for="password">Ny adgangskode</label>
-                <input type="password" id="password" name="password" placeholder="Skriv ny adgangskode">
+                <input type="password" id="password" name="newPassword" placeholder="Skriv ny adgangskode">
 
                 <label for="password-repeat">Gentag ny adgangskode</label>
-                <input type="password" id="password-repeat" name="password" placeholder="Skriv ny adgangskode igen">
+                <input type="password" id="password-repeat" name="newPasswordRepeat" placeholder="Gentag ny adgangskode">
 
                 <label for="current-password">Nuværende adgangskode</label>
-                <input type="password" id="current-password" name="password" placeholder="Skriv nuværende adganskode">
+                <input type="password" id="current-password" name="currentPassword" placeholder="Skriv nuværende adgangskode" required>
 
                 <button type="submit">Opdater profil</button>
             </form>

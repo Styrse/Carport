@@ -58,7 +58,7 @@ class UserMapperTest {
     @DisplayName("CreateUser Test")
     void createUser() throws DatabaseException {
         //Arrange
-        User user = new Customer("John", "Doe", 12345678, "john@doe.com", "Password123", 1) {};
+        User user = new Customer("John", "Doe", "12345678", "john@doe.com", "Password123", 1) {};
 
         //Act
         UserMapper.createUser(user);
@@ -112,7 +112,7 @@ class UserMapperTest {
     @DisplayName("UpdateUser Test")
     void updateUser() throws DatabaseException {
         //Arrange
-        User user = new Customer("Alice", "Doe", 12345678, "alice@gmail.com", "Alice123", 1);
+        User user = new Customer("Alice", "Doe", "12345678", "alice@gmail.com", "Alice123", 1);
 
         //Act
         UserMapper.updateUser(user);

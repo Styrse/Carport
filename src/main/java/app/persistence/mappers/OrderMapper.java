@@ -146,7 +146,7 @@ public class OrderMapper {
                 "JOIN users u ON o.user_id = u.user_id " +
                 "LEFT JOIN users s ON o.staff_id = s.user_id " +
                 "LEFT JOIN order_status_history received " +
-                "  ON o.order_id = received.order_id AND received.status = 'received' " +
+                "  ON o.order_id = received.order_id AND received.status = 'Inquiry' " + //TODO: update to Danish
                 "LEFT JOIN order_status_history latest " +
                 "  ON o.order_id = latest.order_id " +
                 "  AND latest.update_date = ( " +
@@ -229,8 +229,10 @@ public class OrderMapper {
     }
 
     private static OrderItem getMaterialItem(Connection connection, int orderItemId, int quantity) throws SQLException, DatabaseException {
-        String sql = "SELECT * FROM order_item_material JOIN materials USING (material_id) JOIN price_history " +
-                "USING (material_id) WHERE order_item_id = ? AND CURRENT_DATE BETWEEN valid_from AND valid_to";
+        String sql = "SELECT m.*, ph.cost_price, ph.sales_price FROM order_item_material oim " +
+                "JOIN materials m ON oim.material_id = m.material_id JOIN price_history ph " +
+                "ON ph.material_id = m.material_id WHERE oim.order_item_id = ? " +
+                "ORDER BY ph.valid_from DESC LIMIT 1";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderItemId);
@@ -285,7 +287,7 @@ public class OrderMapper {
                 "JOIN users u ON o.user_id = u.user_id " +
                 "LEFT JOIN users s ON o.staff_id = s.user_id " +
                 "LEFT JOIN order_status_history received " +
-                "  ON o.order_id = received.order_id AND received.status = 'received' " +
+                "  ON o.order_id = received.order_id AND received.status = 'Inquiry' " +
                 "LEFT JOIN order_status_history latest " +
                 "  ON o.order_id = latest.order_id " +
                 "  AND latest.update_date = ( " +
