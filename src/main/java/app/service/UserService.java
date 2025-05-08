@@ -1,4 +1,4 @@
-package app.persistence.service;
+package app.service;
 
 import app.entities.users.Customer;
 import app.entities.users.Staff;

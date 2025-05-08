@@ -1,4 +1,4 @@
-package app.persistence.service;
+package app.service;
 
 import app.entities.orders.Order;
 

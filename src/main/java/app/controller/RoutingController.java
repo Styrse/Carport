@@ -18,40 +18,41 @@ public class RoutingController {
         });
 
         // 🔑 Authentication
-        app.get("/login", DashboardController::login);
-        app.post("/login", DashboardController::handleLogin);
-        app.get("/dashboard/logout", DashboardController::logout);
+        app.get("/login", AuthController::login);
+        app.post("/login", AuthController::handleLogin);
+        app.get("/dashboard/logout", AuthController::logout);
 
         // 🏠 Dashboard
         app.get("/dashboard/", DashboardController::dashboard);
 
         // 👤 Profile
-        app.get("/dashboard/profile", DashboardController::showProfile);
-        app.post("/dashboard/profile/update", DashboardController::updateProfile);
+        app.get("/dashboard/profile", ProfileController::showProfile);
+        app.post("/dashboard/profile/update", ProfileController::updateProfile);
 
         // 🛒 Orders
-        app.get("/dashboard/orders", DashboardController::showOrders);
-        app.get("/dashboard/customers", DashboardController::showCustomers);
-        app.post("/dashboard/customer", DashboardController::showCustomerPage);
-        app.post("/dashboard/customers/update", DashboardController::updateCustomerInfo);
-        app.get("/dashboard/order", DashboardController::showOrderDetails);
+        app.get("/dashboard/orders", OrderController::showOrders);
+        app.get("/dashboard/order", OrderController::showOrderDetails);
 
+        // 💵 Customers
+        app.get("/dashboard/customers", CustomerController::showCustomers);
+        app.post("/dashboard/customer", CustomerController::showCustomerPage);
+        app.post("/dashboard/customers/update", CustomerController::updateCustomerInfo);
 
         // 🪵 Materials
-        app.get("/dashboard/materials", DashboardController::showMaterials);
-        app.get("/dashboard/new-material", DashboardController::newMaterial);
-        app.get("/dashboard/edit-material", DashboardController::editMaterial);
-        app.post("/dashboard/materials/create", DashboardController::createMaterial);
-        app.post("/dashboard/update", DashboardController::updateMaterial);
-        app.post("/dashboard/materials/delete", DashboardController::deleteMaterial);
+        app.get("/dashboard/materials", MaterialController::showMaterials);
+        app.get("/dashboard/new-material", MaterialController::newMaterial);
+        app.get("/dashboard/edit-material", MaterialController::editMaterial);
+        app.post("/dashboard/materials/create", MaterialController::createMaterial);
+        app.post("/dashboard/update", MaterialController::updateMaterial);
+        app.post("/dashboard/materials/delete", MaterialController::deleteMaterial);
 
         // 🧑‍💼 Staff Management (Managers only)
-        app.get("/dashboard/staff", DashboardController::showStaff);
-        app.get("/dashboard/staff/create", DashboardController::createStaff);
-        app.post("/dashboard/staff/create", DashboardController::handleCreateStaff);
+        app.get("/dashboard/staff", StaffController::showStaff);
+        app.get("/dashboard/staff/create", StaffController::createStaff);
+        app.post("/dashboard/staff/create", StaffController::handleCreateStaff);
 
         // 🏗️ Carport Configuration
-        app.get("/dashboard/new-carport", DashboardController::newCarport);
-        //app.post("/dashboard/configure-carport", DashboardController::handleNewCarport);
+        app.get("/dashboard/new-carport", CarportController::newCarport);
+        //app.post("/dashboard/configure-carport", CarportController::handleNewCarport);
     }
 }
