@@ -1,5 +1,6 @@
 package app.entities.orders;
 
+import app.entities.products.Product;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
 
@@ -13,8 +14,12 @@ public class Order {
     private String orderStatus;
     private Customer customer;
     private Staff staff;
-    private List<OrderItem> orderItems;
+    private List<OrderItem> orderItems = new ArrayList<>();
     private float totalPrice;
+
+    public Order(Customer customer) {
+        this.customer = customer;
+    }
 
     public Order(LocalDate orderDate, String orderStatus, Customer customer) {
         this.orderDate = orderDate;
@@ -111,5 +116,9 @@ public class Order {
 
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
     }
 }

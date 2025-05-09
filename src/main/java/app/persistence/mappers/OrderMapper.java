@@ -141,7 +141,7 @@ public class OrderMapper {
                 "FROM orders o JOIN users u ON o.user_id = u.user_id " +
                 "LEFT JOIN users s ON o.staff_id = s.user_id " +
                 "LEFT JOIN order_status_history received " +
-                "  ON o.order_id = received.order_id AND received.status = 'Inquiry' " +
+                "  ON o.order_id = received.order_id AND received.status = 'pending' " +
                 "LEFT JOIN order_status_history latest " +
                 "  ON o.order_id = latest.order_id " +
                 "  AND latest.update_date = ( " +
@@ -364,6 +364,7 @@ public class OrderMapper {
     //Map result set to full Order
     private static Order mapOrder(ResultSet rs) throws Exception {
         int orderId = rs.getInt("order_id");
+
         LocalDate orderDate = rs.getDate("order_date").toLocalDate();
         String orderStatus = rs.getString("order_status");
         float totalPrice = rs.getFloat("total_price");

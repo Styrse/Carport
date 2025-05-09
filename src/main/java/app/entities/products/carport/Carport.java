@@ -4,6 +4,7 @@ import app.entities.products.materials.Material;
 import app.entities.products.materials.MaterialRole;
 import app.entities.products.Product;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -32,6 +33,15 @@ public class Carport extends Product {
     private Map<MaterialRole, Material> materialMap;
 
     public Carport() {
+    }
+
+    public Carport(int width, int length, int height, String roofType, int roofAngle) {
+        this.width = width;
+        this.length = length;
+        this.height = height;
+        this.roofType = roofType;
+        this.roofAngle = roofAngle;
+        this.materialMap = new HashMap<>();
     }
 
     //Carport with flat roof
@@ -119,6 +129,10 @@ public class Carport extends Product {
 
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public void setMaterialMap(Map<MaterialRole, Material> materialMap) {
+        this.materialMap = materialMap;
     }
 
     @Override

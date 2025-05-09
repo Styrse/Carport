@@ -5,11 +5,15 @@ import app.entities.users.Staff;
 import app.entities.users.StaffManager;
 import app.entities.users.User;
 import app.exceptions.DatabaseException;
+import app.persistence.mappers.UserMapper;
 import io.javalin.http.Context;
 
 import java.sql.SQLException;
 
 public class UserService {
+    public static void saveCustomer(Customer customer) throws DatabaseException {
+        UserMapper.createUser(customer);
+    }
 
     public static User mapUserService(Context ctx) throws SQLException, DatabaseException {
         String firstname = ctx.formParam("firstName");
