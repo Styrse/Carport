@@ -3,6 +3,7 @@ package app.controller;
 import app.entities.users.Staff;
 import app.entities.users.User;
 import app.exceptions.DatabaseException;
+import app.persistence.mappers.MaterialMapper;
 import app.persistence.mappers.UserMapper;
 import app.service.UserService;
 import io.javalin.http.Context;
@@ -79,6 +80,12 @@ public class StaffController {
         Staff updated = new Staff(userId, firstName, lastName, phone, email, null, 2); // or 3 if manager
 
         UserMapper.updateUser(updated);
+        ctx.redirect("/dashboard/staff");
+    }
+
+    public static void deleteStaff(Context ctx) throws SQLException, DatabaseException {
+        int staffId = Integer.parseInt(ctx.formParam("userId"));
+        UserMapper.deleteUserByUserId(staffId);
         ctx.redirect("/dashboard/staff");
     }
 }

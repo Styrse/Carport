@@ -55,6 +55,7 @@ public class RoutingController {
         app.post("/dashboard/staff/create", StaffController::handleCreateStaff);
         app.get("/dashboard/staff/edit", StaffController::editStaff);
         app.post("/dashboard/staff/update", StaffController::updateStaff);
+        app.post("/dashboard/staff/delete", StaffController::deleteStaff);
 
         // 🏗️ Carport Configuration
         app.get("/dashboard/new-carport", CarportController::newCarport);

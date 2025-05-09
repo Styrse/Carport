@@ -32,6 +32,14 @@
             <input type="email" id="email" name="email" th:value="${staff.email}" required>
 
             <button type="submit" class="default-button">Opdater</button>
+
+            <button type="submit"
+                    formaction="/dashboard/staff/delete"
+                    formmethod="post"
+                    class="remove-button"
+                    onclick="return confirm('Er du sikker på, at du vil slette personalet?')">
+                Slet personale
+            </button>
         </form>
     </div>
 </main>

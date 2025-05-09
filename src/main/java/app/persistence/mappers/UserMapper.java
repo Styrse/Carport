@@ -169,6 +169,20 @@ public class UserMapper {
         }
     }
 
+    public static void deleteUserByUserId(int userId) throws DatabaseException {
+        String sql = "DELETE FROM users WHERE user_id = ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error deleting user");
+        }
+    }
+
     //Helper: map ResultSet -> correct subclass of User
     public static User mapUser(ResultSet rs) throws SQLException, DatabaseException {
         int userId = rs.getInt("user_id");
