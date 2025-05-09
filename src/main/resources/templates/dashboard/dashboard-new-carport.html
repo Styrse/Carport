@@ -1,66 +1,122 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="UTF-8">
-  <title>Fog - Ny Carport</title>
-  <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
-  <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+    <meta charset="UTF-8">
+    <title>Fog - Ny Carport</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
 </head>
 <body>
 
 <header>
-  <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
 </header>
 
 <main>
-  <form action="/configure-carport" method="post" class="carport-form">
     <h1>Konfigurer Carport</h1>
+    <form action="/dashboard/configure-carport" method="post" class="carport-form">
+        <h2>Mål</h2>
 
-    <label for="width">Bredde:</label>
-    <select name="width" id="width" required>
-      <option value="" disabled selected>Vælg bredde</option>
-      <th:block th:each="val : ${#numbers.sequence(200, 1000, 10)}">
-        <option th:value="${val}" th:text="${val} + ' cm'"></option>
-      </th:block>
-    </select>
+        <label for="width">Bredde</label>
+        <select name="width" id="width" required>
+            <option value="" disabled selected>Vælg bredde</option>
+            <th:block th:each="val : ${#numbers.sequence(200, 1000, 10)}">
+                <option th:value="${val}" th:text="${val} + ' cm'"></option>
+            </th:block>
+        </select>
 
-    <label for="length">Længde:</label>
-    <select name="length" id="length" required>
-      <option value="" disabled selected>Vælg længde</option>
-      <th:block th:each="val : ${#numbers.sequence(200, 1000, 10)}">
-        <option th:value="${val}" th:text="${val} + ' cm'"></option>
-      </th:block>
-    </select>
+        <label for="length">Længde</label>
+        <select name="length" id="length" required>
+            <option value="" disabled selected>Vælg længde</option>
+            <th:block th:each="val : ${#numbers.sequence(200, 1000, 10)}">
+                <option th:value="${val}" th:text="${val} + ' cm'"></option>
+            </th:block>
+        </select>
 
-    <label for="height">Højde:</label>
-    <select name="height" id="height" required>
-      <option value="" disabled selected>Vælg højde</option>
-      <th:block th:each="val : ${#numbers.sequence(200, 300, 10)}">
-        <option th:value="${val}" th:text="${val} + ' cm'"></option>
-      </th:block>
-    </select>
+        <label for="height">Højde</label>
+        <select name="height" id="height" required>
+            <option value="" disabled selected>Vælg højde</option>
+            <th:block th:each="val : ${#numbers.sequence(200, 300, 10)}">
+                <option th:value="${val}" th:text="${val} + ' cm'"></option>
+            </th:block>
+        </select>
 
-    <label for="roofType">Tagtype:</label>
-    <select name="roofType" id="roofType" required>
-      <option value="" disabled selected>Vælg tagtype</option>
-      <option value="flat">Fladt tag</option>
-      <option value="pitched">Tag med rejsning</option>
-    </select>
+        <label for="roofType">Tagtype</label>
+        <select name="roofType" id="roofType" required>
+            <option value="" disabled selected>Vælg tagtype</option>
+            <option value="flat">Fladt tag</option>
+            <option value="pitched">Tag med rejsning</option>
+        </select>
 
-    <label for="slope">Taghældning:</label>
-    <select name="slope" id="slope" required>
-      <option value="" disabled selected>Vælg taghældning</option>
-      <option value="15">15°</option>
-      <option value="20">20°</option>
-      <option value="25">25°</option>
-      <option value="30">30°</option>
-      <option value="35">35°</option>
-      <option value="40">40°</option>
-      <option value="45">45°</option>
-    </select>
+        <label for="roofAngle">Taghældning</label>
+        <select name="roofAngle" id="roofAngle" required>
+            <option value="" disabled selected>Vælg taghældning</option>
+            <th:block th:each="angle : ${#numbers.sequence(0, 45, 5)}">
+                <option th:value="${angle}"
+                        th:text="${angle + '°'}"></option>
+            </th:block>
+        </select>
 
-    <button type="submit" class="default-button">Gem valg</button>
-  </form>
+        <!-- Material selection section -->
+        <h2>Materialevalg</h2>
+
+        <label for="post">Vælg stolpe</label>
+        <select name="postId" id="post" required>
+            <option value="" disabled selected>Vælg stolpe</option>
+            <option th:each="post : ${posts}" th:value="${post.itemId}" th:text="${post.name}"></option>
+        </select>
+
+        <label for="beam">Vælg rem</label>
+        <select name="beamId" id="beam" required>
+            <option value="" disabled selected>Vælg rem</option>
+            <option th:each="beam : ${beams}" th:value="${beam.itemId}" th:text="${beam.name}"></option>
+        </select>
+
+        <label for="rafter">Vælg spær</label>
+        <select name="rafterId" id="rafter" required>
+            <option value="" disabled selected>Vælg spær</option>
+            <option th:each="rafter : ${rafters}" th:value="${rafter.itemId}" th:text="${rafter.name}"></option>
+        </select>
+
+        <label for="fascia">Vælg stern</label>
+        <select name="fasciaId" id="fascia" required>
+            <option value="" disabled selected>Vælg stern</option>
+            <option th:each="fascia : ${fascias}" th:value="${fascia.itemId}" th:text="${fascia.name}"></option>
+        </select>
+
+        <label for="roofCover">Vælg tagbeklædning</label>
+        <select name="roofCoverId" id="roofCover" required>
+            <option value="" disabled selected>Vælg tagbeklædning</option>
+            <option th:each="roofCover : ${roofCovers}" th:value="${roofCover.itemId}"
+                    th:text="${roofCover.name}"></option>
+        </select>
+
+        <!-- Customer info section -->
+        <h2>Kundeinformation</h2>
+
+        <label for="firstName">Fornavn</label>
+        <input type="text" id="firstName" name="firstName" required>
+
+        <label for="lastName">Efternavn</label>
+        <input type="text" id="lastName" name="lastName" required>
+
+        <label for="phone">Telefon</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="address">Adresse</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="postcode">Postnummer</label>
+        <input type="text" id="postcode" name="postcode" required>
+
+        <label for="city">By</label>
+        <input type="text" id="city" name="city" required>
+
+        <button type="submit" class="default-button">Gem valg</button>
+    </form>
 </main>
 
 </body>

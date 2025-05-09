@@ -74,7 +74,7 @@ public class UserMapper {
     }
 
     public static User getUserById(int id) throws DatabaseException {
-        String sql = "SELECT * FROM users WHERE user_id = ?";
+        String sql = "SELECT * FROM users LEFT JOIN postcodes USING (postcode) WHERE user_id = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -133,19 +133,20 @@ public class UserMapper {
 
     //Update full user
     public static void updateUser(User user) throws DatabaseException {
-        String sql = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, email = ?," +
-                "password = ?,user_id = ? WHERE email = ?";
+        String sql = "UPDATE users SET firstname = ?, lastname = ?, address = ?, postcode = ?, phone_number = ?, " +
+                "email = ?, password = ? WHERE user_id = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setString(3, user.getPhone());
-            ps.setString(4, user.getEmail());
-            ps.setString(5, PasswordUtil.hashPassword(user.getPassword()));
-            ps.setInt(6, user.getUserRole());
-            ps.setString(7, user.getEmail());
+            ps.setString(3, user.getAddress());
+            ps.setString(4, user.getPostcode());
+            ps.setString(5, user.getPhone());
+            ps.setString(6, user.getEmail());
+            ps.setString(7, PasswordUtil.hashPassword(user.getPassword()));
+            ps.setInt(8, user.getUserId());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -168,6 +169,20 @@ public class UserMapper {
         }
     }
 
+    public static void deleteUserByUserId(int userId) throws DatabaseException {
+        String sql = "DELETE FROM users WHERE user_id = ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error deleting user");
+        }
+    }
+
     //Helper: map ResultSet -> correct subclass of User
     public static User mapUser(ResultSet rs) throws SQLException, DatabaseException {
         int userId = rs.getInt("user_id");
@@ -178,8 +193,22 @@ public class UserMapper {
         String password = rs.getString("password");
         int roleId = rs.getInt("role_id");
 
+        //Did this try as Staff don't have address etc
+        String address;
+        String postcode;
+        String city;
+        try {
+            address = rs.getString("address");
+            postcode = rs.getString("postcode");
+            city = rs.getString("city");
+        } catch (SQLException e) {
+            address = null;
+            postcode = null;
+            city = null;
+        }
+
         return switch (roleId) {
-            case 1 -> new Customer(userId, firstname, lastname, phone, email, password, roleId);
+            case 1 -> new Customer(userId, firstname, lastname, address, postcode, city, phone, email, password, roleId);
             case 2 -> new Staff(userId, firstname, lastname, phone, email, password, roleId);
             case 3 -> new StaffManager(userId, firstname, lastname, phone, email, password, roleId);
             default -> throw new DatabaseException("Unknown user type: " + roleId);

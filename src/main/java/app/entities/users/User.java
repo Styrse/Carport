@@ -5,7 +5,7 @@ public abstract class User {
     private String firstName;
     private String lastName;
     private String address;
-    private int postcode; //Could be String for foreign addresses
+    private String postcode; //String for foreign addresses
     private String city;
     private String phone;    //Stored as String for future-proof for international phone numbers
     private String email;
@@ -34,7 +34,7 @@ public abstract class User {
         this.userRole = userRole;
     }
 
-    public User(String firstName, String lastName, String address, int postcode, String city, String phone, String email, String password, int userRole) {
+    public User(String firstName, String lastName, String address, String postcode, String city, String phone, String email, int userRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -46,7 +46,7 @@ public abstract class User {
         this.userRole = userRole;
     }
 
-    public User(int userId, String firstName, String lastName, String address, int postcode, String city, String phone, String email, String password, int userRole) {
+    public User(int userId, String firstName, String lastName, String address, String postcode, String city, String phone, String email, String password, int userRole) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -123,11 +123,11 @@ public abstract class User {
         this.address = address;
     }
 
-    public int getPostcode() {
+    public String getPostcode() {
         return postcode;
     }
 
-    public void setPostcode(int postcode) {
+    public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
 

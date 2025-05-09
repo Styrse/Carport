@@ -1,4 +1,4 @@
-package app.persistence.service;
+package app.service;
 
 import app.entities.products.materials.Material;
 import app.entities.products.materials.planks.Beam;

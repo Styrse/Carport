@@ -15,6 +15,76 @@
 <main>
     <div class="container dashboard-front">
         <h1>Hej, <span th:text="${staff.firstName}">Bruger</span>!</h1>
+
+        <div class="dashboard-order-tables">
+            <section class="dashboard-order-section">
+                <h2>Dine forespørgsler</h2>
+                <table class="material-table">
+                    <thead>
+                    <tr>
+                        <th>Ordre ID</th>
+                        <th>Kunde</th>
+                        <th>Totalpris</th>
+                        <th>Se</th>
+                        <th>Fjern</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${staff.myWorkOrders}">
+                        <td th:text="${order.orderId}"></td>
+                        <td th:text="|${order.customer.firstName} ${order.customer.lastName}|"></td>
+                        <td th:text="${order.totalPrice} + ' kr.'"></td>
+                        <td>
+                            <form action="/dashboard/order" method="get">
+                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <button type="submit" class="default-button">Se</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/orders/remove" method="post" style="display: inline;">
+                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <button type="submit" class="remove-button">Fjern</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="dashboard-order-section">
+                <h2>Ufordelte forespørgsler</h2>
+                <table class="material-table">
+                    <thead>
+                    <tr>
+                        <th>Ordre ID</th>
+                        <th>Kunde</th>
+                        <th>Totalpris</th>
+                        <th>Se</th>
+                        <th>Tag</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${unassignedOrders}">
+                        <td th:text="${order.orderId}"></td>
+                        <td th:text="|${order.customer.firstname} ${order.customer.lastname}|"></td>
+                        <td th:text="${order.totalPrice} + ' kr.'"></td>
+                        <td>
+                            <form action="/dashboard/order" method="get">
+                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <button type="submit" class="default-button">Se</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/orders/assign" method="post">
+                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <button type="submit" class="add-button">Tag</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
     </div>
 </main>
 

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Rediger materiale</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="container">
+        <h1>Carport Konfiguration</h1>
+
+        <section class="carport-info">
+            <h1>Ordre #<span th:text="${order.orderId}"></span></h1>
+
+            <!-- EDITABLE SECTION -->
+            <form th:if="${order.orderStatus == 'Forespørgsel'}" action="/dashboard/carport/update" method="post" class="carport-form">
+                <h2>Mål</h2>
+
+                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                <input type="hidden" name="carportId" th:value="${carport.itemId}" />
+
+                <label for="width">Bredde</label>
+                <input type="number" id="width" name="width" th:value="${carport.width}" required />
+
+                <label for="length">Længde</label>
+                <input type="number" id="length" name="length" th:value="${carport.length}" required />
+
+                <label for="height">Højde</label>
+                <input type="number" id="height" name="height" th:value="${carport.height}" required />
+
+                <label for="roofType">Tagtype</label>
+                <select id="roofType" name="roofType">
+                    <option value="flat" th:selected="${carport.roofType == 'flat'}">Fladt tag</option>
+                    <option value="pitched" th:selected="${carport.roofType == 'pitched'}">Tag med rejsning</option>
+                </select>
+
+                <label for="roofAngle">Hældning</label>
+                <select id="roofAngle" name="roofAngle">
+                    <option th:each="angle : ${#numbers.sequence(0, 45, 5)}"
+                            th:value="${angle}"
+                            th:text="${angle} + '°'"
+                            th:selected="${carport.roofAngle == angle}">
+                    </option>
+                </select>
+
+                <h2>Materialevalg</h2>
+
+                <label for="post">Vælg stolpe</label>
+                <select name="postId" id="post" required>
+                    <option value="" disabled>Vælg stolpe</option>
+                    <option th:each="post : ${posts}"
+                            th:value="${post.itemId}"
+                            th:text="${post.name}"
+                            th:selected="${post.itemId == selectedPostId}">
+                    </option>
+                </select>
+
+                <label for="beam">Vælg rem</label>
+                <select name="beamId" id="beam" required>
+                    <option value="" disabled>Vælg rem</option>
+                    <option th:each="beam : ${beams}"
+                            th:value="${beam.itemId}"
+                            th:text="${beam.name}"
+                            th:selected="${beam.itemId == selectedBeamId}">
+                    </option>
+                </select>
+
+                <label for="rafter">Vælg spær</label>
+                <select name="rafterId" id="rafter" required>
+                    <option value="" disabled>Vælg spær</option>
+                    <option th:each="rafter : ${rafters}"
+                            th:value="${rafter.itemId}"
+                            th:text="${rafter.name}"
+                            th:selected="${rafter.itemId == selectedRafterId}">
+                    </option>
+                </select>
+
+                <label for="fascia">Vælg stern</label>
+                <select name="fasciaId" id="fascia" required>
+                    <option value="" disabled>Vælg stern</option>
+                    <option th:each="fascia : ${fascias}"
+                            th:value="${fascia.itemId}"
+                            th:text="${fascia.name}"
+                            th:selected="${fascia.itemId == selectedFasciaId}">
+                    </option>
+                </select>
+
+                <label for="roofCover">Vælg tagbeklædning</label>
+                <select name="roofCoverId" id="roofCover" required>
+                    <option value="" disabled>Vælg tagbeklædning</option>
+                    <option th:each="roofCover : ${roofCovers}"
+                            th:value="${roofCover.itemId}"
+                            th:text="${roofCover.name}"
+                            th:selected="${roofCover.itemId == selectedRoofCoverId}">
+                    </option>
+                </select>
+
+                <button type="submit" class="default-button">Opdater</button>
+            </form>
+
+            <!--TODO: Add print friendly code -->
+            <!-- READ-ONLY SECTION -->
+            <div th:unless="${order.orderStatus == 'Forespørgsel'}" class="carport-readonly">
+                <p><strong>Bredde:</strong> <span th:text="${carport.width} + ' cm'"></span></p>
+                <p><strong>Længde:</strong> <span th:text="${carport.length} + ' cm'"></span></p>
+                <p><strong>Højde:</strong> <span th:text="${carport.height} + ' cm'"></span></p>
+                <p><strong>Tagtype:</strong> <span th:text="${carport.roofType}"></span></p>
+                <p><strong>Hældning:</strong> <span th:text="${carport.roofAngle} + '°'"></span></p>
+
+                <hr>
+
+                <h3>Valgte materialer</h3>
+                <p><strong>Stolpe:</strong>
+                    <span th:if="${selectedPost}" th:text="${selectedPost.name}"></span>
+                    <span th:unless="${selectedPost}">-</span>
+                </p>
+                <p><strong>Rem:</strong>
+                    <span th:if="${selectedBeam}" th:text="${selectedBeam.name}"></span>
+                    <span th:unless="${selectedBeam}">-</span>
+                </p>
+                <p><strong>Spær:</strong>
+                    <span th:if="${selectedRafter}" th:text="${selectedRafter.name}"></span>
+                    <span th:unless="${selectedRafter}">-</span>
+                </p>
+                <p><strong>Stern:</strong>
+                    <span th:if="${selectedFascia}" th:text="${selectedFascia.name}"></span>
+                    <span th:unless="${selectedFascia}">-</span>
+                </p>
+                <p><strong>Tagbeklædning:</strong>
+                    <span th:if="${selectedRoofCover}" th:text="${selectedRoofCover.name}"></span>
+                    <span th:unless="${selectedRoofCover}">-</span>
+                </p>
+            </div>
+        </section>
+    </div>
+</main>
+
+</body>
+</html>

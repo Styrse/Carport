@@ -1,15 +1,26 @@
-package app.persistence.service;
+package app.service;
 
+import app.entities.orders.Order;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
 import app.entities.users.StaffManager;
 import app.entities.users.User;
 import app.exceptions.DatabaseException;
+import app.persistence.mappers.OrderMapper;
+import app.persistence.mappers.UserMapper;
 import io.javalin.http.Context;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserService {
+    public static void createUser(User user) throws DatabaseException {
+        UserMapper.createUser(user);
+    }
+
+    public static void getOrdersByStaffId(Staff user) throws DatabaseException {
+        user.setMyWorkOrders(OrderMapper.getOrdersByStaffId(user.getUserId()));
+    }
 
     public static User mapUserService(Context ctx) throws SQLException, DatabaseException {
         String firstname = ctx.formParam("firstName");

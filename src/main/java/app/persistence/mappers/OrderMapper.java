@@ -80,7 +80,7 @@ public class OrderMapper {
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderId);
-            ps.setString(2, "pending");
+            ps.setString(2, "Forespørgsel");
             ps.executeUpdate();
         }
     }
@@ -141,7 +141,7 @@ public class OrderMapper {
                 "FROM orders o JOIN users u ON o.user_id = u.user_id " +
                 "LEFT JOIN users s ON o.staff_id = s.user_id " +
                 "LEFT JOIN order_status_history received " +
-                "  ON o.order_id = received.order_id AND received.status = 'Inquiry' " +
+                "  ON o.order_id = received.order_id AND received.status = 'Forespørgsel' " +
                 "LEFT JOIN order_status_history latest " +
                 "  ON o.order_id = latest.order_id " +
                 "  AND latest.update_date = ( " +
@@ -282,7 +282,7 @@ public class OrderMapper {
                 "JOIN users u ON o.user_id = u.user_id " +
                 "LEFT JOIN users s ON o.staff_id = s.user_id " +
                 "LEFT JOIN order_status_history received " +
-                "  ON o.order_id = received.order_id AND received.status = 'Inquiry' " +
+                "  ON o.order_id = received.order_id AND received.status = 'Forespørgsel' " +
                 "LEFT JOIN order_status_history latest " +
                 "  ON o.order_id = latest.order_id " +
                 "  AND latest.update_date = ( " +
@@ -333,7 +333,7 @@ public class OrderMapper {
             // Update carport/materials using same connection
             for (OrderItem item : order.getOrderItems()) {
                 if (item.getProduct() instanceof Carport carport) {
-                    CarportMapper.updateCarport(connection, carport);
+                    CarportMapper.updateCarport(carport);
                 } else if (item.getProduct() instanceof Material material) {
                     MaterialMapper.updateMaterial(material);
                 }
@@ -345,8 +345,6 @@ public class OrderMapper {
         }
     }
 
-
-    // Delete order: Could implement soft delete later
     public static void deleteOrder(int orderId) throws DatabaseException {
         String sql = "DELETE FROM orders WHERE order_id = ?";
 
@@ -361,9 +359,25 @@ public class OrderMapper {
         }
     }
 
+    public static void addStatus(int orderId, String status) throws DatabaseException {
+        String sql = "INSERT INTO order_status_history (order_id, status) VALUES (?, ?)";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, orderId);
+            ps.setString(2, status);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Could not insert order status");
+        }
+    }
+
     //Map result set to full Order
     private static Order mapOrder(ResultSet rs) throws Exception {
         int orderId = rs.getInt("order_id");
+
         LocalDate orderDate = rs.getDate("order_date").toLocalDate();
         String orderStatus = rs.getString("order_status");
         float totalPrice = rs.getFloat("total_price");
@@ -381,5 +395,126 @@ public class OrderMapper {
         Order order = new Order(orderId, orderDate, orderStatus, customer, staff);
         order.setTotalPrice(totalPrice);
         return order;
+    }
+
+    public static List<Order> getOrdersByStaffId(int staffId) throws DatabaseException {
+        List<Order> orders = new ArrayList<>();
+
+        String sql = "SELECT " +
+                "  o.order_id, " +
+                "  o.total_price, " +
+                "  u.email AS user_email, " +
+                "  s.email AS staff_email, " +
+                "  received.update_date AS order_date, " +
+                "  latest.status AS order_status " +
+                "FROM orders o " +
+                "JOIN users u ON o.user_id = u.user_id " +
+                "LEFT JOIN users s ON o.staff_id = s.user_id " +
+                "LEFT JOIN order_status_history received " +
+                "  ON o.order_id = received.order_id AND received.status = 'Forespørgsel' " +
+                "LEFT JOIN order_status_history latest " +
+                "  ON o.order_id = latest.order_id " +
+                "  AND latest.update_date = ( " +
+                "    SELECT MAX(update_date) " +
+                "    FROM order_status_history " +
+                "    WHERE order_id = o.order_id " +
+                "  ) " +
+                "WHERE o.staff_id = ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, staffId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    orders.add(mapOrder(rs));
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error fetching orders by staff ID");
+        }
+
+        return orders;
+    }
+
+    public static List<Order> getUnassignedRequestOrders() throws DatabaseException {
+        List<Order> orders = new ArrayList<>();
+
+        String sql = """
+        SELECT o.order_id, o.user_id, o.total_price,
+               latest.status AS order_status,
+               u.firstname, u.lastname, u.phone_number, u.email
+        FROM orders o
+        JOIN users u ON o.user_id = u.user_id
+        JOIN (
+            SELECT DISTINCT ON (order_id) order_id, status, update_date
+            FROM order_status_history
+            ORDER BY order_id, update_date DESC
+        ) latest ON o.order_id = latest.order_id
+        WHERE o.staff_id IS NULL AND latest.status = 'Forespørgsel'
+        ORDER BY o.order_id DESC
+        """;
+
+        try (Connection conn = connectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer(
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("phone_number"),
+                        rs.getString("email"),
+                        null, // no password needed
+                        1
+                );
+                customer.setUserId(rs.getInt("user_id"));
+
+                Order order = new Order(customer);
+                        order.setOrderId(rs.getInt("order_id"));
+                        order.setTotalPrice(rs.getFloat("total_price"));
+                        order.setOrderStatus(rs.getString("order_status"));
+
+                orders.add(order);
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error fetching unassigned request orders");
+        }
+
+        return orders;
+    }
+
+    public static void assignOrderToStaff(int orderId, int staffId) throws DatabaseException {
+        String sql = "UPDATE orders SET staff_id = ? WHERE order_id = ?";
+
+        try (Connection conn = connectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, staffId);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Fejl ved tildeling af ordre");
+        }
+    }
+
+    public static void removeStaffFromOrder(int orderId, int staffId) throws DatabaseException {
+        String sql = "UPDATE orders SET staff_id = NULL WHERE order_id = ? AND staff_id = ?";
+
+        try (Connection conn = connectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, orderId);
+            ps.setInt(2, staffId);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Fejl ved fjernelse af medarbejder fra ordre");
+        }
     }
 }

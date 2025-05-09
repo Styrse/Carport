@@ -12,6 +12,11 @@ public class Customer extends User {
         this.myOrders = new ArrayList<>();
     }
 
+    public Customer(String firstName, String lastName, String address, String postcode, String city, String phone, String email, int userRole) {
+        super(firstName, lastName, address, postcode, city, phone, email, userRole);
+        this.myOrders = new ArrayList<>();
+    }
+
     public Customer(String firstName, String lastName, String phoneNumber, String email, String password, int roleId) {
         super(firstName, lastName, phoneNumber, email, password, roleId);
         this.myOrders = new ArrayList<>();
@@ -22,12 +27,7 @@ public class Customer extends User {
         this.myOrders = new ArrayList<>();
     }
 
-    public Customer(String firstName, String lastName, String address, int postcode, String city, String phoneNumber, String email, String password, int userRole) {
-        super(firstName, lastName, address, postcode, city, phoneNumber, email, password, userRole);
-        this.myOrders = new ArrayList<>();
-    }
-
-    public Customer(int userId, String firstName, String lastName, String address, int postcode, String city, String phoneNumber, String email, String password, int userRole) {
+    public Customer(int userId, String firstName, String lastName, String address, String postcode, String city, String phoneNumber, String email, String password, int userRole) {
         super(userId, firstName, lastName, address, postcode, city, phoneNumber, email, password, userRole);
         this.myOrders = new ArrayList<>();
     }

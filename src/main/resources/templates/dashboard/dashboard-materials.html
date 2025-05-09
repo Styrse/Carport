@@ -50,8 +50,8 @@
                     <tbody>
                     <tr th:each="material : ${posts}">
                         <td th:text="${material.name}"></td>
-                        <td th:text="${material.bucklingCapacity} + ' M²'"></td>
-                        <td th:text="${material.salesPrice} + ' kr.'"></td>
+                        <td th:text="${#numbers.formatDecimal(material.bucklingCapacity, 1, 1, 'COMMA')} + ' M²'"></td>
+                        <td th:text="${#numbers.formatDecimal(material.salesPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
                         <td th:if="${isManager}">
                             <form action="/dashboard/edit-material" method="get">
                                 <input type="hidden" name="id" th:value="${material.itemId}">
@@ -89,7 +89,7 @@
                     <tr th:each="material : ${beams}">
                         <td th:text="${material.name}"></td>
                         <td th:text="${material.postGap}"></td>
-                        <td th:text="${material.salesPrice} + ' kr.'"></td>
+                        <td th:text="${#numbers.formatDecimal(material.salesPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
                         <td th:if="${isManager}">
                             <form action="/dashboard/edit-material" method="get">
                                 <input type="hidden" name="id" th:value="${material.itemId}">
@@ -119,7 +119,7 @@
                     <tbody>
                     <tr th:each="material : ${rafters}">
                         <td th:text="${material.name}"></td>
-                        <td th:text="${material.salesPrice} + ' kr.'"></td>
+                        <td th:text="${#numbers.formatDecimal(material.salesPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
                         <td th:if="${isManager}">
                             <form action="/dashboard/edit-material" method="get">
                                 <input type="hidden" name="id" th:value="${material.itemId}">
@@ -146,7 +146,7 @@
                     <tbody>
                     <tr th:each="material : ${fascias}">
                         <td th:text="${material.name}"></td>
-                        <td th:text="${material.salesPrice} + ' kr.'"></td>
+                        <td th:text="${#numbers.formatDecimal(material.salesPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
                         <td th:if="${isManager}">
                             <form action="/dashboard/edit-material" method="get">
                                 <input type="hidden" name="id" th:value="${material.itemId}">
@@ -181,7 +181,7 @@
                     <tr th:each="material : ${roofCovers}">
                         <td th:text="${material.name}"></td>
                         <td th:text="${material.gapRafters}"></td>
-                        <td th:text="${material.salesPrice} + ' kr.'"></td>
+                        <td th:text="${#numbers.formatDecimal(material.salesPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
                         <td th:if="${isManager}">
                             <form action="/dashboard/edit-material" method="get">
                                 <input type="hidden" name="id" th:value="${material.itemId}">

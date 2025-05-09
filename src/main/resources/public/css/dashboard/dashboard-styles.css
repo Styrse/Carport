@@ -1,6 +1,7 @@
 /* ===== General ===== */
 html {
     scroll-behavior: smooth;
+    overflow-y: scroll;
 }
 
 body {
@@ -56,6 +57,11 @@ h1 {
     transform: translateY(-5px);
 }
 
+.icon.selected {
+    background-color: #3569A5;
+    transform: translateY(-5px);
+}
+
 .icon:focus:not(:hover),
 .icon:active:not(:hover) {
     background-color: transparent;
@@ -88,12 +94,18 @@ h1 {
     margin: 0 auto 20px;
 }
 
+.topbar a {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #444;
+}
+
 /* ===== Carport Configuration Form ===== */
 .carport-form {
     display: grid;
     gap: 5px;
-    max-width: 500px;
-    margin: 40px auto;
+    max-width: 650px;
+    margin: 20px auto;
     background-color: #ffffff;
     padding: 30px;
     border-radius: 12px;
@@ -233,6 +245,76 @@ tbody tr:hover {
     background-color: #f0f8ff;
 }
 
+.cancelled-row {
+    background-color: #f8d7da;
+    opacity: 0.7;
+}
+
+.form-grid-two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 2rem;
+}
+
+.form-grid-three {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem 2rem;
+    margin-bottom: 1.1125rem;
+}
+
+.form-grid-two div,
+.form-grid-three div {
+    display: flex;
+    flex-direction: column;
+}
+
+.postal-group .postal-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.postal-row input {
+    flex: 1;
+}
+
+.dashboard-order-tables {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.dashboard-order-section {
+    flex: 1;
+}
+
+.inline-form {
+    display: inline;
+    margin-left: 24px;
+}
+
+.carport-readonly {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    font-size: 16px;
+    line-height: 1.8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.carport-readonly p {
+    margin: 0 0 10px;
+}
+
+.carport-readonly strong {
+    display: inline-block;
+    width: 120px;
+    font-weight: 600;
+    color: #333;
+}
+
 /* ===== Action Buttons (e.g. Remove/See) ===== */
 button {
     font-family: inherit;
@@ -262,6 +344,20 @@ button {
 
 #add-employee-button {
     margin-bottom: 15px;
+}
+
+.add-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add-button:hover {
+    background-color: #218838;
 }
 
 /* ===== Material Tables ===== */
@@ -374,7 +470,6 @@ section {
 
 .order-info h2 {
     margin-bottom: 10px;
-    color: #154985;
 }
 
 .order-info p {

@@ -19,17 +19,44 @@
         <form class="carport-form" action="/dashboard/customers/update" method="post">
             <input type="hidden" name="customerId" th:value="${customer.userId}" />
 
-            <label for="firstName">Fornavn</label>
-            <input type="text" id="firstName" name="firstName" th:value="${customer.firstName}" required>
+            <div class="form-grid-two">
+                <div>
+                    <label for="firstName">Fornavn</label>
+                    <input type="text" id="firstName" name="firstName" th:value="${customer.firstName}" required>
+                </div>
 
-            <label for="lastName">Efternavn</label>
-            <input type="text" id="lastName" name="lastName" th:value="${customer.lastName}" required>
+                <div>
+                    <label for="lastName">Efternavn</label>
+                    <input type="text" id="lastName" name="lastName" th:value="${customer.lastName}" required>
+                </div>
 
-            <label for="phone">Telefonnummer</label>
-            <input type="tel" id="phone" name="phone" th:value="${customer.phone}" required>
+                <div>
+                    <label for="phone">Telefonnummer</label>
+                    <input type="tel" id="phone" name="phone" th:value="${customer.phone}" required>
+                </div>
 
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" th:value="${customer.email}" required>
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" th:value="${customer.email}" required>
+                </div>
+            </div>
+
+            <div class="form-grid-three">
+                <div>
+                    <label for="address">Adresse</label>
+                    <input type="text" id="address" name="address" th:value="${customer.address}" required>
+                </div>
+
+                <div>
+                    <label for="postcode">Postnummer</label>
+                    <input type="text" id="postcode" name="postcode" th:value="${customer.postcode}" required>
+                </div>
+
+                <div>
+                    <label for="city">By</label>
+                    <input type="text" id="city" name="city" th:value="${customer.city}" required>
+                </div>
+            </div>
 
             <button type="submit" class="default-button">Opdater kundeinfo</button>
         </form>
@@ -43,18 +70,26 @@
                     <th>Status</th>
                     <th>Totalpris</th>
                     <th>Se</th>
+                    <th>Annuller</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="order : ${orders}">
-                    <td th:text="${order.orderId}"></td>
+                <tr th:each="order : ${orders}" th:classappend="${order.orderStatus == 'Annulleret'} ? 'cancelled-row'">
+                <td th:text="${order.orderId}"></td>
                     <td th:text="${order.orderStatus}"></td>
-                    <td th:text="${order.getTotalPrice()} + ' kr.'"></td>
+                    <td th:text="${#numbers.formatDecimal(order.getTotalPrice(), 1, 2, 'COMMA')} + ' kr.'"></td>
                     <td>
                         <form method="get" action="/dashboard/order">
                             <input type="hidden" name="orderId" th:value="${order.orderId}" />
                             <button type="submit" class="default-button">Se</button>
                         </form>
+                    </td>
+                    <td>
+                        <form th:if="${order.orderStatus != 'Annulleret'}" method="post" action="/orders/cancel">
+                            <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                            <button type="submit" class="remove-button" onclick="return confirm('Er du sikker på, at du vil annullere denne ordre?')">Annuller</button>
+                        </form>
+                        <span th:if="${order.orderStatus == 'Annulleret'}"></span>
                     </td>
                 </tr>
                 </tbody>
