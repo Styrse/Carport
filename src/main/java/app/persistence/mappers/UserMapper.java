@@ -133,19 +133,20 @@ public class UserMapper {
 
     //Update full user
     public static void updateUser(User user) throws DatabaseException {
-        String sql = "UPDATE users SET firstname = ?, lastname = ?, phone_number = ?, email = ?," +
-                "password = ?,user_id = ? WHERE email = ?";
+        String sql = "UPDATE users SET firstname = ?, lastname = ?, address = ?, postcode = ?, phone_number = ?, " +
+                "email = ?, password = ? WHERE user_id = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setString(3, user.getPhone());
-            ps.setString(4, user.getEmail());
-            ps.setString(5, PasswordUtil.hashPassword(user.getPassword()));
-            ps.setInt(6, user.getUserRole());
-            ps.setString(7, user.getEmail());
+            ps.setString(3, user.getAddress());
+            ps.setString(4, user.getPostcode());
+            ps.setString(5, user.getPhone());
+            ps.setString(6, user.getEmail());
+            ps.setString(7, PasswordUtil.hashPassword(user.getPassword()));
+            ps.setInt(8, user.getUserId());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -178,6 +179,7 @@ public class UserMapper {
         String password = rs.getString("password");
         int roleId = rs.getInt("role_id");
 
+        //Did this try as Staff don't have address etc
         String address;
         String postcode;
         String city;
