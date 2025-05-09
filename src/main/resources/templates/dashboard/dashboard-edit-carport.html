@@ -117,11 +117,26 @@
                 <hr>
 
                 <h3>Valgte materialer</h3>
-                <p><strong>Stolpe:</strong> <span th:text="${carport.materialMap['POST'].name}"></span></p>
-                <p><strong>Rem:</strong> <span th:text="${carport.materialMap['BEAM'].name}"></span></p>
-                <p><strong>Spær:</strong> <span th:text="${carport.materialMap['RAFTER'].name}"></span></p>
-                <p><strong>Stern:</strong> <span th:text="${carport.materialMap['FASCIA'].name}"></span></p>
-                <p><strong>Tagbeklædning:</strong> <span th:text="${carport.materialMap['ROOFCOVER'].name}"></span></p>
+                <p><strong>Stolpe:</strong>
+                    <span th:if="${selectedPost}" th:text="${selectedPost.name}"></span>
+                    <span th:unless="${selectedPost}">-</span>
+                </p>
+                <p><strong>Rem:</strong>
+                    <span th:if="${selectedBeam}" th:text="${selectedBeam.name}"></span>
+                    <span th:unless="${selectedBeam}">-</span>
+                </p>
+                <p><strong>Spær:</strong>
+                    <span th:if="${selectedRafter}" th:text="${selectedRafter.name}"></span>
+                    <span th:unless="${selectedRafter}">-</span>
+                </p>
+                <p><strong>Stern:</strong>
+                    <span th:if="${selectedFascia}" th:text="${selectedFascia.name}"></span>
+                    <span th:unless="${selectedFascia}">-</span>
+                </p>
+                <p><strong>Tagbeklædning:</strong>
+                    <span th:if="${selectedRoofCover}" th:text="${selectedRoofCover.name}"></span>
+                    <span th:unless="${selectedRoofCover}">-</span>
+                </p>
             </div>
         </section>
     </div>

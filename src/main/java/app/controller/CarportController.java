@@ -140,6 +140,12 @@ public class CarportController {
         model.put("fascias", fascias);
         model.put("roofCovers", roofCovers);
 
+        model.put("selectedPost", selectedPost);
+        model.put("selectedBeam", selectedBeam);
+        model.put("selectedRafter", selectedRafter);
+        model.put("selectedFascia", selectedFascia);
+        model.put("selectedRoofCover", selectedRoofCover);
+
         model.put("selectedPostId", selectedPost.getItemId());
         model.put("selectedBeamId", selectedBeam.getItemId());
         model.put("selectedRafterId", selectedRafter.getItemId());
@@ -173,7 +179,6 @@ public class CarportController {
                 MaterialRole.FASCIA, MaterialMapper.getMaterialById(fasciaId),
                 MaterialRole.ROOF_COVER, MaterialMapper.getMaterialById(roofCoverId)
         ));
-        System.out.println(carportId);
 
         CarportMapper.updateCarport(carport);
 
