@@ -1,6 +1,5 @@
 package app.entities.orders;
 
-import app.entities.products.Product;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
 

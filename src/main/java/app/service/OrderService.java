@@ -4,6 +4,8 @@ import app.entities.orders.Order;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.OrderMapper;
 
+import java.util.List;
+
 public class OrderService {
     public static void saveOrder(Order order) throws DatabaseException {
         OrderMapper.createOrder(order);
@@ -13,7 +15,7 @@ public class OrderService {
         OrderMapper.addStatus(orderId, "Annulleret");
     }
 
-    /*public static List<Order> getUnassignedRequests() throws DatabaseException {
-        return OrderMapper.getOrdersByStatusAndNoStaff("Forespørgsel");
-    }*/
+    public static List<Order> getUnassignedRequests() throws DatabaseException {
+        return OrderMapper.getUnassignedRequestOrders();
+    }
 }
