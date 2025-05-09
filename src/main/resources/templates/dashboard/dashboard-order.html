@@ -49,10 +49,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="item : ${order.orderItems}">
-                    <td th:text="${item.product.name}">Træbjælke</td>
-                    <td th:text="${item.product.itemType}">material</td>
-                    <td th:text="${item.quantity}">2</td>
+                <tr th:each="item, iter : ${order.orderItems}">
+                    <td>
+                        <span th:text="${item.product.name}"></span>
+                        <form th:if="${item.product.itemType == 'carport'}"
+                              action="/dashboard/carport" method="get"
+                              class="inline-form">
+                            <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                            <input type="hidden" name="index" th:value="${iter.index}" />
+                            <button type="submit" class="default-button small-button">Se</button>
+                        </form>
+                    </td>
+                    <td th:text="${item.product.itemType}"></td>
+                    <td th:text="${item.quantity}"></td>
                     <td th:text="${#numbers.formatDecimal(item.product.salesPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
                     <td th:text="${#numbers.formatDecimal(item.totalPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
                 </tr>

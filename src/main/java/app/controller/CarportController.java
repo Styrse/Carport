@@ -10,6 +10,9 @@ import app.entities.products.materials.planks.Post;
 import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Customer;
+import app.exceptions.DatabaseException;
+import app.persistence.mappers.CarportMapper;
+import app.persistence.mappers.OrderMapper;
 import app.service.CarportService;
 import app.service.MaterialService;
 import app.service.OrderService;
@@ -100,5 +103,20 @@ public class CarportController {
             e.printStackTrace();
             ctx.status(500).result("Der opstod en fejl ved oprettelsen af carporten.");
         }
+    }
+
+    public static void showCarportConfiguration(Context ctx) throws DatabaseException {
+        int orderId = Integer.parseInt(ctx.queryParam("orderId"));
+        int index = Integer.parseInt(ctx.queryParam("index"));
+
+        Order order = OrderMapper.getOrderByOrderId(orderId);
+
+        Carport carport = (Carport) order.getOrderItems().get(index).getProduct();
+
+        Map<String, Object> model = createBaseModel(ctx);
+        model.put("order", order);
+        model.put("carport", carport);
+
+        ctx.render("dashboard/dashboard-edit-carport.html", model);
     }
 }

@@ -288,6 +288,11 @@ tbody tr:hover {
     flex: 1;
 }
 
+.inline-form {
+    display: inline;
+    margin-left: 24px;
+}
+
 /* ===== Action Buttons (e.g. Remove/See) ===== */
 button {
     font-family: inherit;
@@ -443,7 +448,6 @@ section {
 
 .order-info h2 {
     margin-bottom: 10px;
-    color: #154985;
 }
 
 .order-info p {

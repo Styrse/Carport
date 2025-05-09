@@ -1,5 +1,6 @@
 package app.entities.orders;
 
+import app.entities.products.carport.Carport;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
 
@@ -120,4 +121,14 @@ public class Order {
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
     }
+
+    public Carport getCarport() {
+        for (OrderItem item : orderItems) {
+            if (item.getProduct() instanceof Carport carport) {
+                return carport;
+            }
+        }
+        return null;
+    }
+
 }

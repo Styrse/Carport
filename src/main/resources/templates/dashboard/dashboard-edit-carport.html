@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Rediger materiale</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="container">
+        <h1>Carport-konfiguration</h1>
+
+        <section class="carport-info">
+            <p><strong>Ordre ID:</strong> <span th:text="${order.orderId}"></span></p>
+            <p><strong>Bredde:</strong> <span th:text="${carport.width} + ' cm'"></span></p>
+            <p><strong>Længde:</strong> <span th:text="${carport.length} + ' cm'"></span></p>
+            <p><strong>Højde:</strong> <span th:text="${carport.height} + ' cm'"></span></p>
+            <p><strong>Tagtype:</strong> <span th:text="${carport.roofType}"></span></p>
+            <p><strong>Hældning:</strong> <span th:text="${carport.roofAngle} + '°'"></span></p>
+        </section>
+    </div>
+</main>
+
+</body>
+</html>
