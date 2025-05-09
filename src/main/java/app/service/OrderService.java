@@ -12,4 +12,8 @@ public class OrderService {
     public static void cancelOrder(int orderId) throws DatabaseException {
         OrderMapper.addStatus(orderId, "Annulleret");
     }
+
+    /*public static List<Order> getUnassignedRequests() throws DatabaseException {
+        return OrderMapper.getOrdersByStatusAndNoStaff("Forespørgsel");
+    }*/
 }

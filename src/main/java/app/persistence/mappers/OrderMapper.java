@@ -396,4 +396,47 @@ public class OrderMapper {
         order.setTotalPrice(totalPrice);
         return order;
     }
+
+    public static List<Order> getOrdersByStaffId(int staffId) throws DatabaseException {
+        List<Order> orders = new ArrayList<>();
+
+        String sql = "SELECT " +
+                "  o.order_id, " +
+                "  o.total_price, " +
+                "  u.email AS user_email, " +
+                "  s.email AS staff_email, " +
+                "  received.update_date AS order_date, " +
+                "  latest.status AS order_status " +
+                "FROM orders o " +
+                "JOIN users u ON o.user_id = u.user_id " +
+                "LEFT JOIN users s ON o.staff_id = s.user_id " +
+                "LEFT JOIN order_status_history received " +
+                "  ON o.order_id = received.order_id AND received.status = 'Forespørgsel' " +
+                "LEFT JOIN order_status_history latest " +
+                "  ON o.order_id = latest.order_id " +
+                "  AND latest.update_date = ( " +
+                "    SELECT MAX(update_date) " +
+                "    FROM order_status_history " +
+                "    WHERE order_id = o.order_id " +
+                "  ) " +
+                "WHERE o.staff_id = ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, staffId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    orders.add(mapOrder(rs));
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error fetching orders by staff ID");
+        }
+
+        return orders;
+    }
 }

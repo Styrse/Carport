@@ -266,6 +266,15 @@ tbody tr:hover {
     flex: 1;
 }
 
+.dashboard-order-tables {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.dashboard-order-section {
+    flex: 1;
+}
 
 /* ===== Action Buttons (e.g. Remove/See) ===== */
 button {

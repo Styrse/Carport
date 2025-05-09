@@ -26,6 +26,10 @@ public class Staff extends User {
         return myWorkOrders;
     }
 
+    public void setMyWorkOrders(List<Order> myWorkOrders) {
+        this.myWorkOrders = myWorkOrders;
+    }
+
     public String getJobTitle() {
         return "Sælger";
     }

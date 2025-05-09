@@ -71,7 +71,7 @@ public class CarportController {
 
             // 4. Create customer
             Customer customer = new Customer(firstName, lastName, address, postcode, city, phone, email, 1);
-            UserService.saveCustomer(customer);
+            UserService.createUser(customer);
 
             // 5. Create carport object
             Carport carport = new Carport(width, length, height, roofType, roofAngle);

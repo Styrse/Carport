@@ -1,10 +1,13 @@
 package app.controller;
 
+import app.entities.orders.Order;
 import app.entities.users.Staff;
 import app.entities.users.StaffManager;
 import app.entities.users.User;
 import app.exceptions.DatabaseException;
+import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.UserMapper;
+import app.service.UserService;
 import io.javalin.http.Context;
 
 public class AuthController {
@@ -30,6 +33,8 @@ public class AuthController {
                 ctx.render("index.html");
                 return;
             }
+
+            UserService.getOrdersByStaffId(staff);
 
             boolean isManager = staff instanceof StaffManager;
 
