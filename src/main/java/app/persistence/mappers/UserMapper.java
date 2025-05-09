@@ -74,7 +74,7 @@ public class UserMapper {
     }
 
     public static User getUserById(int id) throws DatabaseException {
-        String sql = "SELECT * FROM users WHERE user_id = ?";
+        String sql = "SELECT * FROM users JOIN postcodes USING (postcode) WHERE user_id = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -178,8 +178,21 @@ public class UserMapper {
         String password = rs.getString("password");
         int roleId = rs.getInt("role_id");
 
+        String address;
+        String postcode;
+        String city;
+        try {
+            address = rs.getString("address");
+            postcode = rs.getString("postcode");
+            city = rs.getString("city");
+        } catch (SQLException e) {
+            address = null;
+            postcode = null;
+            city = null;
+        }
+
         return switch (roleId) {
-            case 1 -> new Customer(userId, firstname, lastname, phone, email, password, roleId);
+            case 1 -> new Customer(userId, firstname, lastname, address, postcode, city, phone, email, password, roleId);
             case 2 -> new Staff(userId, firstname, lastname, phone, email, password, roleId);
             case 3 -> new StaffManager(userId, firstname, lastname, phone, email, password, roleId);
             default -> throw new DatabaseException("Unknown user type: " + roleId);

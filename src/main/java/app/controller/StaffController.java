@@ -52,6 +52,6 @@ public class StaffController {
         User staff = UserService.mapUserService(ctx);
 
         UserMapper.createUser(staff);
-        ctx.redirect("/dashboard/");
+        ctx.redirect("/dashboard/staff");
     }
 }

@@ -53,8 +53,8 @@
                     <td th:text="${item.product.name}">Træbjælke</td>
                     <td th:text="${item.product.itemType}">material</td>
                     <td th:text="${item.quantity}">2</td>
-                    <td th:text="${item.product.salesPrice} + ' kr.'">150 kr.</td>
-                    <td th:text="${item.totalPrice} + ' kr.'">300 kr.</td>
+                    <td th:text="${#numbers.formatDecimal(item.product.salesPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
+                    <td th:text="${#numbers.formatDecimal(item.totalPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
                 </tr>
                 </tbody>
             </table>
