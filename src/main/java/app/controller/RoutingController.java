@@ -33,6 +33,7 @@ public class RoutingController {
         app.get("/dashboard/orders", OrderController::showOrders);
         app.get("/dashboard/order", OrderController::showOrderDetails);
         app.post("/orders/cancel", OrderController::cancelOrder);
+        app.post("/orders/assign", OrderController::assignOrderToStaff);
 
         // 💵 Customers
         app.get("/dashboard/customers", CustomerController::showCustomers);

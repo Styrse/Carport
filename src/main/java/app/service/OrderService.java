@@ -18,4 +18,8 @@ public class OrderService {
     public static List<Order> getUnassignedRequests() throws DatabaseException {
         return OrderMapper.getUnassignedRequestOrders();
     }
+
+    public static void assignOrderToStaff(int orderId, int staffId) throws DatabaseException {
+        OrderMapper.assignOrderToStaff(orderId, staffId);
+    }
 }

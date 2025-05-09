@@ -307,6 +307,20 @@ button {
     margin-bottom: 15px;
 }
 
+.add-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add-button:hover {
+    background-color: #218838;
+}
+
 /* ===== Material Tables ===== */
 .material-table {
     width: 100%;

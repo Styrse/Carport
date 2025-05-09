@@ -488,4 +488,18 @@ public class OrderMapper {
         return orders;
     }
 
+    public static void assignOrderToStaff(int orderId, int staffId) throws DatabaseException {
+        String sql = "UPDATE orders SET staff_id = ? WHERE order_id = ?";
+
+        try (Connection conn = connectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, staffId);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Fejl ved tildeling af ordre");
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.entities.orders.Order;
+import app.entities.users.Staff;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.OrderMapper;
 import app.service.OrderService;
@@ -68,4 +69,21 @@ public class OrderController {
             ctx.status(500).result("Fejl ved annullering af ordre.");
         }
     }
+
+    public static void assignOrderToStaff(Context ctx) {
+        try {
+            Staff staff = ctx.sessionAttribute("currentUser");
+            int orderId = Integer.parseInt(ctx.formParam("orderId"));
+
+            OrderService.assignOrderToStaff(orderId, staff.getUserId());
+
+            staff.getMyWorkOrders().add(OrderMapper.getOrderByOrderId(orderId));
+
+            ctx.redirect("/dashboard");
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke tildele ordre.");
+        }
+    }
+
 }

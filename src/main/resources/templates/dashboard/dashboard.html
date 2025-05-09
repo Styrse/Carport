@@ -61,9 +61,9 @@
                         <td th:text="|${order.customer.firstname} ${order.customer.lastname}|"></td>
                         <td th:text="${order.totalPrice} + ' kr.'"></td>
                         <td>
-                            <form action="/dashboard/order" method="get">
+                            <form action="/orders/assign" method="post">
                                 <input type="hidden" name="orderId" th:value="${order.orderId}" />
-                                <button type="submit" class="default-button">Se</button>
+                                <button type="submit" class="add-button">Tag</button>
                             </form>
                         </td>
                     </tr>
