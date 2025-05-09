@@ -43,11 +43,12 @@
                     <th>Status</th>
                     <th>Totalpris</th>
                     <th>Se</th>
+                    <th>Annuler</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="order : ${orders}">
-                    <td th:text="${order.orderId}"></td>
+                <tr th:each="order : ${orders}" th:classappend="${order.orderStatus == 'Annulleret'} ? 'cancelled-row'">
+                <td th:text="${order.orderId}"></td>
                     <td th:text="${order.orderStatus}"></td>
                     <td th:text="${order.getTotalPrice()} + ' kr.'"></td>
                     <td>
@@ -55,6 +56,13 @@
                             <input type="hidden" name="orderId" th:value="${order.orderId}" />
                             <button type="submit" class="default-button">Se</button>
                         </form>
+                    </td>
+                    <td>
+                        <form th:if="${order.orderStatus != 'Annulleret'}" method="post" action="/orders/cancel">
+                            <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                            <button type="submit" class="remove-button" onclick="return confirm('Er du sikker på, at du vil annullere denne ordre?')">Annuler</button>
+                        </form>
+                        <span th:if="${order.orderStatus == 'Annulleret'}"></span>
                     </td>
                 </tr>
                 </tbody>

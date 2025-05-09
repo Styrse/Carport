@@ -3,6 +3,7 @@ package app.controller;
 import app.entities.orders.Order;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.OrderMapper;
+import app.service.OrderService;
 import io.javalin.http.Context;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class OrderController {
     public static void showOrders(Context ctx) {
         String statusFilter = ctx.queryParam("status");
         if (statusFilter == null || statusFilter.isBlank()) {
-            statusFilter = "Inquiry";
+            statusFilter = "Forespørgsel";
         }
 
         try {
@@ -22,7 +23,7 @@ public class OrderController {
 
             String finalStatusFilter = statusFilter;
             List<Order> filteredOrders = allOrders.stream()
-                    .filter(order -> "All".equalsIgnoreCase(finalStatusFilter) ||
+                    .filter(order -> "Alle".equalsIgnoreCase(finalStatusFilter) ||
                             finalStatusFilter.equalsIgnoreCase(order.getOrderStatus()))
                     .toList();
 
@@ -54,6 +55,17 @@ public class OrderController {
         } catch (Exception e) {
             e.printStackTrace();
             ctx.status(500).result("Kunne ikke hente ordreinformation");
+        }
+    }
+
+    public static void cancelOrder(Context ctx) {
+        try {
+            int orderId = Integer.parseInt(ctx.formParam("orderId"));
+            OrderService.cancelOrder(orderId);
+            ctx.redirect("/dashboard/orders");
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Fejl ved annullering af ordre.");
         }
     }
 }

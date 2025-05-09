@@ -19,12 +19,12 @@
                 <form method="get" action="/dashboard/orders">
                     <label for="status">Status:</label>
                     <select name="status" id="status" class="filter-select" onchange="this.form.submit()">
-                        <option value="All" th:selected="${selectedStatus == 'All'}">Alle</option>
-                        <option value="Inquiry" th:selected="${selectedStatus == 'Inquiry'}">Forespørgsel</option>
-                        <option value="Paid" th:selected="${selectedStatus == 'Paid'}">Betalt</option>
-                        <option value="Shipped" th:selected="${selectedStatus == 'Shipped'}">Afsendt</option>
-                        <option value="Delivered" th:selected="${selectedStatus == 'Delivered'}">Leveret</option>
-                        <option value="Cancelled" th:selected="${selectedStatus == 'Cancelled'}">Annuleret</option>
+                        <option value="Alle" th:selected="${selectedStatus == 'Alle'}">Alle</option>
+                        <option value="Forespørgsel" th:selected="${selectedStatus == 'Forespørgsel'}">Forespørgsel</option>
+                        <option value="Betalt" th:selected="${selectedStatus == 'Betalt'}">Betalt</option>
+                        <option value="Afsendt" th:selected="${selectedStatus == 'Afsendt'}">Afsendt</option>
+                        <option value="Leveret" th:selected="${selectedStatus == 'Leveret'}">Leveret</option>
+                        <option value="Annulleret" th:selected="${selectedStatus == 'Annulleret'}">Annuleret</option>
                     </select>
                 </form>
             </div>
@@ -41,12 +41,12 @@
                     <th>Telefon</th>
                     <th>Total pris</th>
                     <th>Se ordre</th>
-                    <th>Slet ordre</th>
+                    <th>Annuler ordre</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="order, iterStat : ${orders}">
-                    <td th:text="${order.orderId}"></td>
+                <tr th:each="order, iterStat : ${orders}" th:classappend="${order.orderStatus == 'Annulleret'} ? 'cancelled-row'">
+                <td th:text="${order.orderId}"></td>
                     <td th:text="${order.orderStatus}"></td>
                     <td th:text="|${order.customer.firstname} ${order.customer.lastname}|"></td>
                     <td>
@@ -64,10 +64,11 @@
                         </form>
                     </td>
                     <td>
-                        <form action="/orders/remove" method="post">
+                        <form th:if="${order.orderStatus != 'Annulleret'}" action="/orders/cancel" method="post">
                             <input type="hidden" name="orderId" th:value="${order.orderId}">
-                            <button type="submit" class="remove-button">Slet</button>
+                            <button type="submit" class="remove-button">Annuler</button>
                         </form>
+                        <span th:if="${order.orderStatus == 'Annulleret'}"></span>
                     </td>
                 </tr>
                 </tbody>

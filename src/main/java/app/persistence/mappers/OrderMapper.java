@@ -80,7 +80,7 @@ public class OrderMapper {
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderId);
-            ps.setString(2, "pending");
+            ps.setString(2, "Forespørgsel");
             ps.executeUpdate();
         }
     }
@@ -141,7 +141,7 @@ public class OrderMapper {
                 "FROM orders o JOIN users u ON o.user_id = u.user_id " +
                 "LEFT JOIN users s ON o.staff_id = s.user_id " +
                 "LEFT JOIN order_status_history received " +
-                "  ON o.order_id = received.order_id AND received.status = 'pending' " +
+                "  ON o.order_id = received.order_id AND received.status = 'Forespørgsel' " +
                 "LEFT JOIN order_status_history latest " +
                 "  ON o.order_id = latest.order_id " +
                 "  AND latest.update_date = ( " +
@@ -282,7 +282,7 @@ public class OrderMapper {
                 "JOIN users u ON o.user_id = u.user_id " +
                 "LEFT JOIN users s ON o.staff_id = s.user_id " +
                 "LEFT JOIN order_status_history received " +
-                "  ON o.order_id = received.order_id AND received.status = 'Inquiry' " +
+                "  ON o.order_id = received.order_id AND received.status = 'Forespørgsel' " +
                 "LEFT JOIN order_status_history latest " +
                 "  ON o.order_id = latest.order_id " +
                 "  AND latest.update_date = ( " +
@@ -345,8 +345,6 @@ public class OrderMapper {
         }
     }
 
-
-    // Delete order: Could implement soft delete later
     public static void deleteOrder(int orderId) throws DatabaseException {
         String sql = "DELETE FROM orders WHERE order_id = ?";
 
@@ -358,6 +356,21 @@ public class OrderMapper {
 
         } catch (SQLException e) {
             throw new DatabaseException(e, "Error deleting order");
+        }
+    }
+
+    public static void addStatus(int orderId, String status) throws DatabaseException {
+        String sql = "INSERT INTO order_status_history (order_id, status) VALUES (?, ?)";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, orderId);
+            ps.setString(2, status);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Could not insert order status");
         }
     }
 

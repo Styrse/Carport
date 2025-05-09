@@ -5,7 +5,11 @@ import app.exceptions.DatabaseException;
 import app.persistence.mappers.OrderMapper;
 
 public class OrderService {
-        public static void saveOrder(Order order) throws DatabaseException {
-            OrderMapper.createOrder(order);
-        }
+    public static void saveOrder(Order order) throws DatabaseException {
+        OrderMapper.createOrder(order);
+    }
+
+    public static void cancelOrder(int orderId) throws DatabaseException {
+        OrderMapper.addStatus(orderId, "Annulleret");
+    }
 }
