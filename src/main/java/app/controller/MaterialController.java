@@ -56,11 +56,15 @@ public class MaterialController {
         model.put("minGapPost", ctx.queryParam("minGapPost"));
         model.put("minGapRafter", ctx.queryParam("minGapRafter"));
 
+        model.put("activeTab", "materials");
+
         ctx.render("dashboard/dashboard-materials.html", model);
     }
 
     public static void newMaterial(Context ctx) {
         Map<String, Object> model = createBaseModel(ctx);
+
+        model.put("activeTab", "materials");
 
         ctx.render("dashboard/dashboard-new-material.html", model);
     }
@@ -91,6 +95,8 @@ public class MaterialController {
 
             Map<String, Object> model = createBaseModel(ctx);
             model.put("material", material);
+
+            model.put("activeTab", "materials");
 
             ctx.render("dashboard/dashboard-edit-material.html", model);
         } catch (Exception e) {

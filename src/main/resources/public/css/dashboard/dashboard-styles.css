@@ -56,6 +56,11 @@ h1 {
     transform: translateY(-5px);
 }
 
+.icon.selected {
+    background-color: #3569A5;
+    transform: translateY(-5px);
+}
+
 .icon:focus:not(:hover),
 .icon:active:not(:hover) {
     background-color: transparent;
@@ -86,6 +91,12 @@ h1 {
     height: auto;
     display: block;
     margin: 0 auto 20px;
+}
+
+.topbar a {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #444;
 }
 
 /* ===== Carport Configuration Form ===== */

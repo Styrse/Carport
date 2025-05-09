@@ -13,6 +13,8 @@ public class ProfileController {
     public static void showProfile(Context ctx) {
         Map<String, Object> model = createBaseModel(ctx);
 
+        model.put("activeTab", "profile");
+
         ctx.render("dashboard/dashboard-profile.html", model);
     }
 

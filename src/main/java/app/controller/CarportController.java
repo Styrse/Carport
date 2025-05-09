@@ -41,6 +41,8 @@ public class CarportController {
         model.put("fascias", fascias);
         model.put("roofCovers", roofCovers);
 
+        model.put("activeTab", "new-carport");
+
         ctx.render("dashboard/dashboard-new-carport.html", model);
     }
 

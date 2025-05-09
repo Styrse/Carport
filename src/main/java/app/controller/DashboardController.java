@@ -2,6 +2,7 @@ package app.controller;
 import app.entities.orders.Order;
 import app.entities.users.Staff;
 import app.exceptions.DatabaseException;
+import app.persistence.mappers.OrderMapper;
 import app.service.OrderService;
 import io.javalin.http.Context;
 
@@ -21,7 +22,6 @@ public class DashboardController {
                 .toList();
 
         List<Order> unassignedOrders = OrderService.getUnassignedRequests();
-
 
         model.put("assignedOrders", filteredAssigned);
         model.put("unassignedOrders", unassignedOrders);

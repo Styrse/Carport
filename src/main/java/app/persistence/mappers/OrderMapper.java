@@ -502,4 +502,19 @@ public class OrderMapper {
             throw new DatabaseException(e, "Fejl ved tildeling af ordre");
         }
     }
+
+    public static void removeStaffFromOrder(int orderId, int staffId) throws DatabaseException {
+        String sql = "UPDATE orders SET staff_id = NULL WHERE order_id = ? AND staff_id = ?";
+
+        try (Connection conn = connectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, orderId);
+            ps.setInt(2, staffId);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Fejl ved fjernelse af medarbejder fra ordre");
+        }
+    }
 }

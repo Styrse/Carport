@@ -25,6 +25,7 @@ public class StaffController {
 
             Map<String, Object> model = createBaseModel(ctx);
             model.put("staffList", staffList);
+            model.put("activeTab", "staff");
 
             ctx.render("dashboard/dashboard-staff.html", model);
         } catch (DatabaseException e) {
@@ -35,6 +36,8 @@ public class StaffController {
 
     public static void createStaff(Context ctx) {
         Map<String, Object> model = createBaseModel(ctx);
+
+        model.put("activeTab", "staff");
 
         ctx.render("dashboard/dashboard-create-staff.html", model);
     }

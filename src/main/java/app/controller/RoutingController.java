@@ -34,6 +34,7 @@ public class RoutingController {
         app.get("/dashboard/order", OrderController::showOrderDetails);
         app.post("/orders/cancel", OrderController::cancelOrder);
         app.post("/orders/assign", OrderController::assignOrderToStaff);
+        app.post("/orders/remove", OrderController::removeStaffFromOrder);
 
         // 💵 Customers
         app.get("/dashboard/customers", CustomerController::showCustomers);

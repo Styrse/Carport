@@ -4,32 +4,38 @@
             <img src="/img/fog-logo.png">
         </a>
 
-        <a href="/dashboard/new-carport" class="icon">
+        <a href="/dashboard/new-carport" class="icon"
+           th:classappend="${activeTab == 'new-carport'} ? ' selected'">
             <img src="/img/dashboard/new-carport.png">
             <p>Ny Carport</p>
         </a>
 
-        <a href="/dashboard/orders" class="icon">
+        <a href="/dashboard/orders" class="icon"
+           th:classappend="${activeTab == 'orders'} ? ' selected'">
             <img src="/img/dashboard/orders.png">
             <p>Ordre</p>
         </a>
 
-        <a href="/dashboard/customers" class="icon">
+        <a href="/dashboard/customers" class="icon"
+           th:classappend="${activeTab == 'customers'} ? ' selected'">
             <img src="/img/dashboard/customers.png">
             <p>Kunder</p>
         </a>
 
-        <a href="/dashboard/materials" class="icon">
+        <a href="/dashboard/materials" class="icon"
+           th:classappend="${activeTab == 'materials'} ? ' selected'">
             <img src="/img/dashboard/materials.png">
             <p>Materialer</p>
         </a>
 
-        <a href="/dashboard/profile" class="icon">
+        <a href="/dashboard/profile" class="icon"
+           th:classappend="${activeTab == 'profile'} ? ' selected'">
             <img src="/img/dashboard/profile.png">
             <p>Profil</p>
         </a>
 
-        <a href="/dashboard/staff" class="icon" th:if="${isManager}">
+        <a href="/dashboard/staff" class="icon" th:if="${isManager}"
+           th:classappend="${activeTab == 'staff'} ? ' selected'">
             <img src="/img/dashboard/staff.png">
             <p>Medarbejdere</p>
         </a>

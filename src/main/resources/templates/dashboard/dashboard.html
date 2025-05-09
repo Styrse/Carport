@@ -26,6 +26,7 @@
                         <th>Kunde</th>
                         <th>Totalpris</th>
                         <th>Se</th>
+                        <th>Fjern</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,6 +38,12 @@
                             <form action="/dashboard/order" method="get">
                                 <input type="hidden" name="orderId" th:value="${order.orderId}" />
                                 <button type="submit" class="default-button">Se</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/orders/remove" method="post" style="display: inline;">
+                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <button type="submit" class="remove-button">Fjern</button>
                             </form>
                         </td>
                     </tr>
@@ -53,6 +60,7 @@
                         <th>Kunde</th>
                         <th>Totalpris</th>
                         <th>Se</th>
+                        <th>Tag</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -60,6 +68,12 @@
                         <td th:text="${order.orderId}"></td>
                         <td th:text="|${order.customer.firstname} ${order.customer.lastname}|"></td>
                         <td th:text="${order.totalPrice} + ' kr.'"></td>
+                        <td>
+                            <form action="/dashboard/order" method="get">
+                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <button type="submit" class="default-button">Se</button>
+                            </form>
+                        </td>
                         <td>
                             <form action="/orders/assign" method="post">
                                 <input type="hidden" name="orderId" th:value="${order.orderId}" />

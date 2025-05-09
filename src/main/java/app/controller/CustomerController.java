@@ -26,6 +26,9 @@ public class CustomerController {
 
             Map<String, Object> model = createBaseModel(ctx);
             model.put("customers", customers);
+
+            model.put("activeTab", "customers");
+
             ctx.render("dashboard/dashboard-customers", model);
         } catch (DatabaseException e) {
             e.printStackTrace();
@@ -49,6 +52,8 @@ public class CustomerController {
             Map<String, Object> model = createBaseModel(ctx);
             model.put("customer", customer);
             model.put("orders", orders);
+
+            model.put("activeTab", "customers");
 
             ctx.render("dashboard/dashboard-customer.html", model);
         } catch (DatabaseException e) {

@@ -22,4 +22,8 @@ public class OrderService {
     public static void assignOrderToStaff(int orderId, int staffId) throws DatabaseException {
         OrderMapper.assignOrderToStaff(orderId, staffId);
     }
+
+    public static void unassignOrder(int orderId, int staffId) throws DatabaseException {
+        OrderMapper.removeStaffFromOrder(orderId, staffId);
+    }
 }

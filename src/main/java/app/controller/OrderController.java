@@ -31,6 +31,7 @@ public class OrderController {
             Map<String, Object> model = createBaseModel(ctx);
             model.put("orders", filteredOrders);
             model.put("selectedStatus", statusFilter);
+            model.put("activeTab", "orders");
 
             ctx.render("dashboard/dashboard-orders.html", model);
         } catch (DatabaseException e) {
@@ -51,6 +52,7 @@ public class OrderController {
 
             Map<String, Object> model = createBaseModel(ctx);
             model.put("order", order);
+            model.put("activeTab", "orders");
 
             ctx.render("dashboard/dashboard-order.html", model);
         } catch (Exception e) {
@@ -86,4 +88,20 @@ public class OrderController {
         }
     }
 
+    public static void removeStaffFromOrder(Context ctx) {
+        try {
+            Staff staff = ctx.sessionAttribute("currentUser");
+            int orderId = Integer.parseInt(ctx.formParam("orderId"));
+
+            OrderService.unassignOrder(orderId, staff.getUserId());
+
+            List<Order> updatedOrders = OrderMapper.getOrdersByStaffId(staff.getUserId());
+            staff.setMyWorkOrders(updatedOrders);
+
+            ctx.redirect("/dashboard");
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke fjerne ordre.");
+        }
+    }
 }
