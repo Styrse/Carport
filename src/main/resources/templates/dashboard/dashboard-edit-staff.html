@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Profil</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="container">
+        <form class="carport-form" action="/dashboard/staff/update" method="post">
+            <h1>Rediger medarbejder</h1>
+
+            <input type="hidden" name="userId" th:value="${staff.userId}"/>
+
+            <label for="firstName">Fornavn</label>
+            <input type="text" id="firstName" name="firstName" th:value="${staff.firstName}" required>
+
+            <label for="lastName">Efternavn</label>
+            <input type="text" id="lastName" name="lastName" th:value="${staff.lastName}" required>
+
+            <label for="phoneNumber">Telefonnummer</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" th:value="${staff.phone}" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" th:value="${staff.email}" required>
+
+            <button type="submit" class="default-button">Opdater</button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

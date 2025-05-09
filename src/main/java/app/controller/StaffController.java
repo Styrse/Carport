@@ -46,7 +46,6 @@ public class StaffController {
         String password = ctx.formParam("password");
         String passwordRepeat = ctx.formParam("passwordRepeat");
 
-        //Password mismatch check
         if (!password.equals(passwordRepeat)) {
             ctx.status(400).result("Adgangskoderne matcher ikke.");
             return;
@@ -56,6 +55,30 @@ public class StaffController {
 
 
         UserService.createUser(staff);
+        ctx.redirect("/dashboard/staff");
+    }
+
+    public static void editStaff(Context ctx) throws DatabaseException {
+        int staffId = Integer.parseInt(ctx.queryParam("staffId"));
+        Staff staff = (Staff) UserMapper.getUserById(staffId);
+
+        Map<String, Object> model = createBaseModel(ctx);
+        model.put("staff", staff);
+        model.put("activeTab", "staff");
+
+        ctx.render("dashboard/dashboard-edit-staff.html", model);
+    }
+
+    public static void updateStaff(Context ctx) throws DatabaseException {
+        int userId = Integer.parseInt(ctx.formParam("userId"));
+        String firstName = ctx.formParam("firstName");
+        String lastName = ctx.formParam("lastName");
+        String phone = ctx.formParam("phoneNumber");
+        String email = ctx.formParam("email");
+
+        Staff updated = new Staff(userId, firstName, lastName, phone, email, null, 2); // or 3 if manager
+
+        UserMapper.updateUser(updated);
         ctx.redirect("/dashboard/staff");
     }
 }

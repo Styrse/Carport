@@ -74,7 +74,7 @@ public class UserMapper {
     }
 
     public static User getUserById(int id) throws DatabaseException {
-        String sql = "SELECT * FROM users JOIN postcodes USING (postcode) WHERE user_id = ?";
+        String sql = "SELECT * FROM users LEFT JOIN postcodes USING (postcode) WHERE user_id = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {

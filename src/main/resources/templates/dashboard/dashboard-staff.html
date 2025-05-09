@@ -28,12 +28,19 @@
                 <tr>
                     <th>Navn</th>
                     <th>Jobtitel</th>
+                    <th>Rediger</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="staff : ${staffList}">
                     <td th:text="|${staff.firstname} ${staff.lastname}|"></td>
                     <td th:text="${staff.getJobTitle()}"></td>
+                    <td>
+                        <form action="/dashboard/staff/edit" method="get">
+                            <input type="hidden" name="staffId" th:value="${staff.userId}" />
+                            <button type="submit" class="default-button">Rediger</button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>
