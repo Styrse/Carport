@@ -95,14 +95,15 @@ public class CarportMapper {
     }
 
     //Update
-    public static void updateCarport(Connection connection, Carport carport) throws DatabaseException {
+    public static void updateCarport(Carport carport) throws DatabaseException {
         String sql = "UPDATE carports " +
                 "SET width = ?, length = ?, height = ?, " +
                 "roof_type = ?, roof_angle = ?, post_material_id = ?, beam_material_id = ?, " +
                 "rafter_material_id = ?, fascia_material_id = ?, roof_cover_material_id = ?, total_price = ? " +
                 "WHERE carport_id = ?";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
             // Extract material IDs safely
             int postId = getMaterialId(carport, MaterialRole.POST);
             int beamId = getMaterialId(carport, MaterialRole.BEAM);

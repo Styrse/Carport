@@ -35,6 +35,15 @@ public class Carport extends Product {
     public Carport() {
     }
 
+    public Carport(int itemId, int width, int length, int height, String roofType, int roofAngle) {
+        super(itemId);
+        this.width = width;
+        this.length = length;
+        this.height = height;
+        this.roofType = roofType;
+        this.roofAngle = roofAngle;
+    }
+
     public Carport(int width, int length, int height, String roofType, int roofAngle) {
         this.width = width;
         this.length = length;
@@ -133,6 +142,10 @@ public class Carport extends Product {
 
     public void setMaterialMap(Map<MaterialRole, Material> materialMap) {
         this.materialMap = materialMap;
+    }
+
+    public Map<MaterialRole, Material> getMaterialMap() {
+        return materialMap;
     }
 
     @Override

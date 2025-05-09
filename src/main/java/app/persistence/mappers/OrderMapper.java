@@ -333,7 +333,7 @@ public class OrderMapper {
             // Update carport/materials using same connection
             for (OrderItem item : order.getOrderItems()) {
                 if (item.getProduct() instanceof Carport carport) {
-                    CarportMapper.updateCarport(connection, carport);
+                    CarportMapper.updateCarport(carport);
                 } else if (item.getProduct() instanceof Material material) {
                     MaterialMapper.updateMaterial(material);
                 }

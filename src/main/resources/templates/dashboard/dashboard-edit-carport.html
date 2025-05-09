@@ -14,7 +14,7 @@
 
 <main>
     <div class="container">
-        <h1>Carport-konfiguration</h1>
+        <h1>Carport Konfiguration</h1>
 
         <section class="carport-info">
             <h1>Ordre #<span th:text="${order.orderId}"></span></h1>
@@ -58,7 +58,8 @@
                     <option th:each="post : ${posts}"
                             th:value="${post.itemId}"
                             th:text="${post.name}"
-                            th:selected="${carport.materialMap['POST'].itemId == post.itemId}"></option>
+                            th:selected="${post.itemId == selectedPostId}">
+                    </option>
                 </select>
 
                 <label for="beam">Vælg rem</label>
@@ -67,7 +68,8 @@
                     <option th:each="beam : ${beams}"
                             th:value="${beam.itemId}"
                             th:text="${beam.name}"
-                            th:selected="${carport.materialMap['BEAM'].itemId == beam.itemId}"></option>
+                            th:selected="${beam.itemId == selectedBeamId}">
+                    </option>
                 </select>
 
                 <label for="rafter">Vælg spær</label>
@@ -76,7 +78,8 @@
                     <option th:each="rafter : ${rafters}"
                             th:value="${rafter.itemId}"
                             th:text="${rafter.name}"
-                            th:selected="${carport.materialMap['RAFTER'].itemId == rafter.itemId}"></option>
+                            th:selected="${rafter.itemId == selectedRafterId}">
+                    </option>
                 </select>
 
                 <label for="fascia">Vælg stern</label>
@@ -85,7 +88,8 @@
                     <option th:each="fascia : ${fascias}"
                             th:value="${fascia.itemId}"
                             th:text="${fascia.name}"
-                            th:selected="${carport.materialMap['FASCIA'].itemId == fascia.itemId}"></option>
+                            th:selected="${fascia.itemId == selectedFasciaId}">
+                    </option>
                 </select>
 
                 <label for="roofCover">Vælg tagbeklædning</label>
@@ -94,7 +98,8 @@
                     <option th:each="roofCover : ${roofCovers}"
                             th:value="${roofCover.itemId}"
                             th:text="${roofCover.name}"
-                            th:selected="${carport.materialMap['ROOFCOVER'].itemId == roofCover.itemId}"></option>
+                            th:selected="${roofCover.itemId == selectedRoofCoverId}">
+                    </option>
                 </select>
 
                 <button type="submit" class="default-button">Opdater</button>
