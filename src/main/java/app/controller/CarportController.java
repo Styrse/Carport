@@ -11,6 +11,7 @@ import app.entities.products.materials.planks.Post;
 import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Customer;
+import app.entities.users.Staff;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.CarportMapper;
 import app.persistence.mappers.MaterialMapper;
@@ -90,15 +91,22 @@ public class CarportController {
             materialId.put(MaterialRole.ROOF_COVER, roofCoverId);
             CarportService.saveCarport(carport, materialId);
 
-            // 6. Create order object (status = NEW, or DRAFT, etc.)
+            // 6. Get Staff
+            Staff currentStaff = ctx.sessionAttribute("currentUser");
+
+            // 7. Create order object (status = NEW, or DRAFT, etc.)
             Order order = new Order(customer);
             OrderItem orderItem = new OrderItem(carport, 1);
             order.addOrderItem(orderItem);
             order.setOrderStatus("Forespørgsel");
             order.setOrderDate(LocalDate.now());
+            order.setStaff(currentStaff);
             OrderService.saveOrder(order);
 
-            // 7. Redirect or show confirmation
+            // 8. Adds order to staff "work"
+            currentStaff.getMyWorkOrders().add(order);
+
+            // 9. Redirect or show confirmation
             ctx.redirect("/dashboard/orders");
 
         } catch (Exception e) {

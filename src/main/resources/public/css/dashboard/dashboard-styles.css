@@ -361,7 +361,7 @@ button {
 }
 
 /* ===== Material Tables ===== */
-.material-table {
+.default-table {
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
@@ -372,47 +372,73 @@ button {
     margin-bottom: 40px;
 }
 
-.material-table thead {
+.default-table thead {
     background-color: #154985;
     color: white;
 }
 
-.material-table th,
-.material-table td {
+.default-table th,
+.default-table td {
     padding: 16px;
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
     word-wrap: break-word;
 }
 
-.material-table th:nth-child(1),
-.material-table td:nth-child(1) {
+.default-table th:nth-child(1),
+.default-table td:nth-child(1) {
     width: 35%;
 }
 
-.material-table th:nth-child(2),
-.material-table td:nth-child(2) {
+.default-table th:nth-child(2),
+.default-table td:nth-child(2) {
     width: 20%;
 }
 
-.material-table th:nth-child(3),
-.material-table td:nth-child(3) {
+.default-table th:nth-child(3),
+.default-table td:nth-child(3) {
     width: 15%;
     text-align: right;
 }
 
-.material-table td:nth-child(4),
-.material-table th:nth-child(4) {
+.default-table td:nth-child(4),
+.default-table th:nth-child(4) {
     text-align: center;
     width: 15%;
 }
 
-.material-table th:nth-child(5),
-.material-table td:nth-child(5) {
+.default-table th:nth-child(5),
+.default-table td:nth-child(5) {
     text-align: right;
     width: 15%;
 }
 
+.dashboard-table th:nth-child(1),
+.dashboard-table th:nth-child(1) {
+    width: 15%;
+}
+
+.dashboard-table th:nth-child(2),
+.dashboard-table th:nth-child(2) {
+    width: 35%;
+}
+
+.dashboard-table th:nth-child(3),
+.dashboard-table th:nth-child(3) {
+    width: 20%;
+}
+
+.dashboard-table th:nth-child(4),
+.dashboard-table th:nth-child(4) {
+    text-align: center;
+    width: 15%;
+}
+
+.dashboard-table th:nth-child(5),
+.dashboard-table th:nth-child(5) {
+    text-align: center;
+    width: 15%;
+}
 
 .general-section {
     background-color: #fdfdfd;
