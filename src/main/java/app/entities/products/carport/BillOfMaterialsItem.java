@@ -6,9 +6,9 @@ public class BillOfMaterialsItem {
     private final int quantity;
     private final String unit;
     private final String description;
-    private final double salesPrice;
+    private final float salesPrice;
 
-    public BillOfMaterialsItem(String name, int length, int quantity, String unit, String description, double salesPrice) {
+    public BillOfMaterialsItem(String name, int length, int quantity, String unit, String description, float salesPrice) {
         this.name = name;
         this.length = length;
         this.quantity = quantity;
@@ -37,8 +37,8 @@ public class BillOfMaterialsItem {
         return description;
     }
 
-    public double getSalesPrice() {
-        return salesPrice;
+    public float getSalesPrice() {
+        return (((float) length / 100) * salesPrice) * quantity;
     }
 
     @Override

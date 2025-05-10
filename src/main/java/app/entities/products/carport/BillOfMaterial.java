@@ -23,9 +23,7 @@ public class BillOfMaterial {
     }
 
     public double calcTotalPrice() {
-        return lines.stream()
-                .mapToDouble(item -> item.getQuantity() * item.getSalesPrice())
-                .sum();
+        return lines.stream().mapToDouble(BillOfMaterialsItem::getSalesPrice).sum();
     }
 
     public List<BillOfMaterialsItem> getLines() {
@@ -51,7 +49,7 @@ public class BillOfMaterial {
                 posts,
                 material.getUnit(),
                 material.getDescription(),
-                material.getSalesPrice() * Collections.max(material.getPreCutLengths())
+                material.getSalesPrice()
         ));
         return result;
     }
@@ -77,7 +75,7 @@ public class BillOfMaterial {
                     normalBeams,
                     material.getUnit(),
                     material.getDescription(),
-                    material.getSalesPrice() * normalBestFit
+                    material.getSalesPrice()
             ));
         }
 
@@ -87,7 +85,7 @@ public class BillOfMaterial {
                 endBeam,
                 material.getUnit(),
                 material.getDescription(),
-                material.getSalesPrice() * endBestFit
+                material.getSalesPrice()
         ));
         return beamList;
     }
@@ -105,7 +103,7 @@ public class BillOfMaterial {
                 numberOfRafters,
                 material.getUnit(),
                 material.getDescription(),
-                material.getSalesPrice() * bestFitLength
+                material.getSalesPrice()
         ));
         return rafterList;
     }
@@ -127,7 +125,7 @@ public class BillOfMaterial {
                     (fasciasCountLength + fasciasCountWidth) * 2,
                     material.getUnit(),
                     material.getDescription(),
-                    material.getSalesPrice() * bestFitLength
+                    material.getSalesPrice()
             ));
             return fasciaList;
         } else {
@@ -137,7 +135,7 @@ public class BillOfMaterial {
                     fasciasCountLength * 2,
                     material.getUnit(),
                     material.getDescription(),
-                    material.getSalesPrice() * bestFitLength
+                    material.getSalesPrice()
             ));
 
             fasciaList.add(new BillOfMaterialsItem(
@@ -146,7 +144,7 @@ public class BillOfMaterial {
                     fasciasCountWidth * 2,
                     material.getUnit(),
                     material.getDescription(),
-                    material.getSalesPrice() * bestFitWidth
+                    material.getSalesPrice()
             ));
             return fasciaList;
         }
@@ -168,7 +166,7 @@ public class BillOfMaterial {
                 totalCovers,
                 material.getUnit(),
                 material.getDescription(),
-                material.getSalesPrice() * bestFitLength
+                material.getSalesPrice()
         ));
         return roofCoverList;
     }
