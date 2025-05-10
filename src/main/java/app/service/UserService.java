@@ -15,6 +15,9 @@ import java.util.List;
 
 public class UserService {
     public static void createUser(User user) throws DatabaseException {
+        if (user.getPostcode() != null) {
+            UserMapper.insertPostcode(user.getPostcode(), user.getCity());
+        }
         UserMapper.createUser(user);
     }
 
