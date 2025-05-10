@@ -17,7 +17,7 @@
         <h1>Kundeprofil</h1>
 
         <form class="carport-form" action="/dashboard/customers/update" method="post">
-            <input type="hidden" name="customerId" th:value="${customer.userId}" />
+            <input type="hidden" name="customerId" th:value="${customer.userId}"/>
 
             <div class="form-grid-two">
                 <div>
@@ -58,12 +58,22 @@
                 </div>
             </div>
 
-            <button type="submit" class="default-button">Opdater kundeinfo</button>
+            <div class="customer-action-group">
+                <div class="two-button-row">
+                    <button type="submit" class="default-button">Opdater kundeinfo</button>
 
-            <form action="/send-email" method="post" style="margin-top: 1rem;">
-                <input type="hidden" name="email" th:value="${customer.email}" />
-                <button type="submit" class="default-button">Send email</button>
-            </form>
+                    <form action="/dashboard/customers/delete" method="post"
+                          onsubmit="return confirm('Er du sikker på, at du vil slette kunden?')">
+                        <input type="hidden" name="customerId" th:value="${customer.userId}" />
+                        <button type="submit" class="remove-button">Slet kunde</button>
+                    </form>
+                </div>
+
+                <form action="/send-email" method="post" class="full-width-form">
+                    <input type="hidden" name="email" th:value="${customer.email}"/>
+                    <button type="submit" class="default-button full-width-button">Send email</button>
+                </form>
+            </div>
         </form>
 
         <section class="material-section">
@@ -80,19 +90,22 @@
                 </thead>
                 <tbody>
                 <tr th:each="order : ${orders}" th:classappend="${order.orderStatus == 'Annulleret'} ? 'cancelled-row'">
-                <td th:text="${order.orderId}"></td>
+                    <td th:text="${order.orderId}"></td>
                     <td th:text="${order.orderStatus}"></td>
                     <td th:text="${#numbers.formatDecimal(order.getTotalPrice(), 1, 2, 'COMMA')} + ' kr.'"></td>
                     <td>
                         <form method="get" action="/dashboard/order">
-                            <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                            <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                             <button type="submit" class="default-button">Se</button>
                         </form>
                     </td>
                     <td>
                         <form th:if="${order.orderStatus != 'Annulleret'}" method="post" action="/orders/cancel">
-                            <input type="hidden" name="orderId" th:value="${order.orderId}" />
-                            <button type="submit" class="remove-button" onclick="return confirm('Er du sikker på, at du vil annullere denne ordre?')">Annuller</button>
+                            <input type="hidden" name="orderId" th:value="${order.orderId}"/>
+                            <button type="submit" class="remove-button"
+                                    onclick="return confirm('Er du sikker på, at du vil annullere denne ordre?')">
+                                Annuller
+                            </button>
                         </form>
                         <span th:if="${order.orderStatus == 'Annulleret'}"></span>
                     </td>
