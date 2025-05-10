@@ -30,19 +30,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="order : ${staff.myWorkOrders}">
+                    <tr th:each="order : ${assignedOrders}">
                         <td th:text="${order.orderId}"></td>
                         <td th:text="|${order.customer.firstName} ${order.customer.lastName}|"></td>
                         <td th:text="${order.totalPrice} + ' kr.'"></td>
                         <td>
                             <form action="/dashboard/order" method="get">
-                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                                 <button type="submit" class="default-button">Se</button>
                             </form>
                         </td>
                         <td>
                             <form action="/orders/remove" method="post" style="display: inline;">
-                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                                 <button type="submit" class="remove-button">Fjern</button>
                             </form>
                         </td>
@@ -70,13 +70,13 @@
                         <td th:text="${order.totalPrice} + ' kr.'"></td>
                         <td>
                             <form action="/dashboard/order" method="get">
-                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                                 <button type="submit" class="default-button">Se</button>
                             </form>
                         </td>
                         <td>
                             <form action="/orders/assign" method="post">
-                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                                 <button type="submit" class="add-button">Tag</button>
                             </form>
                         </td>
