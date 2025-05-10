@@ -107,7 +107,7 @@ public class CarportController {
             currentStaff.getMyWorkOrders().add(order);
 
             // 9. Redirect or show confirmation
-            ctx.redirect("/dashboard/orders");
+            ctx.redirect("/dashboard/order?orderId=" + order.getOrderId());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -159,6 +159,8 @@ public class CarportController {
         model.put("selectedRafterId", selectedRafter.getItemId());
         model.put("selectedFasciaId", selectedFascia.getItemId());
         model.put("selectedRoofCoverId", selectedRoofCover.getItemId());
+
+        model.put("activeTab", "orders");
 
         ctx.render("dashboard/dashboard-edit-carport.html", model);
     }

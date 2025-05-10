@@ -24,6 +24,10 @@
                         <input type="hidden" th:name="customerId" th:value="${order.customer.userId}" />
                         <button type="submit" class="default-button">Se profil</button>
                     </form>
+                    <form action="/send-email" method="post">
+                        <input type="hidden" name="index" th:value="${order.customer.email}">
+                        <button type="submit" class="default-button">Send email</button>
+                    </form>
                 </div>
                 <p><strong>Navn:</strong> <span
                         th:text="|${order.customer.firstName} ${order.customer.lastName}|"></span></p>
@@ -58,12 +62,21 @@
                 <tr th:each="item, iter : ${order.orderItems}">
                     <td>
                         <span th:text="${item.product.name}"></span>
+
                         <form th:if="${item.product.itemType == 'carport'}"
                               action="/dashboard/carport" method="get"
                               class="inline-form">
                             <input type="hidden" name="orderId" th:value="${order.orderId}" />
                             <input type="hidden" name="index" th:value="${iter.index}" />
                             <button type="submit" class="default-button small-button">Se</button>
+                        </form>
+
+                        <form th:if="${item.product.itemType == 'carport'}"
+                              action="/dashboard/carport/drawing" method="get"
+                              class="inline-form">
+                            <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                            <input type="hidden" name="index" th:value="${iter.index}" />
+                            <button type="submit" class="default-button small-button">Se tegning</button>
                         </form>
                     </td>
                     <td th:text="${item.product.itemType}"></td>
