@@ -18,6 +18,10 @@ h1 {
     font-size: 28px;
 }
 
+h2 {
+    margin-top: 10px;
+}
+
 .dashboard-front h1 {
     font-size: 28px;
     text-align: center;
@@ -218,6 +222,13 @@ h1 {
 
 .default-button:hover {
     background-color: #1c6394;
+}
+
+.customer-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
 /* ===== Generic Table Styling ===== */

@@ -18,7 +18,13 @@
 
         <div class="order-sections">
             <section class="material-section order-info">
-                <h2>Kundeinformation</h2>
+                <div class="customer-info-header">
+                    <h2>Kundeinformation</h2>
+                    <form th:action="@{/dashboard/customer}" method="post">
+                        <input type="hidden" th:name="customerId" th:value="${order.customer.userId}" />
+                        <button type="submit" class="default-button">Se profil</button>
+                    </form>
+                </div>
                 <p><strong>Navn:</strong> <span
                         th:text="|${order.customer.firstName} ${order.customer.lastName}|"></span></p>
                 <p><strong>Email:</strong> <span th:text="${order.customer.email}"></span></p>
