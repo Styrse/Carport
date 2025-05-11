@@ -47,7 +47,7 @@ public class OrderMapper {
                 } else {
                     ps.setNull(2, Types.INTEGER);
                 }
-                ps.setFloat(3, order.calcTotalPrice());
+                ps.setFloat(3, order.getTotalPrice());
 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
@@ -299,7 +299,12 @@ public class OrderMapper {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    orders.add(mapOrder(rs));
+                    Order order = mapOrder(rs);
+                    
+                    List<OrderItem> items = getOrderItemsForOrder(connection, order.getOrderId());
+                    order.setOrderItems(items);
+
+                    orders.add(order);
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -307,6 +312,7 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new DatabaseException(e, "Error fetching orders by customer ID");
         }
+
         return orders;
     }
 
@@ -324,7 +330,7 @@ public class OrderMapper {
                 } else {
                     ps.setNull(2, Types.INTEGER);
                 }
-                ps.setFloat(3, order.calcTotalPrice());
+                ps.setFloat(3, order.getTotalPrice());
                 ps.setInt(4, order.getOrderId());
 
                 ps.executeUpdate();
@@ -428,7 +434,12 @@ public class OrderMapper {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    orders.add(mapOrder(rs));
+                    Order order = mapOrder(rs);
+
+                    List<OrderItem> items = getOrderItemsForOrder(connection, order.getOrderId());
+                    order.setOrderItems(items);
+
+                    orders.add(order);
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -443,20 +454,18 @@ public class OrderMapper {
     public static List<Order> getUnassignedRequestOrders() throws DatabaseException {
         List<Order> orders = new ArrayList<>();
 
-        String sql = """
-        SELECT o.order_id, o.user_id, o.total_price,
-               latest.status AS order_status,
-               u.firstname, u.lastname, u.phone_number, u.email
-        FROM orders o
-        JOIN users u ON o.user_id = u.user_id
-        JOIN (
-            SELECT DISTINCT ON (order_id) order_id, status, update_date
-            FROM order_status_history
-            ORDER BY order_id, update_date DESC
-        ) latest ON o.order_id = latest.order_id
-        WHERE o.staff_id IS NULL AND latest.status = 'Forespørgsel'
-        ORDER BY o.order_id DESC
-        """;
+        String sql = "SELECT o.order_id, o.user_id, o.total_price, " +
+                "   latest.status AS order_status, " +
+                "   u.firstname, u.lastname, u.phone_number, u.email " +
+                "FROM orders o " +
+                "JOIN users u ON o.user_id = u.user_id " +
+                "JOIN ( " +
+                "   SELECT DISTINCT ON (order_id) order_id, status, update_date " +
+                "   FROM order_status_history " +
+                "   ORDER BY order_id, update_date DESC" +
+                ") latest ON o.order_id = latest.order_id " +
+                "WHERE o.staff_id IS NULL AND latest.status = 'Forespørgsel' " +
+                "ORDER BY o.order_id DESC";
 
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -468,15 +477,18 @@ public class OrderMapper {
                         rs.getString("lastname"),
                         rs.getString("phone_number"),
                         rs.getString("email"),
-                        null, // no password needed
+                        null,
                         1
                 );
                 customer.setUserId(rs.getInt("user_id"));
 
                 Order order = new Order(customer);
-                        order.setOrderId(rs.getInt("order_id"));
-                        order.setTotalPrice(rs.getFloat("total_price"));
-                        order.setOrderStatus(rs.getString("order_status"));
+                order.setOrderId(rs.getInt("order_id"));
+                order.setTotalPrice(rs.getFloat("total_price"));
+                order.setOrderStatus(rs.getString("order_status"));
+
+                List<OrderItem> items = getOrderItemsForOrder(conn, order.getOrderId());
+                order.setOrderItems(items);
 
                 orders.add(order);
             }

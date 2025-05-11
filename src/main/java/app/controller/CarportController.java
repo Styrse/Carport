@@ -2,6 +2,8 @@ package app.controller;
 
 import app.entities.orders.Order;
 import app.entities.orders.OrderItem;
+import app.entities.products.carport.BillOfMaterial;
+import app.entities.products.carport.BillOfMaterialsItem;
 import app.entities.products.carport.Carport;
 import app.entities.products.materials.Material;
 import app.entities.products.materials.MaterialRole;
@@ -193,5 +195,33 @@ public class CarportController {
         CarportMapper.updateCarport(carport);
 
         ctx.redirect("/dashboard/order?orderId=" + orderId);
+    }
+
+    public static void showBillOfMaterials(Context ctx) {
+        try {
+            int orderId = Integer.parseInt(ctx.queryParam("orderId"));
+            int index = Integer.parseInt(ctx.queryParam("index"));
+
+            Order order = OrderMapper.getOrderByOrderId(orderId);
+            Carport carport = (Carport) order.getOrderItems().get(index).getProduct();
+
+            BillOfMaterial bom = carport.getBillOfMaterial();
+            List<BillOfMaterialsItem> items = bom.getLines();
+
+            Map<String, Object> model = createBaseModel(ctx);
+            model.put("orderId", orderId);
+            model.put("bomItems", items);
+
+            model.put("activeTab", "orders");
+
+            double totalPrice = bom.calcTotalPrice();
+
+            model.put("totalPrice", totalPrice);
+
+            ctx.render("dashboard/dashboard-carport-bom.html", model);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke hente stykliste.");
+        }
     }
 }

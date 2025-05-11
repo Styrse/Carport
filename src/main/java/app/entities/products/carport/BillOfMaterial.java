@@ -20,16 +20,6 @@ public class BillOfMaterial {
     public BillOfMaterial(Carport carport) {
         this.carport = carport;
         calculateMaterials();
-        for (BillOfMaterialsItem item : lines) {
-            System.out.println("Name: " + item.getName());
-            System.out.println("Quantity: " + item.getQuantity());
-            System.out.println("Length: " + item.getLength());
-            System.out.println("Price pr meter: " + item.getMeterSalesPrice());
-            System.out.println("Total price: " + item.getSalesPrice());
-            System.out.println();
-            System.out.println();
-            System.out.println();
-        }
     }
 
     public double calcTotalPrice() {

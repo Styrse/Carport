@@ -398,12 +398,12 @@ button {
 
 .default-table th:nth-child(1),
 .default-table td:nth-child(1) {
-    width: 35%;
+    width: 40%;
 }
 
 .default-table th:nth-child(2),
 .default-table td:nth-child(2) {
-    width: 20%;
+    width: 15%;
 }
 
 .default-table th:nth-child(3),
@@ -449,6 +449,74 @@ button {
 .dashboard-table th:nth-child(5) {
     text-align: center;
     width: 15%;
+}
+
+.bom-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    font-size: 15px;
+}
+
+.bom-table thead {
+    background-color: #154985;
+    color: white;
+}
+
+.bom-table th,
+.bom-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    word-wrap: break-word;
+}
+
+.bom-table th:nth-child(1),
+.bom-table td:nth-child(1) {
+    width: 25%;
+}
+
+.bom-table th:nth-child(2),
+.bom-table td:nth-child(2) {
+    width: 10%;
+    text-align: center;
+}
+
+.bom-table th:nth-child(3),
+.bom-table td:nth-child(3) {
+    width: 10%;
+    text-align: center;
+}
+
+.bom-table th:nth-child(4),
+.bom-table td:nth-child(4) {
+    width: 10%;
+    text-align: center;
+}
+
+.bom-table th:nth-child(5),
+.bom-table td:nth-child(5) {
+    width: 25%;
+}
+
+.bom-table th:nth-child(6),
+.bom-table td:nth-child(6),
+.bom-table th:nth-child(7),
+.bom-table td:nth-child(7) {
+    width: 10%;
+    text-align: right;
+}
+
+.bom-total {
+    font-weight: 600;
+    font-size: 16px;
+    text-align: right;
+    margin-top: 20px;
 }
 
 .general-section {
@@ -553,6 +621,10 @@ section {
 
 .full-width-button {
     width: 100%;
+}
+
+.default-button {
+    text-decoration: none;
 }
 
 /* ===== Responsive Table Layout ===== */
