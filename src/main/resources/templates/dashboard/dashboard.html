@@ -67,7 +67,7 @@
                     <tr th:each="order : ${unassignedOrders}">
                         <td th:text="${order.orderId}"></td>
                         <td th:text="|${order.customer.firstname} ${order.customer.lastname}|"></td>
-                        <td th:text="${order.totalPrice} + ' kr.'"></td>
+                        <td th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
                         <td>
                             <form action="/dashboard/order" method="get">
                                 <input type="hidden" name="orderId" th:value="${order.orderId}"/>
