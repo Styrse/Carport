@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Stykliste</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="container">
+        <h1>Stykliste for Ordre #<span th:text="${orderId}">?</span></h1>
+
+        <table class="bom-table">
+        <thead>
+            <tr>
+                <th>Materiale</th>
+                <th>Længde</th>
+                <th>Antal</th>
+                <th>Enhed</th>
+                <th>Beskrivelse</th>
+                <th>Stykpris</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${bomItems}">
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.length} + ' cm'"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.unit}">tk</td>
+                <td th:text="${item.description}"></td>
+                <td th:text="${#numbers.formatDecimal(item.MeterSalesPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
+                <td th:text="${#numbers.formatDecimal(item.salesPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p class="bom-total">
+            Total materialer: <span th:text="${#numbers.formatDecimal(totalPrice, 1, 2, 'COMMA')} + ' kr.'"></span>
+        </p>
+
+        <a th:href="@{/dashboard/order(orderId=${orderId})}" class="default-button">Tilbage til ordre</a>
+    </div>
+</main>
+
+</body>
+</html>

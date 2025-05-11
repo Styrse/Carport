@@ -8,12 +8,12 @@ import java.util.List;
 public class Post extends Plank {
     private float bucklingCapacity;
 
-    public Post(String name, String description, float costPrice, float salesPrice, float width, String unit, List<Integer> preCutsLengths, int height, float bucklingCapacity) {
+    public Post(String name, String description, float costPrice, float salesPrice, float width, String unit, List<Integer> preCutsLengths, float height, float bucklingCapacity) {
         super(name, description, costPrice, salesPrice, width, unit, preCutsLengths, height);
         this.bucklingCapacity = bucklingCapacity;
     }
 
-    public Post(int itemId, String name, String description, float costPrice, float salesPrice, String unit, float width, int height, float bucklingCapacity) {
+    public Post(int itemId, String name, String description, float costPrice, float salesPrice, String unit, float width, float height, float bucklingCapacity) {
         super(itemId, name, description, costPrice, salesPrice, unit, width, height);
         this.bucklingCapacity = bucklingCapacity;
     }
@@ -32,7 +32,7 @@ public class Post extends Plank {
         ps.setString(2, this.getDescription());
         ps.setString(3, this.getUnit());
         ps.setFloat(4, this.getWidth());
-        ps.setInt( 5, this.getHeight());
+        ps.setFloat( 5, this.getHeight());
         ps.setString(6, this.getClass().getSimpleName());
         ps.setFloat(7, this.getBucklingCapacity());
         ps.setNull(8, Types.NUMERIC);

@@ -10,6 +10,7 @@ import app.exceptions.DatabaseException;
 import app.persistence.mappers.MaterialMapper;
 import io.javalin.http.Context;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,7 +66,7 @@ public class MaterialService {
         float salesPrice = Float.parseFloat(ctx.formParam("salesPrice"));
         String unit = ctx.formParam("unit");
         float width = Float.parseFloat(ctx.formParam("width"));
-        int height = (int) parseOrDefault(ctx.formParam("height"), 0);
+        float height = parseOrDefault(ctx.formParam("height"), 0);
         int overlapLength = (int) parseOrDefault(ctx.formParam("overlapLength"), 0);
         int overlapWidth = (int) parseOrDefault(ctx.formParam("overlapWidth"), 0);
         int gapRafters = (int) parseOrDefault(ctx.formParam("gapRafters"), 0);

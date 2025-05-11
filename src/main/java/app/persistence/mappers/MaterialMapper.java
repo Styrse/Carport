@@ -265,8 +265,8 @@ public class MaterialMapper {
         String name = rs.getString("name");
         String description = rs.getString("description");
         String unit = rs.getString("unit");
-        int width = rs.getInt("width");
-        int height = rs.getInt("height");
+        float width = rs.getFloat("width");
+        float height = rs.getFloat("height");
         float costPrice = rs.getFloat("cost_price");
         float salesPrice = rs.getFloat("sales_price");
         String type = rs.getString("material_type");

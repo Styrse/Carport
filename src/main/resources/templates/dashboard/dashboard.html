@@ -19,10 +19,10 @@
         <div class="dashboard-order-tables">
             <section class="dashboard-order-section">
                 <h2>Dine forespørgsler</h2>
-                <table class="material-table">
+                <table class="default-table dashboard-table">
                     <thead>
                     <tr>
-                        <th>Ordre ID</th>
+                        <th>ID</th>
                         <th>Kunde</th>
                         <th>Totalpris</th>
                         <th>Se</th>
@@ -30,19 +30,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="order : ${staff.myWorkOrders}">
+                    <tr th:each="order : ${assignedOrders}">
                         <td th:text="${order.orderId}"></td>
                         <td th:text="|${order.customer.firstName} ${order.customer.lastName}|"></td>
-                        <td th:text="${order.totalPrice} + ' kr.'"></td>
+                        <td th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
                         <td>
                             <form action="/dashboard/order" method="get">
-                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                                 <button type="submit" class="default-button">Se</button>
                             </form>
                         </td>
                         <td>
                             <form action="/orders/remove" method="post" style="display: inline;">
-                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                                 <button type="submit" class="remove-button">Fjern</button>
                             </form>
                         </td>
@@ -53,10 +53,10 @@
 
             <section class="dashboard-order-section">
                 <h2>Ufordelte forespørgsler</h2>
-                <table class="material-table">
+                <table class="default-table dashboard-table">
                     <thead>
                     <tr>
-                        <th>Ordre ID</th>
+                        <th>ID</th>
                         <th>Kunde</th>
                         <th>Totalpris</th>
                         <th>Se</th>
@@ -67,16 +67,16 @@
                     <tr th:each="order : ${unassignedOrders}">
                         <td th:text="${order.orderId}"></td>
                         <td th:text="|${order.customer.firstname} ${order.customer.lastname}|"></td>
-                        <td th:text="${order.totalPrice} + ' kr.'"></td>
+                        <td th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
                         <td>
                             <form action="/dashboard/order" method="get">
-                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                                 <button type="submit" class="default-button">Se</button>
                             </form>
                         </td>
                         <td>
                             <form action="/orders/assign" method="post">
-                                <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                                <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                                 <button type="submit" class="add-button">Tag</button>
                             </form>
                         </td>

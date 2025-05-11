@@ -23,9 +23,7 @@ public class BillOfMaterial {
     }
 
     public double calcTotalPrice() {
-        return lines.stream()
-                .mapToDouble(item -> item.getQuantity() * item.getSalesPrice())
-                .sum();
+        return lines.stream().mapToDouble(BillOfMaterialsItem::getSalesPrice).sum();
     }
 
     public List<BillOfMaterialsItem> getLines() {
@@ -51,7 +49,7 @@ public class BillOfMaterial {
                 posts,
                 material.getUnit(),
                 material.getDescription(),
-                material.getSalesPrice() * Collections.max(material.getPreCutLengths())
+                material.getSalesPrice()
         ));
         return result;
     }
@@ -64,10 +62,15 @@ public class BillOfMaterial {
 
         int maxPostPrBeam = (int) Math.floor(Collections.max(material.getPreCutLengths()) / distanceBetweenPosts);
 
-        int normalBestFit = bestFitLength(material, maxPostPrBeam * distanceBetweenPosts);
-        int endBestFit = bestFitLength(material, carport.getLength() - ((maxPostPrBeam * distanceBetweenPosts) * (maxPostPrBeam - 1)));
+        float normalBeamLength = carport.getLength() <= Collections.max(material.getPreCutLengths()) ? carport.getLength() : (maxPostPrBeam * distanceBetweenPosts);
 
+        int normalBestFit = bestFitLength(material, normalBeamLength);
         int normalBeams = (int) Math.floor((double) carport.getLength() / normalBestFit) * calcPostCountWidth();
+
+        int beamsPerRow = (int) Math.floor(carport.getLength() / normalBestFit);
+        float leftoverLength = carport.getLength() - (beamsPerRow * normalBestFit);
+        int endBestFit = bestFitLength(material, leftoverLength);
+
         int endBeam = calcPostCountWidth();
 
         if (normalBeams > 0) {
@@ -77,7 +80,7 @@ public class BillOfMaterial {
                     normalBeams,
                     material.getUnit(),
                     material.getDescription(),
-                    material.getSalesPrice() * normalBestFit
+                    material.getSalesPrice()
             ));
         }
 
@@ -87,7 +90,7 @@ public class BillOfMaterial {
                 endBeam,
                 material.getUnit(),
                 material.getDescription(),
-                material.getSalesPrice() * endBestFit
+                material.getSalesPrice()
         ));
         return beamList;
     }
@@ -105,7 +108,7 @@ public class BillOfMaterial {
                 numberOfRafters,
                 material.getUnit(),
                 material.getDescription(),
-                material.getSalesPrice() * bestFitLength
+                material.getSalesPrice()
         ));
         return rafterList;
     }
@@ -127,7 +130,7 @@ public class BillOfMaterial {
                     (fasciasCountLength + fasciasCountWidth) * 2,
                     material.getUnit(),
                     material.getDescription(),
-                    material.getSalesPrice() * bestFitLength
+                    material.getSalesPrice()
             ));
             return fasciaList;
         } else {
@@ -137,7 +140,7 @@ public class BillOfMaterial {
                     fasciasCountLength * 2,
                     material.getUnit(),
                     material.getDescription(),
-                    material.getSalesPrice() * bestFitLength
+                    material.getSalesPrice()
             ));
 
             fasciaList.add(new BillOfMaterialsItem(
@@ -146,7 +149,7 @@ public class BillOfMaterial {
                     fasciasCountWidth * 2,
                     material.getUnit(),
                     material.getDescription(),
-                    material.getSalesPrice() * bestFitWidth
+                    material.getSalesPrice()
             ));
             return fasciaList;
         }
@@ -168,7 +171,7 @@ public class BillOfMaterial {
                 totalCovers,
                 material.getUnit(),
                 material.getDescription(),
-                material.getSalesPrice() * bestFitLength
+                material.getSalesPrice()
         ));
         return roofCoverList;
     }
@@ -176,7 +179,7 @@ public class BillOfMaterial {
     // Finds the first length in PREDEFINED_LENGTHS that is greater than the required value or returns the maximum length.
     private int bestFitLength(Material material, float neededLength) {
         return material.getPreCutLengths().stream()
-                .filter(length -> length > neededLength)
+                .filter(length -> length >= neededLength)
                 .findFirst()
                 .orElse(Collections.max(material.getPreCutLengths()));
     }

@@ -75,6 +75,9 @@ public class CustomerController {
             customer.setLastName(ctx.formParam("lastName"));
             customer.setPhone(ctx.formParam("phone"));
             customer.setEmail(ctx.formParam("email"));
+            customer.setAddress(ctx.formParam("address"));
+            customer.setPostcode(ctx.formParam("postcode"));
+            customer.setCity("city");
 
             UserMapper.updateUser(customer);
             ctx.redirect("/dashboard/customers");

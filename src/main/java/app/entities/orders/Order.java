@@ -17,6 +17,11 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>();
     private float totalPrice;
 
+    //TODO: Do
+    public static int SHIPPING_DK_POSTCODE_LESS_5000 = 2000;
+    public static int SHIPPING_DK_REST = 3000;
+    public static int SHIPPING_INTERNATIONALLY = 6000;
+
     public Order(Customer customer) {
         this.customer = customer;
     }
@@ -53,13 +58,14 @@ public class Order {
         this.orderItems = new ArrayList<>();
     }
 
-    public float calcTotalPrice(){
-        float totalPrice = 0;
+    public float getTotalPrice() {
+        float total = 0;
 
         for (OrderItem item : orderItems) {
-            totalPrice += item.getProduct().getSalesPrice() * item.getQuantity();
+            total += item.getProduct().getSalesPrice() * item.getQuantity();
         }
-        return totalPrice;
+
+        return total;
     }
 
     public int getOrderId() {
@@ -108,10 +114,6 @@ public class Order {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
-    }
-
-    public float getTotalPrice() {
-        return totalPrice;
     }
 
     public void setTotalPrice(float totalPrice) {

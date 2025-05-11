@@ -2,6 +2,8 @@ package app.controller;
 
 import app.entities.orders.Order;
 import app.entities.orders.OrderItem;
+import app.entities.products.carport.BillOfMaterial;
+import app.entities.products.carport.BillOfMaterialsItem;
 import app.entities.products.carport.Carport;
 import app.entities.products.materials.Material;
 import app.entities.products.materials.MaterialRole;
@@ -11,10 +13,13 @@ import app.entities.products.materials.planks.Post;
 import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Customer;
+import app.entities.users.Staff;
+import app.entities.users.User;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.CarportMapper;
 import app.persistence.mappers.MaterialMapper;
 import app.persistence.mappers.OrderMapper;
+import app.persistence.mappers.UserMapper;
 import app.service.CarportService;
 import app.service.MaterialService;
 import app.service.OrderService;
@@ -76,9 +81,37 @@ public class CarportController {
             String postcode = ctx.formParam("postcode");
             String city = ctx.formParam("city");
 
-            // 4. Create customer
-            Customer customer = new Customer(firstName, lastName, address, postcode, city, phone, email, 1);
-            UserService.createUser(customer);
+            // 4. Check if Customer exists or create new
+            Customer customer;
+
+            User user = null;
+            try {
+                user = UserMapper.getUserByEmail(email);
+            } catch (DatabaseException e) {
+                e.printStackTrace();
+                ctx.status(500).result("Database fejl ved hentning af bruger.");
+                return;
+            }
+
+            if (user != null) {
+                if (user instanceof Customer existingCustomer) {
+                    customer = existingCustomer;
+                    customer.setFirstName(firstName);
+                    customer.setLastName(lastName);
+                    customer.setPhone(phone);
+                    customer.setAddress(address);
+                    customer.setPostcode(postcode);
+                    customer.setCity(city);
+
+                    UserMapper.updateUser(customer);
+                } else {
+                    ctx.status(400).result("Emailen tilhører en bruger som ikke er en kunde.");
+                    return;
+                }
+            } else {
+                customer = new Customer(firstName, lastName, address, postcode, city, phone, email, 1);
+                UserService.createUser(customer);
+            }
 
             // 5. Create carport object
             Carport carport = new Carport(width, length, height, roofType, roofAngle);
@@ -90,16 +123,22 @@ public class CarportController {
             materialId.put(MaterialRole.ROOF_COVER, roofCoverId);
             CarportService.saveCarport(carport, materialId);
 
-            // 6. Create order object (status = NEW, or DRAFT, etc.)
+            // 6. Get Staff
+            Staff currentStaff = ctx.sessionAttribute("currentUser");
+
+            // 7. Create order
             Order order = new Order(customer);
-            OrderItem orderItem = new OrderItem(carport, 1);
-            order.addOrderItem(orderItem);
+            order.addOrderItem(new OrderItem(carport, 1));
             order.setOrderStatus("Forespørgsel");
             order.setOrderDate(LocalDate.now());
+            order.setStaff(currentStaff);
             OrderService.saveOrder(order);
 
-            // 7. Redirect or show confirmation
-            ctx.redirect("/dashboard/orders");
+            // 8. Assign to staff
+            currentStaff.getMyWorkOrders().add(order);
+
+            // 9. Redirect
+            ctx.redirect("/dashboard/order?orderId=" + order.getOrderId());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,6 +191,8 @@ public class CarportController {
         model.put("selectedFasciaId", selectedFascia.getItemId());
         model.put("selectedRoofCoverId", selectedRoofCover.getItemId());
 
+        model.put("activeTab", "orders");
+
         ctx.render("dashboard/dashboard-edit-carport.html", model);
     }
 
@@ -183,5 +224,33 @@ public class CarportController {
         CarportMapper.updateCarport(carport);
 
         ctx.redirect("/dashboard/order?orderId=" + orderId);
+    }
+
+    public static void showBillOfMaterials(Context ctx) {
+        try {
+            int orderId = Integer.parseInt(ctx.queryParam("orderId"));
+            int index = Integer.parseInt(ctx.queryParam("index"));
+
+            Order order = OrderMapper.getOrderByOrderId(orderId);
+            Carport carport = (Carport) order.getOrderItems().get(index).getProduct();
+
+            BillOfMaterial bom = carport.getBillOfMaterial();
+            List<BillOfMaterialsItem> items = bom.getLines();
+
+            Map<String, Object> model = createBaseModel(ctx);
+            model.put("orderId", orderId);
+            model.put("bomItems", items);
+
+            model.put("activeTab", "orders");
+
+            double totalPrice = bom.calcTotalPrice();
+
+            model.put("totalPrice", totalPrice);
+
+            ctx.render("dashboard/dashboard-carport-bom.html", model);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke hente stykliste.");
+        }
     }
 }
