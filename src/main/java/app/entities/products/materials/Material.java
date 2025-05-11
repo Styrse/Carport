@@ -28,7 +28,7 @@ public abstract class Material extends Product {
 
     @Override
     public String getItemType() {
-        return "material";
+        return "Materiale";
     }
 
     public float getWidth() {

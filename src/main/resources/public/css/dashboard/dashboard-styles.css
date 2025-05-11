@@ -380,7 +380,6 @@ button {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 40px;
 }
 
 .default-table thead {
@@ -489,26 +488,26 @@ button {
 
 .bom-table th:nth-child(3),
 .bom-table td:nth-child(3) {
-    width: 10%;
+    width: 5%;
     text-align: center;
 }
 
 .bom-table th:nth-child(4),
 .bom-table td:nth-child(4) {
-    width: 10%;
+    width: 5%;
     text-align: center;
 }
 
 .bom-table th:nth-child(5),
 .bom-table td:nth-child(5) {
-    width: 25%;
+    width: 30%;
 }
 
 .bom-table th:nth-child(6),
 .bom-table td:nth-child(6),
 .bom-table th:nth-child(7),
 .bom-table td:nth-child(7) {
-    width: 10%;
+    width: 12.5%;
     text-align: right;
 }
 

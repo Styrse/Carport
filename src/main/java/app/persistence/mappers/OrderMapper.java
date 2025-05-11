@@ -98,8 +98,8 @@ public class OrderMapper {
                     int orderItemId = rs.getInt(1);
 
                     switch (item.getProduct().getItemType()) {
-                        case "carport" -> insertOrderItemCarport(connection, orderItemId, item);
-                        case "material" ->
+                        case "Carport" -> insertOrderItemCarport(connection, orderItemId, item);
+                        case "Material" ->
                                 insertOrderItemMaterial(connection, orderItemId, item.getProduct().getItemId());
                         default -> throw new SQLException("Unknown item type: " + item.getProduct().getItemType());
                     }
@@ -191,8 +191,8 @@ public class OrderMapper {
                     int quantity = rs.getInt("quantity");
 
                     switch (type) {
-                        case "carport" -> items.add(getCarportItem(connection, orderItemId, quantity));
-                        case "material" -> items.add(getMaterialItem(connection, orderItemId, quantity));
+                        case "Carport" -> items.add(getCarportItem(connection, orderItemId, quantity));
+                        case "Caterial" -> items.add(getMaterialItem(connection, orderItemId, quantity));
                     }
                 }
             } catch (DatabaseException e) {
@@ -300,7 +300,7 @@ public class OrderMapper {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Order order = mapOrder(rs);
-                    
+
                     List<OrderItem> items = getOrderItemsForOrder(connection, order.getOrderId());
                     order.setOrderItems(items);
 

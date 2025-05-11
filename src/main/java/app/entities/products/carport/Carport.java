@@ -76,7 +76,7 @@ public class Carport extends Product {
 
     @Override
     public String getItemType() {
-        return "carport";
+        return "Carport";
     }
 
     //Generate fresh BillOfMaterial every time

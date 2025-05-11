@@ -14,10 +14,12 @@ import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
+import app.entities.users.User;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.CarportMapper;
 import app.persistence.mappers.MaterialMapper;
 import app.persistence.mappers.OrderMapper;
+import app.persistence.mappers.UserMapper;
 import app.service.CarportService;
 import app.service.MaterialService;
 import app.service.OrderService;
@@ -79,9 +81,19 @@ public class CarportController {
             String postcode = ctx.formParam("postcode");
             String city = ctx.formParam("city");
 
-            // 4. Create customer
-            Customer customer = new Customer(firstName, lastName, address, postcode, city, phone, email, 1);
-            UserService.createUser(customer);
+            // 4. Check if Customer exists or create new
+            Customer customer;
+            try {
+                User user = UserMapper.getUserByEmail(email);
+                if (user instanceof Customer existingCustomer) {
+                    customer = existingCustomer;
+                } else {
+                    throw new DatabaseException("Brugeren med email eksisterer, men er ikke en kunde.");
+                }
+            } catch (DatabaseException e) {
+                customer = new Customer(firstName, lastName, address, postcode, city, phone, email, 1);
+                UserService.createUser(customer);
+            }
 
             // 5. Create carport object
             Carport carport = new Carport(width, length, height, roofType, roofAngle);
@@ -96,19 +108,18 @@ public class CarportController {
             // 6. Get Staff
             Staff currentStaff = ctx.sessionAttribute("currentUser");
 
-            // 7. Create order object (status = NEW, or DRAFT, etc.)
+            // 7. Create order
             Order order = new Order(customer);
-            OrderItem orderItem = new OrderItem(carport, 1);
-            order.addOrderItem(orderItem);
+            order.addOrderItem(new OrderItem(carport, 1));
             order.setOrderStatus("Forespørgsel");
             order.setOrderDate(LocalDate.now());
             order.setStaff(currentStaff);
             OrderService.saveOrder(order);
 
-            // 8. Adds order to staff "work"
+            // 8. Assign to staff
             currentStaff.getMyWorkOrders().add(order);
 
-            // 9. Redirect or show confirmation
+            // 9. Redirect
             ctx.redirect("/dashboard/order?orderId=" + order.getOrderId());
 
         } catch (Exception e) {
