@@ -41,6 +41,10 @@ public class BillOfMaterialsItem {
         return (((float) length / 100) * salesPrice) * quantity;
     }
 
+    public float getMeterSalesPrice() {
+        return salesPrice;
+    }
+
     @Override
     public String toString() {
         return "BillOfMaterialsLine{" +

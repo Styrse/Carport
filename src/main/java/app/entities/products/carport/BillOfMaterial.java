@@ -20,6 +20,16 @@ public class BillOfMaterial {
     public BillOfMaterial(Carport carport) {
         this.carport = carport;
         calculateMaterials();
+        for (BillOfMaterialsItem item : lines) {
+            System.out.println("Name: " + item.getName());
+            System.out.println("Quantity: " + item.getQuantity());
+            System.out.println("Length: " + item.getLength());
+            System.out.println("Price pr meter: " + item.getMeterSalesPrice());
+            System.out.println("Total price: " + item.getSalesPrice());
+            System.out.println();
+            System.out.println();
+            System.out.println();
+        }
     }
 
     public double calcTotalPrice() {
@@ -62,10 +72,15 @@ public class BillOfMaterial {
 
         int maxPostPrBeam = (int) Math.floor(Collections.max(material.getPreCutLengths()) / distanceBetweenPosts);
 
-        int normalBestFit = bestFitLength(material, maxPostPrBeam * distanceBetweenPosts);
-        int endBestFit = bestFitLength(material, carport.getLength() - ((maxPostPrBeam * distanceBetweenPosts) * (maxPostPrBeam - 1)));
+        float normalBeamLength = carport.getLength() <= Collections.max(material.getPreCutLengths()) ? carport.getLength() : (maxPostPrBeam * distanceBetweenPosts);
 
+        int normalBestFit = bestFitLength(material, normalBeamLength);
         int normalBeams = (int) Math.floor((double) carport.getLength() / normalBestFit) * calcPostCountWidth();
+
+        int beamsPerRow = (int) Math.floor(carport.getLength() / normalBestFit);
+        float leftoverLength = carport.getLength() - (beamsPerRow * normalBestFit);
+        int endBestFit = bestFitLength(material, leftoverLength);
+
         int endBeam = calcPostCountWidth();
 
         if (normalBeams > 0) {
@@ -174,7 +189,7 @@ public class BillOfMaterial {
     // Finds the first length in PREDEFINED_LENGTHS that is greater than the required value or returns the maximum length.
     private int bestFitLength(Material material, float neededLength) {
         return material.getPreCutLengths().stream()
-                .filter(length -> length > neededLength)
+                .filter(length -> length >= neededLength)
                 .findFirst()
                 .orElse(Collections.max(material.getPreCutLengths()));
     }

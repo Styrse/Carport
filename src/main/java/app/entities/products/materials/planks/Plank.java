@@ -34,23 +34,23 @@ import java.util.List;
  */
 
 public abstract class Plank extends Material {
-    private int height;
+    private float height;
 
-    public Plank(String name, String description, float costPrice, float salesPrice, float width, String unit, List<Integer> preCutsLengths, int height) {
+    public Plank(String name, String description, float costPrice, float salesPrice, float width, String unit, List<Integer> preCutsLengths, float height) {
         super(name, description, costPrice, salesPrice, width, unit, preCutsLengths);
         this.height = height;
     }
 
-    public Plank(int itemId, String name, String description, float costPrice, float salesPrice, String unit, float width, int height) {
+    public Plank(int itemId, String name, String description, float costPrice, float salesPrice, String unit, float width, float height) {
         super(itemId, name, description, costPrice, salesPrice, unit, width);
         this.height = height;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(float height) {
         this.height = height;
     }
 
