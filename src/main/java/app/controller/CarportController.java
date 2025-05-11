@@ -83,14 +83,32 @@ public class CarportController {
 
             // 4. Check if Customer exists or create new
             Customer customer;
+
+            User user = null;
             try {
-                User user = UserMapper.getUserByEmail(email);
+                user = UserMapper.getUserByEmail(email);
+            } catch (DatabaseException e) {
+                e.printStackTrace();
+                ctx.status(500).result("Database fejl ved hentning af bruger.");
+                return;
+            }
+
+            if (user != null) {
                 if (user instanceof Customer existingCustomer) {
                     customer = existingCustomer;
+                    customer.setFirstName(firstName);
+                    customer.setLastName(lastName);
+                    customer.setPhone(phone);
+                    customer.setAddress(address);
+                    customer.setPostcode(postcode);
+                    customer.setCity(city);
+
+                    UserMapper.updateUser(customer);
                 } else {
-                    throw new DatabaseException("Brugeren med email eksisterer, men er ikke en kunde.");
+                    ctx.status(400).result("Emailen tilhører en bruger som ikke er en kunde.");
+                    return;
                 }
-            } catch (DatabaseException e) {
+            } else {
                 customer = new Customer(firstName, lastName, address, postcode, city, phone, email, 1);
                 UserService.createUser(customer);
             }
