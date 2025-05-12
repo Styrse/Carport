@@ -12,14 +12,12 @@ public class EmailController {
     public static void showEmailForm(Context ctx) {
         try {
             String email = ctx.queryParam("email");
-            int orderId = Integer.parseInt(ctx.queryParam("orderId"));
 
             User user = UserMapper.getUserByEmail(email);
             User staff = ctx.sessionAttribute("currentUser");
 
             Map<String, Object> model = ControllerHelper.createBaseModel(ctx);
             model.put("email", email);
-            model.put("orderId", orderId);
             model.put("customerName", user.getFirstName() + " " + user.getLastName());
             model.put("staffName", staff.getFirstName());
             model.put("staffEmail", staff.getEmail());

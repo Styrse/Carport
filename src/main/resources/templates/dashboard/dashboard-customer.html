@@ -69,8 +69,8 @@
                     </form>
                 </div>
 
-                <form action="/send-email" method="post" class="full-width-form">
-                    <input type="hidden" name="email" th:value="${customer.email}"/>
+                <form th:action="@{/dashboard/email-form}" method="get" class="full-width-form">
+                    <input type="hidden" name="email" th:value="${customer.email}">
                     <button type="submit" class="default-button full-width-button">Send email</button>
                 </form>
             </div>

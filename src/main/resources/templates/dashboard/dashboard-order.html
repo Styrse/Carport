@@ -26,7 +26,6 @@
                     </form>
                     <form th:action="@{/dashboard/email-form}" method="get">
                         <input type="hidden" name="email" th:value="${order.customer.email}">
-                        <input type="hidden" name="orderId" th:value="${order.orderId}">
                         <button type="submit" class="default-button">Send email</button>
                     </form>
                 </div>
