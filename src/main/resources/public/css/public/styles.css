@@ -1,13 +1,32 @@
 /*style*/
 body {
     font-family: Arial, sans-serif;
-    background-color: #F5F5F3;
+    background-color: whitesmoke;
     margin: 0;
     padding: 0;
 }
 
+h1 {
+    font-size: x-large;
+}
+
+h2 {
+    font-size: large;
+}
+
+a {
+    color: black;
+}
+
+p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: small;
+}
+
 main {
     flex: 1;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 #main-content {
@@ -53,7 +72,6 @@ button:hover    {
 }
 
 /*navbar styling*/
-
 .logo {
     float: left;
     width: 70px;
@@ -87,7 +105,6 @@ button:hover    {
 }
 
 /*Footer styling*/
-
 footer {
     position: static;
     left: 0;
@@ -166,7 +183,6 @@ footer {
 }
 
 /*Form Styling*/
-
 .form-group {
     display: flex;
     flex-direction: column;
@@ -184,7 +200,6 @@ footer {
 
     gap: 10px;
 }
-
 
 select, input   {
     font-size: 16px;
@@ -209,8 +224,13 @@ input[type="text"], input[type="tel"], input[type="email"] {
     margin: 20px 0;
 }
 
-/*Multible step styling*/
+#first-form-button {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0;
+}
 
+/*Multiple step styling*/
 .step-format    {
     display: flex;
     flex-direction: row;
@@ -243,7 +263,6 @@ input[type="text"], input[type="tel"], input[type="email"] {
     position: relative;
 }
 
-
 .step {
     height: 3vw;
     width: 3vw;
@@ -260,8 +279,8 @@ input[type="text"], input[type="tel"], input[type="email"] {
 .step.active {
     opacity: 1;
 }
-/* Mark the steps that are finished and valid: */
 
+/* Mark the steps that are finished and valid: */
 .step-wrapper.finish .step {
     background-color: #003D76;
     color: #FFFFFF;
@@ -270,4 +289,100 @@ input[type="text"], input[type="tel"], input[type="email"] {
 
 .line-connect.finish-line {
     background-color: #003D76;
+}
+
+
+.container-format {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    max-width: 40vw;
+    height: auto;
+    margin: auto;
+}
+
+.format {
+    margin: 2rem;
+}
+
+
+
+.top-image {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    max-width: 600px;
+    height: auto;
+}
+
+.box-frame {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 20px 20px;
+    width: 800px;
+    max-width: 80%;
+    margin: auto;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+.radio-option {
+    display: flex;
+    padding: 0.75em 1em;
+}
+
+.option-label {
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    font-size: small;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="radio"]:checked + .option-label {
+    border-color: #00406B ;
+    box-shadow: 0 0 8px rgba(0, 64, 128, 0.3);
+}
+
+.options {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin: 30px;
+}
+
+.roof-images {
+    height: 100px;
+    width: 100px;
+    margin-bottom: 5px;
+    object-fit: contain;
+}
+
+.container-button {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+    padding: 20px;
+}
+
+.index-button {
+    display: flex;
+    color: white;
+    border: none;
+    padding: 0.75em 2em;
+    background-color: #00406B;
+    border-radius: 5px;
+    cursor: pointer;
 }

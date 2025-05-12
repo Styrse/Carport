@@ -8,6 +8,13 @@ public class RoutingController {
 
     public static void routingController(Javalin app) {
 
+        // Front
+        app.get("/fog", PublicController::showHomepage);
+        app.post("/carport/step-1", PublicController::handleRoofSelection);
+        app.post("/carport/step-1-handle", PublicController::handleStep1);
+        //app.get("/carport/step-1.1", PublicController::showShedSizePage);
+
+
         // 🔐 Access Control for Dashboard
         app.before("/dashboard/*", ctx -> {
             User user = ctx.sessionAttribute("currentUser");

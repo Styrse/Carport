@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/public/styles.css"/>
+    <title>Fog - QuickByg - Mål</title>
+</head>
+<body>
+
+<header>
+    <div th:insert="~{public/header :: header}"></div>
+</header>
+
+<main>
+    <div class="step-format">
+        <div class="step-wrapper finish">
+            <span class="step">1</span>
+            <p>Mål</p>
+        </div>
+
+        <div class="line-connect"></div>
+
+        <div class="step-wrapper">
+            <span class="step">2</span>
+            <p>Materialer</p>
+        </div>
+
+        <div class="line-connect"></div>
+
+        <div class="step-wrapper">
+            <span class="step">3</span>
+            <p>Info</p>
+        </div>
+
+        <div class="line-connect"></div>
+
+        <div class="step-wrapper">
+            <span class="step">4</span>
+            <p>Bekræftelse</p>
+        </div>
+    </div>
+
+
+    <div id="main-content">
+
+        <h1>Angiv mål</h1>
+        <p>Udfyld nedenstående omhyggeligt og tryk "Videre".</p>
+        <p> Felter markeret med <span style="color: red">*</span> SKAL udfyldes!</p>
+
+        <!-- Fill form action if needed -->
+        <form action="/carport/step-1-handle" method="post">
+            <div class="form-group">
+                <label for="carport-width">Bredde:<span style="color: red">*</span></label>
+                <select id="carport-width" name="width">
+                    <th:block th:each="val : ${#numbers.sequence(200, 1000, 10)}">
+                        <option th:value="${val}" th:text="${val} + ' cm'"></option>
+                    </th:block>
+                </select>
+
+                <label for="carport-length">Længde:<span style="color: red">*</span></label>
+                <select id="carport-length" name="length">
+                    <th:block th:each="val : ${#numbers.sequence(200, 1000, 10)}">
+                        <option th:value="${val}" th:text="${val} + ' cm'"></option>
+                    </th:block>
+                </select>
+
+                <label for="carport-height">Højde:<span style="color: red">*</span></label>
+                <select id="carport-height" name="height">
+                    <th:block th:each="val : ${#numbers.sequence(200, 300, 10)}">
+                        <option th:value="${val}" th:text="${val} + ' cm'"></option>
+                    </th:block>
+                </select>
+
+                <label>
+                    <input type="checkbox" name="includeShed" value="true">
+                    Jeg vil gerne tilføje redskabsskur
+                </label>
+            </div>
+
+            <div class="form-button-align" id="first-form-button">
+                <button type="submit" class="active">Videre</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <div th:insert="~{public/footer :: footer}"></div>
+</footer>
+
+</body>
+</html>
