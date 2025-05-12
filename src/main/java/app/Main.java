@@ -7,6 +7,7 @@ import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public class Main {
@@ -19,7 +20,7 @@ public class Main {
 
     public static final ConnectionPool connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // Initializing Javalin and Jetty webserver
 
         Javalin app = Javalin.create(config -> {
