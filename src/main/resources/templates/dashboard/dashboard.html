@@ -41,7 +41,7 @@
                             </form>
                         </td>
                         <td>
-                            <form action="/orders/remove" method="post" style="display: inline;">
+                            <form action="/dashboard/orders/remove" method="post" style="display: inline;">
                                 <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                                 <button type="submit" class="remove-button">Fjern</button>
                             </form>
@@ -75,7 +75,7 @@
                             </form>
                         </td>
                         <td>
-                            <form action="/orders/assign" method="post">
+                            <form action="/dashboard/orders/assign" method="post">
                                 <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                                 <button type="submit" class="add-button">Tag</button>
                             </form>

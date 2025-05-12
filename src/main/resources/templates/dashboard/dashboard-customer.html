@@ -100,7 +100,7 @@
                         </form>
                     </td>
                     <td>
-                        <form th:if="${order.orderStatus != 'Annulleret'}" method="post" action="/orders/cancel">
+                        <form th:if="${order.orderStatus != 'Annulleret'}" method="post" action="/dashboard/orders/cancel">
                             <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                             <button type="submit" class="remove-button"
                                     onclick="return confirm('Er du sikker på, at du vil annullere denne ordre?')">

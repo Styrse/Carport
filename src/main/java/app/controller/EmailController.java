@@ -22,6 +22,7 @@ public class EmailController {
             model.put("staffName", staff.getFirstName());
             model.put("staffEmail", staff.getEmail());
             model.put("staffPhone", staff.getPhone());
+            model.put("activeTab", "customers");
 
             ctx.render("dashboard/dashboard-send-email.html", model);
         } catch (Exception e) {

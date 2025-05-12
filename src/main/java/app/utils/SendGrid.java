@@ -20,8 +20,7 @@ public class SendGrid {
         mail.setFrom(SENDER_EMAIL);
 
         Personalization personalization = new Personalization();
-
-        /* I test-fasen - brug din egen email, så du kan modtage beskeden */
+        
         personalization.addTo(new Email(user.getEmail()));
         personalization.addDynamicTemplateData("name", user.getFirstName() + " " + user.getLastName());
         personalization.addDynamicTemplateData("email", user.getEmail());

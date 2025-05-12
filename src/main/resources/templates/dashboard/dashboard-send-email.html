@@ -22,7 +22,8 @@
         <input type="hidden" name="orderId" th:value="${orderId}">
 
         <label for="subject">Emne:</label>
-        <input type="text" id="subject" name="subject" required>
+        <input type="text" id="subject" name="subject"
+               th:value="'Fog - '" required>
 
         <label for="message">Besked:</label>
         <textarea id="message" name="message" rows="14" required
