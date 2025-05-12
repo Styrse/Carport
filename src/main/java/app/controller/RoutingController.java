@@ -32,9 +32,9 @@ public class RoutingController {
         // 🛒 Orders
         app.get("/dashboard/orders", OrderController::showOrders);
         app.get("/dashboard/order", OrderController::showOrderDetails);
-        app.post("/orders/cancel", OrderController::cancelOrder);
-        app.post("/orders/assign", OrderController::assignOrderToStaff);
-        app.post("/orders/remove", OrderController::removeStaffFromOrder);
+        app.post("/dashboard/orders/cancel", OrderController::cancelOrder);
+        app.post("/dashboard/orders/assign", OrderController::assignOrderToStaff);
+        app.post("/dashboard/orders/remove", OrderController::removeStaffFromOrder);
 
         // 💵 Customers
         app.get("/dashboard/customers", CustomerController::showCustomers);
@@ -63,5 +63,9 @@ public class RoutingController {
         app.get("/dashboard/carport", CarportController::showCarportConfiguration);
         app.post("/dashboard/carport/update", CarportController::updateCarport);
         app.get("/dashboard/carport/bom", CarportController::showBillOfMaterials);
+
+        // 📧 Email
+        app.get("/dashboard/email-form", EmailController::showEmailForm);
+        app.post("/dashboard/send-email", EmailController::sendEmail);
     }
 }

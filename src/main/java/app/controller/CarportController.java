@@ -24,6 +24,7 @@ import app.service.CarportService;
 import app.service.MaterialService;
 import app.service.OrderService;
 import app.service.UserService;
+import app.utils.SendGrid;
 import io.javalin.http.Context;
 
 import java.time.LocalDate;
@@ -109,8 +110,10 @@ public class CarportController {
                     return;
                 }
             } else {
-                customer = new Customer(firstName, lastName, address, postcode, city, phone, email, 1);
+                String password = firstName + postcode;
+                customer = new Customer(firstName, lastName, address, postcode, city, phone, email, password, 1);
                 UserService.createUser(customer);
+                SendGrid.sendConfirmationEmail(customer);
             }
 
             // 5. Create carport object

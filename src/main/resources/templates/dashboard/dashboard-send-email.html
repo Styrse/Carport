@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>Fog - Send email</title>
+  <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+  <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+  <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+  <div class="container">
+    <div class="email-form-container">
+      <h1>Send email til <span th:text="${customerName}"></span></h1>
+
+      <form class="email-form" th:action="@{/dashboard/send-email}" method="post">
+        <input type="hidden" name="email" th:value="${email}">
+        <input type="hidden" name="orderId" th:value="${orderId}">
+
+        <label for="subject">Emne:</label>
+        <input type="text" id="subject" name="subject"
+               th:value="'Fog - '" required>
+
+        <label for="message">Besked:</label>
+        <textarea id="message" name="message" rows="14" required
+                  th:text="'Hej ' + ${customerName} + ',&#10;&#10;&#10;&#10;Med venlig hilsen&#10;' + ${staffName} + '&#10;Email: ' + ${staffEmail} + '&#10;Telefon: ' + ${staffPhone}"></textarea>
+
+
+
+        <button type="submit" class="default-button">Send</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
