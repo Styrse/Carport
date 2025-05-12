@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <title>Fog - QuickByg</title>
+  <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
   <link href="/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-  <link href="/css/summary.css" th:href="@{/css/summary.css}" rel="stylesheet"/>
 </head>
-
 <body>
+
 <header>
-  <div th:insert="~{fragments/header :: header}"></div>
+  <div th:insert="~{public/header :: header}"></div>
 </header>
 
 <main>
@@ -23,7 +23,7 @@
       </p>
 
       <div class="container-box">
-        <a href="customer-information.html">Ret oplysninger</a>
+        <a href="step-3-contact-info.html">Ret oplysninger</a>
         <h2>Personlige Oplysninger</h2>
         <div class="customer-information">
           <p>Email: <span th:text="${placeholder}"></span></p>
@@ -69,7 +69,8 @@
 </main>
 
 <footer>
-  <div th:insert="~{fragments/footer :: footer}"></div>
+  <div th:insert="~{public/footer :: footer}"></div>
 </footer>
+
 </body>
 </html>

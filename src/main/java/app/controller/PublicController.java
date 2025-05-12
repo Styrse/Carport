@@ -1,13 +1,19 @@
 package app.controller;
 
+import app.entities.orders.Order;
+import app.entities.orders.OrderItem;
 import app.entities.products.carport.Carport;
+import app.entities.products.materials.Material;
 import app.entities.products.materials.MaterialRole;
 import app.entities.products.materials.planks.Beam;
 import app.entities.products.materials.planks.Fascia;
 import app.entities.products.materials.planks.Post;
 import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
+import app.entities.users.Customer;
+import app.entities.users.User;
 import app.exceptions.DatabaseException;
+import app.persistence.mappers.MaterialMapper;
 import app.service.CarportService;
 import app.service.MaterialService;
 import io.javalin.http.Context;
@@ -45,7 +51,7 @@ public class PublicController {
         int height = Integer.parseInt(ctx.formParam("height"));
         boolean includeShed = ctx.formParam("includeShed") != null;
 
-        Carport carport = new Carport();
+        Carport carport = ctx.sessionAttribute("carport");
         carport.setWidth(width);
         carport.setLength(length);
         carport.setHeight(height);
@@ -159,16 +165,60 @@ public class PublicController {
         int fasciaId = Integer.parseInt(ctx.formParam("fasciaId"));
         int roofCoverId = Integer.parseInt(ctx.formParam("roofCoverId"));
 
-        Map<MaterialRole, Integer> materialId = new HashMap<>();
-        materialId.put(MaterialRole.POST, postId);
-        materialId.put(MaterialRole.BEAM, beamId);
-        materialId.put(MaterialRole.RAFTER, rafterId);
-        materialId.put(MaterialRole.FASCIA, fasciaId);
-        materialId.put(MaterialRole.ROOF_COVER, roofCoverId);
-        CarportService.saveCarport(carport, materialId);
+        Map<MaterialRole, Material> materialMap = new HashMap<>();
+        materialMap.put(MaterialRole.POST, MaterialMapper.getMaterialById(postId));
+        materialMap.put(MaterialRole.BEAM, MaterialMapper.getMaterialById(beamId));
+        materialMap.put(MaterialRole.RAFTER, MaterialMapper.getMaterialById(rafterId));
+        materialMap.put(MaterialRole.FASCIA, MaterialMapper.getMaterialById(fasciaId));
+        materialMap.put(MaterialRole.ROOF_COVER, MaterialMapper.getMaterialById(roofCoverId));
+        carport.setMaterialMap(materialMap);
 
         ctx.sessionAttribute("carport", carport);
 
         ctx.redirect("/carport/step-3");
+    }
+
+    public static void showContactInfoPage(Context ctx) {
+        Carport carport = ctx.sessionAttribute("carport");
+
+        if (carport == null) {
+            ctx.redirect("/carport/step-1");
+            return;
+        }
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("carport", carport);
+        ctx.render("public/step-3-contact-info.html", model);
+    }
+
+    public static void handleContactInfo(Context ctx) {
+        String firstName = ctx.formParam("first-name");
+        String lastName = ctx.formParam("last-name");
+        String email = ctx.formParam("email");
+        String phone = ctx.formParam("phone");
+        String address = ctx.formParam("address");
+        String postcode = ctx.formParam("postcode");
+        String city = ctx.formParam("city");
+
+        Carport carport = ctx.sessionAttribute("carport");
+
+        // Simple validation
+        if (firstName == null || lastName == null || email == null || phone == null) {
+            ctx.status(400).result("Alle felter skal udfyldes.");
+            return;
+        }
+
+        Customer customer = new Customer(firstName, lastName, address, postcode, city, phone, email, 1);
+
+        Order order = new Order(customer);
+        order.setOrderStatus("Ny");
+        order.addOrderItem(new OrderItem(carport, 1));
+
+        ctx.sessionAttribute("order", order);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("order", order);
+
+        ctx.render("/carport/step-4", model);
     }
 }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Fog - QuickByg - Info</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/public/styles.css"/>
+</head>
+<body>
+
+<header>
+    <div th:insert="~{public/header :: header}"></div>
+</header>
+
+<main>
+    <div class="step-format">
+        <div class="step-wrapper finish">
+            <span class="step">1</span>
+            <p>Mål</p>
+        </div>
+
+        <div class="line-connect finish-line"></div>
+
+        <div class="step-wrapper finish">
+            <span class="step">2</span>
+            <p>Materiale</p>
+        </div>
+
+        <div class="line-connect finish-line"></div>
+
+        <div class="step-wrapper finish">
+            <span class="step">3</span>
+            <p>Personlige oplysninger</p>
+        </div>
+
+        <div class="line-connect"></div>
+
+        <div class="step-wrapper">
+            <span class="step">4</span>
+            <p>Bekræftelse</p>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <h1>Kontaktoplysninger</h1>
+        <p>Udfyld nedenstående omhyggeligt og tryk "Videre".</p>
+        <p> Felter markeret med <span style="color: red">*</span> SKAL udfyldes!</p>
+
+        <form action="/carport/step-3" method="post">
+            <div class="form-group">
+                <label for="first-name">Fornavn <span style="color: red">*</span></label>
+                <input id="first-name" type="text" name="first-name" required>
+
+                <label for="last-name">Efternavn <span style="color: red">*</span></label>
+                <input id="last-name" type="text" name="last-name" required>
+
+                <label for="email">Email <span style="color: red">*</span></label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Telefon nr <span style="color: red">*</span></label>
+                <input type="tel" id="phone" name="phone" pattern="[0-9]{8}" required>
+
+                <label for="address">Adresse</label>
+                <input type="text" id="address" name="address">
+
+                <label for="postcode">Postnummer</label>
+                <input type="text" id="postcode" name="postcode">
+
+                <label for="city">By</label>
+                <input type="text" id="city" name="city">
+            </div>
+
+            <div class="form-button-align">
+                <a href="/carport/step-2" class="button-link">Tilbage</a>
+                <button type="submit" class="active">Videre</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <div th:insert="~{public/footer :: footer}"></div>
+</footer>
+
+</body>
+</html>

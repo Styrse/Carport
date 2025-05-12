@@ -17,6 +17,8 @@ public class RoutingController {
         app.post("/carport/step-1.1-handle", PublicController::handleShedSize);
         app.get("/carport/step-2", PublicController::showMaterialsPage);
         app.post("/carport/step-2", PublicController::handleStep2);
+        app.get("/carport/step-3", PublicController::showContactInfoPage);
+        app.post("/carport/step-3", PublicController::handleContactInfo);
 
 
         // 🔐 Access Control for Dashboard
