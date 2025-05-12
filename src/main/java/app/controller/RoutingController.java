@@ -10,6 +10,7 @@ public class RoutingController {
 
         // Front
         app.get("/fog", PublicController::showHomepage);
+        app.get("/carport/step-1", PublicController::showSizePage);
         app.post("/carport/step-1", PublicController::handleRoofSelection);
         app.post("/carport/step-1-handle", PublicController::handleStep1);
         app.get("/carport/step-1.1", PublicController::showShedSizePage);

@@ -230,6 +230,17 @@ input[type="text"], input[type="tel"], input[type="email"] {
     margin: 20px 0;
 }
 
+.button-link {
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    background-color: #003D76;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+}
+
 /*Multiple step styling*/
 .step-format    {
     display: flex;

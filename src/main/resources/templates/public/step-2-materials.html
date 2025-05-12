@@ -82,17 +82,12 @@
                             th:text="${roofCover.name}"></option>
                 </select>
             </div>
-        </form>
 
-        <div class="form-button-align">
-            <form action="" method="GET">
-                <button type="submit" class="active">Tilbage</button>
-            </form>
-
-            <form action="" method="GET">
+            <div class="form-button-align">
+                <a th:href="${carport.shed != null} ? '/carport/step-1.1' : '/carport/step-1'" class="button-link">Tilbage</a>
                 <button type="submit" class="active">Videre</button>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </main>
 

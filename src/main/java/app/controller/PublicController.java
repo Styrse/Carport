@@ -24,14 +24,19 @@ public class PublicController {
         ctx.render("public/index.html", model);
     }
 
+    public static void showSizePage(Context ctx) {
+        ctx.render("public/step-1-size.html");
+    }
+
     public static void handleRoofSelection(Context ctx) {
         String roofType = ctx.formParam("rooftype");
 
-        ctx.sessionAttribute("selectedRoofType", roofType);
+        Carport carport = new Carport();
+        carport.setRoofType(roofType);
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("roofType", roofType);
-        ctx.render("public/step-1-size.html", model);
+        ctx.sessionAttribute("carport", carport);
+
+        ctx.render("public/step-1-size.html");
     }
 
     public static void handleStep1(Context ctx) {
