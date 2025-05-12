@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/public/styles.css"/>
+    <title>Fog - QuickByg - Redskabsskur</title>
+</head>
+<body>
+
+<header>
+    <div th:insert="~{public/header :: header}"></div>
+</header>
+
+<main>
+    <div class="step-format">
+        <div class="step-wrapper finish">
+            <span class="step">1</span>
+            <p>Mål</p>
+        </div>
+
+        <div class="line-connect"></div>
+
+        <div class="step-wrapper finish">
+            <span class="step">1.1</span>
+            <p>Redskabsskur</p>
+        </div>
+
+        <div class="line-connect"></div>
+
+        <div class="step-wrapper">
+            <span class="step">2</span>
+            <p>Materialer</p>
+        </div>
+
+        <div class="line-connect"></div>
+
+        <div class="step-wrapper">
+            <span class="step">3</span>
+            <p>Info</p>
+        </div>
+
+        <div class="line-connect"></div>
+
+        <div class="step-wrapper">
+            <span class="step">4</span>
+            <p>Bekræftelse</p>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <h1>Redskabsskur mål</h1>
+        <p>Angiv mål for redskabsskuret.</p>
+
+        <form action="/carport/step-1.1-handle" method="post">
+            <div class="form-group">
+                <label for="shedWidth">Bredde på redskabsskur:<span style="color: red">*</span></label>
+                <select id="shedWidth" name="shedWidth">
+                    <th:block th:each="val : ${#numbers.sequence(50, maxShedWidth, 10)}">
+                        <option th:value="${val}" th:text="${val + ' cm'}"></option>
+                    </th:block>
+                </select>
+
+                <label for="shedLength">Længde på redskabsskur:<span style="color: red">*</span></label>
+                <select id="shedLength" name="shedLength">
+                    <th:block th:each="val : ${#numbers.sequence(50, maxShedLength, 10)}">
+                        <option th:value="${val}" th:text="${val + ' cm'}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+            <div class="form-button-align">
+                <button type="submit" class="active">Videre</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <div th:insert="~{public/footer :: footer}"></div>
+</footer>
+
+</body>
+</html>

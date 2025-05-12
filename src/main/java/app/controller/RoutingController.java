@@ -12,7 +12,10 @@ public class RoutingController {
         app.get("/fog", PublicController::showHomepage);
         app.post("/carport/step-1", PublicController::handleRoofSelection);
         app.post("/carport/step-1-handle", PublicController::handleStep1);
-        //app.get("/carport/step-1.1", PublicController::showShedSizePage);
+        app.get("/carport/step-1.1", PublicController::showShedSizePage);
+        app.post("/carport/step-1.1-handle", PublicController::handleShedSize);
+        app.get("/carport/step-2", PublicController::showMaterialsPage);
+        app.post("/carport/step-2", PublicController::handleStep2);
 
 
         // 🔐 Access Control for Dashboard

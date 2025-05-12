@@ -32,6 +32,8 @@ public class Carport extends Product {
 
     private Map<MaterialRole, Material> materialMap;
 
+    private Shed shed;
+
     public Carport() {
     }
 
@@ -156,6 +158,14 @@ public class Carport extends Product {
                 ", height=" + height +
                 ", roofType='" + roofType + '\'' +
                 '}';
+    }
+
+    public Shed getShed() {
+        return shed;
+    }
+
+    public void setShed(Shed shed) {
+        this.shed = shed;
     }
 
     /**
