@@ -51,33 +51,35 @@
         <!-- Fill form action if needed -->
         <form action="" method="post">
             <div class="form-group">
-                <label for="building-post">Stolper <span style="color: red">*</span></label>
-                <select id="building-post" name="post">
-                    <option hidden=""></option>
-                    <option value="post1">post1</option>
-                    <option value="post2">post2</option>
-                    <option value="post3">post3</option>
+                <label for="post">Vælg stolpe</label>
+                <select name="postId" id="post" required>
+                    <option value="" disabled selected>Vælg stolpe</option>
+                    <option th:each="post : ${posts}" th:value="${post.itemId}" th:text="${post.name}"></option>
                 </select>
-                <label for="building-beam">Spær <span style="color: red">*</span></label>
-                <select id="building-beam" name="beam">
-                    <option hidden=""></option>
-                    <option value="beam1">beam1</option>
-                    <option value="beam2">beam2</option>
-                    <option value="beam3">beam3</option>
+
+                <label for="beam">Vælg rem</label>
+                <select name="beamId" id="beam" required>
+                    <option value="" disabled selected>Vælg rem</option>
+                    <option th:each="beam : ${beams}" th:value="${beam.itemId}" th:text="${beam.name}"></option>
                 </select>
-                <label for="building-rafter">Remme <span style="color: red">*</span></label>
-                <select id="building-rafter" name="rafter">
-                    <option hidden=""></option>
-                    <option value="rafter1">rafter1</option>
-                    <option value="rafter2">rafter2</option>
-                    <option value="rafter4">rafter4</option>
+
+                <label for="rafter">Vælg spær</label>
+                <select name="rafterId" id="rafter" required>
+                    <option value="" disabled selected>Vælg spær</option>
+                    <option th:each="rafter : ${rafters}" th:value="${rafter.itemId}" th:text="${rafter.name}"></option>
                 </select>
-                <label for="building-fascia">Stern<span style="color: red">*</span></label>
-                <select id="building-fascia" name="fascia">
-                    <option hidden=""></option>
-                    <option value="fascia1">fascia1</option>
-                    <option value="fascia2">fascia2</option>
-                    <option value="fascia3">fascia3</option>
+
+                <label for="fascia">Vælg stern</label>
+                <select name="fasciaId" id="fascia" required>
+                    <option value="" disabled selected>Vælg stern</option>
+                    <option th:each="fascia : ${fascias}" th:value="${fascia.itemId}" th:text="${fascia.name}"></option>
+                </select>
+
+                <label for="roofCover">Vælg tagbeklædning</label>
+                <select name="roofCoverId" id="roofCover" required>
+                    <option value="" disabled selected>Vælg tagbeklædning</option>
+                    <option th:each="roofCover : ${roofCovers}" th:value="${roofCover.itemId}"
+                            th:text="${roofCover.name}"></option>
                 </select>
             </div>
         </form>
