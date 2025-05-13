@@ -24,7 +24,6 @@
 
             <!-- Kontaktoplysninger -->
             <div class="container-box">
-                <a href="/carport/step-3">Ret oplysninger</a>
                 <h2>Personlige Oplysninger</h2>
                 <div class="customer-information">
                     <p>Email: <span th:text="${customer.email}"></span></p>
@@ -34,11 +33,11 @@
                     <p>Postnr: <span th:text="${customer.postcode}"></span></p>
                     <p>By: <span th:text="${customer.city}"></span></p>
                 </div>
+                <a href="/carport/step-3">Ret oplysninger</a>
             </div>
 
             <!-- Carportmål -->
             <div class="container-box">
-                <a href="/carport/step-1">Ret oplysninger</a>
                 <h3>Mål</h3>
                 <div class="size">
                     <p>Bredde: <span th:text="${carport.width + ' cm'}"></span></p>
@@ -46,26 +45,26 @@
                     <p>Højde: <span th:text="${carport.height + ' cm'}"></span></p>
                     <p>Tagtype: <span th:text="${carport.roofType}"></span></p>
                 </div>
+                <a href="/carport/step-1">Ret oplysninger</a>
             </div>
 
             <!-- Materialevalg -->
             <div class="container-box">
-                <a href="/carport/step-2">Ret oplysninger</a>
                 <h2>Materialer</h2>
                 <div class="materials">
-                    <span th:text="${post}"></span>
-                    <span th:text="${beam}"></span>
-                    <span th:text="${rafter}"></span>
-                    <span th:text="${fascia}"></span>
-                    <span th:text="${roofCover}"></span>
+                    <p>Stolpe: <span th:text="${post}"></span></p>
+                    <p>Rem: <span th:text="${beam}"></span></p>
+                    <p>Spær: <span th:text="${rafter}"></span></p>
+                    <p>Stern: <span th:text="${fascia}"></span></p>
+                    <p>Tagbelægning: <span th:text="${roofCover}"></span></p>
                 </div>
+                <a href="/carport/step-2">Ret oplysninger</a>
             </div>
 
             <div class="form-button-align">
-                <form action="/carport/step-3" method="get">
-                    <button type="submit" class="active">Tilbage</button>
-                </form>
-                <form action="/carport/submit" method="post">
+                <a href="/carport/step-3" class="button-link">Tilbage</a>
+
+                <form action="/carport/submit" method="post" style="display:inline;">
                     <button type="submit" class="active">Bestil tilbud</button>
                 </form>
             </div>

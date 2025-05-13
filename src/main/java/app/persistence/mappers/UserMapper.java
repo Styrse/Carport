@@ -31,10 +31,8 @@ import static app.Main.connectionPool;
 public class UserMapper {
     //Create
     public static void createUser(User user) throws DatabaseException {
-        String sql = """
-        INSERT INTO users (firstname, lastname, address, postcode, phone_number, email, password, role_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING user_id
-    """;
+        String sql = "INSERT INTO users (firstname, lastname, address, postcode, phone_number, email, password, role_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING user_id";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -54,7 +52,7 @@ public class UserMapper {
 
     //Read: get user by email
     public static User getUserByEmail(String email) throws DatabaseException {
-        String sql = "SELECT * FROM users WHERE email = ?";
+        String sql = "SELECT * FROM users WHERE email ILIKE ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {

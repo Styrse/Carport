@@ -15,12 +15,12 @@ import app.exceptions.DatabaseException;
 import app.persistence.mappers.MaterialMapper;
 import app.persistence.mappers.OrderMapper;
 import app.service.MaterialService;
+import app.service.UserService;
 import app.utils.SendGrid;
 import io.javalin.http.Context;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,7 +202,6 @@ public class PublicController {
         String postcode = ctx.formParam("postcode");
         String city = ctx.formParam("city");
 
-        Carport carport = ctx.sessionAttribute("carport");
 
         // Simple validation
         if (firstName == null || lastName == null || email == null || phone == null) {
@@ -214,11 +213,7 @@ public class PublicController {
 
         ctx.sessionAttribute("customer", customer);
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("customer", customer);
-        model.put("carport", carport);
-
-        ctx.render("public/step-4-summary.html", model);
+        ctx.redirect("/carport/step-4");
     }
 
     public static void showConfirmationPage(Context ctx) {
@@ -237,34 +232,62 @@ public class PublicController {
         Material roofCover = carport.getMaterialMap().get(MaterialRole.ROOF_COVER);
 
         Map<String, Object> model = new HashMap<>();
+        model.put("customer", customer);
+        model.put("carport", carport);
+
         model.put("post", post.getName());
         model.put("beam", beam.getName());
         model.put("rafter", rafter.getName());
         model.put("fascia", fascia.getName());
         model.put("roofCover", roofCover.getName());
-        model.put("carport", carport);
-        model.put("customer", customer);
+
         ctx.render("public/step-4-summary.html", model);
     }
 
     public static void submitOrder(Context ctx) {
-        Order order = ctx.sessionAttribute("order");
-
-        if (order == null) {
-            ctx.redirect("/carport/step-4");
-            return;
-        }
-
         try {
+            // Step 1: Get form data or session data
+            Customer sessionCustomer = ctx.sessionAttribute("customer");
+            Carport carport = ctx.sessionAttribute("carport");
+
+            if (carport == null || sessionCustomer == null) {
+                ctx.redirect("/carport/step-1");
+                return;
+            }
+
+            // Step 2: Make sure the customer exists in the database (or create)
+            Customer customer = UserService.getOrCreateCustomer(
+                    sessionCustomer.getFirstName(),
+                    sessionCustomer.getLastName(),
+                    sessionCustomer.getPhone(),
+                    sessionCustomer.getEmail(),
+                    sessionCustomer.getAddress(),
+                    sessionCustomer.getPostcode(),
+                    sessionCustomer.getCity()
+            );
+
+            // Step 3: Create the order with the carport as an order item
+            OrderItem orderItem = new OrderItem(carport, 1);
+            Order order = new Order(customer);
+            order.setOrderItems(List.of(orderItem));
+
+            // Step 4: Save the order to the database
             OrderMapper.createOrder(order);
-            SendGrid.sendConfirmationEmail(order.getCustomer());
+
+            // Step 5: Clear session
             ctx.req().getSession().invalidate();
+
+            // Step 6: Redirect to thank-you page
             ctx.redirect("/carport/thank-you");
+
+        } catch (IllegalArgumentException e) {
+            ctx.status(400).result(e.getMessage());
         } catch (DatabaseException e) {
             e.printStackTrace();
-            ctx.status(500).result("Kunne ikke indsende ordren.");
+            ctx.status(500).result("Fejl i databasen. Ordren blev ikke gennemført.");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            ctx.status(500).result("Fejl ved afsendelse af bekræftelsesmail.");
         }
     }
 
