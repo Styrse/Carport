@@ -107,7 +107,7 @@ public class UserMapper {
 
     //Read: verify user login
     public static boolean verifyUser(String email, String password) throws DatabaseException {
-        String sql = "SELECT password FROM users WHERE email = ?";
+        String sql = "SELECT password FROM users WHERE email ILIKE ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {

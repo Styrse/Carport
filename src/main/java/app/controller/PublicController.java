@@ -11,12 +11,13 @@ import app.entities.products.materials.planks.Post;
 import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Customer;
+import app.entities.users.User;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.MaterialMapper;
 import app.persistence.mappers.OrderMapper;
+import app.persistence.mappers.UserMapper;
 import app.service.MaterialService;
 import app.service.UserService;
-import app.utils.SendGrid;
 import io.javalin.http.Context;
 
 import java.io.IOException;
@@ -293,5 +294,56 @@ public class PublicController {
 
     public static void showThankYouPage(Context ctx) {
         ctx.render("public/thank-you.html");
+    }
+
+    public static void showLoginPage(Context ctx) {
+        ctx.render("public/login");
+    }
+
+    public static void handleLogin(Context ctx) {
+        String email = ctx.formParam("email");
+        String password = ctx.formParam("password");
+
+        try {
+            // 1. Check if user exists and credentials match
+            boolean valid = UserMapper.verifyUser(email, password);
+            if (!valid) {
+                ctx.attribute("loginError", "Forkert email eller adgangskode");
+                ctx.render("public/login");
+                return;
+            }
+
+            // 2. Get full user
+            User user = UserMapper.getUserByEmail(email);
+
+            // 3. Ensure it's a Customer (not Staff)
+            if (!(user instanceof Customer customer)) {
+                ctx.render("index.html");
+                return;
+            }
+
+            // 4. Store in session
+            ctx.sessionAttribute("currentUser", customer);
+
+            // 5. Redirect to dashboard
+            ctx.redirect("/customer/dashboard");
+
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            ctx.status(500).result("Loginfejl – prøv igen senere.");
+        }
+    }
+
+    public static void showDashboard(Context ctx) {
+        User user = ctx.sessionAttribute("currentUser");
+
+        if (user == null || !(user instanceof Customer customer)) {
+            ctx.redirect("/login");
+            return;
+        }
+
+        // Optional: Fetch past orders or other customer-specific data
+
+        ctx.render("public/dashboard", Map.of("customer", customer));
     }
 }

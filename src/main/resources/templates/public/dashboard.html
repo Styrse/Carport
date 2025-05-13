@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Min side</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/public/styles.css"/>
+</head>
+<body>
+
+<header>
+    <div th:insert="~{public/header :: header}"></div>
+</header>
+
+<main>
+    <div class="container-format">
+        <h1>Velkommen, <span th:text="${customer.firstName}">Navn</span>!</h1>
+
+        <div class="dashboard-section">
+            <h2>Dine oplysninger</h2>
+            <p><strong>Navn:</strong> <span th:text="${customer.firstName} + ' ' + ${customer.lastName}">...</span></p>
+            <p><strong>Email:</strong> <span th:text="${customer.email}">...</span></p>
+            <p><strong>Telefon:</strong> <span th:text="${customer.phone}">...</span></p>
+            <p><strong>Adresse:</strong> <span
+                    th:text="${customer.address} + ', ' + ${customer.postcode} + ' ' + ${customer.city}">...</span></p>
+        </div>
+
+        <!-- Optional: Section for orders -->
+        <!--
+        <div class="dashboard-section">
+            <h2>Dine forespørgsler</h2>
+            <ul>
+                <li th:each="order : ${orders}">
+                    <a th:href="@{'/order/' + ${order.orderId}}" th:text="'Ordre #' + ${order.orderId} + ' - ' + ${order.orderStatus}"></a>
+                </li>
+            </ul>
+        </div>
+        -->
+
+        <a href="/" class="button-link">Til forsiden</a>
+    </div>
+</main>
+
+<footer>
+    <div th:insert="~{public/footer :: footer}"></div>
+</footer>
+
+</body>
+</html>

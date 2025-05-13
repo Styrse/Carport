@@ -22,6 +22,11 @@ public class RoutingController {
         app.get("/carport/step-4", PublicController::showConfirmationPage);
         app.post("/carport/submit", PublicController::submitOrder);
         app.get("/carport/thank-you", PublicController::showThankYouPage);
+        app.get("/customer/login", PublicController::showLoginPage);
+        app.post("/customer/login", PublicController::handleLogin);
+        app.get("/customer/dashboard", PublicController::showDashboard);
+
+
 
         // 🔐 Access Control for Dashboard
         app.before("/dashboard/*", ctx -> {

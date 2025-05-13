@@ -42,7 +42,6 @@ public class SendGrid {
         }
         catch (IOException ex)
         {
-            System.out.println("Error sending mail");
             throw ex;
         }
     }
@@ -75,7 +74,6 @@ public class SendGrid {
         }
         catch (IOException ex)
         {
-            System.out.println("Error sending mail");
             throw ex;
         }
     }
