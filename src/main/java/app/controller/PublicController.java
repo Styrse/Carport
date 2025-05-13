@@ -11,14 +11,16 @@ import app.entities.products.materials.planks.Post;
 import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Customer;
-import app.entities.users.User;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.MaterialMapper;
-import app.service.CarportService;
+import app.persistence.mappers.OrderMapper;
 import app.service.MaterialService;
+import app.utils.SendGrid;
 import io.javalin.http.Context;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -210,15 +212,63 @@ public class PublicController {
 
         Customer customer = new Customer(firstName, lastName, address, postcode, city, phone, email, 1);
 
-        Order order = new Order(customer);
-        order.setOrderStatus("Ny");
-        order.addOrderItem(new OrderItem(carport, 1));
-
-        ctx.sessionAttribute("order", order);
+        ctx.sessionAttribute("customer", customer);
 
         Map<String, Object> model = new HashMap<>();
-        model.put("order", order);
+        model.put("customer", customer);
+        model.put("carport", carport);
 
-        ctx.render("/carport/step-4", model);
+        ctx.render("public/step-4-summary.html", model);
+    }
+
+    public static void showConfirmationPage(Context ctx) {
+        Carport carport = ctx.sessionAttribute("carport");
+        Customer customer = ctx.sessionAttribute("customer");
+
+        if (carport == null || customer == null) {
+            ctx.redirect("/carport/step-1");
+            return;
+        }
+
+        Material post = carport.getMaterialMap().get(MaterialRole.POST);
+        Material beam = carport.getMaterialMap().get(MaterialRole.BEAM);
+        Material rafter = carport.getMaterialMap().get(MaterialRole.RAFTER);
+        Material fascia = carport.getMaterialMap().get(MaterialRole.FASCIA);
+        Material roofCover = carport.getMaterialMap().get(MaterialRole.ROOF_COVER);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("post", post.getName());
+        model.put("beam", beam.getName());
+        model.put("rafter", rafter.getName());
+        model.put("fascia", fascia.getName());
+        model.put("roofCover", roofCover.getName());
+        model.put("carport", carport);
+        model.put("customer", customer);
+        ctx.render("public/step-4-summary.html", model);
+    }
+
+    public static void submitOrder(Context ctx) {
+        Order order = ctx.sessionAttribute("order");
+
+        if (order == null) {
+            ctx.redirect("/carport/step-4");
+            return;
+        }
+
+        try {
+            OrderMapper.createOrder(order);
+            SendGrid.sendConfirmationEmail(order.getCustomer());
+            ctx.req().getSession().invalidate();
+            ctx.redirect("/carport/thank-you");
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke indsende ordren.");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void showThankYouPage(Context ctx) {
+        ctx.render("public/thank-you.html");
     }
 }

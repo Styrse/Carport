@@ -19,7 +19,9 @@ public class RoutingController {
         app.post("/carport/step-2", PublicController::handleStep2);
         app.get("/carport/step-3", PublicController::showContactInfoPage);
         app.post("/carport/step-3", PublicController::handleContactInfo);
-
+        app.get("/carport/step-4", PublicController::showConfirmationPage);
+        app.post("/carport/submit", PublicController::submitOrder);
+        app.get("/carport/thank-you", PublicController::showThankYouPage);
 
         // 🔐 Access Control for Dashboard
         app.before("/dashboard/*", ctx -> {

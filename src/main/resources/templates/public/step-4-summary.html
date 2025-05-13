@@ -1,75 +1,80 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="UTF-8">
-  <title>Fog - QuickByg</title>
-  <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
-  <link href="/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Fog - QuickByg</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/public/styles.css"/>
 </head>
 <body>
 
 <header>
-  <div th:insert="~{public/header :: header}"></div>
+    <div th:insert="~{public/header :: header}"></div>
 </header>
 
 <main>
-  <div class="container-format">
-    <div class="format">
-      <h1>Din forespørgsel</h1>
-      <p>
-        Er dine kontakt oplysninger korrekte? <br>
-        Tryk "Bestil tilbud" når du har tjekket dine angivet oplysninger.
-      </p>
+    <div class="container-format">
+        <div class="format">
+            <h1>Din forespørgsel</h1>
+            <p>
+                Er dine kontaktoplysninger korrekte? <br>
+                Tryk "Bestil tilbud" når du har tjekket dine angivne oplysninger.
+            </p>
 
-      <div class="container-box">
-        <a href="step-3-contact-info.html">Ret oplysninger</a>
-        <h2>Personlige Oplysninger</h2>
-        <div class="customer-information">
-          <p>Email: <span th:text="${placeholder}"></span></p>
-          <p>Fornavn: <span th:text="${placeholder}"></span></p>
-          <p>Efternavn: <span th:text="${placeholder}"></span></p>
-          <p>Telefon: <span th:text="${placeholder}"></span></p>
-          <p>Postnr: <span th:text="${placeholder}"></span></p>
-          <p>By: <span th:text="${placeholder}"></span></p>
+            <!-- Kontaktoplysninger -->
+            <div class="container-box">
+                <a href="/carport/step-3">Ret oplysninger</a>
+                <h2>Personlige Oplysninger</h2>
+                <div class="customer-information">
+                    <p>Email: <span th:text="${customer.email}"></span></p>
+                    <p>Fornavn: <span th:text="${customer.firstName}"></span></p>
+                    <p>Efternavn: <span th:text="${customer.lastName}"></span></p>
+                    <p>Telefon: <span th:text="${customer.phone}"></span></p>
+                    <p>Postnr: <span th:text="${customer.postcode}"></span></p>
+                    <p>By: <span th:text="${customer.city}"></span></p>
+                </div>
+            </div>
+
+            <!-- Carportmål -->
+            <div class="container-box">
+                <a href="/carport/step-1">Ret oplysninger</a>
+                <h3>Mål</h3>
+                <div class="size">
+                    <p>Bredde: <span th:text="${carport.width + ' cm'}"></span></p>
+                    <p>Længde: <span th:text="${carport.length + ' cm'}"></span></p>
+                    <p>Højde: <span th:text="${carport.height + ' cm'}"></span></p>
+                    <p>Tagtype: <span th:text="${carport.roofType}"></span></p>
+                </div>
+            </div>
+
+            <!-- Materialevalg -->
+            <div class="container-box">
+                <a href="/carport/step-2">Ret oplysninger</a>
+                <h2>Materialer</h2>
+                <div class="materials">
+                    <span th:text="${post}"></span>
+                    <span th:text="${beam}"></span>
+                    <span th:text="${rafter}"></span>
+                    <span th:text="${fascia}"></span>
+                    <span th:text="${roofCover}"></span>
+                </div>
+            </div>
+
+            <div class="form-button-align">
+                <form action="/carport/step-3" method="get">
+                    <button type="submit" class="active">Tilbage</button>
+                </form>
+                <form action="/carport/submit" method="post">
+                    <button type="submit" class="active">Bestil tilbud</button>
+                </form>
+            </div>
         </div>
-      </div>
-
-      <div class="container-box">
-        <a href="step-1-size.html">Ret oplysninger</a>
-        <h3>Mål</h3>
-        <div class="size">
-          <p>Bredde: <span th:text="${placeholder}"></span></p>
-          <p>Længde: <span th:text="${placeholder}"></span></p>
-          <p>trapeztag: <span th:text="${placeholder}"></span></p>
-        </div>
-      </div>
-
-      <div class="container-box">
-        <a href="step-2-materials.html">Ret oplysninger</a>
-        <h2>Materialer</h2>
-        <div class="materials">
-          <p>Stolper: <span th:text="${placeholder}"></span></p>
-          <p>Spær: <span th:text="${placeholder}"></span></p>
-          <p>Remme: <span th:text="${placeholder}"></span></p>
-          <p>Stern: <span th:text="${placeholder}"></span></p>
-        </div>
-      </div>
-
-      <div class="form-button-align">
-        <form action="" method="GET">
-          <button type="submit" class="active">Tilbage</button>
-        </form>
-        <form action="" method="GET">
-          <button type="submit" class="active">Videre</button>
-        </form>
-      </div>
     </div>
-  </div>
 </main>
 
 <footer>
-  <div th:insert="~{public/footer :: footer}"></div>
+    <div th:insert="~{public/footer :: footer}"></div>
 </footer>
 
 </body>
