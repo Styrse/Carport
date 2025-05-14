@@ -346,4 +346,49 @@ public class PublicController {
 
         ctx.render("public/dashboard", Map.of("customer", customer));
     }
+
+    public static void showEditForm(Context ctx) {
+        Customer customer = ctx.sessionAttribute("currentUser");
+
+        if (customer == null) {
+            ctx.redirect("/customer/login");
+            return;
+        }
+
+        ctx.render("public/edit-profile", Map.of("customer", customer));
+    }
+
+    public static void handleEditForm(Context ctx) {
+        Customer customer = ctx.sessionAttribute("currentUser");
+        if (customer == null) {
+            ctx.redirect("/customer/login");
+            return;
+        }
+
+        // Read updated fields
+        String firstName = ctx.formParam("firstName");
+        String lastName = ctx.formParam("lastName");
+        String phone = ctx.formParam("phone");
+        String address = ctx.formParam("address");
+        String postcode = ctx.formParam("postcode");
+        String city = ctx.formParam("city");
+
+        // Update customer object
+        customer.setFirstName(firstName);
+        customer.setLastName(lastName);
+        customer.setPhone(phone);
+        customer.setAddress(address);
+        customer.setPostcode(postcode);
+        customer.setCity(city);
+
+        try {
+            UserMapper.updateUser(customer);
+            ctx.sessionAttribute("currentUser", customer);
+            ctx.redirect("/customer/dashboard");
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke opdatere dine oplysninger.");
+        }
+    }
+
 }

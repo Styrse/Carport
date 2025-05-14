@@ -13,7 +13,7 @@
 </header>
 
 <main>
-    <div class="container-format">
+    <div class="container-info">
         <h1>Velkommen, <span th:text="${customer.firstName}">Navn</span>!</h1>
 
         <div class="dashboard-section">
@@ -23,19 +23,23 @@
             <p><strong>Telefon:</strong> <span th:text="${customer.phone}">...</span></p>
             <p><strong>Adresse:</strong> <span
                     th:text="${customer.address} + ', ' + ${customer.postcode} + ' ' + ${customer.city}">...</span></p>
+
+            <a href="/customer/edit" class="button-link small-button" id="info-button">Ret</a>
         </div>
 
-        <!-- Optional: Section for orders -->
-        <!--
+
         <div class="dashboard-section">
             <h2>Dine forespørgsler</h2>
             <ul>
                 <li th:each="order : ${orders}">
-                    <a th:href="@{'/order/' + ${order.orderId}}" th:text="'Ordre #' + ${order.orderId} + ' - ' + ${order.orderStatus}"></a>
+                    <a th:href="@{'/order/' + ${order.orderId}}">
+                        <span th:text="'Ordre #' + ${order.orderId}"></span> -
+                        <span th:text="${order.orderStatus}"></span>
+                        <span th:if="${order.orderDate != null}"> (Dato: <span th:text="${order.orderDate}"></span>)</span>
+                    </a>
                 </li>
             </ul>
         </div>
-        -->
 
         <a href="/" class="button-link">Til forsiden</a>
     </div>

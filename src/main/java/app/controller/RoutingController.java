@@ -25,6 +25,9 @@ public class RoutingController {
         app.get("/customer/login", PublicController::showLoginPage);
         app.post("/customer/login", PublicController::handleLogin);
         app.get("/customer/dashboard", PublicController::showDashboard);
+        app.get("/customer/edit", PublicController::showEditForm);
+        app.post("/customer/edit", PublicController::handleEditForm);
+
 
 
 

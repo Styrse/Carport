@@ -317,8 +317,6 @@ input[type="text"], input[type="tel"], input[type="email"] {
     margin: 2rem;
 }
 
-
-
 .top-image {
     display: block;
     margin: 0 auto;
@@ -396,4 +394,91 @@ input[type="radio"]:checked + .option-label {
     background-color: #00406B;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.container-info {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.dashboard-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.dashboard-section h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    border-bottom: 2px solid #003d76;
+    padding-bottom: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+.dashboard-section p {
+    margin: 0.3rem 0;
+}
+
+.dashboard-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.dashboard-section li {
+    margin: 0.5rem 0;
+}
+
+.dashboard-section a {
+    color: #003d76;
+    text-decoration: none;
+}
+
+.dashboard-section a:hover {
+    text-decoration: underline;
+}
+
+.button-link {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #003d76;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.button-link:hover {
+    background-color: #0051a5;
+}
+
+.small-button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.9rem;
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+.form-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-button-align {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+}
+
+#info-button {
+    color: white;
 }
