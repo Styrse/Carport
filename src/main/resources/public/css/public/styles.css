@@ -465,3 +465,20 @@ input[type="radio"]:checked + .option-label {
     margin-bottom: 32px;
 }
 
+#orders-table ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+#orders-table li {
+    margin: 0.5rem 0;
+}
+
+#orders-table a {
+    text-decoration: none;
+    color: #003d76;
+}
+
+#orders-table a:hover {
+    text-decoration: underline;
+}

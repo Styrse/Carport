@@ -339,13 +339,21 @@ public class PublicController {
         User user = ctx.sessionAttribute("currentUser");
 
         if (user == null || !(user instanceof Customer customer)) {
-            ctx.redirect("/login");
+            ctx.redirect("/customer/login");
             return;
         }
 
-        // Optional: Fetch past orders or other customer-specific data
-
-        ctx.render("public/dashboard", Map.of("customer", customer));
+        try {
+            List<Order> orders = OrderMapper.getOrdersByCustomerId(customer.getUserId());
+            Map<String, Object> model = new HashMap<>();
+            model.put("customer", customer);
+            model.put("orders", orders);
+            
+            ctx.render("public/dashboard", model);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            ctx.status(500).result("Fejl ved hentning af ordrer.");
+        }
     }
 
     public static void showEditForm(Context ctx) {

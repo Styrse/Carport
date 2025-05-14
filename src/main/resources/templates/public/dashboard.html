@@ -30,17 +30,21 @@
 
         <div class="dashboard-section" id="orders-table">
             <h2>Dine ordre</h2>
+
+            <p th:if="${#lists.isEmpty(orders)}">Du har ingen ordrer endnu.</p>
+
             <ul>
                 <li th:each="order : ${orders}">
                     <a th:href="@{'/order/' + ${order.orderId}}">
                         <span th:text="'Ordre #' + ${order.orderId}"></span> -
                         <span th:text="${order.orderStatus}"></span>
-                        <span th:if="${order.orderDate != null}"> (Dato: <span th:text="${order.orderDate}"></span>)</span>
+                        <span th:if="${order.orderDate != null}">
+                    (Dato: <span th:text="${order.orderDate}"></span>)
+                </span>
                     </a>
                 </li>
             </ul>
         </div>
-
         <a href="/" class="button-link">Til forsiden</a>
     </div>
 </main>
