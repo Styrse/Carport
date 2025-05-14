@@ -444,9 +444,6 @@ input[type="radio"]:checked + .option-label {
 }
 
 .small-button {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.9rem;
-    margin-top: 1rem;
     display: inline-block;
 }
 
