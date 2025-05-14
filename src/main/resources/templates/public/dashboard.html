@@ -28,8 +28,8 @@
         </div>
 
 
-        <div class="dashboard-section">
-            <h2>Dine forespørgsler</h2>
+        <div class="dashboard-section" id="orders-table">
+            <h2>Dine ordre</h2>
             <ul>
                 <li th:each="order : ${orders}">
                     <a th:href="@{'/order/' + ${order.orderId}}">

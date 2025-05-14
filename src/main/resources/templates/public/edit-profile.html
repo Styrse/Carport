@@ -38,6 +38,18 @@
             <label for="city">By</label>
             <input type="text" id="city" name="city" th:value="${customer.city}" required>
 
+            <hr>
+            <h2>Skift kodeord</h2>
+
+            <label for="currentPassword">Nuværende kodeord</label>
+            <input type="password" id="currentPassword" name="currentPassword">
+
+            <label for="newPassword">Nyt kodeord</label>
+            <input type="password" id="newPassword" name="newPassword">
+
+            <label for="repeatPassword">Gentag kodeord</label>
+            <input type="password" id="repeatPassword" name="repeatPassword">
+
             <div class="form-button-align">
                 <a href="/customer/dashboard" class="button-link small-button">Annullér</a>
                 <button type="submit" class="active">Gem ændringer</button>

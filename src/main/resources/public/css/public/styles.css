@@ -435,27 +435,12 @@ input[type="radio"]:checked + .option-label {
 }
 
 .dashboard-section a {
-    color: #003d76;
+    color: white;
     text-decoration: none;
 }
 
 .dashboard-section a:hover {
     text-decoration: underline;
-}
-
-.button-link {
-    display: inline-block;
-    margin-top: 2rem;
-    padding: 0.6rem 1.2rem;
-    background-color: #003d76;
-    color: white;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.button-link:hover {
-    background-color: #0051a5;
 }
 
 .small-button {
@@ -479,6 +464,7 @@ input[type="radio"]:checked + .option-label {
     margin-top: 1.5rem;
 }
 
-#info-button {
-    color: white;
+#orders-table {
+    margin-bottom: 32px;
 }
+

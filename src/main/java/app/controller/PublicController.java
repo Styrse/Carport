@@ -18,6 +18,7 @@ import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.UserMapper;
 import app.service.MaterialService;
 import app.service.UserService;
+import app.utils.PasswordUtil;
 import io.javalin.http.Context;
 
 import java.io.IOException;
@@ -365,7 +366,7 @@ public class PublicController {
             return;
         }
 
-        // Read updated fields
+        // Get updated info
         String firstName = ctx.formParam("firstName");
         String lastName = ctx.formParam("lastName");
         String phone = ctx.formParam("phone");
@@ -373,7 +374,7 @@ public class PublicController {
         String postcode = ctx.formParam("postcode");
         String city = ctx.formParam("city");
 
-        // Update customer object
+        // Update customer details
         customer.setFirstName(firstName);
         customer.setLastName(lastName);
         customer.setPhone(phone);
@@ -381,14 +382,41 @@ public class PublicController {
         customer.setPostcode(postcode);
         customer.setCity(city);
 
+        // Check for password update
+        String currentPw = ctx.formParam("currentPassword");
+        String newPassword = ctx.formParam("newPassword");
+        String repeatPassword = ctx.formParam("repeatPassword");
+
         try {
+            // Check fields are entered
+            if (currentPw != null && !currentPw.isBlank() &&
+                    newPassword != null && !newPassword.isBlank() &&
+                    repeatPassword != null && !repeatPassword.isBlank()) {
+
+                if (!PasswordUtil.checkPassword(currentPw, customer.getPassword())) {
+                    ctx.attribute("editError", "Nuværende kodeord er forkert.");
+                    ctx.render("public/customer/edit-profile", Map.of("customer", customer));
+                    return;
+                }
+
+                if (!newPassword.equals(repeatPassword)) {
+                    ctx.attribute("editError", "De nye kodeord matcher ikke.");
+                    ctx.render("public/customer/edit-profile", Map.of("customer", customer));
+                    return;
+                }
+
+                customer.setPassword(newPassword);
+            }
+
+            // Save updates
             UserMapper.updateUser(customer);
             ctx.sessionAttribute("currentUser", customer);
+
             ctx.redirect("/customer/dashboard");
+
         } catch (DatabaseException e) {
             e.printStackTrace();
-            ctx.status(500).result("Kunne ikke opdatere dine oplysninger.");
+            ctx.status(500).result("Kunne ikke opdatere oplysninger.");
         }
     }
-
 }
