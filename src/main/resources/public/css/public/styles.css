@@ -6,6 +6,10 @@ body {
     padding: 0;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 h1 {
     font-size: x-large;
 }
@@ -482,3 +486,60 @@ input[type="radio"]:checked + .option-label {
 #orders-table a:hover {
     text-decoration: underline;
 }
+
+/* Login form container */
+.form-container {
+    max-width: 400px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.form-container h1 {
+    text-align: center;
+    color: #003D76;
+    margin-bottom: 1.5rem;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.form-container button {
+    width: 100%;
+    background-color: #003D76;
+    color: white;
+    border: none;
+    padding: 0.7rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.form-container button:hover {
+    background-color: #0051a5;
+}
+
+.error-message {
+    margin-top: 1rem;
+    color: #b20000;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+

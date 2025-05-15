@@ -413,7 +413,8 @@ public class PublicController {
                     return;
                 }
 
-                customer.setPassword(newPassword);
+                String hashedPassword = PasswordUtil.hashPassword(newPassword);
+                customer.setPassword(hashedPassword);
             }
 
             // Save updates
