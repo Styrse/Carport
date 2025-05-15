@@ -7,6 +7,7 @@ import app.entities.users.User;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.UserMapper;
+import app.utils.PasswordUtil;
 import app.utils.SendGrid;
 import io.javalin.http.Context;
 
@@ -64,7 +65,7 @@ public class UserService {
             }
 
         } else {
-            String password = firstName + postcode;
+            String password = PasswordUtil.hashPassword(firstName + postcode);
             Customer newCustomer = new Customer(firstName, lastName, address, postcode, city, phone, email, password, 1);
 
             UserService.createUser(newCustomer);

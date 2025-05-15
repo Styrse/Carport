@@ -348,7 +348,7 @@ public class PublicController {
             Map<String, Object> model = new HashMap<>();
             model.put("customer", customer);
             model.put("orders", orders);
-            
+
             ctx.render("public/dashboard", model);
         } catch (DatabaseException e) {
             e.printStackTrace();

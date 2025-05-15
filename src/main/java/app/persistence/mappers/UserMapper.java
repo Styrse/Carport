@@ -151,7 +151,7 @@ public class UserMapper {
         ps.setString(4, user.getPostcode());
         ps.setString(5, user.getPhone());
         ps.setString(6, user.getEmail());
-        ps.setString(7, PasswordUtil.hashPassword(user.getPassword()));
+        ps.setString(7, user.getPassword());
     }
 
     //Delete user by userId (GDPR-compliant hard delete)
