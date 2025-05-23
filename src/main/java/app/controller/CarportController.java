@@ -248,9 +248,13 @@ public class CarportController {
                 return;
             }
 
-            Svg svg = SvgDrawingService.generateCarportSvg(carport);
-            ctx.attribute("svg", svg.toString());
+            Svg topSvg = SvgDrawingService.generateCarportSvg(carport);
+            Svg sideSvg = SvgDrawingService.generateCarportSideSvg(carport);
+
+            ctx.attribute("svg", topSvg.toString());
+            ctx.attribute("svgSide", sideSvg.toString());
             ctx.attribute("orderId", orderId);
+
             ctx.render("showSvg.html");
 
         } catch (Exception e) {

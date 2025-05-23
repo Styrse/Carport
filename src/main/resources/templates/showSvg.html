@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="UTF-8">
-  <title th:text="'Tegning af ordre #' + ${orderId}">Carport Tegning</title>
-  <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
-  <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+    <meta charset="UTF-8">
+    <title th:text="'Tegning af ordre #' + ${orderId}">Carport Tegning</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
 </head>
 <body>
 
 <main class="container-info">
-  <h1 th:text="'Ordre #' + ${orderId}">Ordre</h1>
-  <p>Denne tegning viser et top-view af carporten tilhørende ordren.</p>
+    <h1 th:text="'Ordre #' + ${orderId}">Ordre</h1>
+    <p>Denne tegning viser et top-view af carporten tilhørende ordren.</p>
 
-  <div class="carport-svg-topview">
-    <div th:utext="${svg}">[SVG not loaded]</div>
-  </div>
+    <div class="carport-svg-topview">
+        <div th:utext="${svg}"></div>
+    </div>
 
-  <a th:href="@{/dashboard/order(orderId=${orderId})}" class="default-button">Tilbage til ordredetaljer</a>
+    <div class="carport-svg-topview">
+        <div th:utext="${svgSide}"></div>
+    </div>
+
+    <a th:href="@{/dashboard/order(orderId=${orderId})}" class="default-button">Tilbage til ordredetaljer</a>
 </main>
 
 </body>
