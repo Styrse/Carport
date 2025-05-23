@@ -81,9 +81,12 @@ public class SvgDrawingService {
 
         // Post spacing arrows and overhang indicators
         int postCount = carport.getBillOfMaterial().calcPostsNeededLength();
+        double postSize = carport.getMaterialMap().get(MaterialRole.POST).getWidth();
+
+        // Adjusted: OVERHANG_END should start *after* the last post
         double postXStart = margin + BillOfMaterial.OVERHANG_FRONT;
         double postXEnd = margin + carport.getLength() - BillOfMaterial.OVERHANG_END;
-        double postSpacing = (postXEnd - postXStart) / (postCount - 1);
+        double postSpacing = (postXEnd - postXStart - postSize) / (postCount - 1);
 
         int postArrowY = margin - 40;
 
@@ -96,18 +99,22 @@ public class SvgDrawingService {
         svg.addText((ohFrontStart + ohFrontEnd) / 2, postArrowY - 8, 0, String.format("%.2f m", BillOfMaterial.OVERHANG_FRONT / 100.0));
 
         // Post spacings
-        for (int i = 0; i < postCount - 1; i++) {
-            double x1 = postXStart + i * postSpacing;
-            double x2 = x1 + postSpacing;
-            double midX = (x1 + x2) / 2;
+        for (int i = 0; i < postCount; i++) {
+            double x = postXStart + i * postSpacing;
+            svg.addRectangle(x, margin + BillOfMaterial.OVERHANG_SIDE, postSize, postSize, "stroke:#000; fill:#888");
 
-            svg.addArrow((int) x1, postArrowY, (int) x2, postArrowY, "stroke:#000; stroke-width:1.5px");
-            svg.addLine((int) x1, postArrowY - 4, (int) x1, postArrowY + 4, "stroke:#000; stroke-width:1px");
-            svg.addLine((int) x2, postArrowY - 4, (int) x2, postArrowY + 4, "stroke:#000; stroke-width:1px");
-            svg.addText((int) midX, postArrowY - 8, 0, String.format("%.2f m", postSpacing / 100.0));
+            if (i < postCount - 1) {
+                double nextX = x + postSpacing;
+                double midX = (x + nextX) / 2;
+                svg.addArrow((int) x, postArrowY, (int) nextX, postArrowY, "stroke:#000; stroke-width:1.5px");
+                svg.addLine((int) x, postArrowY - 4, (int) x, postArrowY + 4, "stroke:#000; stroke-width:1px");
+                svg.addLine((int) nextX, postArrowY - 4, (int) nextX, postArrowY + 4, "stroke:#000; stroke-width:1px");
+                svg.addText((int) midX, postArrowY - 8, 0, String.format("%.2f m", postSpacing / 100.0));
+            }
         }
-        // Overhang END
-        int ohEndStart = (int) postXEnd;
+
+        // Adjusted: OVERHANG_END starts *after* the last post
+        int ohEndStart = (int) (postXStart + (postCount - 1) * postSpacing + postSize);
         int ohEndEnd = margin + carportLength;
         svg.addArrow(ohEndStart, postArrowY, ohEndEnd, postArrowY, "stroke:#000; stroke-width:1.5px");
         svg.addLine(ohEndStart, postArrowY - 4, ohEndStart, postArrowY + 4, "stroke:#000; stroke-width:1px");
@@ -115,7 +122,6 @@ public class SvgDrawingService {
         svg.addText((ohEndStart + ohEndEnd) / 2, postArrowY - 8, 0, String.format("%.2f m", BillOfMaterial.OVERHANG_END / 100.0));
 
         // Cross wire
-        double postSize = carport.getMaterialMap().get(MaterialRole.POST).getWidth();
         double firstPostX = postXStart;
         double firstPostY = margin + BillOfMaterial.OVERHANG_SIDE;
 
@@ -157,7 +163,7 @@ public class SvgDrawingService {
         // Posts
         int postCount = carport.getBillOfMaterial().calcPostsNeededLength();
         double postXStart = margin + BillOfMaterial.OVERHANG_FRONT;
-        double postXEnd = margin + length - BillOfMaterial.OVERHANG_END;
+        double postXEnd = margin + length - BillOfMaterial.OVERHANG_END - postWidth;
         double spacing = (postXEnd - postXStart) / (postCount - 1);
         int postY = groundY - height;
 

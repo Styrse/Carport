@@ -22,13 +22,13 @@ public class CarportSvg {
 
     private void addPosts() {
         Material post = carport.getMaterialMap().get(MaterialRole.POST);
-
         double postSize = post.getWidth();
         int postCountLength = carport.getBillOfMaterial().calcPostsNeededLength();
         int postCountWidth = carport.getBillOfMaterial().calcPostCountWidth();
 
+        // Adjust xEnd so that the *end* of the last post aligns with the beginning of OVERHANG_END
+        double xEnd = carport.getLength() - BillOfMaterial.OVERHANG_END - postSize;
         double xStart = BillOfMaterial.OVERHANG_FRONT;
-        double xEnd = carport.getLength() - BillOfMaterial.OVERHANG_END;
         double spacingX = (xEnd - xStart) / (postCountLength - 1);
 
         double spacingY = (carport.getWidth() - 2 * BillOfMaterial.OVERHANG_SIDE - postSize) / (postCountWidth - 1);
@@ -38,9 +38,7 @@ public class CarportSvg {
 
             for (int col = 0; col < postCountLength; col++) {
                 double x = xStart + col * spacingX;
-
-                carportSvg.addRectangle(x, y, postSize, postSize,
-                        "stroke:#000000; fill:#888888");
+                carportSvg.addRectangle(x, y, postSize, postSize, "stroke:#000000; fill:#888888");
             }
         }
     }
