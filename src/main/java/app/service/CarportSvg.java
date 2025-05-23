@@ -1,28 +1,78 @@
 package app.service;
 
+import app.entities.products.carport.BillOfMaterial;
+import app.entities.products.carport.Carport;
+import app.entities.products.materials.Material;
+import app.entities.products.materials.MaterialRole;
+
 public class CarportSvg {
-    private int width;
-    private int length;
+    private Carport carport;
     private Svg carportSvg;
 
-    public CarportSvg(int width, int length) {
-        this.width = width;
-        this.length = length;
-        carportSvg = new Svg(0, 0, "0 0 855 690", "75%" );
-        carportSvg.addRectangle(0,0,600, 780, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+    public CarportSvg(Carport carport) {
+        this.carport = carport;
+        String viewBox = "0 0 " + carport.getLength() + " " + carport.getWidth();
+        carportSvg = new Svg(0, 0, viewBox, "75%");
+        carportSvg.addRectangle(0, 0, carport.getWidth(), carport.getLength(),
+                "stroke-width:1px; stroke:#000000; fill: #ffffff");
+        addPosts();
         addBeams();
         addRafters();
     }
 
+    private void addPosts() {
+        Material post = carport.getMaterialMap().get(MaterialRole.POST);
+
+        double postSize = post.getWidth();
+        int postCountLength = carport.getBillOfMaterial().calcPostsNeededLength();
+        int postCountWidth = carport.getBillOfMaterial().calcPostCountWidth();
+
+        double xStart = BillOfMaterial.OVERHANG_FRONT;
+        double xEnd = carport.getLength() - BillOfMaterial.OVERHANG_END;
+        double spacingX = (xEnd - xStart) / (postCountLength - 1);
+
+        double spacingY = (carport.getWidth() - 2 * BillOfMaterial.OVERHANG_SIDE - postSize) / (postCountWidth - 1);
+
+        for (int row = 0; row < postCountWidth; row++) {
+            double y = BillOfMaterial.OVERHANG_SIDE + row * spacingY;
+
+            for (int col = 0; col < postCountLength; col++) {
+                double x = xStart + col * spacingX;
+
+                carportSvg.addRectangle(x, y, postSize, postSize,
+                        "stroke:#000000; fill:#888888");
+            }
+        }
+    }
+
     private void addBeams() {
-        carportSvg.addRectangle(0,35,4.5, 780, "stroke-width:1px; stroke:#000000; fill: #ffffff");
-        carportSvg.addRectangle(0,565,4.5, 780, "stroke-width:1px; stroke:#000000; fill: #ffffff");
+        Material beam = carport.getMaterialMap().get(MaterialRole.BEAM);
+        if (beam == null) return;
+
+        double beamWidth = beam.getWidth();
+        int beamRows = carport.getBillOfMaterial().calcPostCountWidth();
+
+        double spacingY = (double) (carport.getWidth() - 2 * BillOfMaterial.OVERHANG_SIDE - beamWidth) / (beamRows - 1);
+
+        for (int row = 0; row < beamRows; row++) {
+            double y = BillOfMaterial.OVERHANG_SIDE + row * spacingY;
+
+            carportSvg.addRectangle(0, y, beamWidth, carport.getLength(),
+                    "stroke:#000000; fill:#ffffff");
+        }
     }
 
     private void addRafters() {
-        for (double i = 0; i < 780; i+= 55.714)
-        {
-            carportSvg.addRectangle(i, 0.0, 600, 4.5,"stroke:#000000; fill: #ffffff" );
+        int rafterCount = carport.getBillOfMaterial().calcRafterCountLength();
+        double rafterWidth = carport.getMaterialMap().get(MaterialRole.RAFTER).getWidth();
+
+        double spacing = (double) (carport.getLength() - rafterWidth) / (rafterCount - 1);
+
+        for (int i = 0; i < rafterCount; i++) {
+            double x = i * spacing;
+
+            carportSvg.addRectangle(x, 0.0, carport.getWidth(), rafterWidth,
+                    "stroke:#000000; fill:#ffffff");
         }
     }
 

@@ -14,14 +14,11 @@ import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
-import app.entities.users.User;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.CarportMapper;
 import app.persistence.mappers.MaterialMapper;
 import app.persistence.mappers.OrderMapper;
-import app.persistence.mappers.UserMapper;
 import app.service.*;
-import app.utils.SendGrid;
 import io.javalin.http.Context;
 
 import java.time.LocalDate;
@@ -237,13 +234,36 @@ public class CarportController {
     }
 
     public static void showSVG(Context ctx) {
-        // TODO: Create a SVG Drawing and inject into the showOrder.html template as a String
-        Locale.setDefault(new Locale("US"));
-        CarportSvg svg = new CarportSvg(600, 780);
-        int orderId = Integer.parseInt(ctx.queryParam("orderId"));
+        Locale.setDefault(Locale.US);
 
-        ctx.attribute("svg", svg.toString());
-        ctx.attribute("orderId", orderId);
-        ctx.render("showSvg.html");
+        int orderId = Integer.parseInt(ctx.queryParam("orderId"));
+        int index = Integer.parseInt(ctx.queryParam("index"));
+
+        try {
+            // Get the order
+            Order order = OrderMapper.getOrderByOrderId(orderId);
+            OrderItem item = order.getOrderItems().get(index);
+
+            // Ensure it is a Carport
+            if (!(item.getProduct() instanceof Carport carport)) {
+                ctx.status(400).result("Produktet er ikke en carport.");
+                return;
+            }
+
+            CarportSvg svg = new CarportSvg(carport);
+
+            // Optionally: draw structural elements here
+            // svg.drawPosts(carport);
+            // svg.drawBeams(carport);
+            // svg.drawRoof(carport);
+
+            ctx.attribute("svg", svg.toString());
+            ctx.attribute("orderId", orderId);
+            ctx.render("showSvg.html");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke vise tegningen.");
+        }
     }
 }
