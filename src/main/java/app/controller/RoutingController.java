@@ -27,9 +27,7 @@ public class RoutingController {
         app.get("/customer/dashboard", PublicController::showDashboard);
         app.get("/customer/edit", PublicController::showEditForm);
         app.post("/customer/edit", PublicController::handleEditForm);
-
-
-
+        app.get("/order/{orderId}", PublicController::showOrderDetails);
 
         // 🔐 Access Control for Dashboard
         app.before("/dashboard/*", ctx -> {

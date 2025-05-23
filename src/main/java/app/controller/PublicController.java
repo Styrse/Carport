@@ -2,6 +2,7 @@ package app.controller;
 
 import app.entities.orders.Order;
 import app.entities.orders.OrderItem;
+import app.entities.products.Product;
 import app.entities.products.carport.Carport;
 import app.entities.products.materials.Material;
 import app.entities.products.materials.MaterialRole;
@@ -23,6 +24,7 @@ import io.javalin.http.Context;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -426,6 +428,60 @@ public class PublicController {
         } catch (DatabaseException e) {
             e.printStackTrace();
             ctx.status(500).result("Kunne ikke opdatere oplysninger.");
+        }
+    }
+
+    public static void showOrderDetails(Context ctx) {
+        User user = ctx.sessionAttribute("currentUser");
+
+        if (user == null || !(user instanceof Customer customer)) {
+            ctx.redirect("/login");
+            return;
+        }
+
+        int orderId = Integer.parseInt(ctx.pathParam("orderId"));
+
+        try {
+            Order order = OrderMapper.getOrderByOrderId(orderId);
+
+            if (order.getCustomer().getUserId() != customer.getUserId()) {
+                ctx.status(403).result("Du har ikke adgang til denne ordre.");
+                return;
+            }
+
+            List<Map<String, Object>> itemModels = new ArrayList<>();
+
+            for (OrderItem item : order.getOrderItems()) {
+                Map<String, Object> entry = new HashMap<>();
+                entry.put("item", item);
+
+                Product product = item.getProduct();
+                if (product instanceof Carport carport) {
+                    entry.put("type", "carport");
+                    entry.put("carport", carport);
+
+                    entry.put("selectedPost", carport.getMaterialMap().get(MaterialRole.POST));
+                    entry.put("selectedBeam", carport.getMaterialMap().get(MaterialRole.BEAM));
+                    entry.put("selectedRafter", carport.getMaterialMap().get(MaterialRole.RAFTER));
+                    entry.put("selectedFascia", carport.getMaterialMap().get(MaterialRole.FASCIA));
+                    entry.put("selectedRoofCover", carport.getMaterialMap().get(MaterialRole.ROOF_COVER));
+                } else if (product instanceof Material material) {
+                    entry.put("type", "material");
+                    entry.put("material", material);
+                }
+
+                itemModels.add(entry);
+            }
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("order", order);
+            model.put("items", itemModels);
+
+            ctx.render("public/order-details", model);
+
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke hente ordren.");
         }
     }
 }
