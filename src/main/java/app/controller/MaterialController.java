@@ -66,7 +66,7 @@ public class MaterialController {
 
         model.put("activeTab", "materials");
 
-        ctx.render("dashboard/dashboard-new-step-2-materials.html", model);
+        ctx.render("dashboard/dashboard-new-material.html", model);
     }
 
     public static void createMaterial(Context ctx) {
@@ -98,7 +98,7 @@ public class MaterialController {
 
             model.put("activeTab", "materials");
 
-            ctx.render("dashboard/dashboard-edit-step-2-materials.html", model);
+            ctx.render("dashboard/dashboard-edit-material.html", model);
         } catch (Exception e) {
             e.printStackTrace();
             ctx.status(404).result("Materiale ikke fundet");

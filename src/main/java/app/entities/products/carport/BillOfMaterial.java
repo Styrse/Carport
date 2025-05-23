@@ -60,7 +60,7 @@ public class BillOfMaterial {
         List<BillOfMaterialsItem> beamList = new ArrayList<>();
         Material material = carport.getMaterial().get(MaterialRole.BEAM);
 
-        float distanceBetweenPosts = (float) (carport.getLength() - OVERHANG_END) / calcPostsNeededLength();
+        float distanceBetweenPosts = (float) (carport.getLength() - OVERHANG_FRONT - OVERHANG_END) / calcPostsNeededLength();
 
         int maxPostPrBeam = (int) Math.floor(Collections.max(material.getPreCutLengths()) / distanceBetweenPosts);
 
