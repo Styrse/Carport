@@ -32,6 +32,8 @@ public class Carport extends Product {
 
     private Map<MaterialRole, Material> materialMap;
 
+    private Shed shed;
+
     public Carport() {
     }
 
@@ -156,5 +158,53 @@ public class Carport extends Product {
                 ", height=" + height +
                 ", roofType='" + roofType + '\'' +
                 '}';
+    }
+
+    public Shed getShed() {
+        return shed;
+    }
+
+    public void setShed(Shed shed) {
+        this.shed = shed;
+    }
+
+    /**
+     * Represents an optional shed (redskabsskur) that can be added as part of a carport configuration.
+     * <p>
+     * This class is implemented as a static inner class because a shed is conceptually and functionally
+     * tied to a specific carport and does not exist independently in the system.
+     * Making it an inner class helps encapsulate its use and clearly expresses the design intent:
+     * that a shed is always a component of a carport, and never a standalone entity.
+     * </p>
+     * <p>
+     * Declared as <code>static</code> to allow clean instantiation without requiring a reference to
+     * an enclosing <code>Carport</code> instance.
+     * </p>
+     */
+
+    public static class Shed {
+        private int width;
+        private int length;
+
+        public Shed(int width, int length) {
+            this.width = width;
+            this.length = length;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public void setWidth(int width) {
+            this.width = width;
+        }
+
+        public int getLength() {
+            return length;
+        }
+
+        public void setLength(int length) {
+            this.length = length;
+        }
     }
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/public/styles.css"/>
+    <title>Fog - QuickByg</title>
+</head>
+<body>
+
+<header>
+    <div th:insert="~{public/header :: header}"></div>
+</header>
+
+<main>
+
+    <img class="top-image" src="/img/byg-selv-carporte.png" alt="En flot carport"/>
+
+    <div class="container-box-frame">
+        <div class="box-frame">
+            <h1>Lad os tegne din carport drøm - bestil et Quick-Byg tilbud</h1>
+
+            <div>
+                <p>
+                    Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen og udskrive en skitsetegning
+                    på en carport<br>
+                    indenfor vores standardprogram.<br>
+                    Tilbud og skitsetegning fremsendes på mail hurtigst muligt.<br>
+                    Ved bestilling medfølger standardbyggevejledning.<br><br>
+                    Vælg nedenfor, om du ønsker tilbud på carport med fladt tag eller carport med høj rejsning.
+                </p>
+            </div>
+
+            <form action="/carport/step-1" method="post">
+                <div class="options">
+                    <label class="radio-option">
+                        <input type="radio" name="rooftype" value="flat" required/>
+                        <div class="option-label">
+                            <img class="roof-images" src="/img/flat-roof.png" alt="Fladt tag">
+                            <div><strong>Fladt tag</strong></div>
+                        </div>
+                    </label>
+
+                    <label class="radio-option">
+                        <input type="radio" name="rooftype" value="skråtag"/>
+                        <div class="option-label">
+                            <img class="roof-images" src="/img/pitched-roof.png" alt="Skråtag">
+                            <div><strong>Tag med rejsning</strong></div>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="container-button">
+                    <button class="index-button" type="submit">Kom i gang</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <div th:insert="~{public/footer :: footer}"></div>
+</footer>
+
+</body>
+</html>

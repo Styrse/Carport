@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tak for din forespørgsel</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/public/styles.css"/>
+</head>
+<body>
+
+<header>
+    <div th:insert="~{public/header :: header}"></div>
+</header>
+
+<main>
+    <div class="container-format">
+        <div class="format">
+            <h1>Tak for din forespørgsel!</h1>
+            <p>
+                Vi har modtaget din forespørgsel og vender tilbage hurtigst muligt med et tilbud.<br>
+                Du vil modtage en bekræftelse på e-mail.
+            </p>
+            <p>
+                En e-mail er blevet sendt med dine loginoplysninger og et link, hvor du kan følge din ordre.
+            </p>
+
+            <div class="form-button-align">
+                <a href="/fog" class="button-link">Til forsiden</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div th:insert="~{public/footer :: footer}"></div>
+</footer>
+
+</body>
+</html>

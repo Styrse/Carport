@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Fog - Ordre #' + ${order.orderId}">Fog - Ordre</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/public/styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{public/header :: header}"></div>
+</header>
+
+<main>
+    <div class="container-info">
+        <h1>Ordre #<span th:text="${order.orderId}">123</span></h1>
+
+        <p><strong>Status:</strong> <span th:text="${order.orderStatus}">Aktiv</span></p>
+        <p><strong>Dato:</strong> <span th:text="${order.orderDate}">2025-05-23</span></p>
+
+        <h2>Ordreindhold</h2>
+
+        <div th:each="entry : ${items}" class="dashboard-section">
+
+            <!--  Carport Section -->
+            <div th:if="${entry.type == 'carport'}" th:with="carport=${entry.carport}">
+                <h3 class="section-heading">Carport</h3>
+
+                <table class="info-table">
+                    <tr><th>Bredde</th><td th:text="${carport.width} + ' cm'">-</td></tr>
+                    <tr><th>Længde</th><td th:text="${carport.length} + ' cm'">-</td></tr>
+                    <tr><th>Højde</th><td th:text="${carport.height} + ' cm'">-</td></tr>
+                    <tr><th>Tagtype</th><td th:text="${carport.roofType}">-</td></tr>
+                    <tr><th>Hældning</th><td th:text="${carport.roofAngle} + '°'">-</td></tr>
+                </table>
+
+                <h4 class="section-subheading">Valgte materialer</h4>
+                <table class="info-table">
+                    <tr><th>Stolpe</th><td>
+                        <span th:if="${entry.selectedPost}" th:text="${entry.selectedPost.name}"></span>
+                        <span th:unless="${entry.selectedPost}">-</span>
+                    </td></tr>
+                    <tr><th>Rem</th><td>
+                        <span th:if="${entry.selectedBeam}" th:text="${entry.selectedBeam.name}"></span>
+                        <span th:unless="${entry.selectedBeam}">-</span>
+                    </td></tr>
+                    <tr><th>Spær</th><td>
+                        <span th:if="${entry.selectedRafter}" th:text="${entry.selectedRafter.name}"></span>
+                        <span th:unless="${entry.selectedRafter}">-</span>
+                    </td></tr>
+                    <tr><th>Stern</th><td>
+                        <span th:if="${entry.selectedFascia}" th:text="${entry.selectedFascia.name}"></span>
+                        <span th:unless="${entry.selectedFascia}">-</span>
+                    </td></tr>
+                    <tr><th>Tagbeklædning</th><td>
+                        <span th:if="${entry.selectedRoofCover}" th:text="${entry.selectedRoofCover.name}"></span>
+                        <span th:unless="${entry.selectedRoofCover}">-</span>
+                    </td></tr>
+                </table>
+            </div>
+
+            <!-- Material Section -->
+            <div th:if="${entry.type == 'material'}" th:with="material=${entry.material}">
+                <h3 class="section-heading">Materiale</h3>
+
+                <table class="info-table">
+                    <tr><th>Navn</th><td th:text="${material.name}">-</td></tr>
+                    <tr><th>Beskrivelse</th><td th:text="${material.description}">-</td></tr>
+                    <tr><th>Enhed</th><td th:text="${material.unit}">stk</td></tr>
+                </table>
+            </div>
+
+        </div>
+
+
+        <a href="/customer/dashboard" class="button-link">Tilbage til oversigt</a>
+    </div>
+</main>
+
+<footer>
+    <div th:insert="~{public/footer :: footer}"></div>
+</footer>
+
+</body>
+</html>

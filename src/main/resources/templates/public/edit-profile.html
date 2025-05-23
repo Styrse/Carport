@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Rediger profil</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/public/styles.css"/>
+</head>
+<body>
+
+<header>
+    <div th:insert="~{public/header :: header}"></div>
+</header>
+
+<main>
+    <div class="container-info">
+        <h1>Rediger dine oplysninger</h1>
+
+        <form action="/customer/edit" method="post" class="form-box">
+            <label for="firstName">Fornavn</label>
+            <input type="text" id="firstName" name="firstName" th:value="${customer.firstName}" required>
+
+            <label for="lastName">Efternavn</label>
+            <input type="text" id="lastName" name="lastName" th:value="${customer.lastName}" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" th:value="${customer.email}" readonly>
+
+            <label for="phone">Telefon</label>
+            <input type="tel" id="phone" name="phone" th:value="${customer.phone}" required>
+
+            <label for="address">Adresse</label>
+            <input type="text" id="address" name="address" th:value="${customer.address}" required>
+
+            <label for="postcode">Postnummer</label>
+            <input type="text" id="postcode" name="postcode" th:value="${customer.postcode}" required>
+
+            <label for="city">By</label>
+            <input type="text" id="city" name="city" th:value="${customer.city}" required>
+
+            <hr>
+            <h2>Skift kodeord</h2>
+
+            <label for="currentPassword">Nuværende kodeord</label>
+            <input type="password" id="currentPassword" name="currentPassword">
+
+            <label for="newPassword">Nyt kodeord</label>
+            <input type="password" id="newPassword" name="newPassword">
+
+            <label for="repeatPassword">Gentag kodeord</label>
+            <input type="password" id="repeatPassword" name="repeatPassword">
+
+            <div class="form-button-align">
+                <a href="/customer/dashboard" class="button-link small-button">Annullér</a>
+                <button type="submit" class="active">Gem ændringer</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <div th:insert="~{public/footer :: footer}"></div>
+</footer>
+
+</body>
+</html>

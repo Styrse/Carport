@@ -84,36 +84,17 @@ public class CarportController {
 
             // 4. Check if Customer exists or create new
             Customer customer;
-
-            User user = null;
             try {
-                user = UserMapper.getUserByEmail(email);
+                customer = UserService.getOrCreateCustomer(
+                        firstName, lastName, phone, email.toLowerCase(), address, postcode, city
+                );
+            } catch (IllegalArgumentException e) {
+                ctx.status(400).result(e.getMessage());
+                return;
             } catch (DatabaseException e) {
                 e.printStackTrace();
-                ctx.status(500).result("Database fejl ved hentning af bruger.");
+                ctx.status(500).result("Database fejl ved oprettelse eller opdatering af kunde.");
                 return;
-            }
-
-            if (user != null) {
-                if (user instanceof Customer existingCustomer) {
-                    customer = existingCustomer;
-                    customer.setFirstName(firstName);
-                    customer.setLastName(lastName);
-                    customer.setPhone(phone);
-                    customer.setAddress(address);
-                    customer.setPostcode(postcode);
-                    customer.setCity(city);
-
-                    UserMapper.updateUser(customer);
-                } else {
-                    ctx.status(400).result("Emailen tilhører en bruger som ikke er en kunde.");
-                    return;
-                }
-            } else {
-                String password = firstName + postcode;
-                customer = new Customer(firstName, lastName, address, postcode, city, phone, email, password, 1);
-                UserService.createUser(customer);
-                SendGrid.sendConfirmationEmail(customer);
             }
 
             // 5. Create carport object

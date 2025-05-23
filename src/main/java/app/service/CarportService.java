@@ -27,5 +27,4 @@ public class CarportService {
 
         CarportMapper.createCarport(carport);
     }
-
 }

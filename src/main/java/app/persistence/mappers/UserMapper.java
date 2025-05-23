@@ -31,10 +31,8 @@ import static app.Main.connectionPool;
 public class UserMapper {
     //Create
     public static void createUser(User user) throws DatabaseException {
-        String sql = """
-        INSERT INTO users (firstname, lastname, address, postcode, phone_number, email, password, role_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING user_id
-    """;
+        String sql = "INSERT INTO users (firstname, lastname, address, postcode, phone_number, email, password, role_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING user_id";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -54,7 +52,7 @@ public class UserMapper {
 
     //Read: get user by email
     public static User getUserByEmail(String email) throws DatabaseException {
-        String sql = "SELECT * FROM users WHERE email = ?";
+        String sql = "SELECT * FROM users JOIN public.postcodes USING (postcode) WHERE email ILIKE ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -109,7 +107,7 @@ public class UserMapper {
 
     //Read: verify user login
     public static boolean verifyUser(String email, String password) throws DatabaseException {
-        String sql = "SELECT password FROM users WHERE email = ?";
+        String sql = "SELECT password FROM users WHERE email ILIKE ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -153,7 +151,7 @@ public class UserMapper {
         ps.setString(4, user.getPostcode());
         ps.setString(5, user.getPhone());
         ps.setString(6, user.getEmail());
-        ps.setString(7, PasswordUtil.hashPassword(user.getPassword()));
+        ps.setString(7, user.getPassword());
     }
 
     //Delete user by userId (GDPR-compliant hard delete)

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Fog - QuickByg</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/public/styles.css"/>
+</head>
+<body>
+
+<header>
+    <div th:insert="~{public/header :: header}"></div>
+</header>
+
+<main>
+    <div class="container-format">
+        <div class="format">
+            <h1>Din forespørgsel</h1>
+            <p>
+                Er dine kontaktoplysninger korrekte? <br>
+                Tryk "Bestil tilbud" når du har tjekket dine angivne oplysninger.
+            </p>
+
+            <!-- Kontaktoplysninger -->
+            <div class="container-box">
+                <h2>Personlige Oplysninger</h2>
+                <div class="customer-information">
+                    <p>Email: <span th:text="${customer.email}"></span></p>
+                    <p>Fornavn: <span th:text="${customer.firstName}"></span></p>
+                    <p>Efternavn: <span th:text="${customer.lastName}"></span></p>
+                    <p>Telefon: <span th:text="${customer.phone}"></span></p>
+                    <p>Postnr: <span th:text="${customer.postcode}"></span></p>
+                    <p>By: <span th:text="${customer.city}"></span></p>
+                </div>
+                <a href="/carport/step-3">Ret oplysninger</a>
+            </div>
+
+            <!-- Carportmål -->
+            <div class="container-box">
+                <h3>Mål</h3>
+                <div class="size">
+                    <p>Bredde: <span th:text="${carport.width + ' cm'}"></span></p>
+                    <p>Længde: <span th:text="${carport.length + ' cm'}"></span></p>
+                    <p>Højde: <span th:text="${carport.height + ' cm'}"></span></p>
+                    <p>Tagtype: <span th:text="${carport.roofType}"></span></p>
+                </div>
+                <a href="/carport/step-1">Ret oplysninger</a>
+            </div>
+
+            <!-- Materialevalg -->
+            <div class="container-box">
+                <h2>Materialer</h2>
+                <div class="materials">
+                    <p>Stolpe: <span th:text="${post}"></span></p>
+                    <p>Rem: <span th:text="${beam}"></span></p>
+                    <p>Spær: <span th:text="${rafter}"></span></p>
+                    <p>Stern: <span th:text="${fascia}"></span></p>
+                    <p>Tagbelægning: <span th:text="${roofCover}"></span></p>
+                </div>
+                <a href="/carport/step-2">Ret oplysninger</a>
+            </div>
+
+            <div class="form-button-align">
+                <a href="/carport/step-3" class="button-link">Tilbage</a>
+
+                <form action="/carport/submit" method="post" style="display:inline;">
+                    <button type="submit" class="active">Bestil tilbud</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div th:insert="~{public/footer :: footer}"></div>
+</footer>
+
+</body>
+</html>

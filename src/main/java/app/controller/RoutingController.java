@@ -8,6 +8,27 @@ public class RoutingController {
 
     public static void routingController(Javalin app) {
 
+        // Front
+        app.get("/fog", PublicController::showHomepage);
+        app.get("/carport/step-1", PublicController::showSizePage);
+        app.post("/carport/step-1", PublicController::handleRoofSelection);
+        app.post("/carport/step-1-handle", PublicController::handleStep1);
+        app.get("/carport/step-1.1", PublicController::showShedSizePage);
+        app.post("/carport/step-1.1-handle", PublicController::handleShedSize);
+        app.get("/carport/step-2", PublicController::showMaterialsPage);
+        app.post("/carport/step-2", PublicController::handleStep2);
+        app.get("/carport/step-3", PublicController::showContactInfoPage);
+        app.post("/carport/step-3", PublicController::handleContactInfo);
+        app.get("/carport/step-4", PublicController::showConfirmationPage);
+        app.post("/carport/submit", PublicController::submitOrder);
+        app.get("/carport/thank-you", PublicController::showThankYouPage);
+        app.get("/customer/login", PublicController::showLoginPage);
+        app.post("/customer/login", PublicController::handleLogin);
+        app.get("/customer/dashboard", PublicController::showDashboard);
+        app.get("/customer/edit", PublicController::showEditForm);
+        app.post("/customer/edit", PublicController::handleEditForm);
+        app.get("/order/{orderId}", PublicController::showOrderDetails);
+
         // 🔐 Access Control for Dashboard
         app.before("/dashboard/*", ctx -> {
             User user = ctx.sessionAttribute("currentUser");
