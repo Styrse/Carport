@@ -20,16 +20,14 @@ import app.persistence.mappers.CarportMapper;
 import app.persistence.mappers.MaterialMapper;
 import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.UserMapper;
-import app.service.CarportService;
-import app.service.MaterialService;
-import app.service.OrderService;
-import app.service.UserService;
+import app.service.*;
 import app.utils.SendGrid;
 import io.javalin.http.Context;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static app.controller.ControllerHelper.createBaseModel;
@@ -236,5 +234,16 @@ public class CarportController {
             e.printStackTrace();
             ctx.status(500).result("Kunne ikke hente stykliste.");
         }
+    }
+
+    public static void showSVG(Context ctx) {
+        // TODO: Create a SVG Drawing and inject into the showOrder.html template as a String
+        Locale.setDefault(new Locale("US"));
+        CarportSvg svg = new CarportSvg(600, 780);
+        int orderId = Integer.parseInt(ctx.queryParam("orderId"));
+
+        ctx.attribute("svg", svg.toString());
+        ctx.attribute("orderId", orderId);
+        ctx.render("showSvg.html");
     }
 }

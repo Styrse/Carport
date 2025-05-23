@@ -84,6 +84,7 @@ public class RoutingController {
         app.get("/dashboard/carport", CarportController::showCarportConfiguration);
         app.post("/dashboard/carport/update", CarportController::updateCarport);
         app.get("/dashboard/carport/bom", CarportController::showBillOfMaterials);
+        app.get("/dashboard/carport/drawing", CarportController::showSVG);
 
         // 📧 Email
         app.get("/dashboard/email-form", EmailController::showEmailForm);
