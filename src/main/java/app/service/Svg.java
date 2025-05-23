@@ -30,17 +30,36 @@ public class Svg {
 
 
     public void addLine(int x1, int y1, int x2, int y2, String style) {
+        svg.append(String.format("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"%s\" />\n",
+                x1, y1, x2, y2, style));
     }
 
     public void addArrow(int x1, int y1, int x2, int y2, String style) {
-        // Kald addLine med en style der indeholder pilehoveder
+        svg.append(String.format(
+                "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"%s\" marker-start=\"url(#beginArrow)\" marker-end=\"url(#endArrow)\" />\n",
+                x1, y1, x2, y2, style));
     }
 
     public void addText(int x, int y, int rotation, String text) {
+        svg.append(String.format(
+                "<text x=\"%d\" y=\"%d\" transform=\"rotate(%d %d,%d)\" font-family=\"Arial\" font-size=\"12\" text-anchor=\"middle\">%s</text>\n",
+                x, y, rotation, x, y, text));
     }
 
     public void addSvg(Svg innerSvg) {
         svg.append(innerSvg.toString());
+    }
+
+    public void addSvgWithTranslation(Svg innerSvg, int offsetX, int offsetY) {
+        svg.append(String.format("<g transform=\"translate(%d,%d)\">", offsetX, offsetY));
+        svg.append(innerSvg.toInnerSvg());
+        svg.append("</g>");
+    }
+
+    public String toInnerSvg() {
+        return svg.toString()
+                .replaceFirst("(?s)^<svg[^>]*>", "")
+                .replaceFirst("</svg>$", "");
     }
 
     @Override

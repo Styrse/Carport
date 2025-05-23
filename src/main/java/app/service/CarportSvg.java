@@ -76,6 +76,10 @@ public class CarportSvg {
         }
     }
 
+    public Svg getSvgElement() {
+        return carportSvg;
+    }
+
     @Override
     public String toString() {
         return carportSvg.toString();

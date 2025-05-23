@@ -240,23 +240,15 @@ public class CarportController {
         int index = Integer.parseInt(ctx.queryParam("index"));
 
         try {
-            // Get the order
             Order order = OrderMapper.getOrderByOrderId(orderId);
             OrderItem item = order.getOrderItems().get(index);
 
-            // Ensure it is a Carport
             if (!(item.getProduct() instanceof Carport carport)) {
                 ctx.status(400).result("Produktet er ikke en carport.");
                 return;
             }
 
-            CarportSvg svg = new CarportSvg(carport);
-
-            // Optionally: draw structural elements here
-            // svg.drawPosts(carport);
-            // svg.drawBeams(carport);
-            // svg.drawRoof(carport);
-
+            Svg svg = SvgDrawingService.generateCarportSvg(carport);
             ctx.attribute("svg", svg.toString());
             ctx.attribute("orderId", orderId);
             ctx.render("showSvg.html");
