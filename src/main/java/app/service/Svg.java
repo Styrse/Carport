@@ -46,10 +46,6 @@ public class Svg {
                 x, y, rotation, x, y, text));
     }
 
-    public void addSvg(Svg innerSvg) {
-        svg.append(innerSvg.toString());
-    }
-
     public void addSvgWithTranslation(Svg innerSvg, int offsetX, int offsetY) {
         svg.append(String.format("<g transform=\"translate(%d,%d)\">", offsetX, offsetY));
         svg.append(innerSvg.toInnerSvg());

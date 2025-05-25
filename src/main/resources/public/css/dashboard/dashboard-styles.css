@@ -266,7 +266,7 @@ h2 {
     background-color: #1c6394;
 }
 
-.customer-info-header {
+.info-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
