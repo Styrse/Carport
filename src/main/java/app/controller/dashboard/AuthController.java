@@ -1,4 +1,4 @@
-package app.controller;
+package app.controller.dashboard;
 
 import app.entities.users.Staff;
 import app.entities.users.StaffManager;
@@ -13,6 +13,8 @@ public class AuthController {
         ctx.render("dashboard/dashboard-login.html");
     }
 
+    // Handles login form submission for staff users
+    // Verifies credentials, fetches user, sets session attributes, and redirects to dashboard
     public static void handleLogin(Context ctx) {
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
@@ -36,13 +38,14 @@ public class AuthController {
 
             boolean isManager = staff instanceof StaffManager;
 
+            // Save user and role status in session
             ctx.sessionAttribute("currentUser", staff);
             ctx.sessionAttribute("isManager", isManager);
 
             ctx.redirect("/dashboard");
         } catch (DatabaseException e) {
-            e.printStackTrace();
-            ctx.status(500).result("Loginfejl – prøv igen senere.");
+            ctx.attribute("errorMessage", "Der opstod en fejl under login – prøv igen senere.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 

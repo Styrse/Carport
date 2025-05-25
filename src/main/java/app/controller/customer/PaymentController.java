@@ -1,10 +1,11 @@
-package app.controller;
+package app.controller.customer;
 
 import app.entities.orders.Order;
 import app.persistence.mappers.OrderMapper;
 import io.javalin.http.Context;
 
 public class PaymentController {
+
     public static void showPaymentPage(Context ctx) {
         try {
             int orderId = Integer.parseInt(ctx.queryParam("orderId"));
@@ -13,9 +14,10 @@ public class PaymentController {
             ctx.attribute("order", order);
             ctx.attribute("totalPrice", order.getTotalPrice());
             ctx.render("public/payment.html");
+
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Betalingssiden kunne ikke indlæses.");
+            ctx.attribute("errorMessage", "Betalingssiden kunne ikke indlæses.");
+            ctx.render("public/public-error.html");
         }
     }
 
@@ -23,7 +25,8 @@ public class PaymentController {
         try {
             String rawOrderId = ctx.formParam("orderId");
             if (rawOrderId == null || rawOrderId.isBlank()) {
-                ctx.status(400).result("Fejl: Ordre-ID mangler i formularen.");
+                ctx.attribute("errorMessage", "Fejl: Ordre-ID mangler i formularen.");
+                ctx.render("public/public-error.html");
                 return;
             }
 
@@ -31,13 +34,15 @@ public class PaymentController {
             try {
                 orderId = Integer.parseInt(rawOrderId);
             } catch (NumberFormatException e) {
-                ctx.status(400).result("Fejl: Ugyldigt ordre-ID format.");
+                ctx.attribute("errorMessage", "Fejl: Ugyldigt ordre-ID format.");
+                ctx.render("public/public-error.html");
                 return;
             }
 
             Order order = OrderMapper.getOrderByOrderId(orderId);
             if (order == null) {
-                ctx.status(404).result("Fejl: Ingen ordre fundet med ID " + orderId + ".");
+                ctx.attribute("errorMessage", "Fejl: Ingen ordre fundet med ID " + orderId + ".");
+                ctx.render("public/public-error.html");
                 return;
             }
 
@@ -47,7 +52,8 @@ public class PaymentController {
             ctx.render("public/payment-confirmation.html");
 
         } catch (Exception e) {
-            ctx.status(500).result("Intern fejl: Kunne ikke behandle betalingen.");
+            ctx.attribute("errorMessage", "Intern fejl: Kunne ikke behandle betalingen.");
+            ctx.render("public/public-error.html");
         }
     }
 }

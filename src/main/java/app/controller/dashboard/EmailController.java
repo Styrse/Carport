@@ -1,4 +1,4 @@
-package app.controller;
+package app.controller.dashboard;
 
 import app.entities.orders.Order;
 import app.entities.users.User;
@@ -10,6 +10,7 @@ import io.javalin.http.Context;
 import java.util.Map;
 
 public class EmailController {
+
     public static final String BASE_URL = "https://fog.styrse.com";
 
     public static void showEmailForm(Context ctx) {
@@ -28,9 +29,10 @@ public class EmailController {
             model.put("activeTab", "customers");
 
             ctx.render("dashboard/dashboard-send-email.html", model);
+
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(400).result("Ugyldige parametre.");
+            ctx.attribute("errorMessage", "Kunne ikke indlæse emailformularen.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 
@@ -44,9 +46,10 @@ public class EmailController {
             SendGrid.sendMessage(email, subject, message);
 
             ctx.redirect("/dashboard/order?orderId=" + orderId + "&success=1");
+
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Kunne ikke sende email.");
+            ctx.attribute("errorMessage", "Kunne ikke sende email.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 
@@ -62,10 +65,10 @@ public class EmailController {
             SendGrid.sendPaymentLinkEmail(customer, paymentLink);
 
             ctx.redirect("/dashboard/order?orderId=" + orderId + "&success=1");
+
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Kunne ikke sende betalingslink.");
+            ctx.attribute("errorMessage", "Kunne ikke sende betalingslink.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 }
-
