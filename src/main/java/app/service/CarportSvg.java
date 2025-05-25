@@ -25,8 +25,7 @@ public class CarportSvg {
         double postSize = post.getWidth();
         int postCountLength = carport.getBillOfMaterial().calcPostsNeededLength();
         int postCountWidth = carport.getBillOfMaterial().calcPostCountWidth();
-
-        // Adjust xEnd so that the *end* of the last post aligns with the beginning of OVERHANG_END
+        
         double xEnd = carport.getLength() - BillOfMaterial.OVERHANG_END - postSize;
         double xStart = BillOfMaterial.OVERHANG_FRONT;
         double spacingX = (xEnd - xStart) / (postCountLength - 1);
