@@ -13,7 +13,6 @@ public class RoutingController {
             ctx.render("index.html");
         });
 
-
         // Front
         app.get("/fog", PublicController::showHomepage);
         app.get("/carport/step-1", PublicController::showSizePage);
@@ -96,5 +95,8 @@ public class RoutingController {
         app.get("/dashboard/email-form", EmailController::showEmailForm);
         app.post("/dashboard/send-email", EmailController::sendEmail);
         app.post("/dashboard/carport/payment-link", EmailController::sendPaymentLinkEmail);
+
+        app.get("/payment", PaymentController::showPaymentPage);
+        app.post("/payment/confirm", PaymentController::confirmPayment);
     }
 }

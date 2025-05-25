@@ -57,7 +57,7 @@ public class EmailController {
             Order order = OrderMapper.getOrderByOrderId(orderId);
             User customer = order.getCustomer();
 
-            String paymentLink = BASE_URL + "/fog/payment?orderId=" + orderId;
+            String paymentLink = "https://carport.styrse.com/payment?orderId=" + orderId;
 
             SendGrid.sendPaymentLinkEmail(customer, paymentLink);
 

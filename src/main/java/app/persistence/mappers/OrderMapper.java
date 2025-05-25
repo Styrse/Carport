@@ -351,6 +351,21 @@ public class OrderMapper {
         }
     }
 
+    public static void addOrderStatusHistory(int orderId, String status) throws DatabaseException {
+        String sql = "INSERT INTO order_status_history (order_id, status) VALUES (?, ?)";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, orderId);
+            ps.setString(2, status);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error inserting order status for order #" + orderId);
+        }
+    }
+
     public static void deleteOrder(int orderId) throws DatabaseException {
         String sql = "DELETE FROM orders WHERE order_id = ?";
 
