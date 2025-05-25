@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Betaling</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/public/styles.css">
+</head>
+<body>
+
+<main class="container">
+    <h1>Betaling for ordre #<span th:text="${order.orderId}"></span></h1>
+
+    <p>
+        Tak fordi du handler hos Johannes Fog.<br>
+        Klik på knappen nedenfor for at gennemføre betalingen.
+    </p>
+
+    <form th:action="@{/payment/confirm}" method="post">
+        <input type="hidden" name="orderId" th:value="${order.orderId}"/>
+        <button type="submit" class="default-button">
+            Betal <span th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2, 'COMMA')} + ' kr.'"></span>
+        </button>
+    </form>
+</main>
+
+</body>
+</html>

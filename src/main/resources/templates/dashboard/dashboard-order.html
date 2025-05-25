@@ -38,8 +38,8 @@
             <section class="material-section order-info">
                 <div class="info-header">
                     <h2>Ordreinformation</h2>
-                    <form th:action="@{/dashboard/carport/payment}" method="get">
-                        <input type="hidden" name="orderId" th:value="${order.orderId}"/>
+                    <form th:action="@{/dashboard/carport/payment-link}" method="post">
+                        <input type="hidden" name="orderId" th:value="${order.orderId}" />
                         <button type="submit" class="default-button">Send betalingslink</button>
                     </form>
                 </div>

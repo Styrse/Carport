@@ -21,8 +21,8 @@ public class TestPlankFactory {
                 1,
                 "Standard Post",
                 "Basic post for testing",
-                .144,
-                .2,
+                40,
+                65,
                 "cm",
                 25,
                 25,
@@ -37,8 +37,8 @@ public class TestPlankFactory {
                 2,
                 "Standard Beam",
                 "Basic beam for testing",
-                .252,
-                .35,
+                90,
+                130,
                 "cm",
                 25,
                 25,
@@ -53,8 +53,8 @@ public class TestPlankFactory {
                 2,
                 "Shorter Beam",
                 "Shorter max gap beam",
-                .216,
-                .3,
+                70,
+                115,
                 "cm",
                 25,
                 25,
@@ -69,8 +69,8 @@ public class TestPlankFactory {
                 2,
                 "Longer Beam",
                 "Longer max distance beam",
-                .288,
-                .4,
+                105,
+                150,
                 "cm",
                 25,
                 25,
@@ -85,8 +85,8 @@ public class TestPlankFactory {
                 3,
                 "Standard Rafter",
                 "Basic rafter for testing",
-                .216,
-                .3,
+                25,
+                45,
                 "cm",
                 25,
                 25
@@ -100,13 +100,13 @@ public class TestPlankFactory {
                 3,
                 "Shorter Rafter",
                 "Shorter max length rafter",
-                .18,
-                .25,
+                20,
+                37.5f,
                 "cm",
                 25,
                 25
         );
-        rafter.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
+        rafter.getPreCutLengths().addAll(SHORT_PRE_CUTS_LENGTHS);
         return rafter;
     }
 
@@ -115,13 +115,13 @@ public class TestPlankFactory {
                 3,
                 "Longer Rafter",
                 "Longer max length rafter",
-                .252,
-                .35,
+                32.5f,
+                55,
                 "cm",
                 25,
                 25
         );
-        rafter.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
+        rafter.getPreCutLengths().addAll(LONG_PRE_CUTS_LENGTHS);
         return rafter;
     }
 
@@ -130,8 +130,8 @@ public class TestPlankFactory {
                 4,
                 "Standard Fascia",
                 "Basic fascia board for testing",
-                .129,
-                .18,
+                15,
+                30,
                 "cm",
                 25,
                 25

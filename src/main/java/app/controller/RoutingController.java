@@ -8,6 +8,12 @@ public class RoutingController {
 
     public static void routingController(Javalin app) {
 
+        // Main
+        app.get("/", ctx -> {
+            ctx.render("index.html");
+        });
+
+
         // Front
         app.get("/fog", PublicController::showHomepage);
         app.get("/carport/step-1", PublicController::showSizePage);
@@ -89,5 +95,6 @@ public class RoutingController {
         // 📧 Email
         app.get("/dashboard/email-form", EmailController::showEmailForm);
         app.post("/dashboard/send-email", EmailController::sendEmail);
+        app.post("/dashboard/carport/payment-link", EmailController::sendPaymentLinkEmail);
     }
 }

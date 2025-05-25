@@ -1,6 +1,8 @@
 package app.controller;
 
+import app.entities.orders.Order;
 import app.entities.users.User;
+import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.UserMapper;
 import app.utils.SendGrid;
 import io.javalin.http.Context;
@@ -8,6 +10,7 @@ import io.javalin.http.Context;
 import java.util.Map;
 
 public class EmailController {
+    public static final String BASE_URL = "https://fog.styrse.com";
 
     public static void showEmailForm(Context ctx) {
         try {
@@ -44,6 +47,24 @@ public class EmailController {
         } catch (Exception e) {
             e.printStackTrace();
             ctx.status(500).result("Kunne ikke sende email.");
+        }
+    }
+
+    public static void sendPaymentLinkEmail(Context ctx) {
+        try {
+            int orderId = Integer.parseInt(ctx.formParam("orderId"));
+
+            Order order = OrderMapper.getOrderByOrderId(orderId);
+            User customer = order.getCustomer();
+
+            String paymentLink = BASE_URL + "/fog/payment?orderId=" + orderId;
+
+            SendGrid.sendPaymentLinkEmail(customer, paymentLink);
+
+            ctx.redirect("/dashboard/order?orderId=" + orderId + "&success=1");
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Kunne ikke sende betalingslink.");
         }
     }
 }

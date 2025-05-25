@@ -3,6 +3,7 @@ package app.entities.products.carport.carportTestFactory;
 import app.entities.products.materials.roof.RoofCover;
 
 import static app.entities.products.carport.carportTestFactory.TestPlankFactory.PRE_CUT_LENGTHS;
+import static app.entities.products.carport.carportTestFactory.TestPlankFactory.SHORT_PRE_CUTS_LENGTHS;
 
 /**
  * TestRoofCoverFactory
@@ -21,8 +22,8 @@ public class TestRoofCoverFactory {
                 5,
                 "Standard Roof",
                 "Basic roof cover for testing",
-                1.079,
-                1.5,
+                30,
+                89,
                 "cm",
                 100,
                 20,
@@ -38,15 +39,15 @@ public class TestRoofCoverFactory {
                 5,
                 "Short Plank Roof",
                 "Shorter planks for stress length tests",
-                .971,
-                1.35,
+                24,
+                79,
                 "cm",
                 100,
                 20,
                 10,
                 55
         );
-        roofCover.getPreCutLengths().addAll(PRE_CUT_LENGTHS);
+        roofCover.getPreCutLengths().addAll(SHORT_PRE_CUTS_LENGTHS);
         return roofCover;
     }
 
@@ -55,8 +56,8 @@ public class TestRoofCoverFactory {
                 5,
                 "Tiny Overlap Roof",
                 "Minimal overlaps to maximize coverage",
-                1.115,
-                1.55,
+                40,
+                109,
                 "cm",
                 100,
                 20,
@@ -72,8 +73,8 @@ public class TestRoofCoverFactory {
                 5,
                 "Tiny Overlap Roof",
                 "Minimal overlaps to maximize coverage",
-                1.151,
-                1.6,
+                40,
+                109,
                 "cm",
                 100,
                 5,
@@ -89,8 +90,8 @@ public class TestRoofCoverFactory {
                 5,
                 "Wide Roof Cover",
                 "Extra wide sheet for width tests",
-                4.316,
-                6,
+                40,
+                109,
                 "cm",
                 400,
                 20,

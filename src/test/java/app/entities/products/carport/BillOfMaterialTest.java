@@ -542,7 +542,7 @@ class BillOfMaterialTest {
                         int actual = bom.calcBeamCountLength();
 
                         // Assert
-                        int expected = 8;
+                        int expected = 9;
                         assertEquals(expected, actual);
                     }
                 }
@@ -2031,7 +2031,7 @@ class BillOfMaterialTest {
         double actual = carport.getBillOfMaterial().calcTotalPrice();
 
         //Assert
-        double expected = 10268.4;
+        double expected = 12568.5;
         assertEquals(expected, actual);
     }
 

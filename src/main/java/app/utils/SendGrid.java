@@ -31,17 +31,14 @@ public class SendGrid {
 
         com.sendgrid.SendGrid sg = new com.sendgrid.SendGrid(API_KEY);
         Request request = new Request();
-        try
-        {
+        try {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
 
             mail.templateId = "d-a9f311c2d4824d489f1f02267186dcab";
             request.setBody(mail.build());
             Response response = sg.api(request);
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             throw ex;
         }
     }
@@ -57,23 +54,52 @@ public class SendGrid {
 
         String htmlMessage = message.replace("\n", "<br>");
         personalization.addDynamicTemplateData("message", htmlMessage);
-        mail.addPersonalization(personalization);
 
+        mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 
         com.sendgrid.SendGrid sg = new com.sendgrid.SendGrid(API_KEY);
         Request request = new Request();
-        try
-        {
+        try {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
 
             mail.templateId = "d-4863af6913a5406fb200e18a590c3015";
             request.setBody(mail.build());
             Response response = sg.api(request);
+        } catch (IOException ex) {
+            throw ex;
         }
-        catch (IOException ex)
-        {
+    }
+
+    public static void sendPaymentLinkEmail(User user, String paymentLink) throws IOException {
+        Mail mail = new Mail();
+        mail.setFrom(SENDER_EMAIL);
+
+        Personalization personalization = new Personalization();
+        personalization.addTo(new Email(user.getEmail()));
+        personalization.addDynamicTemplateData("name", user.getFirstName());
+        personalization.addDynamicTemplateData("payment_link", paymentLink);
+
+        mail.addPersonalization(personalization);
+        mail.addCategory("carportapp");
+
+        com.sendgrid.SendGrid sg = new com.sendgrid.SendGrid(API_KEY);
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+
+            mail.setTemplateId("d-13abf78e9ae24c30ba59e20099d35f47");
+
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+
+            if (response.getStatusCode() >= 400) {
+                System.err.println("SendGrid error: " + response.getStatusCode());
+                System.err.println(response.getBody());
+            }
+        } catch (IOException ex) {
             throw ex;
         }
     }
