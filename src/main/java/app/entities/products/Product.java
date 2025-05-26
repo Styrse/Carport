@@ -48,8 +48,6 @@ public abstract class Product {
         this.itemId = itemId;
     }
 
-    public abstract String getItemType();
-
     public String getName() {
         return name;
     }
@@ -81,4 +79,7 @@ public abstract class Product {
     public void setSalesPrice(float salesPrice) {
         this.salesPrice = salesPrice;
     }
+
+    public abstract String getItemType();
+
 }
