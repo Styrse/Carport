@@ -23,18 +23,20 @@ class UserMapperTest {
             try (Statement stmt = connection.createStatement()) {
                 // --- DROP AND CREATE test.users ---
                 stmt.execute("DROP TABLE IF EXISTS test.users;");
+                stmt.execute("DROP TABLE IF EXISTS test.postcodes;");
                 stmt.execute("DROP SEQUENCE IF EXISTS test.users_user_id_seq CASCADE;");
 
                 // Create test.users table as a copy of public.users schema
                 stmt.execute("CREATE TABLE test.users AS (SELECT * from public.users) WITH NO DATA;");
+                stmt.execute("CREATE TABLE test.postcodes AS (SELECT * from public.postcodes) WITH NO DATA;");
                 stmt.execute("CREATE SEQUENCE test.users_user_id_seq;");
                 stmt.execute("ALTER TABLE test.users ALTER COLUMN user_id SET DEFAULT nextval('test.users_user_id_seq');");
 
                 // --- OPTIONAL: Clean up postcodes in test schema ---
-                stmt.execute("TRUNCATE TABLE public.postcodes RESTART IDENTITY CASCADE;");
+                stmt.execute("TRUNCATE TABLE test.postcodes RESTART IDENTITY CASCADE;");
 
                 // --- INSERT REQUIRED POSTCODES ---
-                stmt.execute("INSERT INTO public.postcodes (postcode, city) VALUES " +
+                stmt.execute("INSERT INTO test.postcodes (postcode, city) VALUES " +
                         "('1000', 'Copenhagen'), " +
                         "('2000', 'Frederiksberg'), " +
                         "('3000', 'Helsingør');");
