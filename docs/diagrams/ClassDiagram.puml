@@ -1,95 +1,309 @@
 @startuml
 
+skinparam classAttributeIconSize 0
+
+' Abstract Classes
 abstract class User {
-  - String firstName
-  - String lastName
-  - int phoneNumber
-  - String email
+    -int userId
+    -String firstName
+    -String lastName
+    -String address
+    -String postcode
+    -String city
+    -String phone
+    -String email
+    -String password
+    -int userRole
+    +getUserId(): int
+    +getLastName(): String
+    +getFirstName(): String
+    +getPhone(): String
+    +getEmail(): String
+    +getPassword(): String
+    +setUserId(userID: int): void
+    +setFirstName(firstName: String): void
+    +setLastName(lastName: String): void
+    +setPhone(phone: String): void
+    +setEmail(email: String): void
+    +setPassword(password: String): void
+    +getUserRole(): int
+    +setUserRole(userRole: int): void
+    +getAddress(): String
+    +setAddress(address: String): void
+    +getPostcode(): String
+    +setPostcode(postcode: String): void
+    +getCity(): String
+    +setCity(city: String): void
 }
 
-class Customer extends User {
-- List<Order> myOrders
+abstract class Product {
+    -int itemId
+    -String name
+    -String description
+    -float costPrice
+    -float salesPrice
+    +getItemId(): int
+    +setItemId(itemId: int): void
+    +{abstract} getItemType(): String
+    +getName(): String
+    +setName(name: String): void
+    +getDescription(): String
+    +setDescription(description: String): void
+    +getCostPrice(): float
+    +setCostPrice(costPrice: float): void
+    +getSalesPrice(): float
+    +setSalesPrice(salesPrice: float): void
 }
 
-class Staff extends User {
-  - String password
-  - List<Order> myWorkOrders
+abstract class Material {
+    -float width
+    -String unit
+    -List<Integer> preCutsLengths
+    +getWidth(): float
+    +setWidth(width: float): void
+    +getUnit(): String
+    +setUnit(unit: String): void
+    +getPreCutLengths(): List<Integer>
+    +addToPreCutsLengths(length: int): void
+    +setPreCutsLengths(preCutsLengths: List<Integer>): void
+    +getType(): String
+    +{abstract} prepareStatement(ps: PreparedStatement): void
 }
 
-class SalesManager extends Staff
+abstract class Plank {
+    -float height
+    +getHeight(): float
+    +setHeight(height: float): void
+    +{abstract} prepareStatement(ps: PreparedStatement): void
+}
+
+' Concrete Classes
+class Customer {
+    -List<Order> myOrders
+    +getMyOrders(): List<Order>
+}
+
+class Staff {
+    -List<Order> myWorkOrders
+    +getMyWorkOrders(): List<Order>
+    +setMyWorkOrders(myWorkOrders: List<Order>): void
+    +getJobTitle(): String
+}
+
+class StaffManager {
+    +getJobTitle(): String
+}
 
 class Order {
-  - LocalDate orderDate
-  - String orderStatus
-  - String paymentStatus
-  - Carport carport
-  - Customer customer
-  - Staff staff
+    -int orderId
+    -LocalDate orderDate
+    -String orderStatus
+    -Customer customer
+    -Staff staff
+    -List<OrderItem> orderItems
+    -float totalPrice
+    +static int SHIPPING_DK_POSTCODE_LESS_5000 = 2000
+    +static int SHIPPING_DK_REST = 3000
+    +static int SHIPPING_INTERNATIONALLY = 6000
+    +getTotalPrice(): float
+    +getOrderId(): int
+    +setOrderId(orderId: int): void
+    +getOrderDate(): LocalDate
+    +setOrderDate(orderDate: LocalDate): void
+    +getOrderStatus(): String
+    +setOrderStatus(orderStatus: String): void
+    +getCustomer(): Customer
+    +setCustomer(customer: Customer): void
+    +getStaff(): Staff
+    +setStaff(staff: Staff): void
+    +getOrderItems(): List<OrderItem>
+    +setOrderItems(orderItems: List<OrderItem>): void
+    +setTotalPrice(totalPrice: float): void
+    +addOrderItem(orderItem: OrderItem): void
+    +getCarport(): Carport
+}
+
+class OrderItem {
+    -Product product
+    -String itemName
+    -int quantity
+    +getProduct(): Product
+    +setProduct(product: Product): void
+    +getItemName(): String
+    +setItemName(itemName: String): void
+    +getQuantity(): int
+    +setQuantity(quantity: int): void
+    +getTotalPrice(): float
+}
+
+class Shipping {
+    +static int SHIPPING_DK_POSTCODE_LESS_5000 = 2000
+    +static int SHIPPING_DK_REST = 3000
+    +static int SHIPPING_INTERNATIONALLY = 6000
+    +getItemType(): String
 }
 
 class Carport {
-- int width
-- int length
-- int height
-- String roofType
-- int roofAngle
-- Post post
-- Beam beam
-- Rafter rafter
-- Fascia fascia
-- RoofCover roofCover
-  - List<Material> materials
-  - Guide guide
+    -int width
+    -int length
+    -int height
+    -String roofType
+    -int roofAngle
+    -float totalPrice
+    -Map<MaterialRole, Material> materialMap
+    -Shed shed
+    +getItemType(): String
+    +getBillOfMaterial(): BillOfMaterial
+    +getWidth(): int
+    +getLength(): int
+    +getHeight(): int
+    +getRoofType(): String
+    +getRoofAngle(): int
+    +setWidth(width: int): void
+    +setLength(length: int): void
+    +setHeight(height: int): void
+    +setRoofType(roofType: String): void
+    +setRoofAngle(roofAngle: int): void
+    +getMaterial(): Map<MaterialRole, Material>
+    +getSalesPrice(): float
+    +getTotalPrice(): float
+    +setTotalPrice(totalPrice: float): void
+    +setMaterialMap(materialMap: Map<MaterialRole, Material>): void
+    +getMaterialMap(): Map<MaterialRole, Material>
+    +getShed(): Shed
+    +setShed(shed: Shed): void
 }
 
-class Material {
-  - String name
-  - String description
-  - double costPrice
-  - double salesPrice
-  - String unit
+class "Carport.Shed" as Shed {
+    -int width
+    -int length
+    +getWidth(): int
+    +setWidth(width: int): void
+    +getLength(): int
+    +setLength(length: int): void
 }
 
-class PlankAndRoof extends Material {
-- int length
-- int width
-- int maxLength
+class BillOfMaterial {
+    -final Carport carport
+    -final List<BillOfMaterialsItem> lines
+    +final static int OVERHANG_END = 30
+    +final static int OVERHANG_FRONT = 100
+    +final static int OVERHANG_SIDE = 35
+    +calcTotalPrice(): double
+    +getLines(): List<BillOfMaterialsItem>
+    -calculateMaterials(): void
+    -getPosts(): List<BillOfMaterialsItem>
+    +getBeams(): List<BillOfMaterialsItem>
+    -getRafters(): List<BillOfMaterialsItem>
+    -getFascia(): List<BillOfMaterialsItem>
+    -getRoofCover(): List<BillOfMaterialsItem>
+    -bestFitLength(material: Material, neededLength: float): int
+    +calcPostCountWidth(): int
+    +calcPostCountLength(): int
+    +calcPostsNeededLength(): int
+    +calcBeamCountLength(): int
+    +calcRafterCountWidth(): int
+    +calcRafterCountLength(): int
+    +calcRoofCoverCountLength(): int
+    +calcRoofCoverCountWidth(): int
 }
 
-class Plank extends PlankAndRoof {
-- int height
+class BillOfMaterialsItem {
+    -final String name
+    -final int length
+    -final int quantity
+    -final String unit
+    -final String description
+    -final float salesPrice
+    +getName(): String
+    +getLength(): int
+    +getQuantity(): int
+    +getUnit(): String
+    +getDescription(): String
+    +getSalesPrice(): float
+    +getMeterSalesPrice(): float
 }
 
-class Post extends Plank {
-- boolean treatedForGroundContact
+enum MaterialRole {
+    POST
+    BEAM
+    RAFTER
+    FASCIA
+    ROOF_COVER
 }
 
-class Beam extends Plank {
-- int maxLengthBetweenPosts
+class RoofCover {
+    -int lengthOverlap
+    -float sideOverlap
+    -int gapRafters
+    +getLengthOverlap(): int
+    +setLengthOverlap(lengthOverlap: int): void
+    +getSideOverlap(): float
+    +setSideOverlap(sideOverlap: float): void
+    +getGapRafters(): int
+    +setGapRafters(gapRafters: int): void
+    +prepareStatement(ps: PreparedStatement): void
 }
 
-class Rafter extends Plank {
+class Beam {
+    -int postGap
+    +getPostGap(): int
+    +setPostGap(postGap: int): void
+    +prepareStatement(ps: PreparedStatement): void
 }
 
-class Fascia extends Plank {
-- boolean supportsGutters
+class Fascia {
+    -final boolean supportsGutters
+    +static int MIN_THICKNESS_FOR_GUTTERS = 22
+    +isSupportsGutters(): boolean
+    +setMinThicknessForGutters(minThickness: int): void
+    +prepareStatement(ps: PreparedStatement): void
 }
 
-class RoofCover extends PlankAndRoof {
-- int lengthOverlap
-- float sideOverlap
-- int maxLengthBetweenRafters
+class Post {
+    -float bucklingCapacity
+    +getBucklingCapacity(): float
+    +setBucklingCapacity(bucklingCapacity: float): void
+    +prepareStatement(ps: PreparedStatement): void
 }
 
-class Guide {
-  - Svg guide
+class Rafter {
+    +prepareStatement(ps: PreparedStatement): void
 }
+
 
 ' Relationships
-Customer "1" -- "0..*" Order : places >
-Staff "1" -- "0..*" Order : handles >
-Order "1" *-- "1" Carport
-Carport "1" *-- "0..*" Material
-Carport "1" *-- "1" Guide
+User <|-- Customer
+User <|-- Staff
+Staff <|-- StaffManager
+
+Product <|-- Carport
+Product <|-- Material
+Product <|-- Shipping
+
+Material <|-- Plank
+Material <|-- RoofCover
+
+Plank <|-- Beam
+Plank <|-- Fascia
+Plank <|-- Post
+Plank <|-- Rafter
+
+Order "1" *-- "1" Customer : customer
+Order "1" *-- "0..1" Staff : staff
+Order "1" *-- "0..*" OrderItem : orderItems >
+
+OrderItem "1" *-- "1" Product : product
+
+Carport "1" o-- "0..1" Shed : shed
+Carport "1" *-- "1" BillOfMaterial : getBillOfMaterial()
+Carport "1" *-- "0..*" Material : materialMap
+
+BillOfMaterial "1" *-- "0..*" BillOfMaterialsItem : lines >
+BillOfMaterial "1" *-- "1" Carport : carport
+
+Material "1" <-- "0..*" MaterialRole : <<uses>>
+
+Order "1" *-- "0..1" Carport : carport (from getCarport())
 
 @enduml

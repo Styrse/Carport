@@ -15,7 +15,9 @@ public class BillOfMaterial {
     private final List<BillOfMaterialsItem> lines = new ArrayList<>();
 
     //TODO: Add front overhang. What can the max be?
-    private final static int OVERHANG = 30;
+    public final static int OVERHANG_END = 30;
+    public final static int OVERHANG_FRONT = 100;
+    public final static int OVERHANG_SIDE = 35;
 
     public BillOfMaterial(Carport carport) {
         this.carport = carport;
@@ -58,7 +60,7 @@ public class BillOfMaterial {
         List<BillOfMaterialsItem> beamList = new ArrayList<>();
         Material material = carport.getMaterial().get(MaterialRole.BEAM);
 
-        float distanceBetweenPosts = (float) (carport.getLength() - OVERHANG) / calcPostsNeededLength();
+        float distanceBetweenPosts = (float) (carport.getLength() - OVERHANG_FRONT - OVERHANG_END) / calcPostsNeededLength();
 
         int maxPostPrBeam = (int) Math.floor(Collections.max(material.getPreCutLengths()) / distanceBetweenPosts);
 

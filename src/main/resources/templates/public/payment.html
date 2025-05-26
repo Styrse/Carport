@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Betaling</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/public/styles.css">
+</head>
+<body>
+
+<main class="container-info">
+    <h1>Betaling for ordre #<span th:text="${order.orderId}"></span></h1>
+
+    <!-- Customer Info -->
+    <section class="customer-info">
+        <h2>Kundeinformation</h2>
+        <p><strong>Navn:</strong>
+            <span th:text="|${order.customer.firstName} ${order.customer.lastName}|"></span></p>
+        <p><strong>Email:</strong>
+            <span th:text="${order.customer.email}"></span></p>
+        <p><strong>Telefon:</strong>
+            <span th:text="${order.customer.phone}"></span></p>
+    </section>
+
+    <!-- Delivery Address -->
+    <section class="delivery-info">
+        <h2>Leveringsadresse</h2>
+        <p><strong>Adresse:</strong>
+            <span th:text="${order.customer.address}"></span></p>
+        <p><strong>Postnummer og by:</strong>
+            <span th:text="|${order.customer.postcode} ${order.customer.city}|"></span></p>
+    </section>
+
+    <!-- Order Summary -->
+    <section class="order-summary">
+        <h2>Ordreoversigt</h2>
+        <table class="default-table">
+            <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Antal</th>
+                <th>Pris</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${order.orderItems}">
+                <td th:text="${item.product.name}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${#numbers.formatDecimal(item.totalPrice, 1, 2, 'COMMA')} + ' kr.'"></td>
+            </tr>
+            </tbody>
+        </table>
+        <p><strong>Total:</strong>
+            <span th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2, 'COMMA')} + ' kr.'"></span>
+        </p>
+    </section>
+
+    <!-- Payment Form -->
+    <p>
+        Tak fordi du handler hos Johannes Fog.<br>
+        Klik på knappen nedenfor for at gennemføre betalingen.
+    </p>
+
+    <form th:action="@{/payment/confirm}" method="post">
+        <input type="hidden" name="orderId" th:value="${order.orderId}"/>
+        <button type="submit" class="default-button">
+            Betal <span th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2, 'COMMA')} + ' kr.'"></span>
+        </button>
+    </form>
+</main>
+
+</body>
+</html>

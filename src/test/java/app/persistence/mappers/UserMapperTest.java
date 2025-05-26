@@ -21,31 +21,37 @@ class UserMapperTest {
     void setup() {
         try (Connection connection = connectionPool.getConnection()) {
             try (Statement stmt = connection.createStatement()) {
+                // --- DROP AND CREATE test.users ---
                 stmt.execute("DROP TABLE IF EXISTS test.users;");
+                stmt.execute("DROP TABLE IF EXISTS test.postcodes;");
                 stmt.execute("DROP SEQUENCE IF EXISTS test.users_user_id_seq CASCADE;");
 
-                //Create tables as empty copies of the originals
-                stmt.execute("CREATE TABLE test.users AS (SELECT * from public.users) WITH NO DATA;");;
-
-                //Create sequences and attach to ID columns
+                // Create test.users table as a copy of public.users schema
+                stmt.execute("CREATE TABLE test.users AS (SELECT * from public.users) WITH NO DATA;");
+                stmt.execute("CREATE TABLE test.postcodes AS (SELECT * from public.postcodes) WITH NO DATA;");
                 stmt.execute("CREATE SEQUENCE test.users_user_id_seq;");
                 stmt.execute("ALTER TABLE test.users ALTER COLUMN user_id SET DEFAULT nextval('test.users_user_id_seq');");
 
-                //Clean the test table
-                stmt.execute("TRUNCATE TABLE test.users RESTART IDENTITY CASCADE;");
+                // --- OPTIONAL: Clean up postcodes in test schema ---
+                stmt.execute("TRUNCATE TABLE test.postcodes RESTART IDENTITY CASCADE;");
 
-                //Insert 3 example users
+                // --- INSERT REQUIRED POSTCODES ---
+                stmt.execute("INSERT INTO test.postcodes (postcode, city) VALUES " +
+                        "('1000', 'Copenhagen'), " +
+                        "('2000', 'Frederiksberg'), " +
+                        "('3000', 'Helsingør');");
+
+                // --- INSERT TEST USERS ---
                 String hash1 = PasswordUtil.hashPassword("Alice123");
                 String hash2 = PasswordUtil.hashPassword("123Bob");
                 String hash3 = PasswordUtil.hashPassword("Char123Lie");
 
-                stmt.execute("INSERT INTO test.users (user_id, firstname, email, password, role_id) VALUES " +
-                        "(1, 'alice', 'alice@gmail.com', '" + hash1 + "', 1), " +
-                        "(2, 'bob', 'bob@hotmail.com', '" + hash2 + "', 2), " +
-                        "(3, 'charlie', 'charlie@me.com', '" + hash3 + "', 3);");
+                stmt.execute("INSERT INTO test.users (user_id, firstname, lastname, phone_number, email, password, role_id, address, postcode) VALUES " +
+                        "(1, 'Alice', 'Smith', '12345678', 'alice@gmail.com', '" + hash1 + "', 1, 'Main Street 1', '1000'), " +
+                        "(2, 'Bob', 'Johnson', '23456789', 'bob@hotmail.com', '" + hash2 + "', 1, 'Second Street 2', '2000'), " +
+                        "(3, 'Charlie', 'Brown', '34567890', 'charlie@me.com', '" + hash3 + "', 3, 'Third Street 3', '3000');");
 
-
-                //Reset sequences
+                // --- RESET USER ID SEQUENCE ---
                 stmt.execute("SELECT setval('test.users_user_id_seq', COALESCE((SELECT MAX(user_id) + 1 FROM test.users), 1), false)");
             }
         } catch (SQLException e) {
@@ -112,7 +118,8 @@ class UserMapperTest {
     @DisplayName("UpdateUser Test")
     void updateUser() throws DatabaseException {
         //Arrange
-        User user = new Customer("Alice", "Doe", "12345678", "alice@gmail.com", "Alice123", 1);
+        User user = UserMapper.getUserByEmail("alice@gmail.com");
+        user.setLastName("Doe");
 
         //Act
         UserMapper.updateUser(user);

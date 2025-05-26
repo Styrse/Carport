@@ -8,7 +8,7 @@ import app.entities.products.carport.carportTestFactory.TestPlankFactory;
 import app.entities.products.materials.planks.Post;
 import app.entities.users.Customer;
 import app.exceptions.DatabaseException;
-import org.junit.jupiter.api.BeforeAll;
+import app.utils.PasswordUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +39,7 @@ class OrderMapperTest {
                 stmt.execute("DROP TABLE IF EXISTS test.price_history;");
                 stmt.execute("DROP TABLE IF EXISTS test.material_lengths;");
                 stmt.execute("DROP TABLE IF EXISTS test.predefined_lengths;");
+                stmt.execute("DROP TABLE IF EXISTS test.postcodes;");
                 stmt.execute("DROP SEQUENCE IF EXISTS test.orders_order_id_seq CASCADE;");
                 stmt.execute("DROP SEQUENCE IF EXISTS test.order_items_order_item_id_seq CASCADE;");
                 stmt.execute("DROP SEQUENCE IF EXISTS test.carports_carport_id_seq CASCADE;");
@@ -57,6 +58,7 @@ class OrderMapperTest {
                 stmt.execute("CREATE TABLE test.price_history AS TABLE public.price_history WITH NO DATA;");
                 stmt.execute("CREATE TABLE test.predefined_lengths AS TABLE public.predefined_lengths WITH NO DATA;");
                 stmt.execute("CREATE TABLE test.material_lengths AS TABLE public.material_lengths WITH NO DATA;");
+                stmt.execute("CREATE TABLE test.postcodes AS TABLE public.postcodes WITH NO DATA;");
 
                 // Recreate and attach sequences
                 stmt.execute("CREATE SEQUENCE test.orders_order_id_seq;");
@@ -91,11 +93,21 @@ class OrderMapperTest {
                         "post_material_id, beam_material_id, rafter_material_id, fascia_material_id, roof_cover_material_id, total_price) VALUES " +
                         "(600, 780, 250, 'flat', 0, 1, 2, 3, 4, 5, 6599.50);");
 
+                stmt.execute("INSERT INTO test.postcodes (postcode, city) VALUES " +
+                        "('1000', 'Copenhagen')," +
+                        "('2000', 'Frederiksberg')," +
+                        "('3000', 'Helsingør');");
+
+                // INSERT TEST USERS
+                String hash1 = PasswordUtil.hashPassword("Alice123");
+                String hash2 = PasswordUtil.hashPassword("123Bob");
+                String hash3 = PasswordUtil.hashPassword("Char123Lie");
+
                 // Insert test users (customers and staff)
-                stmt.execute("INSERT INTO test.users (user_id, firstname, lastname, phone_number, email, password, role_id) VALUES " +
-                        "(1, 'Alice', 'Anderson', 12345678, 'alice@example.com', 'pass1', 1), " +
-                        "(2, 'Bob', 'Brown', 87654321, 'bob@example.com', 'pass2', 1), " +
-                        "(3, 'Charlie', 'Clark', 11223344, 'charlie@example.com', 'pass3', 2);");
+                stmt.execute("INSERT INTO test.users (user_id, firstname, lastname, phone_number, email, password, role_id, address, postcode) VALUES " +
+                        "(1, 'Alice', 'Smith', '12345678', 'alice@gmail.com', '" + hash1 + "', 1, 'Main Street 1', '1000'), " +
+                        "(2, 'Bob', 'Johnson', '23456789', 'bob@hotmail.com', '" + hash2 + "', 1, 'Second Street 2', '2000'), " +
+                        "(3, 'Charlie', 'Brown', '34567890', 'charlie@me.com', '" + hash3 + "', 3, 'Third Street 3', '3000');");
 
                 // Insert test materials
                 stmt.execute("INSERT INTO test.materials (material_id, name, description, unit, width, height, material_type, buckling_capacity, post_gap, length_overlap, side_overlap, gap_rafters, is_active) VALUES " +
@@ -121,9 +133,9 @@ class OrderMapperTest {
 
                 // Insert corresponding order items
                 stmt.execute("INSERT INTO test.order_items (order_id, item_type, quantity) VALUES " +
-                        "(1, 'material', 1), " +
-                        "(2, 'material', 1), " +
-                        "(3, 'carport', 1);");
+                        "(1, 'Material', 1), " +
+                        "(2, 'Material', 1), " +
+                        "(3, 'Carport', 1);");
 
                 // Link materials and carport to order items
                 stmt.execute("INSERT INTO test.order_item_material (order_item_id, material_id) VALUES " +
@@ -131,14 +143,13 @@ class OrderMapperTest {
                         "(2, 3);");
 
                 stmt.execute("INSERT INTO test.order_item_carport (order_item_id, carport_id) VALUES " +
-                        "(3, 1);"); // carport_id = 1 (auto-increment starts at 1)
+                        "(3, 1);");
 
                 // Insert order status history
-                stmt.execute("INSERT INTO test.order_status_history (order_id, status, update_date) VALUES " +
-                        "(1, 'received', CURRENT_DATE-5), " +
-                        "(1, 'under review', CURRENT_DATE + INTERVAL '1 day'), " +
-                        "(2, 'received', CURRENT_DATE)," +
-                        "(3, 'received', CURRENT_DATE);");
+                stmt.execute("INSERT INTO test.order_status_history (order_id, status, update_date) VALUES" +
+                        "(1, 'Forespørgsel', CURRENT_DATE - INTERVAL '6 days')," +
+                        "(2, 'Forespørgsel', CURRENT_DATE - INTERVAL '3 days')," +
+                        "(3, 'Forespørgsel', CURRENT_DATE - INTERVAL '2 days')");
 
                 // Insert predefined lengths
                 stmt.execute("INSERT INTO test.predefined_lengths (predefined_length_id, length) VALUES " +
@@ -148,7 +159,7 @@ class OrderMapperTest {
                         "(4, 600), " +
                         "(5, 700);");
 
-// Link materials to lengths
+                // Link materials to lengths
                 stmt.execute("INSERT INTO test.material_lengths (material_id, predefined_length_id) VALUES " +
                         "(1, 1), " +
                         "(1, 2)," +
@@ -180,7 +191,7 @@ class OrderMapperTest {
     @DisplayName("CreateOrder Test")
     void createOrder() throws DatabaseException {
         //Arrange
-        Customer user = new Customer(10,"John", "Doe", 12345678, "john@doe.com", "John123", 1);
+        Customer user = new Customer(10,"John", "Doe", "12345678", "john@doe.com", "John123", 1);
         Order order = new Order(LocalDate.of(2025, 5, 1), "Shipped", user);
         Carport carport = TestCarportFactory.createCarportWidthLength(630, 500);
         Post post = TestPlankFactory.createStandardPost();
@@ -233,7 +244,7 @@ class OrderMapperTest {
         String actual = OrderMapper.getOrderByOrderId(1).getOrderStatus();
 
         //Assert
-        String expected = "under review";
+        String expected = "Forespørgsel";
         assertEquals(expected, actual);
 
     }

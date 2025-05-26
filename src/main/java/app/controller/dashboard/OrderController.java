@@ -1,4 +1,4 @@
-package app.controller;
+package app.controller.dashboard;
 
 import app.entities.orders.Order;
 import app.entities.users.Staff;
@@ -10,9 +10,10 @@ import io.javalin.http.Context;
 import java.util.List;
 import java.util.Map;
 
-import static app.controller.ControllerHelper.createBaseModel;
+import static app.controller.dashboard.ControllerHelper.createBaseModel;
 
 public class OrderController {
+
     public static void showOrders(Context ctx) {
         String statusFilter = ctx.queryParam("status");
         if (statusFilter == null || statusFilter.isBlank()) {
@@ -34,9 +35,10 @@ public class OrderController {
             model.put("activeTab", "orders");
 
             ctx.render("dashboard/dashboard-orders.html", model);
+
         } catch (DatabaseException e) {
-            e.printStackTrace();
-            ctx.status(500).result("Kunne ikke hente ordrelisten");
+            ctx.attribute("errorMessage", "Kunne ikke hente ordrelisten.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 
@@ -55,9 +57,10 @@ public class OrderController {
             model.put("activeTab", "orders");
 
             ctx.render("dashboard/dashboard-order.html", model);
+
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Kunne ikke hente ordreinformation");
+            ctx.attribute("errorMessage", "Kunne ikke hente ordreinformation.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 
@@ -67,8 +70,8 @@ public class OrderController {
             OrderService.cancelOrder(orderId);
             ctx.redirect("/dashboard/orders");
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Fejl ved annullering af ordre.");
+            ctx.attribute("errorMessage", "Fejl ved annullering af ordre.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 
@@ -83,8 +86,8 @@ public class OrderController {
 
             ctx.redirect("/dashboard");
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Kunne ikke tildele ordre.");
+            ctx.attribute("errorMessage", "Kunne ikke tildele ordre.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 
@@ -100,8 +103,8 @@ public class OrderController {
 
             ctx.redirect("/dashboard");
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Kunne ikke fjerne ordre.");
+            ctx.attribute("errorMessage", "Kunne ikke fjerne ordre.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 }

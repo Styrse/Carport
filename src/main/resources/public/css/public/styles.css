@@ -576,3 +576,40 @@ input[type="radio"]:checked + .option-label {
 .info-table td {
     color: #555;
 }
+
+.customer-info {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+}
+
+.customer-info, .delivery-info, .order-summary {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+}
+
+.default-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.default-table th,
+.default-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.default-table th {
+    background-color: #f2f2f2;
+}
+
+.centered-list {
+    list-style-type: none;
+    display: inline-block;
+    text-align: left;
+    padding-left: 0;
+    margin: 0 auto;
+}

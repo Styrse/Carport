@@ -52,7 +52,7 @@ public class UserMapper {
 
     //Read: get user by email
     public static User getUserByEmail(String email) throws DatabaseException {
-        String sql = "SELECT * FROM users JOIN public.postcodes USING (postcode) WHERE email ILIKE ?";
+        String sql = "SELECT * FROM users JOIN postcodes USING (postcode) WHERE email ILIKE ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {

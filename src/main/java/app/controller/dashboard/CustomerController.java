@@ -1,4 +1,4 @@
-package app.controller;
+package app.controller.dashboard;
 
 import app.entities.orders.Order;
 import app.entities.users.Customer;
@@ -11,10 +11,10 @@ import io.javalin.http.Context;
 import java.util.List;
 import java.util.Map;
 
-import static app.controller.ControllerHelper.createBaseModel;
-
+import static app.controller.dashboard.ControllerHelper.createBaseModel;
 
 public class CustomerController {
+
     public static void showCustomers(Context ctx) {
         try {
             List<User> allUsers = UserMapper.getAllUsers();
@@ -26,16 +26,14 @@ public class CustomerController {
 
             Map<String, Object> model = createBaseModel(ctx);
             model.put("customers", customers);
-
             model.put("activeTab", "customers");
 
             ctx.render("dashboard/dashboard-customers", model);
         } catch (DatabaseException e) {
-            e.printStackTrace();
-            ctx.status(500).result("Kunne ikke hente kundelisten");
+            ctx.attribute("errorMessage", "Fejl ved hentning af kundelisten.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
-    //TODO: Add search box and fix buttons. Add "Send email" button
 
     public static void showCustomerPage(Context ctx) {
         int customerId = Integer.parseInt(ctx.formParam("customerId"));
@@ -52,13 +50,12 @@ public class CustomerController {
             Map<String, Object> model = createBaseModel(ctx);
             model.put("customer", customer);
             model.put("orders", orders);
-
             model.put("activeTab", "customers");
 
             ctx.render("dashboard/dashboard-customer.html", model);
         } catch (DatabaseException e) {
-            e.printStackTrace();
-            ctx.status(500).result("Kunne ikke hente kundeinformation");
+            ctx.attribute("errorMessage", "Fejl ved hentning af kundeinformation.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 
@@ -77,13 +74,13 @@ public class CustomerController {
             customer.setEmail(ctx.formParam("email"));
             customer.setAddress(ctx.formParam("address"));
             customer.setPostcode(ctx.formParam("postcode"));
-            customer.setCity("city");
+            customer.setCity(ctx.formParam("city"));
 
             UserMapper.updateUser(customer);
             ctx.redirect("/dashboard/customers");
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Fejl ved opdatering af kundeinfo");
+            ctx.attribute("errorMessage", "Fejl ved opdatering af kundeinfo.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 }

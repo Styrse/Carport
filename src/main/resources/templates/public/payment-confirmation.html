@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Betaling modtaget</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/public/styles.css">
+</head>
+<body>
+<main style="text-align:center; margin-top:100px;">
+    <h1>Tak for din betaling!</h1>
+    <p>Vi har modtaget din betaling for ordre <strong>#<span th:text="${order.orderId}"></span></strong>.</p>
+    <p>Du vil snart modtage en e-mail med:</p>
+    <ul class="centered-list">
+        <li>✓ En detaljeret stykliste</li>
+        <li>✓ Vejledning til opsætning</li>
+    </ul>
+    <p>Har du spørgsmål, er du altid velkommen til at kontakte os.</p>
+
+    <a href="/" class="default-button" style="margin-top:30px; display:inline-block;">Til forsiden</a>
+</main>
+</body>
+</html>

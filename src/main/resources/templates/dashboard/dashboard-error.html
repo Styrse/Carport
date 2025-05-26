@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Fog - Fejl</title>
+    <link rel="icon" type="image/x-icon" href="/img/fog.jpeg">
+    <link rel="stylesheet" href="/css/dashboard/dashboard-styles.css">
+</head>
+<body>
+
+<header>
+    <div th:insert="~{dashboard/dashboard-topbar :: dashboard-topbar}"></div>
+</header>
+
+<main>
+    <div class="alert-box">
+        <h2>Ups! Noget gik galt</h2>
+        <p th:text="${errorMessage} ?: 'Der opstod en uventet fejl. Prøv igen senere.'"></p>
+        <a href="/dashboard" class="button">Tilbage til dashboard</a>
+    </div>
+</main>
+
+</body>
+</html>

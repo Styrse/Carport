@@ -26,11 +26,6 @@ public abstract class Material extends Product {
         this.preCutsLengths = new ArrayList<>();
     }
 
-    @Override
-    public String getItemType() {
-        return "Materiale";
-    }
-
     public float getWidth() {
         return width;
     }
@@ -59,8 +54,9 @@ public abstract class Material extends Product {
         this.preCutsLengths = preCutsLengths;
     }
 
-    public String getType() {
-        return this.getClass().getSimpleName();
+    @Override
+    public String getItemType() {
+        return "Material";
     }
 
 

@@ -1,4 +1,4 @@
-package app.controller;
+package app.controller.dashboard;
 
 import app.entities.orders.Order;
 import app.entities.orders.OrderItem;
@@ -14,29 +14,25 @@ import app.entities.products.materials.planks.Rafter;
 import app.entities.products.materials.roof.RoofCover;
 import app.entities.users.Customer;
 import app.entities.users.Staff;
-import app.entities.users.User;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.CarportMapper;
 import app.persistence.mappers.MaterialMapper;
 import app.persistence.mappers.OrderMapper;
-import app.persistence.mappers.UserMapper;
-import app.service.CarportService;
-import app.service.MaterialService;
-import app.service.OrderService;
-import app.service.UserService;
-import app.utils.SendGrid;
+import app.service.*;
 import io.javalin.http.Context;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-import static app.controller.ControllerHelper.createBaseModel;
+import static app.controller.dashboard.ControllerHelper.createBaseModel;
 
 public class CarportController {
+
     public static void newCarport(Context ctx) {
-        // Fetch from service
+        // Load all available materials
         MaterialService.refreshMaterials();
 
         List<Post> posts = MaterialService.getAllPosts();
@@ -51,29 +47,28 @@ public class CarportController {
         model.put("rafters", rafters);
         model.put("fascias", fascias);
         model.put("roofCovers", roofCovers);
-
         model.put("activeTab", "new-carport");
 
         ctx.render("dashboard/dashboard-new-carport.html", model);
     }
 
+    // Handles form submission for creating a new carport order.
     public static void handleNewCarport(Context ctx) {
         try {
-            // 1. Parse carport dimensions
+            // Parse carport dimensions and materials
             int width = Integer.parseInt(ctx.formParam("width"));
             int length = Integer.parseInt(ctx.formParam("length"));
             int height = Integer.parseInt(ctx.formParam("height"));
             String roofType = ctx.formParam("roofType");
             int roofAngle = Integer.parseInt(ctx.formParam("roofAngle"));
 
-            // 2. Parse selected material IDs
             int postId = Integer.parseInt(ctx.formParam("postId"));
             int beamId = Integer.parseInt(ctx.formParam("beamId"));
             int rafterId = Integer.parseInt(ctx.formParam("rafterId"));
             int fasciaId = Integer.parseInt(ctx.formParam("fasciaId"));
             int roofCoverId = Integer.parseInt(ctx.formParam("roofCoverId"));
 
-            // 3. Parse customer info
+            // Parse customer info
             String firstName = ctx.formParam("firstName");
             String lastName = ctx.formParam("lastName");
             String phone = ctx.formParam("phone");
@@ -82,22 +77,12 @@ public class CarportController {
             String postcode = ctx.formParam("postcode");
             String city = ctx.formParam("city");
 
-            // 4. Check if Customer exists or create new
-            Customer customer;
-            try {
-                customer = UserService.getOrCreateCustomer(
-                        firstName, lastName, phone, email.toLowerCase(), address, postcode, city
-                );
-            } catch (IllegalArgumentException e) {
-                ctx.status(400).result(e.getMessage());
-                return;
-            } catch (DatabaseException e) {
-                e.printStackTrace();
-                ctx.status(500).result("Database fejl ved oprettelse eller opdatering af kunde.");
-                return;
-            }
+            // Get or create customer
+            Customer customer = UserService.getOrCreateCustomer(
+                    firstName, lastName, phone, email.toLowerCase(), address, postcode, city
+            );
 
-            // 5. Create carport object
+            // Create and save Carport
             Carport carport = new Carport(width, length, height, roofType, roofAngle);
             Map<MaterialRole, Integer> materialId = new HashMap<>();
             materialId.put(MaterialRole.POST, postId);
@@ -105,28 +90,32 @@ public class CarportController {
             materialId.put(MaterialRole.RAFTER, rafterId);
             materialId.put(MaterialRole.FASCIA, fasciaId);
             materialId.put(MaterialRole.ROOF_COVER, roofCoverId);
+
             CarportService.saveCarport(carport, materialId);
 
-            // 6. Get Staff
             Staff currentStaff = ctx.sessionAttribute("currentUser");
 
-            // 7. Create order
+            // Create and save order
             Order order = new Order(customer);
             order.addOrderItem(new OrderItem(carport, 1));
             order.setOrderStatus("Forespørgsel");
             order.setOrderDate(LocalDate.now());
             order.setStaff(currentStaff);
+
             OrderService.saveOrder(order);
 
-            // 8. Assign to staff
             currentStaff.getMyWorkOrders().add(order);
 
-            // 9. Redirect
             ctx.redirect("/dashboard/order?orderId=" + order.getOrderId());
 
+        } catch (IllegalArgumentException e) {
+            ctx.status(400).result(e.getMessage());
+        } catch (DatabaseException e) {
+            ctx.attribute("errorMessage", "Databasefejl ved oprettelse eller opdatering af kunde.");
+            ctx.render("dashboard/dashboard-error.html");
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Der opstod en fejl ved oprettelsen af carporten.");
+            ctx.attribute("errorMessage", "Der opstod en fejl ved oprettelsen af carporten.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 
@@ -137,7 +126,6 @@ public class CarportController {
         Order order = OrderMapper.getOrderByOrderId(orderId);
         Carport carport = (Carport) order.getOrderItems().get(index).getProduct();
 
-        // Load material options
         MaterialService.refreshMaterials();
         List<Post> posts = MaterialService.getAllPosts();
         List<Beam> beams = MaterialService.getAllBeams();
@@ -145,14 +133,13 @@ public class CarportController {
         List<Fascia> fascias = MaterialService.getAllFascias();
         List<RoofCover> roofCovers = MaterialService.getAllRoofCovers();
 
-        // Get Carport Materials for model
+        // Get selected materials
         Material selectedPost = carport.getMaterialMap().get(MaterialRole.POST);
         Material selectedBeam = carport.getMaterialMap().get(MaterialRole.BEAM);
         Material selectedRafter = carport.getMaterialMap().get(MaterialRole.RAFTER);
         Material selectedFascia = carport.getMaterialMap().get(MaterialRole.FASCIA);
         Material selectedRoofCover = carport.getMaterialMap().get(MaterialRole.ROOF_COVER);
 
-        // Build model
         Map<String, Object> model = createBaseModel(ctx);
         model.put("order", order);
         model.put("carport", carport);
@@ -162,12 +149,6 @@ public class CarportController {
         model.put("rafters", rafters);
         model.put("fascias", fascias);
         model.put("roofCovers", roofCovers);
-
-        model.put("selectedPost", selectedPost);
-        model.put("selectedBeam", selectedBeam);
-        model.put("selectedRafter", selectedRafter);
-        model.put("selectedFascia", selectedFascia);
-        model.put("selectedRoofCover", selectedRoofCover);
 
         model.put("selectedPostId", selectedPost.getItemId());
         model.put("selectedBeamId", selectedBeam.getItemId());
@@ -195,7 +176,7 @@ public class CarportController {
         int fasciaId = Integer.parseInt(ctx.formParam("fasciaId"));
         int roofCoverId = Integer.parseInt(ctx.formParam("roofCoverId"));
 
-        // Rebuild the Carport object
+        // Update carport with selected materials based on form input
         Carport carport = new Carport(carportId, width, length, height, roofType, roofAngle);
         carport.setMaterialMap(Map.of(
                 MaterialRole.POST, MaterialMapper.getMaterialById(postId),
@@ -224,17 +205,43 @@ public class CarportController {
             Map<String, Object> model = createBaseModel(ctx);
             model.put("orderId", orderId);
             model.put("bomItems", items);
-
+            model.put("totalPrice", bom.calcTotalPrice());
             model.put("activeTab", "orders");
-
-            double totalPrice = bom.calcTotalPrice();
-
-            model.put("totalPrice", totalPrice);
 
             ctx.render("dashboard/dashboard-carport-bom.html", model);
         } catch (Exception e) {
-            e.printStackTrace();
-            ctx.status(500).result("Kunne ikke hente stykliste.");
+            ctx.attribute("errorMessage", "Kunne ikke hente stykliste.");
+            ctx.render("dashboard/dashboard-error.html");
+        }
+    }
+
+    public static void showSVG(Context ctx) {
+        Locale.setDefault(Locale.US);
+
+        int orderId = Integer.parseInt(ctx.queryParam("orderId"));
+        int index = Integer.parseInt(ctx.queryParam("index"));
+
+        try {
+            Order order = OrderMapper.getOrderByOrderId(orderId);
+            OrderItem item = order.getOrderItems().get(index);
+
+            if (!(item.getProduct() instanceof Carport carport)) {
+                ctx.status(400).result("Produktet er ikke en carport.");
+                return;
+            }
+
+            Svg topSvg = SvgDrawingService.generateCarportSvg(carport);
+            Svg sideSvg = SvgDrawingService.generateCarportSideSvg(carport);
+
+            ctx.attribute("svg", topSvg.toString());
+            ctx.attribute("svgSide", sideSvg.toString());
+            ctx.attribute("orderId", orderId);
+
+            ctx.render("showSvg.html");
+
+        } catch (Exception e) {
+            ctx.attribute("errorMessage", "Kunne ikke vise tegningen.");
+            ctx.render("dashboard/dashboard-error.html");
         }
     }
 }

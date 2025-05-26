@@ -1,0 +1,76 @@
+@startuml
+title Domænemodel – Carportprojekt (Byggemarked)
+
+' Klasser
+class Kunde {
+  +navn
+  +adresse
+  +telefonnummer
+  +email
+}
+
+class Medarbejder {
+  +navn
+  +email
+  +rolle
+}
+
+class Ordre {
+  +totalpris
+  +dato
+}
+
+class Carport {
+  +bredde
+  +længde
+  +højde
+  +tagtype
+  +taghældning
+}
+
+class Materiale {
+  +navn
+  +type
+  +enhed
+  +egenskaber
+}
+
+class Ordrelinje {
+  +antal
+  +type (materiale/carport)
+}
+
+class Stykliste {
+}
+
+class Postnummer {
+  +nummer
+  +by
+}
+
+class ForhåndsdefineretLængde {
+  +længde
+}
+
+class PrisHistorik {
+  +salgspris
+  +kostpris
+  +gyldig_fra
+  +gyldig_til
+}
+
+' Relationer
+Kunde "1" -- "0..*" Ordre
+Medarbejder "0..1" -- "0..*" Ordre : håndterer
+Ordre "1" -- "1..*" Ordrelinje
+Ordrelinje "0..1" -- "1" Carport : hvis type = carport
+Ordrelinje "0..1" -- "1" Materiale : hvis type = materiale
+
+Carport "1" -- "1" Stykliste
+Stykliste "1" -- "1..*" Materiale : består af
+
+Materiale "1" -- "0..*" PrisHistorik
+Materiale "1" -- "0..*" ForhåndsdefineretLængde
+Kunde "1" -- "1" Postnummer
+
+@enduml

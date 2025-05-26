@@ -192,7 +192,7 @@ public class OrderMapper {
 
                     switch (type) {
                         case "Carport" -> items.add(getCarportItem(connection, orderItemId, quantity));
-                        case "Caterial" -> items.add(getMaterialItem(connection, orderItemId, quantity));
+                        case "Material" -> items.add(getMaterialItem(connection, orderItemId, quantity));
                     }
                 }
             } catch (DatabaseException e) {
@@ -348,6 +348,21 @@ public class OrderMapper {
             connection.commit();
         } catch (SQLException e) {
             throw new DatabaseException(e, "Error updating order");
+        }
+    }
+
+    public static void addOrderStatusHistory(int orderId, String status) throws DatabaseException {
+        String sql = "INSERT INTO order_status_history (order_id, status) VALUES (?, ?)";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, orderId);
+            ps.setString(2, status);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e, "Error inserting order status for order #" + orderId);
         }
     }
 
