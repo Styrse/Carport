@@ -46,7 +46,6 @@ public class BillOfMaterial {
         Material material = carport.getMaterial().get(MaterialRole.POST);
         result.add(new BillOfMaterialsItem(
                 material.getName(),
-                //Todo: Calculate the needed post height. Remember to check how deep they go and think of the slope even for a flat roof
                 Collections.max(material.getPreCutLengths()),
                 posts,
                 material.getUnit(),

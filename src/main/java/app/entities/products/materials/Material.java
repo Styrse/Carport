@@ -59,6 +59,5 @@ public abstract class Material extends Product {
         return "Material";
     }
 
-
     public abstract void prepareStatement(PreparedStatement ps) throws SQLException;
 }

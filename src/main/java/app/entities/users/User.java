@@ -5,17 +5,15 @@ public abstract class User {
     private String firstName;
     private String lastName;
     private String address;
-    private String postcode; //String for foreign addresses
+    private String postcode; // Saved as String for international postcodes
     private String city;
-    private String phone;    //Stored as String for future-proof for international phone numbers
+    private String phone;    // Saved as String for international phone numbers like +45
     private String email;
     private String password;
     private int userRole;
 
     public User() {
     }
-
-
 
     public User(String firstName, String lastName, String address, String postcode, String city, String phone, String email, String password, int userRole) {
         this.firstName = firstName;
@@ -56,7 +54,6 @@ public abstract class User {
         this.city = city;
         this.phone = phone;
         this.email = email;
-        this.password = password;
         this.userRole = userRole;
     }
 

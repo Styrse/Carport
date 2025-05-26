@@ -17,11 +17,6 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>();
     private float totalPrice;
 
-    //TODO: Do
-    public static int SHIPPING_DK_POSTCODE_LESS_5000 = 2000;
-    public static int SHIPPING_DK_REST = 3000;
-    public static int SHIPPING_INTERNATIONALLY = 6000;
-
     public Order(Customer customer) {
         this.customer = customer;
     }
