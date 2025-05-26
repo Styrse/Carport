@@ -1,0 +1,98 @@
+Table users {
+  user_id serial [pk]
+  firstname text
+  lastname text
+  address text
+  postcode int [ref: > postcodes.postcode]
+  phone_number text
+  email text [unique, not null]
+  password text
+  role_id int
+}
+
+Table postcodes {
+  postcode int [pk]
+  city text
+}
+
+Table orders {
+  order_id serial [pk]
+  user_id int [not null, ref: > users.user_id]
+  staff_id int [ref: > users.user_id]
+  total_price numeric
+}
+
+Table order_status_history {
+  order_id int [not null, ref: > orders.order_id]
+  status text
+  update_date timestamp [not null, default: `now()`]
+  Note: 'Primary key is (order_id, update_date)'
+}
+
+Table order_items {
+  order_item_id serial [pk]
+  order_id int [not null, ref: > orders.order_id]
+  item_type varchar(20) [not null, note: 'CHECK (item_type IN (\'carport\', \'material\'))']
+  quantity int [not null]
+}
+
+Table order_item_carport {
+  order_item_id int [pk, ref: > order_items.order_item_id]
+  carport_id int [not null, ref: > carports.carport_id]
+}
+
+Table order_item_material {
+  order_item_id int [pk, ref: > order_items.order_item_id]
+  material_id int [not null, ref: > materials.material_id]
+}
+
+Table carports {
+  carport_id serial [pk]
+  width numeric [not null]
+  length numeric [not null]
+  height numeric [not null]
+  roof_type text [not null]
+  roof_angle numeric [not null]
+  post_material_id int [ref: > materials.material_id]
+  beam_material_id int [ref: > materials.material_id]
+  rafter_material_id int [ref: > materials.material_id]
+  fascia_material_id int [ref: > materials.material_id]
+  roof_cover_material_id int [ref: > materials.material_id]
+  total_price numeric
+}
+
+Table materials {
+  material_id serial [pk]
+  name text
+  description text
+  unit text
+  width numeric
+  height numeric
+  material_type text [not null]
+  buckling_capacity numeric
+  post_gap numeric
+  length_overlap numeric
+  side_overlap numeric
+  gap_rafters numeric
+  is_active boolean [not null]
+}
+
+Table predefined_lengths {
+  predefined_length_id serial [pk]
+  length int [not null]
+}
+
+Table material_lengths {
+  material_id int [ref: > materials.material_id]
+  predefined_length_id int [ref: > predefined_lengths.predefined_length_id]
+  Note: 'Primary key is (material_id, predefined_length_id)'
+}
+
+Table price_history {
+  price_history_id serial [pk]
+  material_id int [ref: > materials.material_id]
+  cost_price numeric
+  sales_price numeric
+  valid_from date
+  valid_to date
+}
