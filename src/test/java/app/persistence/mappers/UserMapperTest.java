@@ -46,7 +46,7 @@ class UserMapperTest {
 
                 stmt.execute("INSERT INTO test.users (user_id, firstname, lastname, phone_number, email, password, role_id, address, postcode) VALUES " +
                         "(1, 'Alice', 'Smith', '12345678', 'alice@gmail.com', '" + hash1 + "', 1, 'Main Street 1', '1000'), " +
-                        "(2, 'Bob', 'Johnson', '23456789', 'bob@hotmail.com', '" + hash2 + "', 2, 'Second Street 2', '2000'), " +
+                        "(2, 'Bob', 'Johnson', '23456789', 'bob@hotmail.com', '" + hash2 + "', 1, 'Second Street 2', '2000'), " +
                         "(3, 'Charlie', 'Brown', '34567890', 'charlie@me.com', '" + hash3 + "', 3, 'Third Street 3', '3000');");
 
                 // --- RESET USER ID SEQUENCE ---

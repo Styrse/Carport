@@ -192,7 +192,7 @@ public class OrderMapper {
 
                     switch (type) {
                         case "Carport" -> items.add(getCarportItem(connection, orderItemId, quantity));
-                        case "Caterial" -> items.add(getMaterialItem(connection, orderItemId, quantity));
+                        case "Material" -> items.add(getMaterialItem(connection, orderItemId, quantity));
                     }
                 }
             } catch (DatabaseException e) {
