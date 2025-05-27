@@ -255,8 +255,7 @@ public class CarportOrderController {
                     sessionCustomer.getPhone(),
                     sessionCustomer.getEmail(),
                     sessionCustomer.getAddress(),
-                    sessionCustomer.getPostcode(),
-                    sessionCustomer.getCity()
+                    sessionCustomer.getPostcode()
             );
 
             // Step 3: Create order with carport as order item

@@ -75,11 +75,10 @@ public class CarportController {
             String email = ctx.formParam("email");
             String address = ctx.formParam("address");
             String postcode = ctx.formParam("postcode");
-            String city = ctx.formParam("city");
 
             // Get or create customer
             Customer customer = UserService.getOrCreateCustomer(
-                    firstName, lastName, phone, email.toLowerCase(), address, postcode, city
+                    firstName, lastName, phone, email.toLowerCase(), address, postcode
             );
 
             // Create and save Carport
