@@ -132,24 +132,34 @@
 
                 <h3>Valgte materialer</h3>
                 <p><strong>Stolpe:</strong>
-                    <span th:if="${selectedPost}" th:text="${selectedPost.name}"></span>
-                    <span th:unless="${selectedPost}">-</span>
+                    <span th:each="post : ${posts}"
+                          th:if="${post.itemId == selectedPostId}"
+                          th:text="${post.name}"></span>
+                    <span th:if="${selectedPostId == null}">-</span>
                 </p>
                 <p><strong>Rem:</strong>
-                    <span th:if="${selectedBeam}" th:text="${selectedBeam.name}"></span>
-                    <span th:unless="${selectedBeam}">-</span>
+                    <span th:each="beam : ${beams}"
+                          th:if="${beam.itemId == selectedBeamId}"
+                          th:text="${beam.name}"></span>
+                    <span th:if="${selectedBeamId == null}">-</span>
                 </p>
                 <p><strong>Spær:</strong>
-                    <span th:if="${selectedRafter}" th:text="${selectedRafter.name}"></span>
-                    <span th:unless="${selectedRafter}">-</span>
+                    <span th:each="rafter : ${rafters}"
+                          th:if="${rafter.itemId == selectedRafterId}"
+                          th:text="${rafter.name}"></span>
+                    <span th:if="${selectedRafterId == null}">-</span>
                 </p>
                 <p><strong>Stern:</strong>
-                    <span th:if="${selectedFascia}" th:text="${selectedFascia.name}"></span>
-                    <span th:unless="${selectedFascia}">-</span>
+                    <span th:each="fascia : ${fascias}"
+                          th:if="${fascia.itemId == selectedFasciaId}"
+                          th:text="${fascia.name}"></span>
+                    <span th:if="${selectedFasciaId == null}">-</span>
                 </p>
                 <p><strong>Tagbeklædning:</strong>
-                    <span th:if="${selectedRoofCover}" th:text="${selectedRoofCover.name}"></span>
-                    <span th:unless="${selectedRoofCover}">-</span>
+                    <span th:each="roofCover : ${roofCovers}"
+                          th:if="${roofCover.itemId == selectedRoofCoverId}"
+                          th:text="${roofCover.name}"></span>
+                    <span th:if="${selectedRoofCoverId == null}">-</span>
                 </p>
             </div>
         </section>
