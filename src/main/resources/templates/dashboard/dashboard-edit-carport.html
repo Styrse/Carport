@@ -120,7 +120,6 @@
                 <button type="submit" class="default-button">Opdater</button>
             </form>
 
-            <!--TODO: Add print friendly code -->
             <!-- READ-ONLY SECTION -->
             <div th:unless="${order.orderStatus == 'Forespørgsel'}" class="carport-readonly">
                 <p><strong>Bredde:</strong> <span th:text="${carport.width} + ' cm'"></span></p>

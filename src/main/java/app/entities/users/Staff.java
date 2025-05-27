@@ -33,4 +33,5 @@ public class Staff extends User {
     public String getJobTitle() {
         return "Sælger";
     }
+
 }

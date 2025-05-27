@@ -14,7 +14,6 @@ public class BillOfMaterial {
     private final Carport carport;
     private final List<BillOfMaterialsItem> lines = new ArrayList<>();
 
-    //TODO: Add front overhang. What can the max be?
     public final static int OVERHANG_END = 30;
     public final static int OVERHANG_FRONT = 100;
     public final static int OVERHANG_SIDE = 35;
@@ -46,7 +45,6 @@ public class BillOfMaterial {
         Material material = carport.getMaterial().get(MaterialRole.POST);
         result.add(new BillOfMaterialsItem(
                 material.getName(),
-                //Todo: Calculate the needed post height. Remember to check how deep they go and think of the slope even for a flat roof
                 Collections.max(material.getPreCutLengths()),
                 posts,
                 material.getUnit(),

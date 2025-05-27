@@ -5,6 +5,7 @@ import app.entities.users.User;
 import app.exceptions.DatabaseException;
 import app.persistence.mappers.UserMapper;
 import app.service.UserService;
+import app.utils.PasswordUtil;
 import io.javalin.http.Context;
 
 import java.util.List;
@@ -51,7 +52,11 @@ public class StaffController {
                 return;
             }
 
+            String hashedPassword = PasswordUtil.hashPassword(password);
+
             User staff = UserService.mapUserService(ctx);
+            staff.setPassword(hashedPassword);
+
             UserService.createUser(staff);
 
             ctx.redirect("/dashboard/staff");
@@ -87,9 +92,24 @@ public class StaffController {
             String phone = ctx.formParam("phoneNumber");
             String email = ctx.formParam("email");
 
-            Staff updated = new Staff(userId, firstName, lastName, phone, email, null, 2);
+            // Hent eksisterende bruger
+            User existing = UserMapper.getUserById(userId);
+            if (existing == null || !(existing instanceof Staff)) {
+                ctx.attribute("errorMessage", "Brugeren blev ikke fundet eller er ikke en medarbejder.");
+                ctx.render("dashboard/dashboard-error.html");
+                return;
+            }
 
-            UserMapper.updateUser(updated);
+            Staff staff = (Staff) existing;
+
+            // Opdater attributterne
+            staff.setFirstName(firstName);
+            staff.setLastName(lastName);
+            staff.setPhone(phone);
+            staff.setEmail(email);
+
+            // Gem ændringer
+            UserMapper.updateUser(staff);
             ctx.redirect("/dashboard/staff");
 
         } catch (Exception e) {
