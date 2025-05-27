@@ -214,32 +214,4 @@ public class UserMapper {
             default -> throw new DatabaseException("Unknown user type: " + roleId);
         };
     }
-
-    public static void insertPostcode(String postcode, String city) throws DatabaseException {
-        String checkSql = "SELECT city FROM postcodes WHERE postcode = ?";
-        String insertSql = "INSERT INTO postcodes (postcode, city) VALUES (?, ?)";
-
-        try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement check = connection.prepareStatement(checkSql)) {
-                check.setString(1, postcode);
-                try (ResultSet rs = check.executeQuery()) {
-                    if (rs.next()) {
-                        String existingCity = rs.getString("city");
-                        if (!existingCity.equalsIgnoreCase(city)) {
-                            throw new DatabaseException("Postcode exists with a different city name.");
-                        }
-                        return;
-                    }
-                }
-            }
-
-            try (PreparedStatement insert = connection.prepareStatement(insertSql)) {
-                insert.setString(1, postcode);
-                insert.setString(2, city);
-                insert.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DatabaseException(e, "Error handling postcode insertion");
-        }
-    }
 }

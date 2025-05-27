@@ -16,9 +16,6 @@ import java.sql.SQLException;
 
 public class UserService {
     public static void createUser(User user) throws DatabaseException {
-        if (user.getPostcode() != null) {
-            UserMapper.insertPostcode(user.getPostcode(), user.getCity());
-        }
         UserMapper.createUser(user);
     }
 
@@ -64,7 +61,7 @@ public class UserService {
 
         } else {
             String password = PasswordUtil.hashPassword(firstName + postcode);
-            Customer newCustomer = new Customer(firstName, lastName, address, postcode, phone, email, password, 1);
+            Customer newCustomer = new Customer(1, firstName, lastName, address, postcode, phone, email, password);
 
             UserService.createUser(newCustomer);
             SendGrid.sendConfirmationEmail(newCustomer);

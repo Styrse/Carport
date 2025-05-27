@@ -15,6 +15,17 @@ public abstract class User {
     public User() {
     }
 
+    public User(int userRole, String firstname, String lastName, String address, String postcode, String phone, String email, String password) {
+        this.userRole = userRole;
+        this.firstName = firstname;
+        this.lastName = lastName;
+        this.address = address;
+        this.postcode = postcode;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+    }
+
     public User(String firstName, String lastName, String address, String postcode, String city, String phone, String email, String password, int userRole) {
         this.firstName = firstName;
         this.lastName = lastName;

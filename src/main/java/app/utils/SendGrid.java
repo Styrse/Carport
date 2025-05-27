@@ -24,7 +24,7 @@ public class SendGrid {
         personalization.addTo(new Email(user.getEmail()));
         personalization.addDynamicTemplateData("name", user.getFirstName() + " " + user.getLastName());
         personalization.addDynamicTemplateData("email", user.getEmail());
-        personalization.addDynamicTemplateData("password", user.getPassword());
+        personalization.addDynamicTemplateData("password", user.getFirstName() + user.getPostcode());
         mail.addPersonalization(personalization);
 
         mail.addCategory("carportapp");

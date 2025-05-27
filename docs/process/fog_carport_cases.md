@@ -459,7 +459,6 @@
 📌 *What this is:* Stores the current status in the database when updated.  
 🎯 *Why it matters:* Keeps status history traceable and accurate.
 - [ ] Store updated status in database
-- [ ] Track who made the change and when
 - **Labels:** `t-shirt-size: S`, `priority: high`, `type: backend`, `area: admin`, `sprint: 3`
 
 ### 🔹 Issue 16.3 – Require confirmation for "Cancelled" and "Refunded"
