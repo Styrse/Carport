@@ -77,7 +77,9 @@
                               class="inline-form">
                             <input type="hidden" name="orderId" th:value="${order.orderId}"/>
                             <input type="hidden" name="index" th:value="${iter.index}"/>
-                            <button type="submit" class="default-button small-button">Se</button>
+                            <button type="submit" class="default-button small-button"
+                                    th:text="${order.orderStatus == 'Forespørgsel'} ? 'Ret' : 'Se'">
+                            </button>
                         </form>
 
                         <form th:if="${item.product.itemType == 'Carport'}"
