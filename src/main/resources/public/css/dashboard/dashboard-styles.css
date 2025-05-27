@@ -668,6 +668,10 @@ section {
     text-decoration: none;
 }
 
+.hidden {
+    display: none;
+}
+
 /* ===== Responsive Table Layout ===== */
 @media (max-width: 768px) {
     table, thead, tbody, th, td, tr {

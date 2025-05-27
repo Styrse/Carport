@@ -71,8 +71,22 @@ button  {
     cursor: pointer;
 
 }
+
 button:hover    {
     background-color: #004585;
+}
+
+form:has(input[name="rooftype"]:checked) .index-button {
+    background-color: #004585;
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.index-button {
+    background-color: grey;
+    opacity: 0.6;
+    pointer-events: none;
+    transition: 0.3s ease;
 }
 
 /*navbar styling*/
