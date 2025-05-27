@@ -71,7 +71,6 @@
 
                 <form th:action="@{/dashboard/email-form}" method="get" class="full-width-form">
                     <input type="hidden" name="email" th:value="${customer.email}">
-                    <input type="hidden" name="orderId" th:value="${order.orderId}">
                     <button type="submit" class="default-button full-width-button">Send email</button>
                 </form>
             </div>

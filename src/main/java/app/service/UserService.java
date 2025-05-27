@@ -43,8 +43,7 @@ public class UserService {
     }
 
     public static Customer getOrCreateCustomer(String firstName, String lastName, String phone,
-                                               String email, String address, String postcode,
-                                               String city) throws DatabaseException, IOException {
+                                               String email, String address, String postcode) throws DatabaseException, IOException {
 
         User user = UserMapper.getUserByEmail(email);
 
@@ -55,7 +54,6 @@ public class UserService {
                 existingCustomer.setPhone(phone);
                 existingCustomer.setAddress(address);
                 existingCustomer.setPostcode(postcode);
-                existingCustomer.setCity(city);
 
                 UserMapper.updateUser(existingCustomer);
                 return existingCustomer;
@@ -66,7 +64,7 @@ public class UserService {
 
         } else {
             String password = PasswordUtil.hashPassword(firstName + postcode);
-            Customer newCustomer = new Customer(firstName, lastName, address, postcode, city, phone, email, password, 1);
+            Customer newCustomer = new Customer(firstName, lastName, address, postcode, phone, email, password, 1);
 
             UserService.createUser(newCustomer);
             SendGrid.sendConfirmationEmail(newCustomer);
