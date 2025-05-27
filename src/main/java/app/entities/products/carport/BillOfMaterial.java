@@ -14,7 +14,6 @@ public class BillOfMaterial {
     private final Carport carport;
     private final List<BillOfMaterialsItem> lines = new ArrayList<>();
 
-    //TODO: Add front overhang. What can the max be?
     public final static int OVERHANG_END = 30;
     public final static int OVERHANG_FRONT = 100;
     public final static int OVERHANG_SIDE = 35;
