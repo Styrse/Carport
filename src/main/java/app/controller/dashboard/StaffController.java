@@ -92,7 +92,7 @@ public class StaffController {
             String phone = ctx.formParam("phoneNumber");
             String email = ctx.formParam("email");
 
-            // Hent eksisterende bruger
+            // Get existing user
             User existing = UserMapper.getUserById(userId);
             if (existing == null || !(existing instanceof Staff)) {
                 ctx.attribute("errorMessage", "Brugeren blev ikke fundet eller er ikke en medarbejder.");
@@ -102,13 +102,13 @@ public class StaffController {
 
             Staff staff = (Staff) existing;
 
-            // Opdater attributterne
+            // Update attributes
             staff.setFirstName(firstName);
             staff.setLastName(lastName);
             staff.setPhone(phone);
             staff.setEmail(email);
 
-            // Gem ændringer
+            // Save changes
             UserMapper.updateUser(staff);
             ctx.redirect("/dashboard/staff");
 

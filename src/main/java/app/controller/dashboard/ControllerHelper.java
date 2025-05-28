@@ -9,11 +9,7 @@ import java.util.Map;
 
 public class ControllerHelper {
 
-    /**
-     * Builds a common model map for dashboard views, including the logged-in staff user
-     * and a boolean flag indicating if the user is a manager.
-     */
-
+    //Standard model for map in dashboard. Add staff and access level
     public static Map<String, Object> createBaseModel(Context ctx) {
         Staff staff = ctx.sessionAttribute("currentUser");
         boolean isManager = staff instanceof StaffManager;

@@ -17,19 +17,6 @@ import java.util.List;
 
 import static app.Main.connectionPool;
 
-/**
- * {@code OrderMapper} handles all database operations related to the Order entity.
- * <p>
- * Motivation:
- * <ul>
- *   <li><b>Reusability:</b> Exposes standard CRUD operations for orders in one central place.</li>
- *   <li><b>Security:</b> Uses prepared statements to avoid SQL injection.</li>
- * </ul>
- * <p>
- * Connection is passed on to helper Methods to reuse the same connection instead of opening a new for each Method.
- * <p>
- * Used a transaction when creating order to make sure everything gets commited otherwise it we be rolled back
- */
 public class OrderMapper {
 
     // Create a new order and return the generated order_id

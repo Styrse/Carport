@@ -13,21 +13,6 @@ import java.util.List;
 
 import static app.Main.connectionPool;
 
-/**
- * {@code UserMapper} handles all database operations related to the {@code User} hierarchy
- * ({@code Customer}, {@code Staff}, and {@code StaffManager}).
- * <p>
- * Motivation:
- * <ul>
- *   <li><b>Separation of Concerns:</b> Encapsulates all persistence logic related to users, keeping business logic clean.</li>
- *   <li><b>CRUD Operations:</b> Provides a unified interface to create, read, update, and delete user records.</li>
- *   <li><b>Polymorphism Support:</b> Dynamically maps users to their correct subclass based on database flags.</li>
- *   <li><b>Security:</b> Uses prepared statements to safely handle user input and prevent SQL injection.</li>
- *   <li><b>Error Handling:</b> Converts SQL errors into custom {@code DatabaseException}s for easier debugging and consistency.</li>
- *   <li><b>Maintainability:</b> Isolates SQL logic, making future changes to the user schema or queries easier to manage.</li>
- * </ul>
- */
-
 public class UserMapper {
     //Create
     public static void createUser(User user) throws DatabaseException {
