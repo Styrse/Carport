@@ -13,7 +13,7 @@ import java.io.IOException;
 public class SendGrid {
 
     public static Email SENDER_EMAIL = new Email("styrse92@gmail.com", "Fog Byggemarked");
-    public static String API_KEY = "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";
+    public static String API_KEY = System.getenv("SENDGRID_API_KEY");
 
     public static void sendConfirmationEmail(User user) throws IOException {
         Mail mail = new Mail();
