@@ -1,23 +1,6 @@
 # 🏗️ Fog Carport Project
 
-This project is a web application built for **Johannes Fog**, allowing customers to design and order custom carports online. It includes dynamic SVG drawings, an internal sales dashboard, and integrations such as SendGrid for email and PostgreSQL for data management.
-
----
-
-## 🚀 Tech Stack
-
-| Area            | Technology                          | Version        |
-|-----------------|-------------------------------------|----------------|
-| Language        | Java                                | 17             |
-| Backend         | Javalin, Jetty                      | Javalin 6.5.0, Jetty 11.x |
-| Frontend        | Thymeleaf, HTML, CSS                | Thymeleaf 3.1.3, HTML5, CSS3 |
-| Database        | PostgreSQL, HikariCP                | PostgreSQL 15, HikariCP 6.2.1 |
-| DevOps          | DigitalOcean, GitHub Projects       | N/A            |
-| Testing         | JUnit                               | JUnit 5.12.0|
-| Email           | SendGrid                            | SDK 4.10.1     |
-| Diagrams/Mockup | Figma, Draw.io, Canva, dbdiagram.io | Latest (Web)   |
-| Communication   | Discord                             | [Join](https://discord.gg/e6DqDnDZ) |
-
+This project is a web application built for **Fog**, allowing customers to design and order custom carports online. It includes dynamic SVG drawings, an internal sales dashboard, and integrations such as SendGrid for email and PostgreSQL for data management.
 
 ---
 
@@ -35,17 +18,6 @@ This project is a web application built for **Johannes Fog**, allowing customers
 - Daily standups for internal coordination
 - Issues tracked using GitHub Projects
 - Feature branches with pull requests
-
----
-
-## 👥 Team Roles
-
-| Role            | Name         | Responsibilities |
-|-----------------|--------------|------------------|
-| Scrum Master    | Mia          | Facilitates standups, retrospectives |
-| Product Owner   | Daniel       | Owns backlog, gathers feedback |
-| Tech Lead       | Styrbjørn    | Oversees code, reviews, architecture |
-| Wildcard        | Esben        | Supports wherever needed most |
 
 ---
 
@@ -68,12 +40,6 @@ This project is a web application built for **Johannes Fog**, allowing customers
 ---
 
 ## 🧾 Reporting & Documentation
-
-- 📂 [Shared Google Drive](https://drive.google.com/drive/folders/1NGC3qZlsdJjrdBPflc2UA0Z-5NiV14sZ)  
-  Project documents, screenshots, and sprint materials
-
-- 📊 [Diagrams Folder](docs/other)  
-  Domain models, ERD, navigation diagrams, and class structure
 
 - 📝 [Report As You Code Guide](docs/process/report-as-you-code.md)  
   Tips to document decisions and architecture along the way

@@ -7,21 +7,6 @@ import app.entities.products.Product;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * A map of materials used in this carport, categorized by their role (e.g., POST, BEAM, RAFTER),
- * where each key corresponds to a single selected material of that type.
- *
- * <p><strong>Design decisions:</strong></p>
- * <ul>
- *   <li><strong>Map over List:</strong> A {@code Map<MaterialRole, Material>} is used instead of a {@code List<Material>}
- *       to provide fast, descriptive access to specific materials by their role.
- *       This approach avoids the need for iteration and type checks when retrieving materials,
- *       and reflects that each role is uniquely represented in a carport (e.g., one POST type, one BEAM type, etc.).</li>
- * </ul>
- *
- * <p>This design provides a good balance between flexibility and simplicity.</p>
- */
-
 public class Carport extends Product {
     private int width;
     private int length;
@@ -167,20 +152,6 @@ public class Carport extends Product {
     public void setShed(Shed shed) {
         this.shed = shed;
     }
-
-    /**
-     * Represents an optional shed (redskabsskur) that can be added as part of a carport configuration.
-     * <p>
-     * This class is implemented as a static inner class because a shed is conceptually and functionally
-     * tied to a specific carport and does not exist independently in the system.
-     * Making it an inner class helps encapsulate its use and clearly expresses the design intent:
-     * that a shed is always a component of a carport, and never a standalone entity.
-     * </p>
-     * <p>
-     * Declared as <code>static</code> to allow clean instantiation without requiring a reference to
-     * an enclosing <code>Carport</code> instance.
-     * </p>
-     */
 
     public static class Shed {
         private int width;

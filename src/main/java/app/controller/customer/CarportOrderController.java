@@ -60,14 +60,6 @@ public class CarportOrderController {
         }
     }
 
-    /**
-     * Displays the form for configuring the shed dimensions (Step 1.1).
-     * <p>
-     * The maximum allowed shed width and length are calculated by subtracting 30 cm (15 cm overhang on each side)
-     * from the total carport width and length. This overhang requirement is specified by Fog's design constraints
-     * to ensure structural clearance and aesthetic spacing within the carport.
-     * </p>
-     */
     public static void showShedSizePage(Context ctx) {
         Carport carport = ctx.sessionAttribute("carport");
 
@@ -83,20 +75,6 @@ public class CarportOrderController {
         ctx.render("public/step-1.1-shed-size.html", model);
     }
 
-    /**
-     * Handles the form submission for specifying shed dimensions in step 1.1 of the carport configuration.
-     * <p>
-     * Retrieves the shed width and length from the form, validates that the dimensions
-     * do not exceed the carport dimensions minus a 30 cm buffer (15 cm on each side), and
-     * stores the shed as part of the Carport object in session.
-     * </p>
-     * <p>
-     * If validation fails, the request is rejected with status 400 and an appropriate error message.
-     * On success, the flow continues to step 2 of the configuration.
-     * </p>
-     *
-     * @param ctx the Javalin HTTP context containing form parameters and session attributes
-     */
     public static void handleShedSize(Context ctx) {
         Carport carport = ctx.sessionAttribute("carport");
 

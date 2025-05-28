@@ -10,7 +10,6 @@ import app.exceptions.DatabaseException;
 import app.persistence.mappers.MaterialMapper;
 import io.javalin.http.Context;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
