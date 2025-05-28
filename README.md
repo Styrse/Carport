@@ -72,7 +72,7 @@ This project is a web application built for **Johannes Fog**, allowing customers
 - 📂 [Shared Google Drive](https://drive.google.com/drive/folders/1NGC3qZlsdJjrdBPflc2UA0Z-5NiV14sZ)  
   Project documents, screenshots, and sprint materials
 
-- 📊 [Diagrams Folder](docs/diagrams)  
+- 📊 [Diagrams Folder](docs/other)  
   Domain models, ERD, navigation diagrams, and class structure
 
 - 📝 [Report As You Code Guide](docs/process/report-as-you-code.md)  
