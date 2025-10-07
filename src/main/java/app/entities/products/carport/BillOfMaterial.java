@@ -201,8 +201,9 @@ public class BillOfMaterial {
     public int calcPostCountLength() {
         int posts = 2;
         int postGap = ((Beam) carport.getMaterial().get(MaterialRole.BEAM)).getPostGap();
-        if (carport.getLength() > postGap) {
-            for (int i = postGap; i < carport.getLength(); i += postGap) {
+        int carportLengthWithoutOverhangs = carport.getLength() - OVERHANG_FRONT - OVERHANG_END;
+        if (carportLengthWithoutOverhangs > postGap) {
+            for (int i = postGap; i < carportLengthWithoutOverhangs; i += postGap) {
                 posts++;
             }
         }
