@@ -11,10 +11,9 @@ import java.util.List;
 
 public class TestPlankFactory {
 
-    public static List<Integer> PRE_CUT_LENGTHS = new ArrayList<>(Arrays.asList(300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600));
+    public static final List<Integer> PRE_CUT_LENGTHS = List.of(300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600);
     public static final List<Integer> SHORT_PRE_CUTS_LENGTHS = List.of(300, 330, 360, 390);
     public static final List<Integer> LONG_PRE_CUTS_LENGTHS = List.of(300, 330, 360, 390, 400, 700);
-
 
     public static Post createStandardPost() {
         Post post = new Post(

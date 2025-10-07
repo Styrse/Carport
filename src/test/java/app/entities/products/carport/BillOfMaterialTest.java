@@ -827,7 +827,6 @@ class BillOfMaterialTest {
                 }
             }
         }
-
     }
 
     @Nested
